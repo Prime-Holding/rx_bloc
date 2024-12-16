@@ -49,6 +49,13 @@ class UsersController extends ApiController {
       '/api/users/me/phone/confirm',
       _confirmSmsCodeHandler,
     );
+
+    router.addRequest(
+      RequestType.POST,
+      '/api/users/me/phone/resend',
+      _resendSmsCodeHandler,
+    );
+
   }
 
   Future<Response> _registerHandler(Request request) async {
@@ -88,7 +95,7 @@ class UsersController extends ApiController {
     if (phoneNumber == null ||
         phoneNumber.length < 12 ||
         // Mock an invalid phone number error
-        phoneNumber.contains('2345678')) {
+        phoneNumber.replaceAll(' ', '').contains('2345678')) {
       return responseBuilder.buildErrorResponse(
         BadRequestException('Invalid phone number format.'),
       );
@@ -111,7 +118,7 @@ class UsersController extends ApiController {
     // Mock a delay to simulate a real-world scenario
     await Future.delayed(const Duration(seconds: 1));
 
-    if (smsCode == null || smsCode.length > 6 || smsCode == '123456') {
+    if (smsCode == null || smsCode.length > 4|| smsCode == '1234') {
       return responseBuilder.buildErrorResponse(
         BadRequestException('Invalid or expired SMS code.'),
       );
@@ -129,5 +136,14 @@ class UsersController extends ApiController {
           )
           .toJson(),
     );
+  }
+
+  Future<Response> _resendSmsCodeHandler(Request request) async {
+    // Mock a delay to simulate a real-world scenario
+    await Future.delayed(const Duration(seconds: 1));
+
+    // TODO: Send a new SMS code to the user using a real SMS service
+
+    return responseBuilder.buildOK();
   }
 }

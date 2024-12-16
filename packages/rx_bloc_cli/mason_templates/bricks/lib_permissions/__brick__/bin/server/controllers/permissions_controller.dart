@@ -32,7 +32,9 @@ class PermissionsController extends ApiController {
         'CounterRoute': false,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
         'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
         'NotificationsRoute': false,
-        'LoginRoute': true,{{#enable_feature_deeplinks}}
+        'LoginRoute': true,{{#enable_feature_onboarding}}
+        'OnboardingPhoneRoute' : true,
+        'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
         'EnterMessageRoute': false,
         'DeepLinksRoute': false,
         'DeepLinkDetailsRoute': false,{{/enable_feature_deeplinks}}
@@ -51,7 +53,9 @@ class PermissionsController extends ApiController {
       'CounterRoute': true,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
       'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
       'NotificationsRoute': true,{{#has_authentication}}
-      'LoginRoute': true,{{/has_authentication}}{{#enable_feature_deeplinks}}
+      'LoginRoute': true,{{/has_authentication}}{{#enable_feature_onboarding}}
+      'OnboardingPhoneRoute' : true,
+      'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
       'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}

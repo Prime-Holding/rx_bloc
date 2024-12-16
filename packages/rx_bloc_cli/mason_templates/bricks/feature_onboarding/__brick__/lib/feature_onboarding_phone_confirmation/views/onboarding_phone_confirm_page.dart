@@ -77,6 +77,7 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
       );
 
   void _onCodeResult(BuildContext context, dynamic result) {
+    FocusManager.instance.primaryFocus?.unfocus();
     final updatedUser = result as UserModel?;
     if (updatedUser != null && updatedUser.confirmedCredentials.phone) {
       context.read<RouterBlocType>().events.push(const DashboardRoute());

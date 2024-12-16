@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:widget_toolkit/models.dart';
 
-part 'country_code.g.dart';
+part 'country_code_model.g.dart';
 
 /// Country code model
 @JsonSerializable()
@@ -31,7 +31,7 @@ class CountryCodeModel extends PickerItemModel {
   final String code;
 
   @override
-  String? get itemDisplayName => name;
+  String? get itemDisplayName => '$name (+$code)';
 
   factory CountryCodeModel.fromJson(Map<String, dynamic> json) =>
       _$CountryCodeModelFromJson(json);

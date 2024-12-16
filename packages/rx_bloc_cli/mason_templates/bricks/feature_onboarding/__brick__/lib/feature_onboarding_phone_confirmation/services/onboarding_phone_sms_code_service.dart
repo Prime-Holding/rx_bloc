@@ -1,17 +1,21 @@
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
-import 'user_service.dart';
+import '../../base/services/users_service.dart';
 
 /// Service used to implement SMS code logic
 class OnboardingPhoneSmsCodeService implements SmsCodeService {
-  OnboardingPhoneSmsCodeService(this._userService);
+  OnboardingPhoneSmsCodeService(this._usersService);
 
-  final UserService _userService;
+  final UsersService _usersService;
 
   /// Confirm if the entered code is equal to the last send code
   @override
   Future<dynamic> confirmPhoneCode(String code) async {
-    final confirmResponse = await _userService.confirmPhoneNumber(code);
+    final confirmResponse = await _usersService.confirmPhoneNumber(code);
+
+    /// TODO: Implement sms code confirmation logic
+
+    /// Return mock response to validate the code
     return confirmResponse;
   }
 
@@ -26,8 +30,12 @@ class OnboardingPhoneSmsCodeService implements SmsCodeService {
   /// Send a new code to the user
   @override
   Future<bool> sendConfirmationSms(String usersPhoneNumber) async {
-    await Future.delayed(const Duration(seconds: 3));
-    return true;
+    try {
+      await _usersService.resendSmsCode();
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// How long codes will be valid in seconds

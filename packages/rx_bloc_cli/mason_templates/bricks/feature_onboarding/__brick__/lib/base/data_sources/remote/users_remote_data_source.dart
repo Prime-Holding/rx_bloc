@@ -7,14 +7,14 @@ import '../../models/request_models/confirm_phone_number_request_model.dart';
 import '../../models/request_models/phone_number_request_model.dart';
 import '../../models/user_model.dart';
 
-part 'user_remote_data_source.g.dart';
+part 'users_remote_data_source.g.dart';
 
 /// Used as a contractor for remote data source.
 /// To make it work, should provide a real API and rerun build_runner
 @RestApi()
-abstract class UserRemoteDataSource {
-  factory UserRemoteDataSource(Dio dio, {String baseUrl}) =
-      _UserRemoteDataSource;
+abstract class UsersRemoteDataSource {
+  factory UsersRemoteDataSource(Dio dio, {String baseUrl}) =
+      _UsersRemoteDataSource;
 
   @PATCH('/api/users/me')
   Future<UserModel> submitPhoneNumber(
@@ -23,4 +23,7 @@ abstract class UserRemoteDataSource {
   @POST('/api/users/me/phone/confirm')
   Future<UserModel> confirmPhoneNumber(
       @Body() ConfirmPhoneNumberRequestModel smsCode);
+
+  @POST('/api/users/me/phone/resend')
+  Future<void> resendSmsCode();
 }

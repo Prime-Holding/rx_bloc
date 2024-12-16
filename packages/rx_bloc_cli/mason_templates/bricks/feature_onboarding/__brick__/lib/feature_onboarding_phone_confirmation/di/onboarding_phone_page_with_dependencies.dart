@@ -2,12 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/models/country_code_model.dart';
 import '../blocs/onboarding_phone_bloc.dart';
-import '../models/country_code.dart';
 import '../repositories/search_country_code_repository.dart';
-import '../repositories/user_repository.dart';
+import '../services/phone_number_validator_service.dart';
 import '../services/search_country_code_service.dart';
-import '../services/user_service.dart';
 import '../views/onboarding_phone_page.dart';
 
 class OnboardingPhonePageWithDependencies extends StatelessWidget {
@@ -25,22 +24,18 @@ class OnboardingPhonePageWithDependencies extends StatelessWidget {
 
   List<Provider> get _repositories => [
         Provider<SearchCountryCodeRepository<CountryCodeModel>>(
-          create: (context) => SearchCountryCodeRepository<CountryCodeModel>(),
-        ),
-        Provider<UserRepository>(
-          create: (context) => UserRepository(context.read()),
+          create: (context) => SearchCountryCodeRepository<CountryCodeModel>(
+            context.read(),
+          ),
         ),
       ];
 
   List<Provider> get _services => [
+        Provider<PhoneNumberValidatorService>(
+          create: (context) => const PhoneNumberValidatorService(),
+        ),
         Provider<SearchCountryCodeService>(
           create: (context) => SearchCountryCodeService(
-            context.read(),
-          ),
-        ),
-        Provider<UserService>(
-          create: (context) => UserService(
-            context.read(),
             context.read(),
           ),
         ),
@@ -49,6 +44,7 @@ class OnboardingPhonePageWithDependencies extends StatelessWidget {
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<OnboardingPhoneBlocType>(
           create: (context) => OnboardingPhoneBloc(
+            context.read(),
             context.read(),
           ),
         ),

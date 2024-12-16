@@ -1,26 +1,16 @@
-// Copyright (c) 2023, Prime Holding JSC
-// https,//www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https,//opensource.org/licenses/MIT.
+{{> licence.dart }}
 
-import '../models/country_code.dart';
+import 'package:{{project_name}}/base/models/country_code_model.dart';
 
-class SearchCountryCodeRepository<T> {
-  Future<List<T>> get searchList => Future.delayed(
-        const Duration(seconds: 1),
-        () => _countriesList
-            .map((countryMap) => CountryCodeModel(
-                  name: countryMap.$1,
-                  code: countryMap.$2,
-                ) as T)
-            .toList(),
-      );
+class CountryCodesRepository {
+  Future<List<CountryCodeModel>> getCountryCodes() async {
+    // Mock a delay to simulate a network request
+    await Future.delayed(const Duration(seconds: 2));
 
-  /// region Mock data
+    return _countriesList;
+  }
 
-  final List<(String, String)> _countriesList = [
+  final List<CountryCodeModel> _countriesList = [
     ('Afghanistan', '93'),
     ('Albania', '355'),
     ('Algeria', '213'),
@@ -205,7 +195,10 @@ class SearchCountryCodeRepository<T> {
     ('Yemen', '967'),
     ('Zambia', '260'),
     ('Zimbabwe', '263'),
-  ];
-
-  /// endregion
+  ]
+      .map((countryMap) => CountryCodeModel(
+            name: countryMap.$1,
+            code: countryMap.$2,
+          ))
+      .toList();
 }

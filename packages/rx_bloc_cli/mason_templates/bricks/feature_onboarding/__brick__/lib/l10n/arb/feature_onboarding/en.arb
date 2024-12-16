@@ -5,6 +5,10 @@
   "continueText" : "Continue",
   "confirm" : "Confirm",
 
+  "country" : "Country",
+  "phoneNumber" : "Phone number",
+  "countrySelectionLabel" : "Select your country",
+
   "enterPhoneNumber" : "Enter your phone number",
   "phoneNumberConfirmationHeader" : "You'll receive a confirmation code via SMS shortly.",
 
@@ -16,5 +20,5 @@
   "invalidPhoneNumber" : "Invalid phone number.",
   "phoneNumberTooShort" : "Phone number is too short.",
 
-  "confirmPhoneFieldHint" : "Use code 123456 to simulate an error.\nAny other code will result in a successful submission."
+  "confirmPhoneFieldHint" : "Use code 1234 to simulate an error.\nAny other code will result in a successful submission."
 }

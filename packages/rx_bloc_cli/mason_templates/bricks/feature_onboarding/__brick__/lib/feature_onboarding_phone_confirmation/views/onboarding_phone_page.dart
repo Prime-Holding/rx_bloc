@@ -5,12 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../../base/models/user_model.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/onboarding_phone_bloc.dart';
-import '../ui_components/onboarding_error_listener.dart';
-import '../ui_components/phone_number_picker.dart';
+import '../ui_components/phone_number_form.dart';
 
 /// Onboarding page where the user can enter their phone number.
 class OnboardingPhonePage extends StatelessWidget {
@@ -35,7 +34,7 @@ class OnboardingPhonePage extends StatelessWidget {
                         style: context.designSystem.typography.h1Reg20,
                       ),
                       SizedBox(height: context.designSystem.spacing.xxxxl),
-                      const PhoneNumberPicker(),
+                      const PhoneNumberForm(),
                     ],
                   ),
                   Column(
@@ -63,10 +62,12 @@ class OnboardingPhonePage extends StatelessWidget {
                           );
                         },
                       ),
-                      const OnboardingErrorListener(),
-                      RxBlocListener<OnboardingPhoneBlocType, UserModel>(
-                        state: (bloc) => bloc.states.user,
-                        listener: (context, user) => context
+                      AppErrorModalWidget<OnboardingPhoneBlocType>(
+                        errorState: (bloc) => bloc.states.errors,
+                      ),
+                      RxBlocListener<OnboardingPhoneBlocType, bool>(
+                        state: (bloc) => bloc.states.phoneSubmitted,
+                        listener: (context, success) => context
                             .read<RouterBlocType>()
                             .events
                             .push(const OnboardingPhoneConfirmRoute()),

@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/services.dart';
 
 /// A [TextInputFormatter] that formats phone numbers based on a given format.
