@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
 import '../../base/models/country_code_model.dart';
 import '../blocs/onboarding_phone_bloc.dart';
@@ -20,51 +21,58 @@ class PhoneNumberForm extends StatelessWidget {
   /// The hint text of the phone number input
   final String phoneNumberHint;
 
-  static const double _borderRadius = 16.0;
-
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          _buildFieldTitle(
-            context,
-            context.l10n.featureOnboarding.country,
-            Icons.public,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.public,
+                color: context.designSystem.colors.gray,
+                size: context.designSystem.spacing.xxl,
+              ),
+              SizedBox(width: context.designSystem.spacing.xs),
+              Expanded(child: _buildSelectCountry(context)),
+            ],
           ),
-          SizedBox(height: context.designSystem.spacing.xs),
-          _buildSelectCountry(context),
           SizedBox(height: context.designSystem.spacing.m),
-          _buildFieldTitle(
-            context,
-            context.l10n.featureOnboarding.phoneNumber,
-            Icons.phone,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.phone,
+                color: context.designSystem.colors.gray,
+                size: context.designSystem.spacing.xxl,
+              ),
+              SizedBox(width: context.designSystem.spacing.xs),
+              Flexible(
+                child: _buildPhoneNumber(context, hint: phoneNumberHint),
+              ),
+            ],
           ),
-          SizedBox(height: context.designSystem.spacing.xs),
-          _buildPhoneNumber(context, hint: phoneNumberHint),
         ],
       );
 
-  Widget _buildFieldTitle(BuildContext context, String title, IconData icon) =>
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: context.designSystem.colors.gray),
-          SizedBox(width: context.designSystem.spacing.m),
-          Text(title, style: context.designSystem.typography.h2Reg16),
-        ],
-      );
+  /// region Builders
 
   Widget _buildSelectCountry(BuildContext context) =>
       RxBlocBuilder<OnboardingPhoneBlocType, CountryCodeModel?>(
         state: (bloc) => bloc.states.countryCode,
-        builder: (context, countryCodeSnapshot, bloc) => GestureDetector(
-          onTap: () => _onCountryCodeSegmentPressed(
+        builder: (context, countryCodeSnapshot, bloc) => PrimaryButton(
+          onPressed: () => _onCountryCodeSegmentPressed(
             context,
             countryCodeSnapshot.data,
           ),
-          child: Chip(
-            label: Text(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: context.designSystem.spacing.m,
+            ),
+            child: Text(
               countryCodeSnapshot.data?.itemDisplayName ??
                   context.l10n.featureOnboarding.countrySelectionLabel,
+              textAlign: TextAlign.center,
+              style: context.designSystem.typography.h2Reg16,
             ),
           ),
         ),
@@ -87,21 +95,24 @@ class PhoneNumberForm extends StatelessWidget {
           decoration: fieldState.decoration.copyWith(
             hintText: hint,
             errorText: fieldState.error,
+            errorMaxLines: 2,
             contentPadding: EdgeInsets.fromLTRB(
               context.designSystem.spacing.m,
               context.designSystem.spacing.m,
               context.designSystem.spacing.xs,
               context.designSystem.spacing.m,
             ),
-            border: const OutlineInputBorder(
+            border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
-                Radius.circular(_borderRadius),
+                Radius.circular(context.designSystem.spacing.xxl),
               ),
             ),
           ),
           inputFormatters: [PhoneNumberFormatter()],
         ),
       );
+
+  /// endregion
 
   /// region Callbacks and helpers
 

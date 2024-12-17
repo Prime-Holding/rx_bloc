@@ -5,10 +5,7 @@
   "continueText" : "Continue",
   "confirm" : "Confirm",
 
-  "country" : "Country",
-  "phoneNumber" : "Phone number",
   "countrySelectionLabel" : "Select your country",
-
   "enterPhoneNumber" : "Enter your phone number",
   "phoneNumberConfirmationHeader" : "You'll receive a confirmation code via SMS shortly.",
 

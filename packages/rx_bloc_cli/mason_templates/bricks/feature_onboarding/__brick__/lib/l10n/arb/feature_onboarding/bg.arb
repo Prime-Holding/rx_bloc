@@ -5,10 +5,7 @@
   "continueText" : "Продължи",
   "confirm" : "Потвърди",
 
-  "country" : "Държава",
-  "phoneNumber" : "Телефонен номер",
   "countrySelectionLabel" : "Изберете вашата държава",
-
   "enterPhoneNumber" : "Въведете вашия телефонен номер",
   "phoneNumberConfirmationHeader" : "Скоро ще получите код за потвърждение чрез SMS.",
 
