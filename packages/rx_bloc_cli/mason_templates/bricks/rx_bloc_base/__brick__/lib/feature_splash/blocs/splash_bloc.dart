@@ -78,7 +78,7 @@ class SplashBloc extends $SplashBloc {
 
       {{#enable_pin_code}}
       if (await _authService.isAuthenticated()) {
-        if (await _pinCodeService.getPinCode() == null) {
+        if (await _pinCodeService.getPinCode() != null) {
           return _navigationBloc.events.go(const VerifyPinCodeRoute(),
               extra: const PinCodeArguments(title: 'Enter Pin Code'));
         }
