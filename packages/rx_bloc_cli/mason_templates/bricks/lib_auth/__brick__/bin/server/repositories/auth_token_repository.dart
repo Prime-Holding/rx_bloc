@@ -11,8 +11,10 @@ class AuthTokenRepository {
   final Map<String, AuthToken> _refreshTokens = {};
 
   /// Creates a new auth token
-  AuthToken issueNewToken() {
-    final token = AuthToken.generateNew();
+  AuthToken issueNewToken(
+    String? userId,
+  ) {
+    final token = AuthToken.generateNew(userId);
 
     _tokens[token.token] = token;
     _refreshTokens[token.refreshToken] = token;

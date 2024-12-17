@@ -5,7 +5,8 @@
   "logOut" : "Излезте",
   "profile" : "Профил",
   "notifications" : "Известия",
-  "loginCredentialsHint" : "Въведете идентификационните си данни за вход: \n Валиден имейл адрес. \n Най-малко 6 знака парола."{{/enable_login}}{{#enable_social_logins}},
+  "loginCredentialsHint" : "Въведете идентификационните си данни за вход: \n Валиден имейл адрес. \n Най-малко 6 знака парола.",
+  "noLoginOption": "За проекта не е избрана опция за влизане."{{/enable_login}}{{#enable_social_logins}},
   "appleLogin":"Вход с Apple",
   "googleLogin":"Вход с Google",
   "facebookLogin":"Вход с Facebook"{{/enable_social_logins}}

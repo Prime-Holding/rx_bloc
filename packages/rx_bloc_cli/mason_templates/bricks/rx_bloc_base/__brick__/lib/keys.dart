@@ -7,7 +7,10 @@ class Keys {
   {{#enable_login}}
   static const loginButton = Key('loginButton');
   static const loginEmail = Key('loginEmail');
-  static const loginPassword = Key('loginPassword');{{/enable_login}}
+  static const loginPassword = Key('loginPassword');{{/enable_login}}{{#enable_feature_onboarding}}
+  static const registerButton = Key('registerButton');
+  static const registerEmail = Key('registerEmail');
+  static const registerPassword = Key('registerPassword');{{/enable_feature_onboarding}}
   static const bottomNavigationBar = Key('bottomNavigationBar');
   {{#enable_feature_counter}}
   static const counterCount = Key('counterCount');

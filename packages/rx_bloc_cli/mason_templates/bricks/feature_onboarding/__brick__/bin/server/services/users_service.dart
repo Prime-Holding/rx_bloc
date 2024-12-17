@@ -16,12 +16,25 @@ class UsersService {
 
   UserModel? getUserById(String id) => _usersRepository.getUserById(id);
 
+  bool isTempUser(String id) => getUserById(id)?.role == UserRole.tempUser;
+
   UserModel? getUserByEmail(String email) =>
       _usersRepository.getUserByEmail(email);
 
   void createUser(UserModel user) => _usersRepository.createUser(user);
 
-  void updateUser(UserModel user) => _usersRepository.updateUser(user);
+  void updateUser(
+    String userId, {
+    String? phoneNumber,
+    UserRole? role,
+    ConfirmedCredentialsModel? confirmedCredentials,
+  }) =>
+      _usersRepository.updateUser(
+        userId,
+        phoneNumber: phoneNumber,
+        role: role,
+        confirmedCredentials: confirmedCredentials,
+      );
 
   void deleteUser(String id) => _usersRepository.deleteUser(id);
 

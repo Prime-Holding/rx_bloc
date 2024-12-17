@@ -9,8 +9,6 @@ class AppBuildGradleProcessor extends StringProcessor {
   AppBuildGradleProcessor(super.args);
 
   String get _tabSpace => '    ';
-  String get _packageId =>
-      '${args.organisationDomain}.${args.organisationName}.${args.projectName}';
 
   @override
   String execute() {
@@ -68,10 +66,10 @@ class AppBuildGradleProcessor extends StringProcessor {
     _replaceVal('flutter.targetSdkVersion', '$targetSDK');
     _replaceVal('flutter.minSdkVersion', '$minSDK');
 
-    _replaceQuotedVal('namespace', _packageId);
+    _replaceQuotedVal('namespace', packageId);
     _replaceQuotedVal(
       'applicationId',
-      _packageId,
+      packageId,
       start: buffer.nthIndexOf('defaultConfig'),
     );
   }

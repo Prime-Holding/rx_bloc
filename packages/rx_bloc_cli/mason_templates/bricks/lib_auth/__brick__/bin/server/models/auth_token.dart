@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 import 'package:jaguar_jwt/jaguar_jwt.dart';
+import 'package:{{project_name}}/lib_auth/models/auth_token_model.dart';
 
 import '../config.dart';
 import '../utils/utilities.dart';
@@ -12,12 +13,14 @@ class AuthToken {
       );
 
   /// Generates a new auth token that's valid for one hour
-  factory AuthToken.generateNew() {
+  factory AuthToken.generateNew(
+    String? userId,
+  ) {
     final claimSet = JwtClaim(
       issuer: jwtIssuer,
       audience: jwtAudiences,
       payload: {
-        'userId': generateRandomString(),
+        'userId': userId ?? generateRandomString(),
       },
       maxAge: const Duration(hours: 1),
     );
@@ -30,6 +33,11 @@ class AuthToken {
       refreshToken,
     );
   }
+
+  AuthTokenModel get toAuthTokenModel => AuthTokenModel(
+        token,
+        refreshToken,
+      );
 
   /// The value of the access token
   final String token;
