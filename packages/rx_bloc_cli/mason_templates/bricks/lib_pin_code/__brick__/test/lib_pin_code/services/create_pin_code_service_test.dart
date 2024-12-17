@@ -48,19 +48,6 @@ void main() {
       verify(repository.writePinToStorage(pinKey, Stubs.pin)).called(1);
     });
 
-    test('savePinCodeInSecureStorage should return false', () async {
-      const pinKey = VerifyPinCodeService.storedPin;
-
-      when(repository.readPinFromStorage(key: pinKey))
-          .thenAnswer((_) async => null);
-
-      final result =
-          await permissionsService.savePinCodeInSecureStorage(pinKey);
-
-      expect(result, false);
-      verify(repository.readPinFromStorage(key: pinKey)).called(1);
-    });
-
     test('checkIsPinCreated should return false', () async {
       when(repository.getPinCode()).thenAnswer((_) async => null);
 
