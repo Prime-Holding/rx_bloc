@@ -10,9 +10,6 @@ class AndroidManifestProcessor extends StringProcessor {
   /// Android manifest processor constructor
   AndroidManifestProcessor(super.args);
 
-  String get _packageId =>
-      '${args.organisationDomain}.${args.organisationName}.${args.projectName}';
-
   @override
   String execute() {
     if (input == null) return '';
@@ -74,7 +71,7 @@ class AndroidManifestProcessor extends StringProcessor {
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="http" android:host="$_packageId" />
+    <data android:scheme="http" android:host="$packageId" />
     <data android:scheme="https" />''';
 
     if (args.onboardingEnabled) {
