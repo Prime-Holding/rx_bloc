@@ -9,11 +9,11 @@ class TranslationsRepository {
     {
        "en":{
           "_ok":"Okay",
-          "login___logIn" : "Login via email"
+          "login___logIn" : "Login"
        },
        "bg":{
           "_ok":"ok",
-          "login___logIn" : "Вход с имейл"
+          "login___logIn" : "Вход"
        }
     }
     ''');
