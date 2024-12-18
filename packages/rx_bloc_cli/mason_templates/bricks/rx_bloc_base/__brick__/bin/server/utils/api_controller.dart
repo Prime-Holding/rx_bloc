@@ -145,7 +145,7 @@ class WrappedRouter {
   ///
   /// Example:
   ///
-  /// /api/users/\<userId\>/profile
+  /// /api/users/`<userId>`/profile
   ///
   void addRequestWithParam(
     RequestType type,
