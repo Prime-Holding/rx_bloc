@@ -1,0 +1,21 @@
+{
+  "@@locale": "en",
+
+  "retry" : "Retry",
+  "continueText" : "Continue",
+  "confirm" : "Confirm",
+
+  "countrySelectionLabel" : "Select your country",
+  "enterPhoneNumber" : "Enter your phone number",
+  "phoneNumberConfirmationHeader" : "You'll receive a confirmation code via SMS shortly.",
+
+  "selectCountry": "Select country",
+  "typeSubstring": "Type substring",
+  "thereAreNoResults": "There are no results for the searched query!",
+
+  "invalidCountryCode" : "Invalid country code.",
+  "invalidPhoneNumber" : "Invalid phone number.",
+  "phoneNumberTooShort" : "Phone number is too short.",
+
+  "confirmPhoneFieldHint" : "Use code 1234 to simulate an error.\nAny other code will result in a successful submission."
+}

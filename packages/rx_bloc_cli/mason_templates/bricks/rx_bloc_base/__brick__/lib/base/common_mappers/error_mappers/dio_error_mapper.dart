@@ -15,6 +15,13 @@ extension _DioErrorMapper on DioException {
         }
       }
 
+      if (response!.statusCode == 400) {
+        return BadRequestErrorModel(
+          message: response!.mapToString(),
+          {{#analytics}}errorLogDetails: errorLogDetails,{{/analytics}}
+        );
+      }
+
       if (response!.statusCode == 403) {
         return AccessDeniedErrorModel({{#analytics}}errorLogDetails{{/analytics}});
       }
