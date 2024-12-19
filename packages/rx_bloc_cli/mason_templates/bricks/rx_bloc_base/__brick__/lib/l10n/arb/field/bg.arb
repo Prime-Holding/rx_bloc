@@ -1,5 +1,7 @@
 {
   "@@locale": "bg",
   "email": "Имейл",
-  "password": "Парола"
+  "password": "Парола",
+  "phoneNumber" : "Телефонен номер",
+  "countryCode" : "Код на държавата"
 }

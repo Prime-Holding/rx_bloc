@@ -587,4 +587,4 @@ On iOS, an issue may occur during the initial build of the application. This can
 [rx_bloc_cli_cd_setup_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md
 [golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
 [rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
-[feature_creation]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md
+[feature_creation]: docs/feature_creation.md

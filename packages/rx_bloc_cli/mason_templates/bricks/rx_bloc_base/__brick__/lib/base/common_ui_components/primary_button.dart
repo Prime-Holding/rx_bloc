@@ -11,6 +11,7 @@ class PrimaryButton extends StatelessWidget {
     this.child,
     this.isLoading = false,
     this.loadingIndicatorSize = 20,
+    this.style,
     super.key,
   });
 
@@ -18,9 +19,11 @@ class PrimaryButton extends StatelessWidget {
   final Widget? child;
   final Function? onPressed;
   final double loadingIndicatorSize;
+  final ButtonStyle? style;
 
   @override
   Widget build(BuildContext context) => OutlinedButton(
+        style: style,
         onPressed: () => isLoading ? null : onPressed?.call(),
         child: _buildChildWidget(context),
       );

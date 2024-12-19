@@ -61,14 +61,18 @@ import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
 import '../common_services/push_notifications_service.dart';
 import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
-import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
+import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_onboarding}}
+import '../data_sources/remote/country_codes_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_counter}}
+import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
+import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
-import '../repositories/push_notification_repository.dart';
+import '../repositories/push_notification_repository.dart';{{#enable_feature_onboarding}}
+import '../repositories/users_repository.dart';
+import '../services/users_service.dart';{{/enable_feature_onboarding}}
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   const {{project_name.pascalCase()}}WithDependencies({
@@ -229,7 +233,17 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => MfaDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),{{/enable_mfa}}
+        ),{{/enable_mfa}}{{#enable_feature_onboarding}}
+        Provider<UsersRemoteDataSource>(
+          create: (context) => UsersRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
+        Provider<CountryCodesRemoteDataSource>(
+          create: (context) => CountryCodesRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),{{/enable_feature_onboarding}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -303,7 +317,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<FirebaseAnalytics>(),
           ),
         ),
-        {{/analytics}}
+        {{/analytics}}{{#enable_feature_onboarding}}
+        Provider<UsersRepository>(
+          create: (context) => UsersRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),{{/enable_feature_onboarding}}
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -386,7 +406,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        {{/analytics}}
+        {{/analytics}}{{#enable_feature_onboarding}}
+        Provider<UsersService>(
+          create: (context) => UsersService(
+            context.read(),
+          ),
+        ),{{/enable_feature_onboarding}}
       ];
 
   List<SingleChildWidget> get _blocs => [

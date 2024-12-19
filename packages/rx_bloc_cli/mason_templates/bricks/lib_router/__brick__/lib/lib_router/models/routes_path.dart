@@ -21,4 +21,6 @@ class RoutesPath {  {{#has_showcase}}
   static const enterMessage = 'enterMessage';
   static const deepLinks = 'deepLinks';
   static const deepLinkDetails = ':id';{{/enable_feature_deeplinks}}
+  static const onboardingPhone = '/onboarding/phone';
+  static const onboardingPhoneConfirm = '/onboarding/phone/confirm';
 }

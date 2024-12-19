@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "accessDenied": "You don't have access to this resource.",
+  "badRequest" : "Bad or malformed request.",
   "network": "A network error occurred.",
   "noConnection": "It looks like your device is not connected to the internet. Please check your settings.",
   "connectionRefused": "Unable to connect to server. Connection refused. Check if the local server is up and running then try again.",
