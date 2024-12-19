@@ -42,6 +42,7 @@ void main() {
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
       profileEnabled: true,
+      onboardingEnabled: true,
     );
     showcaseConfiguration = ShowcaseConfiguration(
       counterEnabled: true,
@@ -106,6 +107,8 @@ void main() {
           sut.qrScannerEnabled, equals(showcaseConfiguration.qrScannerEnabled));
 
       expect(sut.profileEnabled, equals(featureConfiguration.profileEnabled));
+      expect(sut.onboardingEnabled,
+          equals(featureConfiguration.onboardingEnabled));
     });
   });
 }

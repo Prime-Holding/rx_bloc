@@ -150,6 +150,11 @@ class GeneratorArgumentsProvider {
 
     // Profile
     var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
+
+    // Onboarding
+    final onboardingEnabled =
+        _reader.read<bool>(CreateCommandArguments.onboarding);
+
     // Authentication
     final authenticationEnabled = authConfiguration.authenticationEnabled;
     if (authenticationEnabled && !profileEnabled) {
@@ -164,18 +169,18 @@ class GeneratorArgumentsProvider {
     }
 
     return FeatureConfiguration(
-      changeLanguageEnabled: changeLanguageEnabled,
-      remoteTranslationsEnabled: remoteTranslationsEnabled,
-      analyticsEnabled: analyticsEnabled,
-      pushNotificationsEnabled: pushNotificationsEnabled,
-      realtimeCommunicationEnabled: realtimeCommunicationEnabled,
-      devMenuEnabled: devMenuEnabled,
-      patrolTestsEnabled: patrolTestsEnabled,
-      cicdEnabled: cicdEnabled,
-      cicdGithubEnabled: cicdGithubEnabled,
-      cicdCodemagicEnabled: cicdCodemagicEnabled,
-      profileEnabled: profileEnabled,
-    );
+        changeLanguageEnabled: changeLanguageEnabled,
+        remoteTranslationsEnabled: remoteTranslationsEnabled,
+        analyticsEnabled: analyticsEnabled,
+        pushNotificationsEnabled: pushNotificationsEnabled,
+        realtimeCommunicationEnabled: realtimeCommunicationEnabled,
+        devMenuEnabled: devMenuEnabled,
+        patrolTestsEnabled: patrolTestsEnabled,
+        cicdEnabled: cicdEnabled,
+        cicdGithubEnabled: cicdGithubEnabled,
+        cicdCodemagicEnabled: cicdCodemagicEnabled,
+        profileEnabled: profileEnabled,
+        onboardingEnabled: onboardingEnabled);
   }
 
   /// endregion
