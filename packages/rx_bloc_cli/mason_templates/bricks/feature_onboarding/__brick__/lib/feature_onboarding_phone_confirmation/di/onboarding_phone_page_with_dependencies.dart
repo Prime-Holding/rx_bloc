@@ -46,6 +46,7 @@ class OnboardingPhonePageWithDependencies extends StatelessWidget {
           create: (context) => OnboardingPhoneBloc(
             context.read(),
             context.read(),
+            context.read(),
           ),
         ),
       ];

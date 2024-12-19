@@ -73,8 +73,6 @@ class DesignSystemColors {
 
   final gray = const Color(0xff808080);
 
-  final lightGray = const Color(0xFFE1E1E1);
-
   final Color updateIconAppBarColor;
   {{#enable_social_logins}}
   final Color appleBackground;

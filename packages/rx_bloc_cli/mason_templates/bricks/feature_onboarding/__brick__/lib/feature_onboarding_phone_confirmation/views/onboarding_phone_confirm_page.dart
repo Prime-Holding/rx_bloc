@@ -80,7 +80,7 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
     FocusManager.instance.primaryFocus?.unfocus();
     final updatedUser = result as UserModel?;
     if (updatedUser != null && updatedUser.confirmedCredentials.phone) {
-      context.read<RouterBlocType>().events.push(const DashboardRoute());
+      context.read<RouterBlocType>().events.go(const DashboardRoute());
     }
   }
 }

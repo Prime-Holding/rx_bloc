@@ -30,12 +30,8 @@ class OnboardingPhoneSmsCodeService implements SmsCodeService {
   /// Send a new code to the user
   @override
   Future<bool> sendConfirmationSms(String usersPhoneNumber) async {
-    try {
-      await _usersService.resendSmsCode();
-      return true;
-    } catch (_) {
-      return false;
-    }
+    await _usersService.resendSmsCode();
+    return true;
   }
 
   /// How long codes will be valid in seconds

@@ -9,7 +9,6 @@ import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
 import '../../base/models/country_code_model.dart';
 import '../blocs/onboarding_phone_bloc.dart';
-import '../services/phone_number_formatter.dart';
 import '../services/search_country_code_service.dart';
 
 class PhoneNumberForm extends StatelessWidget {
@@ -108,7 +107,6 @@ class PhoneNumberForm extends StatelessWidget {
               ),
             ),
           ),
-          inputFormatters: [PhoneNumberFormatter()],
         ),
       );
 

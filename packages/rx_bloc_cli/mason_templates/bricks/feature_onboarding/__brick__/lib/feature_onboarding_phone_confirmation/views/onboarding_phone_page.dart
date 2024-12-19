@@ -6,6 +6,7 @@ import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/models/user_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/onboarding_phone_bloc.dart';
@@ -64,13 +65,6 @@ class OnboardingPhonePage extends StatelessWidget {
                       ),
                       AppErrorModalWidget<OnboardingPhoneBlocType>(
                         errorState: (bloc) => bloc.states.errors,
-                      ),
-                      RxBlocListener<OnboardingPhoneBlocType, bool>(
-                        state: (bloc) => bloc.states.phoneSubmitted,
-                        listener: (context, success) => context
-                            .read<RouterBlocType>()
-                            .events
-                            .push(const OnboardingPhoneConfirmRoute()),
                       ),
                     ],
                   ),

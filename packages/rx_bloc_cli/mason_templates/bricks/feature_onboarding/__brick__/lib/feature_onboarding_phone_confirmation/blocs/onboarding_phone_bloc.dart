@@ -5,7 +5,10 @@ import '../../base/app/config/app_constants.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/country_code_model.dart';
 import '../../base/models/errors/error_model.dart';
+import '../../base/models/user_model.dart';
 import '../../base/services/users_service.dart';
+import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';
 import '../services/phone_number_validator_service.dart';
 
 part 'onboarding_phone_bloc.rxb.g.dart';
@@ -28,7 +31,7 @@ abstract class OnboardingPhoneBlocStates {
   Stream<bool> get isLoading;
 
   /// State indicating if the phone number has been submitted successfully
-  ConnectableStream<bool> get phoneSubmitted;
+  ConnectableStream<UserModel> get phoneSubmitted;
 
   /// The country code used for the phone number
   Stream<CountryCodeModel?> get countryCode;
@@ -52,6 +55,7 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   OnboardingPhoneBloc(
     this._usersService,
     this._numberValidatorService,
+    this._navigationBloc,
   ) {
     phoneSubmitted.connect().addTo(_compositeSubscription);
   }
@@ -61,6 +65,9 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
 
   /// The user service used to communicate the user phone number
   final UsersService _usersService;
+
+  /// The navigation bloc used to navigate the user
+  final RouterBlocType _navigationBloc;
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
@@ -92,7 +99,7 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
       .asBroadcastStream();
 
   @override
-  ConnectableStream<bool> _mapToPhoneSubmittedState() =>
+  ConnectableStream<UserModel> _mapToPhoneSubmittedState() =>
       _$submitPhoneNumberEvent
           .debounceTime(actionDebounceDuration)
           .withLatestFrom2(countryCode, phoneNumber,
@@ -101,6 +108,7 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
               _usersService.submitPhoneNumber(fullPhoneNumber).asResultStream())
           .setResultStateHandler(this)
           .whereSuccess()
-          .map((_) => true)
-          .publish();
+          .doOnData((_) {
+        _navigationBloc.events.pushReplace(const OnboardingPhoneConfirmRoute());
+      }).publish();
 }
