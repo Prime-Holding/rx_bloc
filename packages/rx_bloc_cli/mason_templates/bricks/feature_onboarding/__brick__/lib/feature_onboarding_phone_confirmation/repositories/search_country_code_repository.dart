@@ -19,4 +19,5 @@ class SearchCountryCodeRepository<CountryCodeModel> {
   }
 
   Future<List<CountryCodeModel>> get searchList => _completer.future;
+
 }
