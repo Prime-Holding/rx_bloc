@@ -23,8 +23,8 @@ class OnboardingPhonePageWithDependencies extends StatelessWidget {
       );
 
   List<Provider> get _repositories => [
-        Provider<SearchCountryCodeRepository<CountryCodeModel>>(
-          create: (context) => SearchCountryCodeRepository<CountryCodeModel>(
+        Provider<SearchCountryCodeRepository>(
+          create: (context) => SearchCountryCodeRepository(
             context.read(),
           ),
         ),

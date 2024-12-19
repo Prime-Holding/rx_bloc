@@ -6,7 +6,7 @@ import '../repositories/search_country_code_repository.dart';
 class SearchCountryCodeService extends SearchPickerService<CountryCodeModel> {
   SearchCountryCodeService(this._searchRepository);
 
-  final SearchCountryCodeRepository<CountryCodeModel> _searchRepository;
+  final SearchCountryCodeRepository _searchRepository;
 
   @override
   Future<List<CountryCodeModel>> getItems() => _searchRepository.searchList;
