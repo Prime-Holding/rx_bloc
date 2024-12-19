@@ -122,21 +122,35 @@ class ProfilePage extends StatelessWidget {
                 const AppDivider(),
                 {{/enable_change_language}}
                 {{#enable_pin_code}}
-                BiometricsSwitch(
-                  biometricsLocalDataSource:
-                      context.read<BiometricsLocalDataSource>(),
-                  builder: (context, areEnabled, callback) => AppListTile(
-                    onTap: () => callback(!areEnabled),
-                    featureTitle: context.l10n.libPinCode.biometricsTitle,
-                    featureSubtitle: context.l10n.libPinCode.biometricsSubtitle,
-                    icon: context.designSystem.icons.fingerprint,
-                    trailing: Switch(
-                      value: areEnabled,
-                      onChanged: callback,
-                    ),
-                  ),
+                RxBlocBuilder<ProfileBlocType, bool>(
+                  state: (bloc) => bloc.states.isBiometricsAuthEnabled,
+                  builder: (context, showBiometricsButton, bloc) =>
+                      showBiometricsButton.hasData && showBiometricsButton.data!
+                          ? Column(
+                              children: [
+                                BiometricsSwitch(
+                                  biometricsLocalDataSource:
+                                      context.read<BiometricsLocalDataSource>(),
+                                  builder: (context, areEnabled, callback) =>
+                                      AppListTile(
+                                    onTap: () => callback(!areEnabled),
+                                    featureTitle:
+                                        context.l10n.libPinCode.biometricsTitle,
+                                    featureSubtitle: context
+                                        .l10n.libPinCode.biometricsSubtitle,
+                                    icon:
+                                        context.designSystem.icons.fingerprint,
+                                    trailing: Switch(
+                                      value: areEnabled,
+                                      onChanged: callback,
+                                    ),
+                                  ),
+                                ),
+                                const AppDivider(),
+                              ],
+                            )
+                          : SizedBox.shrink(),
                 ),
-                const AppDivider(),
                 {{/enable_pin_code}}
                 RxBlocBuilder<ProfileBlocType, Result<bool>>(
                   state: (bloc) => bloc.states.areNotificationsEnabled,

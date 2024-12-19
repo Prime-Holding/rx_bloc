@@ -6,16 +6,19 @@ import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:{{project_name}}/base/common_services/push_notifications_service.dart';
-import 'package:{{project_name}}/base/models/errors/error_model.dart';
-import 'package:{{project_name}}/feature_profile/blocs/profile_bloc.dart';
+import 'package:{{project_name}}/base/models/errors/error_model.dart'; 
+import 'package:{{project_name}}/feature_profile/blocs/profile_bloc.dart'; {{#enable_pin_code}}
+import 'package:testapp/feature_profile/services/biometrics_auth_service.dart'; {{/enable_pin_code}}
 
 import 'profile_test.mocks.dart';
 
 @GenerateMocks([
-  PushNotificationsService,
+  PushNotificationsService, {{#enable_pin_code}}
+  BiometricsAuthService, {{/enable_pin_code}}
 ])
 void main() {
-  late PushNotificationsService _notificationService;
+  late PushNotificationsService _notificationService; {{#enable_pin_code}}
+  late BiometricsAuthService biometricsService; {{/enable_pin_code}}
 
   void defineWhen({
     bool? areNotificationsEnabled,
@@ -24,14 +27,18 @@ void main() {
     when(_notificationService.areNotificationsEnabled())
         .thenAnswer((_) => Future.value(areNotificationsEnabled));
     when(_notificationService.syncNotificationSettings())
-        .thenAnswer(syncNotificationSettings ?? (_) => Future.value());
+        .thenAnswer(syncNotificationSettings ?? (_) => Future.value()); {{#enable_pin_code}}
+    when(biometricsService.isBiometricsAuthEnabled())
+        .thenAnswer((_) => Future.value(true)); {{/enable_pin_code}}
   }
 
   ProfileBloc profileBloc() => ProfileBloc(
-        _notificationService,
+        _notificationService, {{#enable_pin_code}}
+        biometricsService,  {{/enable_pin_code}}
       );
   setUp(() {
-    _notificationService = MockPushNotificationsService();
+    _notificationService = MockPushNotificationsService(); {{#enable_pin_code}}
+    biometricsService = MockBiometricsAuthService(); {{/enable_pin_code}}
   });
 
   group('test profile_bloc_dart state areNotificationsEnabled', () {
@@ -102,5 +109,23 @@ void main() {
         expect: [
           isA<UnknownErrorModel>(),
         ]);
-  });
+  }); {{#enable_pin_code}}
+
+   group(
+    'test profile_bloc_dart isBiometricsAuthEnabledState',
+    () {
+      rxBlocTest<ProfileBlocType, bool>(
+        'test profile_bloc_dart isBiometricsAuthEnabledState',
+        build: () async {
+          defineWhen();
+          return profileBloc();
+        },
+        act: (bloc) async {},
+        state: (bloc) => bloc.states.isBiometricsAuthEnabled,
+        expect: [
+          true,
+        ],
+      );
+    },
+  ); {{/enable_pin_code}}
 }
