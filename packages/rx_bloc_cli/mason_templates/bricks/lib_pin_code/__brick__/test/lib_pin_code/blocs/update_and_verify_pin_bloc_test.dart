@@ -24,7 +24,7 @@ void main() {
     String? encryptedPinCode,
     bool isPinCorrect = false,
     bool isPinCreated = false,
-    bool isPinCodeInSecureStorage = false,
+    bool savePinCodeInSecureStorage = false,
     bool isPinDeleted = false,
   }) {
     when(coordinatorStates.userLoggedIn)
@@ -47,8 +47,8 @@ void main() {
     when(verifyPinCodeService.checkIsPinCreated())
         .thenAnswer((_) => Future.value(isPinCreated));
 
-    when(verifyPinCodeService.isPinCodeInSecureStorage())
-        .thenAnswer((_) => Future.value(isPinCodeInSecureStorage));
+    when(verifyPinCodeService.savePinCodeInSecureStorage(pinCode ?? ''))
+        .thenAnswer((_) => Future.value(false));
 
     if (pinCode != null) {
       if (encryptedPinCode != null) {

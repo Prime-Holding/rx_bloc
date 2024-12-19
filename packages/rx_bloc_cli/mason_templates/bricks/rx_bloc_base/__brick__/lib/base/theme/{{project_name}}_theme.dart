@@ -29,6 +29,7 @@ class {{project_name.pascalCase()}}Theme {
       primary: designSystemColor.primaryColor,
       surface: designSystemColor.backgroundColor,
       error: designSystemColor.errorColor,
+      surfaceTint: designSystemColor.primaryColor,
     );
 
     const fontName = 'WorkSans';
@@ -39,6 +40,13 @@ class {{project_name.pascalCase()}}Theme {
       textTheme: baseTheme.textTheme.apply(fontFamily: fontName),
       primaryTextTheme: baseTheme.primaryTextTheme.apply(fontFamily: fontName),
       iconTheme: _buildIconTheme(baseTheme.iconTheme, designSystemColor),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: designSystemColor.backgroundColor,
+      ),
+      cardTheme: CardTheme(
+        color: designSystemColor.backgroundColor,
+        surfaceTintColor: designSystem.colors.gray,
+      ),
       extensions: <ThemeExtension<dynamic>>[
         designSystem,
         isLightTheme ? WidgetToolkitTheme.light() : WidgetToolkitTheme.dark(),

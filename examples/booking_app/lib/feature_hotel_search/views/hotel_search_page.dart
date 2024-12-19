@@ -196,7 +196,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
               child: Container(
                 width: 1,
                 height: 42,
-                color: Colors.grey.withOpacity(0.8),
+                color: Colors.grey.withValues(alpha: 0.8),
               ),
             ),
             _buildCapacityFilter(),
@@ -235,7 +235,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
                         style: TextStyle(
                             fontWeight: FontWeight.w100,
                             fontSize: 16,
-                            color: Colors.grey.withOpacity(0.8)),
+                            color: Colors.grey.withValues(alpha: 0.8)),
                       ),
                       const SizedBox(
                         height: 8,
@@ -308,7 +308,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
                         style: TextStyle(
                             fontWeight: FontWeight.w100,
                             fontSize: 16,
-                            color: Colors.grey.withOpacity(0.8)),
+                            color: Colors.grey.withValues(alpha: 0.8)),
                       ),
                       const SizedBox(
                         height: 8,

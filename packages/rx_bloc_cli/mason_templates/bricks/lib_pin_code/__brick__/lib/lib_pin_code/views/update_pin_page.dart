@@ -32,11 +32,13 @@ class UpdatePinPage extends StatelessWidget {
             .deleteSavedData(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
+          title: Text(
               pinCodeArguments.title.isEmpty
-                  ? context.l10n.libPinCode.updatePinPage
+                ? context.l10n.libPinCode.updatePinPage
                   : pinCodeArguments.title,
+              style: context.designSystem.typography.h1Reg22,
             ),
+            foregroundColor: context.designSystem.colors.white,
             forceMaterialTransparency: true,
           ),
           extendBodyBehindAppBar: true,

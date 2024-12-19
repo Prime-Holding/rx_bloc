@@ -47,7 +47,7 @@ class CreatePinBloc extends $CreatePinBloc {
           .switchMap((_) => service.checkIsPinCreated().asResultStream())
           .setResultStateHandler(this)
           .whereSuccess()
-          .publish();
+          .publishReplay(maxSize: 1);
 
   @override
   ConnectableStream<void> _mapToDeletedDataState() => _$deleteSavedDataEvent

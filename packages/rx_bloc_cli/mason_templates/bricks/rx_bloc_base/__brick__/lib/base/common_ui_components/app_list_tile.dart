@@ -21,19 +21,11 @@ class AppListTile extends StatelessWidget {
   final Icon? icon;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: context.designSystem.spacing.m,
-        vertical: context.designSystem.spacing.xxxs,
-      ),
-      child: ListTile(
-        title: Text(featureTitle),
-        subtitle: (featureSubtitle != null) ? Text(featureSubtitle!) : null,
-        onTap: onTap,
-        leading: icon,
-        trailing: trailing ?? context.designSystem.icons.arrowForward,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ListTile(
+    title: Text(featureTitle),
+    subtitle: (featureSubtitle != null) ? Text(featureSubtitle!) : null,
+    onTap: onTap,
+    leading: icon,
+    trailing: trailing ?? context.designSystem.icons.arrowForward,
+  );
 }

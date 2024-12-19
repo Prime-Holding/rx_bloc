@@ -61,7 +61,7 @@ class ServerDependencies{
     {{#enable_feature_deeplinks}}
     ..addController(DeepLinksController())
     {{/enable_feature_deeplinks}}{{#enable_mfa}}
-    ..addController(MfaController())
+    ..addController(MfaController(di.get()))
     {{/enable_mfa}}{{#enable_pin_code}}
     ..addController(PinCodeController(di.get()))
     {{/enable_pin_code}}{{#enable_feature_onboarding}}
