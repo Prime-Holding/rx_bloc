@@ -5,7 +5,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_services/push_notifications_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
-import '../../base/models/errors/error_model.dart';
+import '../../base/models/errors/error_model.dart'; {{#enable_pin_code}}
+import '../services/biometrics_auth_service.dart'; {{/enable_pin_code}}
 
 part 'profile_bloc.rxb.g.dart';
 
@@ -27,14 +28,24 @@ abstract class ProfileBlocStates {
 
   /// The error state
   Stream<ErrorModel> get errors;
+
+  {{#enable_pin_code}}
+  /// The state responsible for showing the biometrics switch button if the
+  /// device has biometrics support enabled.
+  Stream<bool> get isBiometricsAuthEnabled;
+  {{/enable_pin_code}}
 }
 
 @RxBloc()
 class ProfileBloc extends $ProfileBloc {
-  ProfileBloc(this._notificationService) {
+  ProfileBloc(
+    this._notificationService,  {{#enable_pin_code}}
+    this._biometricsService,  {{/enable_pin_code}}
+    ) {
     syncNotificationsStatus.connect().addTo(_compositeSubscription);
   }
-  final PushNotificationsService _notificationService;
+  final PushNotificationsService _notificationService; {{#enable_pin_code}}
+  final BiometricsAuthService _biometricsService; {{/enable_pin_code}}
 
   static const tagNotificationSubscribe = 'tagNotificationSubscribe';
   static const tagNotificationUnsubscribe = 'tagNotificationUnsubscribe';
@@ -78,5 +89,12 @@ class ProfileBloc extends $ProfileBloc {
           .switchMap((value) =>
               _notificationService.areNotificationsEnabled().asResultStream())
           .setResultStateHandler(this)
-          .shareReplay(maxSize: 1);
+          .shareReplay(maxSize: 1); {{#enable_pin_code}}
+  
+  @override
+  Stream<bool> _mapToIsBiometricsAuthEnabledState() => _biometricsService
+      .isBiometricsAuthEnabled()
+      .asResultStream()
+      .setResultStateHandler(this)
+      .whereSuccess(); {{/enable_pin_code}}
 }
