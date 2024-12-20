@@ -411,6 +411,7 @@ platform :ios do
                 'ios',
                 '--obfuscate',
                 '--no-codesign',
+                '--config-only',
                 '--split-debug-info=../devops/artifacts',
                 '--build-name=' + options[:build_name],
                 '--build-number=' + options[:build_number],
