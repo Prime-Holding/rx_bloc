@@ -282,25 +282,31 @@ platform :android do
     desc 'Build the mobile application for Android'
     private_lane :build do |options|
         Dir.chdir("..") do
-
             sh(
                 "flutter",
                 "build",
                 "appbundle",
                 "--obfuscate",
-                "--split-debug-info=../devops/artifacts/",
+                "--split-debug-info=build/app/outputs/symbols/",
                 "--build-name=" + options[:build_name],
                 "--build-number=" + options[:build_number],
                 "--flavor=" + flavor_map[options[:environment]],
                 "--target=" + target_map[options[:environment]]
             )
-
-            sh(
-                "mv",
-                "build/app/outputs/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
-                "devops/artifacts/"
-            )
         end
+
+        build_output = "apps/<appname>/build/app/outputs"
+        copy_artifacts(
+            target_path: "devops/artifacts/",
+            artifacts: [
+                "#{build_output}/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
+                "#{build_output}/symbols/app.android-arm.symbols",
+                "#{build_output}/symbols/app.android-arm64.symbols",
+                "#{build_output}/symbols/app.android-x64.symbols",
+            ],
+            keep_original: false,
+            fail_on_missing: true,
+        )
     end
 
     desc 'Clean up temporary build files'
@@ -412,7 +418,7 @@ platform :ios do
                 '--obfuscate',
                 '--no-codesign',
                 '--config-only',
-                '--split-debug-info=../devops/artifacts',
+                '--split-debug-info=build/app/outputs/symbols/',
                 '--build-name=' + options[:build_name],
                 '--build-number=' + options[:build_number],
                 '--flavor=' + flavor_map[options[:environment]],
@@ -443,6 +449,13 @@ platform :ios do
                 }
             )
         end
+
+        copy_artifacts(
+            target_path: "devops/artifacts/",
+            artifacts: ["apps/<appname>/build/app/outputs/symbols/app.ios-arm64.symbols"],
+            keep_original: false,
+            fail_on_missing: true,
+        )
     end
 
     desc 'Clean up temporary build files'
