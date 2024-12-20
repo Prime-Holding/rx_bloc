@@ -3,7 +3,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 {{#enable_feature_onboarding}}
-import '../../base/common_services/users_service.dart';{{/enable_feature_onboarding}}
+import '../../base/common_services/onboarding_service.dart';{{/enable_feature_onboarding}}
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';{{#has_authentication}}
 import '../../lib_auth/services/auth_service.dart';{{/has_authentication}}{{#enable_pin_code}}
@@ -40,7 +40,7 @@ class SplashBloc extends $SplashBloc {
     RouterBlocType navigationBloc,
     SplashService splashService,{{#has_authentication}}
     AuthService authService,{{/has_authentication}}{{#enable_feature_onboarding}}
-    UsersService usersService,{{/enable_feature_onboarding}}{{#enable_pin_code}}
+    OnboardingService usersService,{{/enable_feature_onboarding}}{{#enable_pin_code}}
     CreatePinCodeService pinCodeService,{{/enable_pin_code}} {
     String? redirectLocation,
   })  : _navigationBloc = navigationBloc,
@@ -63,7 +63,7 @@ class SplashBloc extends $SplashBloc {
   final RouterBlocType _navigationBloc;
   final SplashService _splashService;{{#has_authentication}}
   final AuthService _authService;{{/has_authentication}}{{#enable_feature_onboarding}}
-  final UsersService _usersService;{{/enable_feature_onboarding}}
+  final OnboardingService _usersService;{{/enable_feature_onboarding}}
   final String? _redirectLocation;{{#enable_pin_code}}
   final CreatePinCodeService _pinCodeService; {{/enable_pin_code}}
 

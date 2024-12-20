@@ -3,7 +3,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/common_services/users_service.dart';
+import '../../base/common_services/onboarding_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
@@ -42,7 +42,7 @@ abstract class OnboardingEmailConfirmedBlocStates {
 class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   OnboardingEmailConfirmedBloc(
     this._verifyEmailToken,
-    this._usersService,
+    this._onboardingService,
     this._routerBloc,
   ) {
     onRouting.connect().addTo(_compositeSubscription);
@@ -50,14 +50,14 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   }
 
   final String _verifyEmailToken;
-  final UsersService _usersService;
+  final OnboardingService _onboardingService;
   final RouterBlocType _routerBloc;
 
   @override
   ConnectableStream<bool> _mapToDataState() => _$verifyEmailEvent
       .startWith(null)
       .throttleTime(const Duration(milliseconds: 200))
-      .switchMap((value) => _usersService
+      .switchMap((value) => _onboardingService
           .confirmEmail(token: _verifyEmailToken)
           .asResultStream())
       .setResultStateHandler(this)

@@ -13,8 +13,8 @@ const mockEmailDeepLinkError =
 const mockEmailDeepLinkSuccess =
     '{{project_name}}://{{project_name}}/onboarding/email-confirmed/11111111';
 
-class UsersService {
-  UsersService(
+class OnboardingService {
+  OnboardingService(
     this._usersRepository,
     this._urlLauncherRepository,
   );

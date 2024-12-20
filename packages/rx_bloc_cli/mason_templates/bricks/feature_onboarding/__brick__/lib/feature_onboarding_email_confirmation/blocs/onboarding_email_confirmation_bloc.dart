@@ -5,8 +5,8 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_services/count_down_service.dart';
+import '../../base/common_services/onboarding_service.dart';
 import '../../base/common_services/open_mail_app_service.dart';
-import '../../base/common_services/users_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 
@@ -55,13 +55,13 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
   OnboardingEmailConfirmationBloc(
     this._email,
     this._openMailAppService,
-    this._usersService,
+    this._onboardingService,
     this._countDownService,
   ) {
     /// Used for demo purposes, should be removed in a real app
     _$openMockDeepLinkSuccessEvent
         .switchMap(
-            (_) => _usersService.openMockEmailSuccessLink().asResultStream())
+            (_) => _onboardingService.openMockEmailSuccessLink().asResultStream())
         .setResultStateHandler(this)
         .listen((_) {})
         .addTo(_compositeSubscription);
@@ -69,7 +69,7 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
     /// Used for demo purposes, should be removed in a real app
     _$openMockDeepLinkErrorEvent
         .switchMap(
-            (_) => _usersService.openMockEmailErrorLink().asResultStream())
+            (_) => _onboardingService.openMockEmailErrorLink().asResultStream())
         .setResultStateHandler(this)
         .listen((_) {})
         .addTo(_compositeSubscription);
@@ -77,7 +77,7 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
 
   final String _email;
   final OpenMailAppService _openMailAppService;
-  final UsersService _usersService;
+  final OnboardingService _onboardingService;
   final CountDownService _countDownService;
 
   @override
@@ -109,7 +109,7 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
           .map((event) => event > 0));
 
   Future<String> _resendConfirmationEmail() async {
-    final user = await _usersService.resendConfirmationEmail();
+    final user = await _onboardingService.resendConfirmationEmail();
     _$disableSendNewLinkEvent.add(null);
     return user.email;
   }

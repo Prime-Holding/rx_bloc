@@ -2,7 +2,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/app/config/app_constants.dart';
-import '../../base/common_services/users_service.dart';
+import '../../base/common_services/onboarding_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/country_code_model.dart';
 import '../../base/models/errors/error_model.dart';
@@ -53,7 +53,7 @@ abstract class OnboardingPhoneBlocStates {
 @RxBloc()
 class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   OnboardingPhoneBloc(
-    this._usersService,
+    this._onboardingService,
     this._numberValidatorService,
     this._navigationBloc,
   ) {
@@ -63,8 +63,8 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   /// Service used to validate user provided phone number
   final PhoneNumberValidatorService _numberValidatorService;
 
-  /// The user service used to communicate the user phone number
-  final UsersService _usersService;
+  /// The onboarding service used to communicate the user phone number
+  final OnboardingService _onboardingService;
 
   /// The navigation bloc used to navigate the user
   final RouterBlocType _navigationBloc;
@@ -104,8 +104,9 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
           .debounceTime(actionDebounceDuration)
           .withLatestFrom2(countryCode, phoneNumber,
               (_, country, phone) => '+${country?.code ?? ''} $phone')
-          .switchMap((fullPhoneNumber) =>
-              _usersService.submitPhoneNumber(fullPhoneNumber).asResultStream())
+          .switchMap((fullPhoneNumber) => _onboardingService
+              .submitPhoneNumber(fullPhoneNumber)
+              .asResultStream())
           .setResultStateHandler(this)
           .whereSuccess()
           .doOnData((_) {

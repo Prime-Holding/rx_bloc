@@ -3,7 +3,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/common_services/users_service.dart';
+import '../../base/common_services/onboarding_service.dart';
 import '../../base/common_services/validators/login_validator_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/extensions/string_extensions.dart';
@@ -54,6 +54,8 @@ abstract class OnboardingBlocStates {
 
   /// The error state
   Stream<ErrorModel> get errors;
+
+  /// The error state for resuming the onboarding process
   Stream<ErrorModel> get resumeOnboardingErrors;
 }
 
@@ -62,7 +64,7 @@ class OnboardingBloc extends $OnboardingBloc {
   OnboardingBloc(
     this._authService,
     this._permissionsService,
-    this._usersService,
+    this._onboardingService,
     this._validatorService,
     this._routerBloc,
   ) {
@@ -80,7 +82,7 @@ class OnboardingBloc extends $OnboardingBloc {
 
   final AuthService _authService;
   final PermissionsService _permissionsService;
-  final UsersService _usersService;
+  final OnboardingService _onboardingService;
   final LoginValidatorService _validatorService;
   final RouterBlocType _routerBloc;
 
@@ -108,7 +110,7 @@ class OnboardingBloc extends $OnboardingBloc {
               ))
       .where((args) => args != null)
       .exhaustMap(
-        (args) => _usersService
+        (args) => _onboardingService
             .register(email: args!.email, password: args.password)
             .asResultStream(),
       )
@@ -142,7 +144,7 @@ class OnboardingBloc extends $OnboardingBloc {
     // (after the SMS confirmation) #893
     // (/api/permissions should be called once again at the end of the flow as well,
     // before redirecting to DashboardRoute)
-    _usersService.setIsProfileTemporary(true);
+    _onboardingService.setIsProfileTemporary(true);
     _authService.saveToken(authToken.token);
     _authService.saveRefreshToken(authToken.refreshToken);
   }
@@ -150,7 +152,7 @@ class OnboardingBloc extends $OnboardingBloc {
   Future<void> _navigateToNextStep(UserModel user) async {
     if (user.confirmedCredentials.email) {
       if (user.confirmedCredentials.phone) {
-        await _usersService.setIsProfileTemporary(false);
+        await _onboardingService.setIsProfileTemporary(false);
         await _permissionsService.getPermissions(force: true);
         return _routerBloc.events.go(const DashboardRoute());
       }
@@ -186,7 +188,7 @@ class OnboardingBloc extends $OnboardingBloc {
           .mapToErrorModel();
 
   Future<void> _getUserAndResumeOnboarding() async {
-    final user = await _usersService.getMyUser();
+    final user = await _onboardingService.getMyUser();
     await _navigateToNextStep(user);
   }
 }

@@ -23,9 +23,9 @@ abstract class LoginBlocEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setPassword(String password);
 
-  void login();{{#enable_feature_onboarding}}
+  void login();
 
-  void goToRegistration();{{/enable_feature_onboarding}}
+  void goToRegistration();
 }
 
 /// A contract class containing all states of the LoginBloC.
@@ -47,6 +47,9 @@ abstract class LoginBlocStates {
 
   /// The error state
   Stream<ErrorModel> get errors;
+
+  /// The routing state for navigating to registration page
+  ConnectableStream<void> get onRouting;
 }
 
 @RxBloc()
@@ -55,19 +58,16 @@ class LoginBloc extends $LoginBloc {
     this._coordinatorBloc,
     this._userAccountService,
     this._validatorService,{{#enable_feature_onboarding}}
-    RouterBlocType _routerBloc,{{/enable_feature_onboarding}}
+    this._routerBloc,{{/enable_feature_onboarding}}
   ) {
-    loggedIn.connect().addTo(_compositeSubscription);{{#enable_feature_onboarding}}
-
-    _$goToRegistrationEvent
-        .map((_) => _routerBloc.events.push(const OnboardingRoute()))
-        .listen(null)
-        .addTo(_compositeSubscription);{{/enable_feature_onboarding}}
+    loggedIn.connect().addTo(_compositeSubscription);
+    onRouting.connect().addTo(_compositeSubscription);
   }
 
   final CoordinatorBlocType _coordinatorBloc;
   final UserAccountService _userAccountService;
-  final LoginValidatorService _validatorService;
+  final LoginValidatorService _validatorService;{{#enable_feature_onboarding}}
+  final RouterBlocType _routerBloc;{{/enable_feature_onboarding}}
 
   @override
   Stream<String> _mapToEmailState() => _$setEmailEvent
@@ -104,7 +104,13 @@ class LoginBloc extends $LoginBloc {
       .startWith(false)
       .publish();
 
-  CredentialsModel? _validateAndReturnCredentials(
+  @override
+  ConnectableStream<void> _mapToOnRoutingState() => _$goToRegistrationEvent{{#enable_feature_onboarding}}
+      .map((_) => _routerBloc.events.push(const OnboardingRoute())){{/enable_feature_onboarding}}
+    .publishReplay(maxSize: 1);
+
+
+CredentialsModel? _validateAndReturnCredentials(
       Result<String> emailResult, Result<String> passwordResult) {
     if (emailResult is ResultError || passwordResult is ResultError) {
       return null;

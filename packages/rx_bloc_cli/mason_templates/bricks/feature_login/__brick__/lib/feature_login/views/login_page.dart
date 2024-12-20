@@ -3,14 +3,13 @@
 {{#enable_social_logins}}
 import 'dart:io' show Platform;{{/enable_social_logins}}
 
-import 'package:flutter/material.dart';{{#enable_feature_onboarding}}
+import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:widget_toolkit/ui_components.dart';{{/enable_feature_onboarding}}
+import 'package:widget_toolkit/ui_components.dart';
 
-{{#enable_feature_onboarding}}
-import '../blocs/login_bloc.dart';{{/enable_feature_onboarding}}
-import '../../app_extensions.dart';{{#enable_feature_onboarding}}
-import '../../base/extensions/async_snapshot_extensions.dart';{{/enable_feature_onboarding}}{{#enable_social_logins}}
+import '../blocs/login_bloc.dart';
+import '../../app_extensions.dart';
+import '../../base/extensions/async_snapshot_extensions.dart';{{#enable_social_logins}}
 import '../../lib_social_logins/ui_components/apple_login_widget.dart';
 import '../../lib_social_logins/ui_components/facebook_login_widget.dart';
 import '../../lib_social_logins/ui_components/google_login_widget.dart';{{/enable_social_logins}}{{#enable_login}}
@@ -97,17 +96,20 @@ class LoginPage extends StatelessWidget {
                 ),
                 SizedBox(height: context.designSystem.spacing.xl),{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
                 Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
-                {{#enable_feature_onboarding}}
                 RxBlocBuilder<LoginBlocType, bool>(
                   state: (bloc) => bloc.states.isLoading,
                   builder: (context, isLoading, bloc) => GradientFillButton(
-                    onPressed: bloc.events.goToRegistration,
+{{#enable_feature_onboarding}}onPressed: bloc.events.goToRegistration,{{/enable_feature_onboarding}}{{^enable_feature_onboarding}}
+                    onPressed: () => showErrorBlurredBottomSheet(
+                      context: context,
+                      error: context.l10n.featureLogin.notImplementedMessage,
+                    ),{{/enable_feature_onboarding}}
                     state: isLoading.isLoading
                         ? ButtonStateModel.disabled
                         : ButtonStateModel.enabled,
-                    text: context.l10n.featureOnboarding.registerPageTitle,
+                    text: context.l10n.featureLogin.registration,
                   ),
-                ),{{/enable_feature_onboarding}}
+                ),
               ],
             ),
           ),

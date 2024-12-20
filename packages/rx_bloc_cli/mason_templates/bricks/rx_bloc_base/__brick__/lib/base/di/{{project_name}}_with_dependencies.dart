@@ -59,7 +59,7 @@ import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
 import '../common_services/push_notifications_service.dart';{{#enable_feature_onboarding}}
-import '../common_services/users_service.dart';{{/enable_feature_onboarding}}
+import '../common_services/onboarding_service.dart';{{/enable_feature_onboarding}}
 import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_onboarding}}
 import '../data_sources/local/url_launcher_local_data_source.dart';
@@ -426,8 +426,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           ),
         ),
         {{/analytics}}{{#enable_feature_onboarding}}
-        Provider<UsersService>(
-          create: (context) => UsersService(
+        Provider<OnboardingService>(
+          create: (context) => OnboardingService(
             context.read(),
             context.read(),
           ),
