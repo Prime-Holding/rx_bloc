@@ -10,6 +10,7 @@ import '../../base/extensions/string_extensions.dart';
 import '../../base/models/credentials_model.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
+import '../../base/models/user_with_auth_token_model.dart';
 import '../../lib_auth/models/auth_token_model.dart';
 import '../../lib_auth/services/auth_service.dart';
 import '../../lib_permissions/services/permissions_service.dart';
@@ -33,6 +34,8 @@ abstract class OnboardingBlocEvents {
 
   /// Resumes the onboarding process if the user already has an auth token
   void resumeOnboarding();
+
+  void navigateToNextStep(UserWithAuthTokenModel user);
 }
 
 /// A contract class containing all states of the OnboardingBloC.
@@ -44,7 +47,7 @@ abstract class OnboardingBlocStates {
   Stream<String> get password;
 
   /// State indicating whether the user is logged in successfully
-  ConnectableStream<bool> get registered;
+  ConnectableStream<UserWithAuthTokenModel> get registered;
 
   /// The state indicating whether we show field errors to the user
   Stream<bool> get showFieldErrors;
@@ -57,6 +60,9 @@ abstract class OnboardingBlocStates {
 
   /// The error state for resuming the onboarding process
   Stream<ErrorModel> get resumeOnboardingErrors;
+
+  /// The routing state
+  ConnectableStream<void> get onRouting;
 }
 
 @RxBloc()
@@ -69,6 +75,7 @@ class OnboardingBloc extends $OnboardingBloc {
     this._routerBloc,
   ) {
     registered.connect().addTo(_compositeSubscription);
+    onRouting.connect().addTo(_compositeSubscription);
 
     resumeOnboardingErrors.listen((_) {});
     _resumeOnboardingIfHasAuthToken();
@@ -99,7 +106,7 @@ class OnboardingBloc extends $OnboardingBloc {
       .shareReplay(maxSize: 1);
 
   @override
-  ConnectableStream<bool> _mapToRegisteredState() => _$registerEvent
+  ConnectableStream<UserWithAuthTokenModel> _mapToRegisteredState() => _$registerEvent
       .throttleTime(const Duration(seconds: 1))
       .withLatestFrom2<Result<String>, Result<String>, CredentialsModel?>(
           email.asResultStream(),
@@ -116,12 +123,8 @@ class OnboardingBloc extends $OnboardingBloc {
       )
       .setResultStateHandler(this)
       .whereSuccess()
-      .doOnData((userWithAuthToken) {
-        _saveToken(userWithAuthToken.authToken);
-        _navigateToNextStep(userWithAuthToken.user);
-      })
-      .map((_) => true)
-      .startWith(false)
+      .doOnData(
+          (userWithAuthToken) => navigateToNextStep(userWithAuthToken))
       .publish();
 
   CredentialsModel? _validateAndReturnCredentials(
@@ -139,14 +142,14 @@ class OnboardingBloc extends $OnboardingBloc {
     );
   }
 
-  void _saveToken(AuthTokenModel authToken) {
+  Future<void> _saveToken(AuthTokenModel authToken) async {
     // TODO: set profile to not temporary when the onboarding is done
     // (after the SMS confirmation) #893
     // (/api/permissions should be called once again at the end of the flow as well,
     // before redirecting to DashboardRoute)
-    _onboardingService.setIsProfileTemporary(true);
-    _authService.saveToken(authToken.token);
-    _authService.saveRefreshToken(authToken.refreshToken);
+    await _onboardingService.setIsProfileTemporary(true);
+    await _authService.saveToken(authToken.token);
+    await _authService.saveRefreshToken(authToken.refreshToken);
   }
 
   Future<void> _navigateToNextStep(UserModel user) async {
@@ -191,4 +194,17 @@ class OnboardingBloc extends $OnboardingBloc {
     final user = await _onboardingService.getMyUser();
     await _navigateToNextStep(user);
   }
+
+  Future<void> _saveTokenAndNavigateToNextStep(
+      UserWithAuthTokenModel userWithAuthToken) async {
+    await _saveToken(userWithAuthToken.authToken);
+    await _navigateToNextStep(userWithAuthToken.user);
+  }
+
+  @override
+  ConnectableStream<void> _mapToOnRoutingState() => _$navigateToNextStepEvent
+      .switchMap(
+          (user) => _saveTokenAndNavigateToNextStep(user).asResultStream())
+      .setResultStateHandler(this)
+      .publishReplay(maxSize: 1);
 }

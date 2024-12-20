@@ -14,7 +14,7 @@ import '../blocs/onboarding_bloc.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
-    this.title = 'Enter your registration credentials',
+    required this.title,
     super.key,
   });
 

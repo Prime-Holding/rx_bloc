@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
               horizontal: context.designSystem.spacing.xxl2,
             ),
             child: {{^enable_login}}{{^enable_social_logins}}const {{/enable_social_logins}}{{/enable_login}}Column({{^enable_login}}{{^enable_social_logins}}
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,{{/enable_social_logins}}{{/enable_login}}
+              mainAxisAlignment: MainAxisAlignment.center,{{/enable_social_logins}}{{/enable_login}}
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [{{#enable_login}}
                 Expanded(
@@ -79,37 +79,34 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text.rich(
-                  textAlign: TextAlign.center,
-                  TextSpan(
-                    text: context.l10n.featureLogin.dontHaveAccount,
-                    style: context.designSystem.typography.h2Reg16
-                        .copyWith(color: context.designSystem.colors.gray),
-                    children: [
-                      const TextSpan(text: ' '),
-                      TextSpan(
-                        text: context.l10n.featureLogin.signUpLabel,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                RxBlocBuilder<LoginBlocType, bool>(
+                  state: (bloc) => bloc.states.isLoading,
+                  builder: (context, isLoading, bloc) => Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: isLoading.isLoading
+                          ? () {}
+                              : bloc.events.goToRegistration,
+                      child: Text.rich(
+                        textAlign: TextAlign.center,
+                        TextSpan(
+                          text: context.l10n.featureLogin.dontHaveAccount,
+                          style: context.designSystem.typography.h2Reg16
+                              .copyWith(color: context.designSystem.colors.gray),
+                          children: [
+                            const TextSpan(text: ' '),
+                            TextSpan(
+                              text: context.l10n.featureLogin.signUpLabel,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
                 SizedBox(height: context.designSystem.spacing.xl),{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
                 Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
-                RxBlocBuilder<LoginBlocType, bool>(
-                  state: (bloc) => bloc.states.isLoading,
-                  builder: (context, isLoading, bloc) => GradientFillButton(
-{{#enable_feature_onboarding}}onPressed: bloc.events.goToRegistration,{{/enable_feature_onboarding}}{{^enable_feature_onboarding}}
-                    onPressed: () => showErrorBlurredBottomSheet(
-                      context: context,
-                      error: context.l10n.featureLogin.notImplementedMessage,
-                    ),{{/enable_feature_onboarding}}
-                    state: isLoading.isLoading
-                        ? ButtonStateModel.disabled
-                        : ButtonStateModel.enabled,
-                    text: context.l10n.featureLogin.registration,
-                  ),
-                ),
               ],
             ),
           ),
