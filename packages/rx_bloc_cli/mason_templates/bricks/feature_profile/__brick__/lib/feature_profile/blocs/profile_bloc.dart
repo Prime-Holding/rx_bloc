@@ -32,7 +32,7 @@ abstract class ProfileBlocStates {
   {{#enable_pin_code}}
   /// The state responsible for showing the biometrics switch button if the
   /// device has biometrics support.
-  Stream<bool> get isDeviceSupported;
+  Stream<bool> get canCheckBiometrics;
   {{/enable_pin_code}}
 }
 
@@ -92,8 +92,8 @@ class ProfileBloc extends $ProfileBloc {
           .shareReplay(maxSize: 1); {{#enable_pin_code}}
   
   @override
-  Stream<bool> _mapToIsDeviceSupportedState() => _biometricsService
-      .isDeviceSupported()
+  Stream<bool> _mapToCanCheckBiometricsState() => _biometricsService
+      .canCheckBiometrics()
       .asResultStream()
       .setResultStateHandler(this)
       .whereSuccess();{{/enable_pin_code}}

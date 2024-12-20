@@ -123,7 +123,7 @@ class ProfilePage extends StatelessWidget {
                 {{/enable_change_language}}
                 {{#enable_pin_code}}
                 RxBlocBuilder<ProfileBlocType, bool>(
-                  state: (bloc) => bloc.states.isDeviceSupported,
+                  state: (bloc) => bloc.states.canCheckBiometrics,
                   builder: (context, showBiometricsButton, bloc) =>
                       showBiometricsButton.hasData && showBiometricsButton.data!
                           ? Column(

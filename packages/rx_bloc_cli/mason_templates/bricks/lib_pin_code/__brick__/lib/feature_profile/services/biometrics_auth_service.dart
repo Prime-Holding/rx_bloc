@@ -4,5 +4,5 @@ class BiometricsAuthService {
   BiometricsAuthService(this._repository);
   final BiometricsAuthRepository _repository;
 
-  Future<bool> isDeviceSupported() => _repository.isDeviceSupported();
+  Future<bool> canCheckBiometrics() => _repository.canCheckBiometrics();
 }

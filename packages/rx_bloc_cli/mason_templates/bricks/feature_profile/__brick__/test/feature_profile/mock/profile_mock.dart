@@ -13,7 +13,7 @@ ProfileBlocType profileMockFactory({
   Result<bool>? syncNotificationsStatus,
   bool? isLoading,
   ErrorModel? errors, {{#enable_pin_code}}
-  bool? isDeviceSupported, {{/enable_pin_code}}
+  bool? canCheckBiometrics, {{/enable_pin_code}}
 }) {
   final blocMock = MockProfileBlocType();
   final eventsMock = MockProfileBlocEvents();
@@ -40,11 +40,11 @@ ProfileBlocType profileMockFactory({
       ? Stream.value(errors).shareReplay(maxSize: 1)
       : const Stream<ErrorModel>.empty();
   {{#enable_pin_code}}
-  final isDeviceSupportedState = isDeviceSupported != null
-      ? Stream.value(isDeviceSupported).shareReplay(maxSize: 1)
+  final canCheckBiometricsState = canCheckBiometrics != null
+      ? Stream.value(canCheckBiometrics).shareReplay(maxSize: 1)
       : const Stream<bool>.empty();
 
-  when(statesMock.isDeviceSupported).thenAnswer((_) => isDeviceSupportedState); {{/enable_pin_code}}
+  when(statesMock.canCheckBiometrics).thenAnswer((_) => canCheckBiometricsState); {{/enable_pin_code}}
   when(statesMock.areNotificationsEnabled)
       .thenAnswer((_) => areNotificationsEnabledState);
   when(statesMock.syncNotificationsStatus)

@@ -26,7 +26,7 @@ Widget profileFactory({
   ErrorModel? errors, {{#enable_pin_code}}
   bool? isPinCreated,
   bool showBiometrics = false, 
-  bool? isDeviceSupported,{{/enable_pin_code}}
+  bool? canCheckBiometrics,{{/enable_pin_code}}
 }) =>
     Scaffold(
       body: MultiProvider(
@@ -56,7 +56,7 @@ Widget profileFactory({
               syncNotificationsStatus: syncNotificationsStatus,
               isLoading: isLoading,
               errors: errors, {{#enable_pin_code}}
-              isDeviceSupported: isDeviceSupported, {{/enable_pin_code}}
+              canCheckBiometrics: canCheckBiometrics, {{/enable_pin_code}}
             ),
           ),
         ],
