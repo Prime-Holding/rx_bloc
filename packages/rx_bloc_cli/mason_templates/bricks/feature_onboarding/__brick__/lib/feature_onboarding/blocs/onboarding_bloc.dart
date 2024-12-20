@@ -143,7 +143,6 @@ class OnboardingBloc extends $OnboardingBloc {
   }
 
   Future<void> _saveToken(AuthTokenModel authToken) async {
-    await _onboardingService.setIsProfileTemporary(true);
     await _authService.saveToken(authToken.token);
     await _authService.saveRefreshToken(authToken.refreshToken);
   }
@@ -151,8 +150,7 @@ class OnboardingBloc extends $OnboardingBloc {
   Future<void> _navigateToNextStep(UserModel user) async {
     if (user.confirmedCredentials.email) {
       if (user.confirmedCredentials.phone) {
-        await _onboardingService.setIsProfileTemporary(false);
-        await _permissionsService.getPermissions(force: true);
+        await _permissionsService.load();
         return _routerBloc.events.go(const DashboardRoute());
       }
 

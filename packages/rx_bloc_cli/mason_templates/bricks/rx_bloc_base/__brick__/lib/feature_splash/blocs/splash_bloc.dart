@@ -72,24 +72,30 @@ class SplashBloc extends $SplashBloc {
 
     if (_redirectLocation != null) {
       _navigationBloc.events.goToLocation(_redirectLocation!);
-    } else { {{#has_authentication}} {{^enable_pin_code}}
-      await _authService.isAuthenticated() {{#enable_feature_onboarding}} && !(await _onboardingService.isProfileTemporary()) {{/enable_feature_onboarding}}
-          ? _navigationBloc.events.go(const DashboardRoute())
-          : _navigationBloc.events.go(const LoginRoute());
-      {{/enable_pin_code}}{{/has_authentication}}
-      {{^has_authentication}}
-      _navigationBloc.events.go(const DashboardRoute());{{/has_authentication}}
+    } else { {{^has_authentication}}
+      _navigationBloc.events.go(const DashboardRoute());{{/has_authentication}}{{#has_authentication}}
 
-      {{#enable_pin_code}}
-      if (await _authService.isAuthenticated() {{#enable_feature_onboarding}} && !(await _onboardingService.isProfileTemporary()) {{/enable_feature_onboarding}}) {
-        if(await _pinCodeService.getPinCode() != null) {
+      if (await _authService.isAuthenticated()) {
+        {{#enable_feature_onboarding}}final user = await _onboardingService.getMyUser();
+
+        if (!user.confirmedCredentials.email) {
+          return _navigationBloc.events
+              .pushReplace(OnboardingEmailConfirmationRoute(user.email));
+        }
+
+        if (!user.confirmedCredentials.phone) {
+          return _navigationBloc.events
+              .pushReplace(const OnboardingPhoneRoute());
+        }
+
+        {{/enable_feature_onboarding}}{{#enable_pin_code}}if(await _pinCodeService.getPinCode() != null) {
           return _navigationBloc.events.go(const VerifyPinCodeRoute(),
               extra: const PinCodeArguments(title: 'Enter Pin Code'));
-        }
+        }{{/enable_pin_code}}
 
         return _navigationBloc.events.go(const DashboardRoute());
       }
-      return _navigationBloc.events.go(const LoginRoute());{{/enable_pin_code}}
+      return _navigationBloc.events.go(const LoginRoute());{{/has_authentication}}
     }
   }
 

@@ -2,6 +2,7 @@
 
 import 'package:shelf/shelf.dart';
 import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
+import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
 import 'package:{{project_name}}/base/models/user_with_auth_token_model.dart';
 
@@ -9,6 +10,7 @@ import '../services/authentication_service.dart';
 import '../services/users_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
+import '../utils/utilities.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -92,8 +94,27 @@ class UsersController extends ApiController {
     final userId =
         _authenticationService.getUserIdFromAuthHeader(request.headers);
 
+    // Returns fake user in case the Registration flow has not been started
+    // but user has access token
+    // (when dev has authenticated through mock Login & ignored Registration)
+    final user = _usersService.getUserById(userId);
+    if (user == null) {
+      return responseBuilder.buildOK(
+        data: UserModel(
+          id: generateRandomString(),
+          email: 'test@test.com',
+          phoneNumber: null,
+          role: UserRole.tempUser,
+          confirmedCredentials: ConfirmedCredentialsModel(
+            email: true,
+            phone: true,
+          ),
+        ).toJson(),
+      );
+    }
+
     return responseBuilder.buildOK(
-      data: _getUserJson(userId),
+      data: user.toJson(),
     );
   }
 

@@ -22,13 +22,6 @@ class OnboardingService {
   final UsersRepository _usersRepository;
   final UrlLauncherRepository _urlLauncherRepository;
 
-  /// Returns true if the profile is temporary, during onboarding
-  Future<bool> isProfileTemporary() => _usersRepository.isProfileTemporary();
-
-  /// Sets the profile as temporary, during onboarding
-  Future<void> setIsProfileTemporary(bool isProfileTemporary) =>
-      _usersRepository.setIsProfileTemporary(isProfileTemporary);
-
   /// Starts the onboarding for a new user with the given [email] and [password].
   /// Returns the [UserModel] with the email and temporary profile, as well as
   /// their access token
