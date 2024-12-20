@@ -46,11 +46,6 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            widget.title,
-            style: context.designSystem.typography.h3Reg14,
-            textAlign: TextAlign.center,
-          ),
           RxTextFormFieldBuilder<LoginBlocType>(
             state: (bloc) => bloc.states.email.translate(context),
             showErrorState: (bloc) => bloc.states.showErrors,
@@ -71,11 +66,19 @@ class _LoginFormState extends State<LoginForm> {
               context,
             ),
           ),
-          SizedBox(height: context.designSystem.spacing.xs1),
+          SizedBox(height: context.designSystem.spacing.m),
           RxBlocBuilder<LoginBlocType, bool>(
             state: (bloc) => bloc.states.isLoading,
             builder: _buildLoginButton,
           ),
+          SizedBox(height: context.designSystem.spacing.l),
+          GestureDetector(
+            onTap: () {
+              // Implement your logic here
+            },
+            child: Text(context.l10n.featureLogin.forgottenPassword),
+          ),
+          SizedBox(height: context.designSystem.spacing.xs1),
           AppErrorModalWidget<LoginBlocType>(
             errorState: (bloc) => bloc.states.errors,
           ),
@@ -94,7 +97,14 @@ class _LoginFormState extends State<LoginForm> {
         focusNode: _passwordFocusNode,
         onEditingComplete: () => FocusScope.of(context).unfocus(),
         decoration: fieldState.decoration.copyWith(
+          labelStyle: fieldState.showError
+              ? fieldState.decoration.labelStyle
+              : fieldState.decoration.labelStyle
+                  ?.copyWith(color: DefaultTextStyle.of(context).style.color),
           labelText: context.l10n.field.password,
+          hintText: context.l10n.featureLogin.passwordHint,
+          hintStyle: context.designSystem.typography.h2Reg16,
+          helperText: ' ', // this will prevent the error text from shifting
         ),
       );
 
@@ -110,7 +120,14 @@ class _LoginFormState extends State<LoginForm> {
         onEditingComplete: () =>
             FocusScope.of(context).requestFocus(_passwordFocusNode),
         decoration: fieldState.decoration.copyWith(
+          labelStyle: fieldState.showError
+              ? fieldState.decoration.labelStyle
+              : fieldState.decoration.labelStyle
+                  ?.copyWith(color: DefaultTextStyle.of(context).style.color),
           labelText: context.l10n.field.email,
+          hintText: context.l10n.featureLogin.emailHint,
+          hintStyle: context.designSystem.typography.h2Reg16,
+          helperText: ' ', // this will prevent the error text from shifting
         ),
       );
 

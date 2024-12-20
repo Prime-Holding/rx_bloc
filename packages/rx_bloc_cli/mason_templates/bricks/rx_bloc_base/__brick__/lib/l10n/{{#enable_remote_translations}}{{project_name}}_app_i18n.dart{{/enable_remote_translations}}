@@ -144,7 +144,6 @@ class AppI18nLookup extends I18nLookup {
   @override
   I18nLibRouterLookup createLibRouterLookup() => AppI18nLibRouterLookup();{{#enable_feature_qr_scanner}}
 
-
   @override
   I18nFeatureQrLookup createFeatureQrLookup() => AppI18nQrLookup();{{/enable_feature_qr_scanner}} {{#has_showcase}}
 

@@ -88,7 +88,7 @@ class HotelDetailsPage extends StatelessWidget {
         height: 17,
         style: TextStyle(
           fontSize: 14,
-          color: Colors.grey.withOpacity(0.8),
+          color: Colors.grey.withValues(alpha: 0.8),
         ),
       );
 

@@ -38,9 +38,11 @@ class PermissionsController extends ApiController {
         'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
         'NotificationsRoute': false,
         'LoginRoute': true,{{#enable_feature_onboarding}}
+        'OnboardingRoute': true,
         'OnboardingEmailConfirmationRoute': true,
         'OnboardingEmailConfirmedRoute': true,
-        'OnboardingRoute': true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+        'OnboardingPhoneRoute' : true,
+        'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
         'EnterMessageRoute': false,
         'DeepLinksRoute': false,
         'DeepLinkDetailsRoute': false,{{/enable_feature_deeplinks}}
@@ -60,9 +62,11 @@ class PermissionsController extends ApiController {
       'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
       'NotificationsRoute': true,{{#has_authentication}}
       'LoginRoute': true,{{/has_authentication}}{{#enable_feature_onboarding}}
+      'OnboardingRoute': true,
       'OnboardingEmailConfirmationRoute': true,
       'OnboardingEmailConfirmedRoute': true,
-      'OnboardingRoute': true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+      'OnboardingPhoneRoute' : true,
+      'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
       'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}

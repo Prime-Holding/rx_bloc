@@ -59,6 +59,13 @@ class UsersController extends ApiController {
       '/api/users/me/phone/confirm',
       _confirmSmsCodeHandler,
     );
+
+    router.addRequest(
+      RequestType.POST,
+      '/api/users/me/phone/resend',
+      _resendSmsCodeHandler,
+    );
+
   }
 
   Future<Response> _registerHandler(Request request) async {
@@ -115,7 +122,19 @@ class UsersController extends ApiController {
 
   Future<Response> _sendSmsCodeHandler(Request request) async {
     final params = await request.bodyFromFormData();
-    final phoneNumber = params['phoneNumber'];
+    final phoneNumber = params['phoneNumber'] as String?;
+
+    // Mock a delay to simulate a real-world scenario
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (phoneNumber == null ||
+        phoneNumber.length < 12 ||
+        // Mock an invalid phone number error
+        phoneNumber.replaceAll(' ', '').contains('2345678')) {
+      return responseBuilder.buildErrorResponse(
+        BadRequestException('Invalid phone number format.'),
+      );
+    }
 
     final userId =
         _authenticationService.getUserIdFromAuthHeader(request.headers);
@@ -130,8 +149,17 @@ class UsersController extends ApiController {
   }
 
   Future<Response> _confirmSmsCodeHandler(Request request) async {
-    // final params = await request.bodyFromFormData();
-    // final smsCode = params['smsCode'];
+    final params = await request.bodyFromFormData();
+    final smsCode = params['smsCode'] as String?;
+
+    // Mock a delay to simulate a real-world scenario
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (smsCode == null || smsCode.length > 4|| smsCode == '1234') {
+      return responseBuilder.buildErrorResponse(
+        BadRequestException('Invalid or expired SMS code.'),
+      );
+    }
 
     final userId =
         _authenticationService.getUserIdFromAuthHeader(request.headers);
@@ -144,5 +172,14 @@ class UsersController extends ApiController {
     return responseBuilder.buildOK(
       data: _getUserJson(userId),
     );
+  }
+
+  Future<Response> _resendSmsCodeHandler(Request request) async {
+    // Mock a delay to simulate a real-world scenario
+    await Future.delayed(const Duration(seconds: 1));
+
+    // TODO: Send a new SMS code to the user using a real SMS service
+
+    return responseBuilder.buildOK();
   }
 }

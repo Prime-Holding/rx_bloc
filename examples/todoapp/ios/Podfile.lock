@@ -111,7 +111,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
+  connectivity_plus: 4c41c08fc6d7c91f63bc7aec70ffe3730b04f563
   Firebase: 9f574c08c2396885b5e7e100ed4293d956218af9
   firebase_core: ceec591a66629daaee82d3321551692c4a871493
   FirebaseCore: 3cf438f431f18c12cdf2aaf64434648b63f7e383
@@ -121,7 +121,7 @@ SPEC CHECKSUMS:
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   open_filex: 6e26e659846ec990262224a12ef1c528bb4edbe4
-  package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
+  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   patrol: 0564cee315ff6c86fb802b3647db05cc2d3d0624
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
@@ -133,4 +133,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 5fd8647161b7f1d1cd78355258cd60f63d55889c
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

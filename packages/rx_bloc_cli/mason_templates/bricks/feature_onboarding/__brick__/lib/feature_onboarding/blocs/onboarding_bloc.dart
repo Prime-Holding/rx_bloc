@@ -155,8 +155,7 @@ class OnboardingBloc extends $OnboardingBloc {
         return _routerBloc.events.go(const DashboardRoute());
       }
 
-      // TODO: uncomment after #893 is merged
-      // return _routerBloc.events.pushReplace(const OnboardingPhoneRoute());
+      return _routerBloc.events.pushReplace(const OnboardingPhoneRoute());
     }
     return _routerBloc.events
         .pushReplace(OnboardingEmailConfirmationRoute(user.email));

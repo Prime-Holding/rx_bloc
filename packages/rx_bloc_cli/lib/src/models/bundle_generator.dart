@@ -125,11 +125,6 @@ class BundleGenerator {
     if (arguments.otpEnabled) {
       _bundle.files.addAll(_featureOtpBundle.files);
     }
-    // Add PIN code brick _bundle when needed
-    if (arguments.pinCodeEnabled) {
-      _bundle.files.addAll(_libPinCodeBundle.files);
-    }
-
     //Add lib_router to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
 
@@ -147,6 +142,10 @@ class BundleGenerator {
     //Add feature_profile to _bundle when needed
     if (arguments.profileEnabled) {
       _bundle.files.addAll(_featureProfile.files);
+    }
+    // Add PIN code brick _bundle when needed
+    if (arguments.pinCodeEnabled) {
+      _bundle.files.addAll(_libPinCodeBundle.files);
     }
     if (arguments.showcaseEnabled) {
       _bundle.files.addAll(_featureShowcase.files);

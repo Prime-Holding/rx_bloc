@@ -73,9 +73,8 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => Rx.merge([
-        // TODO: uncomment after #893 is merged
-        // _$goToPhonePageEvent.map((_) =>
-        //     _routerBloc.events.pushReplace(const OnboardingPhoneRoute())),
+        _$goToPhonePageEvent.map((_) =>
+            _routerBloc.events.pushReplace(const OnboardingPhoneRoute())),
         _$goToLoginEvent.map((_) => _routerBloc.events.go(const LoginRoute())),
       ]).publishReplay(maxSize: 1);
 }

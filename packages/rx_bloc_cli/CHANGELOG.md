@@ -1,3 +1,9 @@
+## [5.3.2]
+* Fix issues in generated project related to pin code and biometrics authentication
+
+## [5.3.1]
+* Design uplift for the generated project
+
 ## [5.3.0]
 * Replace golden tests dependency from `golden_toolkit` to [`alchemist`][alchemist_url] in generated projects
 * Updated project dependencies

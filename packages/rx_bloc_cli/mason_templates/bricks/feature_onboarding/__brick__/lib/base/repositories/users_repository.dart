@@ -7,6 +7,10 @@ import '../models/credentials_model.dart';
 import '../models/request_models/confirm_email_model.dart';
 import '../models/user_model.dart';
 import '../models/user_with_auth_token_model.dart';
+import '../../base/data_sources/remote/users_remote_data_source.dart';
+import '../../base/models/request_models/confirm_phone_number_request_model.dart';
+import '../../base/models/request_models/phone_number_request_model.dart';
+import '../../base/models/user_model.dart';
 
 class UsersRepository {
   UsersRepository(
@@ -67,4 +71,25 @@ class UsersRepository {
   /// Clears the temporary profile, after finished onboarding
   Future<void> clearIsProfileTemporary() => _errorMapper
       .execute(() => _usersLocalDataSource.clearIsProfileTemporary());
+
+  /// Sets the phone number for the user. At this point, the user has not yet
+  /// confirmed the phone number and his account type is still marked as with a
+  /// temporary role.
+  Future<UserModel> submitPhoneNumber(String phoneNumber) =>
+      _errorMapper.execute(
+        () => _usersRemoteDataSource.submitPhoneNumber(
+            PhoneNumberRequestModel(phoneNumber: phoneNumber)),
+      );
+
+  /// Confirms the phone number for the user by providing the SMS code sent to
+  /// the user's phone number.
+  Future<UserModel> confirmPhoneNumber(String smsCode) => _errorMapper.execute(
+        () => _usersRemoteDataSource.confirmPhoneNumber(
+            ConfirmPhoneNumberRequestModel(smsCode: smsCode)),
+      );
+
+  /// Resends the SMS code to the user's phone number
+  Future<void> resendSmsCode() => _errorMapper.execute(
+        () => _usersRemoteDataSource.resendSmsCode(),
+      );
 }

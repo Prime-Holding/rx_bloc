@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';{{#enable_feature_onboarding}}
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:widget_toolkit/ui_components.dart';{{/enable_feature_onboarding}}
 
-import '../../app_extensions.dart';
-import '../../base/common_ui_components/custom_app_bar.dart';{{#enable_feature_onboarding}}
+{{#enable_feature_onboarding}}
+import '../blocs/login_bloc.dart';{{/enable_feature_onboarding}}
+import '../../app_extensions.dart';{{#enable_feature_onboarding}}
 import '../../base/extensions/async_snapshot_extensions.dart';{{/enable_feature_onboarding}}{{#enable_social_logins}}
 import '../../lib_social_logins/ui_components/apple_login_widget.dart';
 import '../../lib_social_logins/ui_components/facebook_login_widget.dart';
-import '../../lib_social_logins/ui_components/google_login_widget.dart';{{/enable_social_logins}}{{#enable_login}}{{#enable_feature_onboarding}}
-import '../blocs/login_bloc.dart';{{/enable_feature_onboarding}}
+import '../../lib_social_logins/ui_components/google_login_widget.dart';{{/enable_social_logins}}{{#enable_login}}
 import '../ui_components/login_form.dart';{{/enable_login}}
 
 class LoginPage extends StatelessWidget {
@@ -22,38 +22,82 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: customAppBar(
-          context,
-          title: context.l10n.featureLogin.loginPageTitle,
-        ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: context.designSystem.spacing.xxl2,
             ),
-            child: {{^enable_login}}{{^enable_social_logins}}const {{/enable_social_logins}}{{/enable_login}}Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: {{^enable_login}}{{^enable_social_logins}}const {{/enable_social_logins}}{{/enable_login}}Column({{^enable_login}}{{^enable_social_logins}}
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,{{/enable_social_logins}}{{/enable_login}}
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Column(
-                  children: [{{#enable_login}}
-                    LoginForm(
-                      title: context.l10n.featureLogin.loginCredentialsHint,
-                    ),{{/enable_login}}{{#enable_social_logins}}
-                    SizedBox(height: context.designSystem.spacing.xs),
-                    const FacebookLoginWidget(),
-                    if (Platform.isIOS)
-                      Column(
+              children: [{{#enable_login}}
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(context.l10n.featureLogin.loginPageTitle,
+                          textAlign: TextAlign.center,
+                          style: context.designSystem.typography.h1Bold24),
+                      SizedBox(height: context.designSystem.spacing.xxxxl),
+                      LoginForm(
+                        title: context.l10n.featureLogin.loginCredentialsHint,
+                      ),{{/enable_login}}{{#enable_social_logins}}
+                      SizedBox(height: context.designSystem.spacing.xs1),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(height: context.designSystem.spacing.xs),
-                          const AppleLoginWidget(),
-                        ],
+                            Expanded(
+                              flex: 1,
+                              child: Divider(
+                              color: context.designSystem.colors.gray),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                              horizontal: context.designSystem.spacing.xs),
+                              child: Text(context.l10n.featureLogin.or),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Divider(
+                              color: context.designSystem.colors.gray),
+                            ),
+                          ],
                       ),
-                    SizedBox(height: context.designSystem.spacing.xs),
-                    const GoogleLoginWidget(),{{/enable_social_logins}}{{^enable_login}}{{^enable_social_logins}}
-                    Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
-                  ],
-                ),{{#enable_feature_onboarding}}
+                      SizedBox(height: context.designSystem.spacing.m),
+                      const FacebookLoginWidget(),
+                      if (Platform.isIOS)
+                        Column(
+                          children: [
+                            SizedBox(height: context.designSystem.spacing.xs),
+                            const AppleLoginWidget(),
+                          ],
+                        ),
+                      SizedBox(height: context.designSystem.spacing.xs),
+                      const GoogleLoginWidget(),{{/enable_social_logins}}{{#enable_login}}
+                    ],
+                  ),
+                ),
+                Text.rich(
+                  textAlign: TextAlign.center,
+                  TextSpan(
+                    text: context.l10n.featureLogin.dontHaveAccount,
+                    style: context.designSystem.typography.h2Reg16
+                        .copyWith(color: context.designSystem.colors.gray),
+                    children: [
+                      const TextSpan(text: ' '),
+                      TextSpan(
+                        text: context.l10n.featureLogin.signUpLabel,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: context.designSystem.spacing.xl),{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
+                Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
+                {{#enable_feature_onboarding}}
                 RxBlocBuilder<LoginBlocType, bool>(
                   state: (bloc) => bloc.states.isLoading,
                   builder: (context, isLoading, bloc) => GradientFillButton(

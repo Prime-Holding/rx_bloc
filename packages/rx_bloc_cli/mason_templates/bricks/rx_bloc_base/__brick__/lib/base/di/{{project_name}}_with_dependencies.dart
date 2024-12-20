@@ -63,7 +63,8 @@ import '../common_services/users_service.dart';{{/enable_feature_onboarding}}
 import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_onboarding}}
 import '../data_sources/local/url_launcher_local_data_source.dart';
-import '../data_sources/local/users_local_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
+import '../data_sources/local/users_local_data_source.dart';
+import '../data_sources/remote/country_codes_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
@@ -236,6 +237,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<ApiHttpClient>(),
           ),
         ),{{/enable_mfa}}{{#enable_feature_onboarding}}
+        Provider<CountryCodesRemoteDataSource>(
+          create: (context) => CountryCodesRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
         Provider<UsersLocalDataSource>(
           create: (context) => UsersLocalDataSource(
             context.read<FlutterSecureStorage>(),

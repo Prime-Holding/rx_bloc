@@ -1,5 +1,6 @@
 {
   "@@locale": "bg",
+
   "registerPageTitle": "Регистрация",
   "register" : "Регистрация с E-mail",
   "registerCredentialsHint" : "Въведете идентификационните си данни за регистрация: \n Валиден имейл адрес. \n Най-малко 6 знака парола.",
@@ -12,5 +13,23 @@
   "sendNewLink": "Изпрати нов линк",
   "titleEmailConfirmed": "Потвърден имейл!",
   "titleMockDeepLinkSuccess": "Mock Deep Link - Success:",
-  "titleMockDeepLinkError": "Mock Deep Link - Error:"
+  "titleMockDeepLinkError": "Mock Deep Link - Error:",
+
+  "retry" : "Опитай отново",
+  "continueText" : "Продължи",
+  "confirm" : "Потвърди",
+
+  "countrySelectionLabel" : "Изберете вашата държава",
+  "enterPhoneNumber" : "Въведете вашия телефонен номер",
+  "phoneNumberConfirmationHeader" : "Скоро ще получите код за потвърждение чрез SMS.",
+
+  "selectCountry": "Изберете държава",
+  "typeSubstring": "Въведете подниз",
+  "thereAreNoResults": "Няма резултати за търсената заявка!",
+
+  "invalidCountryCode" : "Невалиден код на държавата.",
+  "invalidPhoneNumber" : "Невалиден телефонен номер.",
+  "phoneNumberTooShort" : "Телефонният номер е твърде кратък.",
+
+  "confirmPhoneFieldHint" : "Използвайте код 1234, за да симулирате грешка.\nВсеки друг код ще доведе до успешно изпращане."
 }

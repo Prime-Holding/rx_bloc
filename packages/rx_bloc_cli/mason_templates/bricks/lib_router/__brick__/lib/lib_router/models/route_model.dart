@@ -92,7 +92,18 @@ enum RouteModel { {{#has_showcase}}
     pathName: RoutesPath.deepLinkDetails,
     fullPath: '/deepLinks/:id',
     permissionName: RoutePermissions.deepLinkDetails,
-  ){{/enable_feature_deeplinks}};
+  ),{{/enable_feature_deeplinks}}{{#enable_feature_onboarding}}
+  onboardingPhone(
+    pathName: RoutesPath.onboardingPhone,
+    fullPath: '/onboarding/phone',
+    permissionName: RoutePermissions.onboardingPhone,
+  ),
+  onboardingPhoneConfirm(
+    pathName: RoutesPath.onboardingPhoneConfirm,
+    fullPath: '/onboarding/phone/confirm',
+    permissionName: RoutePermissions.onboardingPhoneConfirm,
+  ){{/enable_feature_onboarding}}
+;
 
   final String pathName;
   final String fullPath;

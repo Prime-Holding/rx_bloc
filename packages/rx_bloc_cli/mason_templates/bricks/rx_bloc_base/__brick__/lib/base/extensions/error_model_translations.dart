@@ -12,6 +12,10 @@ extension ErrorModelL10n on ErrorModel {
           .getString((this as L10nErrorKeyProvider).l10nErrorKey)!;
     }
 
+    if (this is BadRequestErrorModel) {
+      return (this as BadRequestErrorModel).translate(context);
+    }
+
     if (this is NotFoundErrorModel) {
       return (this as NotFoundErrorModel).translate(context);
     }
@@ -38,6 +42,11 @@ extension ErrorModelL10n on ErrorModel {
 
     return context.l10n.error.unknown;
   }
+}
+
+extension ErrorBadRequestModelL10n on BadRequestErrorModel {
+  String translate(BuildContext context) =>
+      message ?? context.l10n.error.badRequest;
 }
 
 extension ErrorNotFoundL10n on NotFoundErrorModel {

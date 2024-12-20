@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/extensions/error_model_translations.dart';
@@ -24,17 +25,18 @@ class VerifyPinCodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => PopScope(
         canPop: true,
-        onPopInvokedWithResult: (didPop, dynamic) => context
-            .read<UpdateAndVerifyPinBlocType>()
-            .events
-            .deleteSavedData(),
+        onPopInvokedWithResult: (didPop, dynamic) =>
+            context.read<UpdateAndVerifyPinBlocType>().events.deleteSavedData(),
         child: Scaffold(
           appBar: AppBar(
+            surfaceTintColor: Colors.red,
             title: Text(
               pinCodeArguments.title.isEmpty
                   ? context.l10n.libPinCode.verifyPinCodePage
                   : pinCodeArguments.title,
+              style: context.designSystem.typography.h1Reg22,
             ),
+            foregroundColor: context.designSystem.colors.white,
             forceMaterialTransparency: true,
           ),
           extendBodyBehindAppBar: true,
@@ -44,10 +46,10 @@ class VerifyPinCodePage extends StatelessWidget {
               children: [
                 Expanded(
                   child: PinCodeKeyboard(
+                    autoPromptBiometric: true,
                     mapBiometricMessageToString: (message) =>
                         _exampleMapMessageToString(message, context),
-                    pinCodeService:
-                        context.read<VerifyPinCodeService>(),
+                    pinCodeService: context.read<VerifyPinCodeService>(),
 // Comment the line bellow in order not to use biometrics
 // authentication
                     biometricsLocalDataSource:

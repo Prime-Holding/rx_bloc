@@ -1,8 +1,8 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
-import 'package:widget_toolkit/widget_toolkit.dart';{{#enable_feature_otp}}
-import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';{{/enable_feature_otp}}{{#enable_pin_code}}
+import 'package:widget_toolkit/widget_toolkit.dart';{{#has_otp}}
+import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';{{/has_otp}}{{#enable_pin_code}}
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
 import 'package:widget_toolkit_qr/widget_toolkit_qr.dart';{{/enable_feature_qr_scanner}}
 
@@ -29,6 +29,7 @@ class {{project_name.pascalCase()}}Theme {
       primary: designSystemColor.primaryColor,
       surface: designSystemColor.backgroundColor,
       error: designSystemColor.errorColor,
+      surfaceTint: designSystemColor.primaryColor,
     );
 
     const fontName = 'WorkSans';
@@ -39,6 +40,13 @@ class {{project_name.pascalCase()}}Theme {
       textTheme: baseTheme.textTheme.apply(fontFamily: fontName),
       primaryTextTheme: baseTheme.primaryTextTheme.apply(fontFamily: fontName),
       iconTheme: _buildIconTheme(baseTheme.iconTheme, designSystemColor),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: designSystemColor.backgroundColor,
+      ),
+      cardTheme: CardTheme(
+        color: designSystemColor.backgroundColor,
+        surfaceTintColor: designSystem.colors.gray,
+      ),
       extensions: <ThemeExtension<dynamic>>[
         designSystem,
         isLightTheme ? WidgetToolkitTheme.light() : WidgetToolkitTheme.dark(),
@@ -46,8 +54,8 @@ class {{project_name.pascalCase()}}Theme {
         isLightTheme ? SearchPickerTheme.light() : SearchPickerTheme.dark(),
         isLightTheme ? TextFieldDialogTheme.light() : TextFieldDialogTheme.dark(),
         isLightTheme ? EditAddressTheme.light() : EditAddressTheme.dark(),
-        isLightTheme ? LanguagePickerTheme.light() : LanguagePickerTheme.dark(),{{#enable_feature_otp}}
-        isLightTheme ? SmsCodeTheme.light() : SmsCodeTheme.dark(),{{/enable_feature_otp}}{{#enable_pin_code}}
+        isLightTheme ? LanguagePickerTheme.light() : LanguagePickerTheme.dark(),{{#has_otp}}
+        isLightTheme ? SmsCodeTheme.light() : SmsCodeTheme.dark(),{{/has_otp}}{{#enable_pin_code}}
         isLightTheme ? PinCodeTheme.light() : PinCodeTheme.dark(),{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
         isLightTheme ? QrScannerTheme.light() : QrScannerTheme.dark(),{{/enable_feature_qr_scanner}}
       ],

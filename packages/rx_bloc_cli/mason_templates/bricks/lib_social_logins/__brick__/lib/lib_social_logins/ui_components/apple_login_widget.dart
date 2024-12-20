@@ -37,18 +37,21 @@ class AppleLoginWidget extends StatelessWidget {
           state: (bloc) => bloc.states.isLoading,
           builder: (context, snapshot, bloc) => SocialLoginButton(
             isLoading: (snapshot.data ?? false) ? false : true,
-            textStyle: context.designSystem.typography.appleButtonText,
-            backgroundColor: context.designSystem.colors.appleBackground,
+            textStyle: context.designSystem.typography.socialButtonText,
+            backgroundColor: context.designSystem.colors.backgroundColor,
+            borderSide: BorderSide(
+              color: context.designSystem.colors.white,
+              width: 0.3,
+            ),
             text: context.l10n.featureLogin.appleLogin,
-            progressIndicatorColor:
-                context.designSystem.colors.appleButtonText,
+            progressIndicatorColor: context.designSystem.colors.socialButtonText,
             onPressed:
                 (snapshot.data ?? false) ? null : () => bloc.events.login(),
             child: SvgPicture.asset(
               context.designSystem.images.appleLogo,
               height: context.designSystem.spacing.xl,
               colorFilter: ColorFilter.mode(
-                context.designSystem.colors.appleButtonText,
+                context.designSystem.colors.appleBackground,
                 BlendMode.srcIn,
               ),
             ),

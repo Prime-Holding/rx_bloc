@@ -31,6 +31,9 @@ class DesignSystemTypography {
   final h1Reg20 = const TextStyle(
       fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
 
+final h1Reg22 = const TextStyle(
+fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
+
   final h1bold24 = const TextStyle(
       fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 24.0);
 
@@ -84,27 +87,16 @@ class DesignSystemTypography {
   late final counterText = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 96,
-    color: _designSystemColor.gray.withOpacity(0.8),
+    color: _designSystemColor.gray..withValues(alpha: (0.8 * 255).roundToDouble()),
     letterSpacing: -1.5,
   );
 {{/enable_feature_counter}}
   late final fadedButtonText =
       h3Med14.copyWith(color: _designSystemColor.black);
   {{#enable_social_logins}}
-  late final googleButtonText = TextStyle(
-    fontSize: 14,
-    backgroundColor: _designSystemColor.googleBackground,
-    color: _designSystemColor.googleButtonText,
-  );
-
-  late final facebookButtonText = TextStyle(
-    fontSize: 14,
-    backgroundColor: _designSystemColor.facebookBackground,
-    color: _designSystemColor.facebookTextColor,
-  );
-  late final appleButtonText = TextStyle(
-    fontSize: 14,
-    color: _designSystemColor.appleButtonText,
+  late final socialButtonText = TextStyle(
+      fontSize: 14,
+      color: _designSystemColor.socialButtonText,
   );
   {{/enable_social_logins}}
   {{#enable_feature_otp}}

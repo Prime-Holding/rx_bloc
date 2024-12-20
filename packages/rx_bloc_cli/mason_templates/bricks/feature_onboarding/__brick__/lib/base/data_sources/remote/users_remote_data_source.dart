@@ -3,9 +3,12 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
 import '../../models/credentials_model.dart';
 import '../../models/request_models/confirm_email_model.dart';
+import '../../models/request_models/confirm_phone_number_request_model.dart';
+import '../../models/request_models/phone_number_request_model.dart';
 import '../../models/user_model.dart';
 import '../../models/user_with_auth_token_model.dart';
 
@@ -34,4 +37,15 @@ abstract class UsersRemoteDataSource {
   /// Returns the [UserModel] with the confirmed email
   @POST('/api/users/me/email/confirm')
   Future<UserModel> confirmEmail(@Body() ConfirmEmailModel confirmEmailModel);
+
+  @PATCH('/api/users/me')
+  Future<UserModel> submitPhoneNumber(
+      @Body() PhoneNumberRequestModel phoneNumber);
+
+  @POST('/api/users/me/phone/confirm')
+  Future<UserModel> confirmPhoneNumber(
+     @Body() ConfirmPhoneNumberRequestModel smsCode);
+
+  @POST('/api/users/me/phone/resend')
+  Future<void> resendSmsCode();
 }
