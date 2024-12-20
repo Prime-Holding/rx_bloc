@@ -98,7 +98,7 @@ class LoginPage extends StatelessWidget {
                             TextSpan(
                               text: context.l10n.featureLogin.signUpLabel,
                               style: context
-                                  .designSystem.typography.fontWeightBold,
+                                  .designSystem.typography.h1Bold16,
                             ),
                           ],
                         ),

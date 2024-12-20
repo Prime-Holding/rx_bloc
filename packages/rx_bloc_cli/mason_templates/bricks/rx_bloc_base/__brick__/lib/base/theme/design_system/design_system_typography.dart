@@ -46,6 +46,9 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
   final h2Med18 = const TextStyle(
       fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 18.0);
 
+  final h1Bold16 = const TextStyle(
+      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 16.0);
+
   final h2Med18Italic = const TextStyle(
       fontWeight: FontWeight.w500, fontStyle: FontStyle.italic, fontSize: 18.0);
 
@@ -80,9 +83,6 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
       fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 11.0);
 
   /// App specific typography
-
-  late final fontWeightBold = const TextStyle(fontWeight: FontWeight.bold);
-
 {{#enable_feature_counter}}
   late final counterTitle =
       h1Reg12.copyWith(color: _designSystemColor.primaryColor);
