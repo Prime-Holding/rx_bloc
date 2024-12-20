@@ -1,5 +1,6 @@
 import '../models/user_model.dart';
 import '../models/user_with_auth_token_model.dart';
+import '../repositories/register_repository.dart';
 import '../repositories/url_launcher_repository.dart';
 import '../repositories/users_repository.dart';
 
@@ -16,10 +17,12 @@ const mockEmailDeepLinkSuccess =
 class OnboardingService {
   OnboardingService(
     this._usersRepository,
+    this._registerRepository,
     this._urlLauncherRepository,
   );
 
   final UsersRepository _usersRepository;
+  final RegisterRepository _registerRepository;
   final UrlLauncherRepository _urlLauncherRepository;
 
   /// Starts the onboarding for a new user with the given [email] and [password].
@@ -29,21 +32,21 @@ class OnboardingService {
     required String email,
     required String password,
   }) =>
-      _usersRepository.register(email: email, password: password);
+      _registerRepository.register(email: email, password: password);
 
   /// Gets the existing user. Currently used to resume onboarding
   Future<UserModel> getMyUser() => _usersRepository.getMyUser();
 
   /// Resends the confirmation email to the user
   Future<UserModel> resendConfirmationEmail() =>
-      _usersRepository.resendConfirmationEmail();
+      _registerRepository.resendConfirmationEmail();
 
   /// Confirms the email of the user with the given [token].
   /// Returns the [UserModel] with the confirmed email
   Future<UserModel> confirmEmail({
     required String token,
   }) =>
-      _usersRepository.confirmEmail(token: token);
+      _registerRepository.confirmEmail(token: token);
 
   /// Opens the fake deep link for successful email confirmation.
   /// Used for demo purposes, should be removed in a real app
@@ -62,8 +65,8 @@ class OnboardingService {
   /// Confirms a previously submitted phone number by providing the SMS code
   /// sent to the same number
   Future<UserModel> confirmPhoneNumber(String smsCode) =>
-      _usersRepository.confirmPhoneNumber(smsCode);
+      _registerRepository.confirmPhoneNumber(smsCode);
 
   /// Resends the SMS code to the user's phone number
-  Future<void> resendSmsCode() => _usersRepository.resendSmsCode();
+  Future<void> resendSmsCode() => _registerRepository.resendSmsCode();
 }

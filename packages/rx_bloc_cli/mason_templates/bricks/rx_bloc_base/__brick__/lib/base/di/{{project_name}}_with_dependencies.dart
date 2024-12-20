@@ -69,11 +69,13 @@ import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feat
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
+import '../data_sources/remote/register_remote_data_source.dart';
 import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';{{#enable_feature_onboarding}}
 import '../repositories/url_launcher_repository.dart';
+import '../repositories/register_repository.dart';
 import '../repositories/users_repository.dart';{{/enable_feature_onboarding}}
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
@@ -246,6 +248,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<ApiHttpClient>(),
           ),
         ),
+        Provider<RegisterRemoteDataSource>(
+          create: (context) => RegisterRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
         Provider<UrlLauncherLocalDataSource>(
           create: (context) => UrlLauncherLocalDataSource(),
         ),{{/enable_feature_onboarding}}
@@ -325,6 +332,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         {{/analytics}}{{#enable_feature_onboarding}}
         Provider<UsersRepository>(
           create: (context) => UsersRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<RegisterRepository>(
+          create: (context) => RegisterRepository(
             context.read(),
             context.read(),
           ),
@@ -420,6 +433,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         {{/analytics}}{{#enable_feature_onboarding}}
         Provider<OnboardingService>(
           create: (context) => OnboardingService(
+            context.read(),
             context.read(),
             context.read(),
           ),

@@ -47,7 +47,7 @@ Error (400):
 ---
 
 ## Resend Confirmation E-mail
-**Endpoint**: `POST /api/users/me/email/resend-confirmation`  
+**Endpoint**: `POST /api/register/email/resend-confirmation`  
 **Headers**: `Authorization: Bearer <token>`  
 **Description**: Resends the confirmation link to the user.  
 
@@ -79,7 +79,7 @@ Error (400):
 ---
 
 ## Confirm E-mail
-**Endpoint**: `POST /api/users/me/email/confirm`  
+**Endpoint**: `POST /api/register/email/confirm`  
 **Headers**: `Authorization: Bearer <token>`  
 **Description**: Verifies the token in the confirmation link when the user opens it in the mobile app.
 
@@ -159,7 +159,7 @@ Error (400):
 ---
 
 ## Confirm SMS Code
-**Endpoint**: `POST /api/users/me/phone/confirm`  
+**Endpoint**: `POST /api/register/phone/confirm`  
 **Headers**: `Authorization: Bearer <token>`  
 **Description**: Validates the SMS code and finalizes the user profile. After this step, the TempUser becomes a User, and gains the correct permissions for accessing the rest of the app.
 
@@ -231,7 +231,7 @@ Error (400):
 ---
 
 ## Resend SMS code
-**Endpoint**: `POST /api/users/me/phone/resend`  
+**Endpoint**: `POST /api/register/phone/resend`  
 **Headers**: `Authorization: Bearer <token>`  
 **Description**: Resends a SMS code to the set user's phone number.
 

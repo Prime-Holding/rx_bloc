@@ -46,6 +46,7 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        spacing: context.designSystem.spacing.xs1,
         children: [
           Text(
             widget.title,
@@ -61,7 +62,6 @@ class _RegisterFormState extends State<RegisterForm> {
               context,
             ),
           ),
-          SizedBox(height: context.designSystem.spacing.xs1),
           RxTextFormFieldBuilder<OnboardingBlocType>(
             state: (bloc) => bloc.states.password.translate(context),
             showErrorState: (bloc) => bloc.states.showFieldErrors,
@@ -72,7 +72,6 @@ class _RegisterFormState extends State<RegisterForm> {
               context,
             ),
           ),
-          SizedBox(height: context.designSystem.spacing.xs1),
           RxBlocBuilder<OnboardingBlocType, bool>(
             state: (bloc) => bloc.states.isLoading,
             builder: _buildRegisterButton,
