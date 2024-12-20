@@ -32,8 +32,8 @@ class LoginPageWithDependencies extends StatelessWidget {
           create: (context) => LoginBloc(
             context.read(),
             context.read(),
-            context.read(),{{#enable_feature_onboarding}}
-            context.read(),{{/enable_feature_onboarding}}
+            context.read(),
+            context.read(),
           ),
         ),
       ];

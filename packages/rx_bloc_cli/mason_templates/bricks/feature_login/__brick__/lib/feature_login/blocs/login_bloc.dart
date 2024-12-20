@@ -8,9 +8,9 @@ import '../../base/common_services/validators/login_validator_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/credentials_model.dart';
 import '../../base/models/errors/error_model.dart';
-import '../../lib_auth/services/user_account_service.dart';{{#enable_feature_onboarding}}
+import '../../lib_auth/services/user_account_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
-import '../../lib_router/router.dart';{{/enable_feature_onboarding}}
+import '../../lib_router/router.dart';
 
 part 'login_bloc.rxb.g.dart';
 part 'login_bloc_extensions.dart';
