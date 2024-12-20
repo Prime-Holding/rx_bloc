@@ -34,7 +34,6 @@ class OnboardingPhoneConfirmPageWithDependencies extends StatelessWidget {
           create: (context) => OnboardingPhoneConfirmBloc(
             context.read(),
             context.read(),
-            context.read(),
           ),
         ),
       ];
