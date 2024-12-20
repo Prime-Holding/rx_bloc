@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -30,7 +32,9 @@ void main() {
     analyticsRepository = MockAnalyticsRepository();{{/analytics}}
     permissionsService = MockPermissionsService();
     userAccountService = UserAccountService(authRepository,
-        pushNotificationRepository, {{#analytics}}analyticsRepository,{{/analytics}} permissionsService);
+    pushNotificationRepository,{{#analytics}}
+    analyticsRepository,{{/analytics}}
+    permissionsService,);
   });
 
   tearDown(() {

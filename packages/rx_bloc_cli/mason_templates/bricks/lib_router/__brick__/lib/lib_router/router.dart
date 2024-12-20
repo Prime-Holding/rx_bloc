@@ -20,6 +20,9 @@ import '../feature_login/di/login_page_with_dependencies.dart';{{/enable_login}}
 import '../feature_login/views/login_page.dart';{{/enable_login}}{{/has_authentication}}{{#enable_mfa}}
 import '../feature_mfa/di/mfa_page_with_dependencies.dart';{{/enable_mfa}}
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_onboarding}}
+import '../feature_onboarding/di/onboarding_page_with_dependencies.dart';
+import '../feature_onboarding_email_confirmation/di/onboarding_email_confirmation_page_with_dependencies.dart';
+import '../feature_onboarding_email_confirmation/di/onboarding_email_confirmed_page_with_dependencies.dart';
 import '../feature_onboarding_phone_confirmation/di/onboarding_phone_confirm_page_with_dependencies.dart';
 import '../feature_onboarding_phone_confirmation/di/onboarding_phone_page_with_dependencies.dart';{{/enable_feature_onboarding}}{{#enable_feature_otp}}
 import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}{{#enable_profile}}

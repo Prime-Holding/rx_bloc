@@ -5,8 +5,8 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../base/common_services/validators/login_validator_service.dart';
 import '../blocs/login_bloc.dart';
-import '../services/login_validator_service.dart';
 import '../views/login_page.dart';
 
 class LoginPageWithDependencies extends StatelessWidget {
@@ -30,6 +30,7 @@ class LoginPageWithDependencies extends StatelessWidget {
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<LoginBlocType>(
           create: (context) => LoginBloc(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),

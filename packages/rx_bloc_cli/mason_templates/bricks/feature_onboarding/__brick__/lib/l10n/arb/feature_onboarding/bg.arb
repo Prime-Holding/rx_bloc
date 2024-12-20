@@ -1,6 +1,20 @@
 {
   "@@locale": "bg",
 
+  "registerPageTitle": "Регистрация",
+  "register" : "Регистрация с E-mail",
+  "registerCredentialsHint" : "Въведете идентификационните си данни за регистрация: \n Валиден имейл адрес. \n Най-малко 6 знака парола.",
+  "titleEmailConfirmation": "Потвърди имейл",
+  "emailConfirmationSent": "Изпратихме писмо с линк за потвържение на:",
+  "pleaseOpenEmail": "Моля, отворете този мейл през телефона и кликнете върху бутона за потвърждение, или докоснете тук!",
+  "openMailClient": "Отворете вашата електронна поща",
+  "selectMailApp": "Изберете приложение за електронна поща.",
+  "noMailAppFound": "Нямате пощенски клиент на устройството. Моля инсталирайте или отворете с браузър.",
+  "sendNewLink": "Изпрати нов линк",
+  "titleEmailConfirmed": "Потвърден имейл!",
+  "titleMockDeepLinkSuccess": "Mock Deep Link - Success:",
+  "titleMockDeepLinkError": "Mock Deep Link - Error:",
+
   "retry" : "Опитай отново",
   "continueText" : "Продължи",
   "confirm" : "Потвърди",

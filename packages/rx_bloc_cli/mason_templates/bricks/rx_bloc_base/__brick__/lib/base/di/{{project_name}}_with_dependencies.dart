@@ -58,21 +58,25 @@ import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
-import '../common_services/push_notifications_service.dart';
+import '../common_services/push_notifications_service.dart';{{#enable_feature_onboarding}}
+import '../common_services/onboarding_service.dart';{{/enable_feature_onboarding}}
 import '../data_sources/local/notifications_local_data_source.dart';
-import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
-import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_onboarding}}
-import '../data_sources/remote/country_codes_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_onboarding}}
+import '../data_sources/local/url_launcher_local_data_source.dart';
+import '../data_sources/remote/country_codes_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
+import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
+import '../data_sources/remote/register_remote_data_source.dart';
 import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';{{#enable_feature_onboarding}}
-import '../repositories/users_repository.dart';
-import '../services/users_service.dart';{{/enable_feature_onboarding}}
+import '../repositories/url_launcher_repository.dart';
+import '../repositories/register_repository.dart';
+import '../repositories/users_repository.dart';{{/enable_feature_onboarding}}
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   const {{project_name.pascalCase()}}WithDependencies({
@@ -234,15 +238,23 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<ApiHttpClient>(),
           ),
         ),{{/enable_mfa}}{{#enable_feature_onboarding}}
+        Provider<CountryCodesRemoteDataSource>(
+          create: (context) => CountryCodesRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
         Provider<UsersRemoteDataSource>(
           create: (context) => UsersRemoteDataSource(
             context.read<ApiHttpClient>(),
           ),
         ),
-        Provider<CountryCodesRemoteDataSource>(
-          create: (context) => CountryCodesRemoteDataSource(
+        Provider<RegisterRemoteDataSource>(
+          create: (context) => RegisterRemoteDataSource(
             context.read<ApiHttpClient>(),
           ),
+        ),
+        Provider<UrlLauncherLocalDataSource>(
+          create: (context) => UrlLauncherLocalDataSource(),
         ),{{/enable_feature_onboarding}}
       ];
 
@@ -320,6 +332,18 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         {{/analytics}}{{#enable_feature_onboarding}}
         Provider<UsersRepository>(
           create: (context) => UsersRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<RegisterRepository>(
+          create: (context) => RegisterRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<UrlLauncherRepository>(
+          create: (context) => UrlLauncherRepository(
             context.read(),
             context.read(),
           ),
@@ -407,8 +431,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           ),
         ),
         {{/analytics}}{{#enable_feature_onboarding}}
-        Provider<UsersService>(
-          create: (context) => UsersService(
+        Provider<OnboardingService>(
+          create: (context) => OnboardingService(
+            context.read(),
+            context.read(),
             context.read(),
           ),
         ),{{/enable_feature_onboarding}}

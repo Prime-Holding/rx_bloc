@@ -1,5 +1,9 @@
+{{> licence.dart }}
+
+import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:shelf/shelf.dart';
 
+import '../config.dart';
 import '../models/auth_token.dart';
 import '../repositories/auth_token_repository.dart';
 import '../utils/server_exceptions.dart';
@@ -35,6 +39,23 @@ class AuthenticationService {
     }
   }
 
+  String getUserIdFromAuthHeader(Map<String, String> headers) {
+    final accessToken = getAccessTokenFromAuthHeader(headers);
+
+    final JwtClaim decClaimSet =
+        verifyJwtHS256Signature(accessToken, jwtSigningKey);
+    decClaimSet.validate(
+      issuer: jwtIssuer,
+      audience: jwtAudiences.first,
+    );
+
+    final userId = decClaimSet.payload['userId'];
+    if (userId == null) {
+      throw UnauthorizedException('Invalid access token!');
+    }
+    return userId;
+  }
+
   bool _validateAccessToken(String accessToken) {
     final token = _authTokenRepository.getToken(accessToken);
     if (token == null) {
@@ -43,14 +64,17 @@ class AuthenticationService {
     return token.isValid;
   }
 
-  AuthToken issueNewToken(String? refreshToken) {
+  AuthToken issueNewToken(
+    String? refreshToken, {
+    String? userId,
+  }) {
     if (refreshToken != null) {
       final token = _authTokenRepository.getTokenViaRefreshToken(refreshToken);
       if (token == null) throw BadRequestException('Invalid refresh token!');
       removeToken(token.token);
     }
 
-    return _authTokenRepository.issueNewToken();
+    return _authTokenRepository.issueNewToken(userId);
   }
 
   void removeToken(String accessToken) =>

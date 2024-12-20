@@ -1,17 +1,17 @@
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
-import '../../base/services/users_service.dart';
+import '../../base/common_services/onboarding_service.dart';
 
 /// Service used to implement SMS code logic
 class OnboardingPhoneSmsCodeService implements SmsCodeService {
-  OnboardingPhoneSmsCodeService(this._usersService);
+  OnboardingPhoneSmsCodeService(this._onboardingService);
 
-  final UsersService _usersService;
+  final OnboardingService _onboardingService;
 
   /// Confirm if the entered code is equal to the last send code
   @override
   Future<dynamic> confirmPhoneCode(String code) async {
-    final confirmResponse = await _usersService.confirmPhoneNumber(code);
+    final confirmResponse = await _onboardingService.confirmPhoneNumber(code);
 
     /// TODO: Implement sms code confirmation logic
 
@@ -30,7 +30,7 @@ class OnboardingPhoneSmsCodeService implements SmsCodeService {
   /// Send a new code to the user
   @override
   Future<bool> sendConfirmationSms(String usersPhoneNumber) async {
-    await _usersService.resendSmsCode();
+    await _onboardingService.resendSmsCode();
     return true;
   }
 

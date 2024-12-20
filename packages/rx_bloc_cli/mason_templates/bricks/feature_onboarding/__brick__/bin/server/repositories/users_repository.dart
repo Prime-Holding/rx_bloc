@@ -7,19 +7,7 @@ import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
 
 class UsersRepository {
-  final List<UserModel> _registeredUsers = [
-    /// TODO: Remove this test data once the onboarding step 1 is merged
-    UserModel(
-      id: '1',
-      email: 'test_mail',
-      phoneNumber: null,
-      role: UserRole.tempUser,
-      confirmedCredentials: ConfirmedCredentialsModel(
-        email: true,
-        phone: false,
-      ),
-    ),
-  ];
+  final List<UserModel> _registeredUsers = [];
 
   List<UserModel> getUsers() => _registeredUsers;
 
@@ -31,13 +19,20 @@ class UsersRepository {
 
   void createUser(UserModel user) => _registeredUsers.add(user);
 
-  void updateUser(UserModel user) =>
-      _registeredUsers.firstWhere((element) => element.id == user.id).copyWith(
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            role: user.role,
-            confirmedCredentials: user.confirmedCredentials,
-          );
+  void updateUser(
+    String userId, {
+    String? phoneNumber,
+    UserRole? role,
+    ConfirmedCredentialsModel? confirmedCredentials,
+  }) {
+    final userIndex =
+        _registeredUsers.indexWhere((element) => element.id == userId);
+    _registeredUsers[userIndex] = _registeredUsers[userIndex].copyWith(
+      phoneNumber: phoneNumber,
+      role: role,
+      confirmedCredentials: confirmedCredentials,
+    );
+  }
 
   void deleteUser(String id) =>
       _registeredUsers.removeWhere((user) => user.id == id);

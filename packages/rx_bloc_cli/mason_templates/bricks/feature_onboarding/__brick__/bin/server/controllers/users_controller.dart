@@ -4,16 +4,23 @@ import 'package:shelf/shelf.dart';
 import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
+import 'package:{{project_name}}/base/models/user_with_auth_token_model.dart';
 
+import '../services/authentication_service.dart';
 import '../services/users_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
+import '../utils/utilities.dart';
 
 // ignore_for_file: cascade_invocations
 
 class UsersController extends ApiController {
-  UsersController(this._usersService);
+  UsersController(
+    this._authenticationService,
+    this._usersService,
+  );
 
+  final AuthenticationService _authenticationService;
   final UsersService _usersService;
 
   @override
@@ -24,26 +31,31 @@ class UsersController extends ApiController {
       _registerHandler,
     );
 
-    // needs to have an access token, mocked for now
+    router.addRequest(
+      RequestType.GET,
+      '/api/users/me',
+      _myUserHandler,
+    );
+
+    router.addRequest(
+      RequestType.POST,
+      '/api/users/me/email/resend-confirmation',
+      // mocked, since no email is actually sent
+      _myUserHandler,
+    );
+
     router.addRequest(
       RequestType.POST,
       '/api/users/me/email/confirm',
       _confirmEmailHandler,
     );
 
-    // needs to have an access token first
-    // router.addRequest(
-    //   RequestType.GET,
-    //   '/api/users/me',
-    // );
-
-    // needs to have an access token, mocked for now
     router.addRequest(
       RequestType.PATCH,
       '/api/users/me',
       _sendSmsCodeHandler,
     );
-    // needs to have an access token, mocked for now
+
     router.addRequest(
       RequestType.POST,
       '/api/users/me/phone/confirm',
@@ -63,25 +75,69 @@ class UsersController extends ApiController {
     final email = params['email'];
     final password = params['password'];
 
+    final newUser = _usersService.registerOrFindUser(email, password);
+    final token =
+        _authenticationService.issueNewToken(null, userId: newUser.id);
+
     return responseBuilder.buildOK(
-      data: _usersService.registerOrFindUser(email, password).toJson(),
+      data: UserWithAuthTokenModel(
+        user: newUser,
+        authToken: token.toAuthTokenModel,
+      ).toJson(),
+    );
+  }
+
+  Map<String, dynamic> _getUserJson(String userId) =>
+      _usersService.getUserById(userId)!.toJson();
+
+  Future<Response> _myUserHandler(Request request) async {
+    final userId =
+        _authenticationService.getUserIdFromAuthHeader(request.headers);
+
+    // Returns fake user in case the Registration flow has not been started
+    // but user has access token
+    // (when dev has authenticated through mock Login & ignored Registration)
+    final user = _usersService.getUserById(userId);
+    if (user == null) {
+      return responseBuilder.buildOK(
+        data: UserModel(
+          id: generateRandomString(),
+          email: 'test@test.com',
+          phoneNumber: null,
+          role: UserRole.tempUser,
+          confirmedCredentials: ConfirmedCredentialsModel(
+            email: true,
+            phone: true,
+          ),
+        ).toJson(),
+      );
+    }
+
+    return responseBuilder.buildOK(
+      data: user.toJson(),
     );
   }
 
   Future<Response> _confirmEmailHandler(Request request) async {
-    // final params = await request.bodyFromFormData();
-    // final token = params['token'];
+    final params = await request.bodyFromFormData();
+    final token = params['token'];
 
-    /// mocked for now
+    if (token == '00000000') {
+      return responseBuilder.buildErrorResponse(
+        ResponseException(400, 'Invalid token'),
+      );
+    }
+
+    final userId =
+        _authenticationService.getUserIdFromAuthHeader(request.headers);
+    _usersService.updateUser(
+      userId,
+      confirmedCredentials:
+          ConfirmedCredentialsModel(email: true, phone: false),
+    );
+
     return responseBuilder.buildOK(
-      data: _usersService
-          .getUsers()
-          .first
-          .copyWith(
-            confirmedCredentials:
-                ConfirmedCredentialsModel(email: true, phone: false),
-          )
-          .toJson(),
+      data: _getUserJson(userId),
     );
   }
 
@@ -101,13 +157,15 @@ class UsersController extends ApiController {
       );
     }
 
-    /// mocked for now
+    final userId =
+        _authenticationService.getUserIdFromAuthHeader(request.headers);
+    _usersService.updateUser(
+      userId,
+      phoneNumber: phoneNumber,
+    );
+
     return responseBuilder.buildOK(
-      data: _usersService
-          .getUsers()
-          .first
-          .copyWith(phoneNumber: phoneNumber)
-          .toJson(),
+      data: _getUserJson(userId),
     );
   }
 
@@ -124,17 +182,16 @@ class UsersController extends ApiController {
       );
     }
 
-    /// mocked for now
+    final userId =
+        _authenticationService.getUserIdFromAuthHeader(request.headers);
+    _usersService.updateUser(
+      userId,
+      role: UserRole.user,
+      confirmedCredentials: ConfirmedCredentialsModel(email: true, phone: true),
+    );
+
     return responseBuilder.buildOK(
-      data: _usersService
-          .getUsers()
-          .first
-          .copyWith(
-            role: UserRole.user,
-            confirmedCredentials:
-                ConfirmedCredentialsModel(email: true, phone: true),
-          )
-          .toJson(),
+      data: _getUserJson(userId),
     );
   }
 
