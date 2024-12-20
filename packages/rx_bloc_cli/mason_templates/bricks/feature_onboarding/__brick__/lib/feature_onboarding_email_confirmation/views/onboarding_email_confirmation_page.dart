@@ -62,7 +62,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                             showShimmer: loading.isLoading,
                             baseColor: context.designSystem.colors.white,
                             highlightColor: context.designSystem.colors.white
-                                .withOpacity(0.2),
+                                .withValues(alpha: 50),
                             child: loading.isLoading
                                 ? Container(
                                     decoration: BoxDecoration(
@@ -91,7 +91,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                             alignment: Alignment.center,
                             baseColor: context.designSystem.colors.white,
                             highlightColor: context.designSystem.colors.white
-                                .withOpacity(0.2),
+                                .withValues(alpha: 50),
                             type: ShimmerType.fixed(placeholderLength: 2),
                           ),
                           if (loading.isLoading)
@@ -107,7 +107,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                               alignment: Alignment.center,
                               baseColor: context.designSystem.colors.white,
                               highlightColor: context.designSystem.colors.white
-                                  .withOpacity(0.2),
+                                  .withValues(alpha: 50),
                             ),
                           ),
                           SizedBox(
