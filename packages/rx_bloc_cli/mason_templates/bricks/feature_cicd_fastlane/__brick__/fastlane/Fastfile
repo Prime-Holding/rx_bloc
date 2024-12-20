@@ -80,8 +80,8 @@ firebase_app_id_map = {
     },
 }
 
-# Path of local keychain created in case it doesn't exist
-keychain_path = Dir.getwd + '/devops/credentials/{{project_name.paramCase()}}-keychain.keychain'
+# Path of the local keychain that is used for iOS builds
+keychain_path = File.join(Dir.getwd, '../devops/credentials/{{project_name.paramCase()}}-distribution.keychain')
 
 # ----------------------------------------------------------------------------------------------- #
 
