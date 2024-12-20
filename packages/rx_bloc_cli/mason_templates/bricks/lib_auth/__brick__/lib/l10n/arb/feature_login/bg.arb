@@ -13,7 +13,7 @@
   "forgottenPassword" : "Забравихте ли паролата си?",
   "or" : "или",
   "dontHaveAccount" : "Нямате акаунт?",
-  "signUpLabel" : "Регистрирайте се!"{{/enable_login}}{{#enable_social_logins}},
+  "signUpLabel" : "Регистрирайте се!",{{/enable_login}}{{#enable_social_logins}}
   "appleLogin":"Вход с Apple",
   "googleLogin":"Вход с Google",
   "facebookLogin":"Вход с Facebook",{{/enable_social_logins}}
