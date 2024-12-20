@@ -1,6 +1,8 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
 import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
@@ -14,6 +16,9 @@ abstract class OnboardingPhoneConfirmBlocEvents {
 }
 
 abstract class OnboardingPhoneConfirmBlocStates {
+  /// The error state of the bloc
+  Stream<ErrorModel> get errors;
+
   /// The routing state for navigating to next page
   ConnectableStream<void> get onRouting;
 }
@@ -35,6 +40,9 @@ class OnboardingPhoneConfirmBloc extends $OnboardingPhoneConfirmBloc {
       .switchMap((result) => _onResultChanged(result).asResultStream())
       .whereSuccess()
       .publish();
+
+  @override
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   Future<void> _onResultChanged(dynamic result) async {
     final updatedUser = result as UserModel?;
