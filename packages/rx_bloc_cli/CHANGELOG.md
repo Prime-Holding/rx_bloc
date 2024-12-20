@@ -1,5 +1,6 @@
 ## [5.3.2]
 * Fix issues in generated project related to pin code and biometrics authentication
+* Update the fastlane file to fix compatibility issues with the latest flutter stable
 
 ## [5.3.1]
 * Design uplift for the generated project

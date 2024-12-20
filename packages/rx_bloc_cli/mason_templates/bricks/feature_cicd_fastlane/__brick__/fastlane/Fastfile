@@ -80,8 +80,8 @@ firebase_app_id_map = {
     },
 }
 
-# Path of local keychain created in case it doesn't exist
-keychain_path = Dir.getwd + '/devops/credentials/{{project_name.paramCase()}}-keychain.keychain'
+# Path of the local keychain that is used for iOS builds
+keychain_path = File.join(Dir.getwd, '../devops/credentials/{{project_name.paramCase()}}-distribution.keychain')
 
 # ----------------------------------------------------------------------------------------------- #
 
@@ -96,15 +96,6 @@ private_lane :setup_environment_variable do |options|
     end
 
     ENV[options[:name]] = value
-end
-
-def is_ci_cd_machine()
-    # https://adamj.eu/tech/2020/03/09/detect-if-your-tests-are-running-on-ci/
-    env_names = [ "CI", "GITHUB_ACTIONS", "TF_BUILD", "bamboo.buildKey", "GITLAB_CI", "BUILD_ID" ]
-    env_names.each do |str|
-        return true if ENV[str]!=nil
-      end
-    return false
 end
 
 desc "Clones the credentials repository into devops/credentials.
@@ -282,25 +273,31 @@ platform :android do
     desc 'Build the mobile application for Android'
     private_lane :build do |options|
         Dir.chdir("..") do
-
             sh(
                 "flutter",
                 "build",
                 "appbundle",
                 "--obfuscate",
-                "--split-debug-info=../devops/artifacts/",
+                "--split-debug-info=build/app/outputs/symbols/",
                 "--build-name=" + options[:build_name],
                 "--build-number=" + options[:build_number],
                 "--flavor=" + flavor_map[options[:environment]],
                 "--target=" + target_map[options[:environment]]
             )
-
-            sh(
-                "mv",
-                "build/app/outputs/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
-                "devops/artifacts/"
-            )
         end
+
+        build_output = "apps/<appname>/build/app/outputs"
+        copy_artifacts(
+            target_path: "devops/artifacts/",
+            artifacts: [
+                "#{build_output}/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
+                "#{build_output}/symbols/app.android-arm.symbols",
+                "#{build_output}/symbols/app.android-arm64.symbols",
+                "#{build_output}/symbols/app.android-x64.symbols",
+            ],
+            keep_original: false,
+            fail_on_missing: true,
+        )
     end
 
     desc 'Clean up temporary build files'
@@ -382,12 +379,7 @@ platform :ios do
             create_keychain(
                 path: keychain_path,
                 password: keychain_password,
-                default_keychain: is_ci_cd_machine()
-            )
-
-            unlock_keychain(
-                path: keychain_path,
-                password: keychain_password
+                unlock: true,
             )
 
             import_certificate(
@@ -411,7 +403,8 @@ platform :ios do
                 'ios',
                 '--obfuscate',
                 '--no-codesign',
-                '--split-debug-info=../devops/artifacts',
+                '--config-only',
+                '--split-debug-info=build/app/outputs/symbols/',
                 '--build-name=' + options[:build_name],
                 '--build-number=' + options[:build_number],
                 '--flavor=' + flavor_map[options[:environment]],
@@ -442,17 +435,22 @@ platform :ios do
                 }
             )
         end
+
+        copy_artifacts(
+            target_path: "devops/artifacts/",
+            artifacts: ["apps/<appname>/build/app/outputs/symbols/app.ios-arm64.symbols"],
+            keep_original: false,
+            fail_on_missing: true,
+        )
     end
 
     desc 'Clean up temporary build files'
     private_lane :post_build_clean_up do
+        delete_keychain(keychain_path: keychain_path) if File.exist? keychain_path
+
         # Remove any credentials
         Dir.chdir("../devops/") do
             sh("rm -rf credentials/")
-        end
-
-        if is_ci_cd_machine()==true
-            delete_keychain(keychain_path: keychain_path) if File.exist? keychain_path
         end
     end
 
