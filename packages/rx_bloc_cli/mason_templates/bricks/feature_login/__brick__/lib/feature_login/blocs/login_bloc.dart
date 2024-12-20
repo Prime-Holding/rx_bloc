@@ -67,6 +67,7 @@ class LoginBloc extends $LoginBloc {
   final CoordinatorBlocType _coordinatorBloc;
   final UserAccountService _userAccountService;
   final LoginValidatorService _validatorService;
+  {{^enable_feature_onboarding}}// ignore: unused_field{{/enable_feature_onboarding}}
   final RouterBlocType _routerBloc;
 
   @override
