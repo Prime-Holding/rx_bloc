@@ -80,6 +80,9 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
       fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 11.0);
 
   /// App specific typography
+
+  late final fontWeightBold = const TextStyle(fontWeight: FontWeight.bold);
+
 {{#enable_feature_counter}}
   late final counterTitle =
       h1Reg12.copyWith(color: _designSystemColor.primaryColor);

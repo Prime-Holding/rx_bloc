@@ -57,8 +57,8 @@ class LoginBloc extends $LoginBloc {
   LoginBloc(
     this._coordinatorBloc,
     this._userAccountService,
-    this._validatorService,{{#enable_feature_onboarding}}
-    this._routerBloc,{{/enable_feature_onboarding}}
+    this._validatorService,
+    this._routerBloc,
   ) {
     loggedIn.connect().addTo(_compositeSubscription);
     onRouting.connect().addTo(_compositeSubscription);
@@ -66,8 +66,8 @@ class LoginBloc extends $LoginBloc {
 
   final CoordinatorBlocType _coordinatorBloc;
   final UserAccountService _userAccountService;
-  final LoginValidatorService _validatorService;{{#enable_feature_onboarding}}
-  final RouterBlocType _routerBloc;{{/enable_feature_onboarding}}
+  final LoginValidatorService _validatorService;
+  final RouterBlocType _routerBloc;
 
   @override
   Stream<String> _mapToEmailState() => _$setEmailEvent
@@ -106,7 +106,7 @@ class LoginBloc extends $LoginBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$goToRegistrationEvent{{#enable_feature_onboarding}}
-      .map((_) => _routerBloc.events.push(const OnboardingRoute())){{/enable_feature_onboarding}}
+      .doOnData((_) => _routerBloc.events.push(const OnboardingRoute())){{/enable_feature_onboarding}}
     .publishReplay(maxSize: 1);
 
 

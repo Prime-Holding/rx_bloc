@@ -3,9 +3,11 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/app/config/app_constants.dart';
 import '../../base/common_services/onboarding_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
+import '../../base/models/user_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 
@@ -32,7 +34,7 @@ abstract class OnboardingEmailConfirmedBlocStates {
   Stream<ErrorModel> get errors;
 
   /// Returns true when the email is verified
-  ConnectableStream<bool> get data;
+  ConnectableStream<UserModel> get data;
 
   /// The routing state for navigating to login/phone page
   ConnectableStream<void> get onRouting;
@@ -54,15 +56,14 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   final RouterBlocType _routerBloc;
 
   @override
-  ConnectableStream<bool> _mapToDataState() => _$verifyEmailEvent
+  ConnectableStream<UserModel> _mapToDataState() => _$verifyEmailEvent
       .startWith(null)
-      .throttleTime(const Duration(milliseconds: 200))
+      .throttleTime(actionDebounceDuration)
       .switchMap((value) => _onboardingService
           .confirmEmail(token: _verifyEmailToken)
           .asResultStream())
       .setResultStateHandler(this)
       .whereSuccess()
-      .map((event) => true)
       .publishReplay(maxSize: 1);
 
   @override
@@ -73,8 +74,9 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => Rx.merge([
-        _$goToPhonePageEvent.map((_) =>
+        _$goToPhonePageEvent.doOnData((_) =>
             _routerBloc.events.pushReplace(const OnboardingPhoneRoute())),
-        _$goToLoginEvent.map((_) => _routerBloc.events.go(const LoginRoute())),
+        _$goToLoginEvent
+            .doOnData((_) => _routerBloc.events.go(const LoginRoute())),
       ]).publishReplay(maxSize: 1);
 }

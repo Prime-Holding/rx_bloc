@@ -3,6 +3,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/app/config/app_constants.dart';
 import '../../base/common_services/onboarding_service.dart';
 import '../../base/common_services/validators/login_validator_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
@@ -107,7 +108,7 @@ class OnboardingBloc extends $OnboardingBloc {
 
   @override
   ConnectableStream<UserWithAuthTokenModel> _mapToRegisteredState() => _$registerEvent
-      .throttleTime(const Duration(seconds: 1))
+      .throttleTime(actionDebounceDuration)
       .withLatestFrom2<Result<String>, Result<String>, CredentialsModel?>(
           email.asResultStream(),
           password.asResultStream(),
@@ -115,10 +116,10 @@ class OnboardingBloc extends $OnboardingBloc {
                 emailResult,
                 passwordResult,
               ))
-      .where((args) => args != null)
+      .whereType<CredentialsModel>()
       .exhaustMap(
         (args) => _onboardingService
-            .register(email: args!.email, password: args.password)
+            .register(email: args.email, password: args.password)
             .asResultStream(),
       )
       .setResultStateHandler(this)

@@ -85,8 +85,8 @@ class LoginPage extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: isLoading.isLoading
-                          ? () {}
-                              : bloc.events.goToRegistration,
+                          ? null
+                          : bloc.events.goToRegistration,
                       child: Text.rich(
                         textAlign: TextAlign.center,
                         TextSpan(
@@ -97,7 +97,8 @@ class LoginPage extends StatelessWidget {
                             const TextSpan(text: ' '),
                             TextSpan(
                               text: context.l10n.featureLogin.signUpLabel,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style: context
+                                  .designSystem.typography.fontWeightBold,
                             ),
                           ],
                         ),

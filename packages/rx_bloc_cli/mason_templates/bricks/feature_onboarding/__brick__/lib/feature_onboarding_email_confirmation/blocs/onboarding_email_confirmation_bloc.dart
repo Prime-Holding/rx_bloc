@@ -12,6 +12,8 @@ import '../../base/models/errors/error_model.dart';
 
 part 'onboarding_email_confirmation_bloc.rxb.g.dart';
 
+const _countDownSeconds = 10;
+
 /// A contract class containing all events of the OnboardingEmailConfirmationBloC.
 abstract class OnboardingEmailConfirmationBlocEvents {
   /// Opens the mail client/selection dialog with the given [title]
@@ -59,20 +61,12 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
     this._countDownService,
   ) {
     /// Used for demo purposes, should be removed in a real app
-    _$openMockDeepLinkSuccessEvent
-        .switchMap(
-            (_) => _onboardingService.openMockEmailSuccessLink().asResultStream())
-        .setResultStateHandler(this)
-        .listen((_) {})
-        .addTo(_compositeSubscription);
-
-    /// Used for demo purposes, should be removed in a real app
-    _$openMockDeepLinkErrorEvent
-        .switchMap(
-            (_) => _onboardingService.openMockEmailErrorLink().asResultStream())
-        .setResultStateHandler(this)
-        .listen((_) {})
-        .addTo(_compositeSubscription);
+    Rx.merge([
+      _$openMockDeepLinkErrorEvent.switchMap(
+          (_) => _onboardingService.openMockEmailErrorLink().asResultStream()),
+      _$openMockDeepLinkSuccessEvent.switchMap((_) =>
+          _onboardingService.openMockEmailSuccessLink().asResultStream()),
+    ]).setResultStateHandler(this).listen((_) {}).addTo(_compositeSubscription);
   }
 
   final String _email;
@@ -100,17 +94,15 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
       .whereSuccess()
       .startWith(_email);
 
-  static const countDownSeconds = 10;
-
   @override
   Stream<bool> _mapToIsSendNewLinkActiveState() =>
       _$disableSendNewLinkEvent.switchMap((value) => _countDownService
-          .startCountDown(countDown: countDownSeconds)
+          .startCountDown(countDown: _countDownSeconds)
           .map((event) => event > 0));
 
   Future<String> _resendConfirmationEmail() async {
     final user = await _onboardingService.resendConfirmationEmail();
-    _$disableSendNewLinkEvent.add(null);
+    disableSendNewLink();
     return user.email;
   }
 }
