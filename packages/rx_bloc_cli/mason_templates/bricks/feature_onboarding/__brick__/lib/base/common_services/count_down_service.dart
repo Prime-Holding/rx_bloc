@@ -5,12 +5,8 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class CountDownService {
-  static const maxTime = 50;
-  static const countDownTime = 300;
-  static const countZeroDownTime = 0;
-
-  /// Starts a countdown from [maxTime] to 0
-  Stream<int> startCountDown({int countDown = maxTime}) => Stream.periodic(
+  /// Starts a countdown from the provided number of seconds down to 0
+  Stream<int> startCountDown({int countDown = 50}) => Stream.periodic(
         const Duration(seconds: 1),
         (computationCount) => countDown - computationCount - 1,
       ).takeWhile((count) => count >= 0).startWith(countDown);

@@ -12,7 +12,10 @@ class CredentialsModel with EquatableMixin {
     required this.password,
   });
 
+  /// User provided email address
   final String email;
+
+  /// User provided password
   final String password;
 
   factory CredentialsModel.fromJson(Map<String, dynamic> json) =>

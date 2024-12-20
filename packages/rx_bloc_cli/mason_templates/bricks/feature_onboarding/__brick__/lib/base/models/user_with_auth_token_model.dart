@@ -17,7 +17,10 @@ class UserWithAuthTokenModel with EquatableMixin {
     required this.authToken,
   });
 
+  /// User mode with information about the user profile
   final UserModel user;
+
+  /// User authentication token
   final AuthTokenModel authToken;
 
   factory UserWithAuthTokenModel.fromJson(Map<String, dynamic> json) =>

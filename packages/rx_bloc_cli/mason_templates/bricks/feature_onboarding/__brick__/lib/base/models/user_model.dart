@@ -20,10 +20,23 @@ class UserModel with EquatableMixin {
     required this.confirmedCredentials,
   });
 
+  /// Unique identifier of the user
   final String id;
+
+  /// Email address
   final String email;
+
+  /// Phone number including the country code
   final String? phoneNumber;
+
+  /// Type of user account indicating the registration status.
+  ///
+  /// If a user account is created but not yet confirmed, the role will be
+  /// set to `TempUser`. Once the user confirms account details, the role
+  /// is updated to `User`.
   final UserRole role;
+
+  /// Information about the confirmed credentials of the user
   final ConfirmedCredentialsModel confirmedCredentials;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
