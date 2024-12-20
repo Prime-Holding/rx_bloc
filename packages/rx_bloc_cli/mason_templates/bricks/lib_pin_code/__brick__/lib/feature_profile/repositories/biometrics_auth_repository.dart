@@ -5,6 +5,5 @@ class BiometricsAuthRepository {
 
   BiometricsAuthRepository(this._dataSource);
 
-  Future<bool> isBiometricsAuthEnabled() async =>
-      (await _dataSource.availableBiometrics).isNotEmpty;
+  Future<bool> isDeviceSupported() async => await _dataSource.isDeviceSupported;
 }

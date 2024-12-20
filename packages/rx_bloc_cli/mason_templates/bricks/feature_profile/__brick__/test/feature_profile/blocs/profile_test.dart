@@ -28,7 +28,7 @@ void main() {
         .thenAnswer((_) => Future.value(areNotificationsEnabled));
     when(_notificationService.syncNotificationSettings())
         .thenAnswer(syncNotificationSettings ?? (_) => Future.value()); {{#enable_pin_code}}
-    when(biometricsService.isBiometricsAuthEnabled())
+    when(biometricsService.isDeviceSupported())
         .thenAnswer((_) => Future.value(true)); {{/enable_pin_code}}
   }
 
@@ -112,16 +112,16 @@ void main() {
   }); {{#enable_pin_code}}
 
    group(
-    'test profile_bloc_dart isBiometricsAuthEnabledState',
+    'test profile_bloc_dart isDeviceSupportedState',
     () {
       rxBlocTest<ProfileBlocType, bool>(
-        'test profile_bloc_dart isBiometricsAuthEnabledState',
+        'test profile_bloc_dart isDeviceSupportedState',
         build: () async {
           defineWhen();
           return profileBloc();
         },
         act: (bloc) async {},
-        state: (bloc) => bloc.states.isBiometricsAuthEnabled,
+        state: (bloc) => bloc.states.isDeviceSupported,
         expect: [
           true,
         ],
