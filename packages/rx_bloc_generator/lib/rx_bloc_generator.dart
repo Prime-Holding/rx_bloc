@@ -1,5 +1,3 @@
-library rx_bloc_generator;
-
 import 'dart:async';
 
 import 'package:analyzer/dart/constant/value.dart';
