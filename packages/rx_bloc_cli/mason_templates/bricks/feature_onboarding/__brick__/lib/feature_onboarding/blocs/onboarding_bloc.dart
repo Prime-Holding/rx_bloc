@@ -143,10 +143,6 @@ class OnboardingBloc extends $OnboardingBloc {
   }
 
   Future<void> _saveToken(AuthTokenModel authToken) async {
-    // TODO: set profile to not temporary when the onboarding is done
-    // (after the SMS confirmation) #893
-    // (/api/permissions should be called once again at the end of the flow as well,
-    // before redirecting to DashboardRoute)
     await _onboardingService.setIsProfileTemporary(true);
     await _authService.saveToken(authToken.token);
     await _authService.saveRefreshToken(authToken.refreshToken);
