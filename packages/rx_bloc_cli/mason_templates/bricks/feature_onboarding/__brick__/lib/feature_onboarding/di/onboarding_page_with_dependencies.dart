@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../base/common_services/validators/login_validator_service.dart';
+import '../../base/common_services/validators/credentials_validator_service.dart';
 import '../blocs/onboarding_bloc.dart';
 import '../views/onboarding_page.dart';
 
