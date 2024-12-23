@@ -13,12 +13,16 @@ class InfoPlistProcessor extends StringProcessor {
     if (input == null) return '';
     final buffer = StringBuffer(input!);
 
+    if (args.deepLinkEnabled) {
+      _updateInfoPlistDeepLink(buffer);
+    }
     if (args.qrScannerEnabled) {
       _updateInfoPlistPermissionsCamera(buffer);
     }
     if (args.pinCodeEnabled) {
       _updateInfoPlistPermissionsBiometrics(buffer);
     }
+
     return buffer.toString();
   }
 
@@ -36,5 +40,30 @@ class InfoPlistProcessor extends StringProcessor {
     <string>This app needs face id to use biometrics authentication</string>
     ''';
     buffer.insertBefore('</dict>', permissions);
+  }
+
+  void _updateInfoPlistDeepLink(StringBuffer buffer) {
+    final _urlSchemes = '''<key>FlutterDeepLinkingEnabled</key>
+    <true/>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>$packageId</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>${args.projectName}</string>
+        </array>
+      </dict>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>${args.projectName}</string>
+      <string>mailto</string>
+    </array>
+    ''';
+    buffer.insertBefore('</dict>', _urlSchemes);
   }
 }

@@ -1,10 +1,10 @@
 {{> licence.dart }}
 
-import '../../assets.dart';
-import '../../base/models/errors/error_model.dart';
+import '../../../assets.dart';
+import '../../models/errors/error_model.dart';
 
-class LoginValidatorService {
-  const LoginValidatorService();
+class CredentialsValidatorService {
+  const CredentialsValidatorService();
 
   static final _emailRexExp = RegExp(
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');

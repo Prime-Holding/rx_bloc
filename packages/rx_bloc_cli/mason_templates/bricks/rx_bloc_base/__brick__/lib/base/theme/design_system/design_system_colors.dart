@@ -13,7 +13,8 @@ class DesignSystemColors {
         primaryColor = const Color(0xff2196f3),
         backgroundColor = Colors.white,
         scaffoldBackgroundColor = Colors.white,
-        updateIconAppBarColor = Colors.black{{#enable_social_logins}},
+        updateIconAppBarColor = Colors.black,
+        dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFF000000),
         googleBackground = const Color(0xFFFFFFFF),
         socialButtonText = const Color.fromRGBO(0, 0, 0, 0.54),
@@ -24,12 +25,12 @@ class DesignSystemColors {
         primaryColor = const Color(0xffce93d8),
         backgroundColor = Colors.black,
         scaffoldBackgroundColor = Colors.black,
-        updateIconAppBarColor = Colors.white{{#enable_social_logins}},
+        updateIconAppBarColor = Colors.white,
+        dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFFFFFFFF),
         googleBackground = Colors.black,
         socialButtonText = const Color(0xFFFFFFFF),
-        facebookBackground = const Color(0xFFFFFFFF)
-        {{/enable_social_logins}};
+        facebookBackground = const Color(0xFFFFFFFF){{/enable_social_logins}};
 
   final Brightness brightness;
 
@@ -40,6 +41,8 @@ class DesignSystemColors {
   final Color backgroundColor;
 
   final Color scaffoldBackgroundColor;
+
+  final Color dividerColor;
 
   final errorColor = Colors.red;
 
@@ -91,11 +94,12 @@ class DesignSystemColors {
 
   final pinBgSuccessColor = const Color.fromRGBO(102, 240, 174, .5);
 
-  final Color pinSuccessBorderColor = Colors.green;
-
   final pinErrorBorderColor = Colors.red;
 
   final pinBgSubmittedColor = const Color.fromRGBO(222, 231, 240, .7);
-{{/enable_feature_otp}}
+{{/enable_feature_otp}}{{#has_otp}}
+
+  final Color pinSuccessBorderColor = Colors.green;{{/has_otp}}
+
   ///
 }

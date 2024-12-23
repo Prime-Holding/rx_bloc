@@ -11,8 +11,8 @@ dependencies: {{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
   alice_dio: ^1.0.6{{/enable_dev_menu}}
   collection: ^1.18.0
-  copy_with_extension: ^5.0.4{{#enable_pin_code}}
-  crypto: ^3.0.6{{/enable_pin_code}}
+  copy_with_extension: ^6.0.0 {{#has_authentication}}
+  crypto: ^3.0.6 {{/has_authentication}}
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   equatable: ^2.0.5{{#analytics}}
@@ -46,11 +46,12 @@ dependencies: {{#enable_dev_menu}}
   shelf: ^1.4.1 # This package is used for the local server (if not used, can be removed)
   shelf_router: ^1.1.4 # This package is used for the local server (if not used, can be removed)
   shelf_static: ^1.1.3 # This package is used for the local server (if not used, can be removed){{#enable_social_logins}}
-  sign_in_with_apple: ^6.1.3{{/enable_social_logins}}{{#enable_mfa}}
+  sign_in_with_apple: ^6.1.3{{/enable_social_logins}}{{#enable_feature_onboarding}}
+  url_launcher: ^6.3.1{{/enable_feature_onboarding}}{{#enable_mfa}}
   uuid: ^4.5.1{{/enable_mfa}}
   widget_toolkit: ^0.2.0 {{#enable_pin_code}}
-  widget_toolkit_biometrics: ^0.1.0 {{/enable_pin_code}} {{#enable_feature_otp}}
-  widget_toolkit_otp: ^0.1.0{{/enable_feature_otp}}{{#enable_pin_code}}
+  widget_toolkit_biometrics: ^0.1.0 {{/enable_pin_code}} {{#has_otp}}
+  widget_toolkit_otp: ^0.1.0{{/has_otp}}{{#enable_pin_code}}
   widget_toolkit_pin: ^0.3.0{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
   widget_toolkit_qr: ^0.2.0{{/enable_feature_qr_scanner}}
   
@@ -61,7 +62,7 @@ dev_dependencies:
   # flutter_driver:
   #   sdk: flutter
   clean_coverage: ^0.0.3
-  copy_with_extension_gen: ^5.0.4
+  copy_with_extension_gen: ^6.0.0
   flutter_lints: any
   flutter_test:
     sdk: flutter
@@ -107,9 +108,11 @@ r_flutter:
     - name: feature_counter{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
     - name: feature_deep_link
     - name: feature_enter_message{{/enable_feature_deeplinks}}{{#has_authentication}}
-    - name: feature_login{{/has_authentication}}
+    - name: feature_login{{/has_authentication}}{{#enable_feature_onboarding}}
+    - name: feature_onboarding{{/enable_feature_onboarding}}
     - name: feature_notifications{{#enable_feature_otp}}
-    - name: feature_otp{{/enable_feature_otp}}{{#enable_profile}}
+    - name: feature_otp{{/enable_feature_otp}}{{#enable_feature_onboarding}}
+    - name: feature_onboarding{{/enable_feature_onboarding}}{{#enable_profile}}
     - name: feature_profile{{/enable_profile}}{{#enable_feature_qr_scanner}}
     - name: feature_qr{{/enable_feature_qr_scanner}}{{#has_showcase}}
     - name: feature_showcase{{/has_showcase}}{{#enable_feature_widget_toolkit}}

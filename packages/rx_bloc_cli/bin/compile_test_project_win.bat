@@ -21,6 +21,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_distribut
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_qr_scanner ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_profile ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_showcase ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_onboarding ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y rx_bloc_flavor_config.dart lib\src\templates\ ^
 & move /Y rx_bloc_distribution_repository.dart lib\src\templates\ ^
@@ -64,6 +65,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_distribut
 --cicd fastlane ^
 --enable-feature-qr-scanner ^
 --enable-profile ^
+--enable-feature-onboarding ^
 --no-interactive ^
 example/testapp ^
 & cd example/testapp

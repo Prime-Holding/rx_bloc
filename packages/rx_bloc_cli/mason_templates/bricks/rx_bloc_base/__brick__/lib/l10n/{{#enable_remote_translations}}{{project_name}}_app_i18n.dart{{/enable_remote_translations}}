@@ -15,7 +15,8 @@ import 'network_lookup/lib_pin_code_lookup.dart';{{/enable_pin_code}}
 import 'network_lookup/lib_router_lookup.dart';{{#has_authentication}}
 import 'network_lookup/login_lookup.dart';{{/has_authentication}}{{#enable_mfa}}
 import 'network_lookup/mfa_lookup.dart';{{/enable_mfa}}
-import 'network_lookup/notifications_lookup.dart';{{#enable_feature_otp}}
+import 'network_lookup/notifications_lookup.dart';{{#enable_feature_onboarding}}
+import 'network_lookup/onboarding_lookup.dart';{{/enable_feature_onboarding}}{{#enable_feature_otp}}
 import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}{{#enable_profile}}
 import 'network_lookup/profile_lookup.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
 import 'network_lookup/qr_code_lookup.dart';{{/enable_feature_qr_scanner}} {{#has_showcase}}
@@ -89,7 +90,11 @@ class AppI18nLookup extends I18nLookup {
   I18nErrorLookup createErrorLookup() => AppI18nErrorLookup();
 
   @override
-  I18nFieldLookup createFieldLookup() => AppI18nFieldLookup();{{#has_authentication}}
+  I18nFieldLookup createFieldLookup() => AppI18nFieldLookup();{{#enable_feature_onboarding}}
+
+  @override
+  I18nFeatureOnboardingLookup createFeatureOnboardingLookup() =>
+      AppI18nOnboardingLookup();{{/enable_feature_onboarding}}{{#has_authentication}}
 
   @override
   I18nFeatureLoginLookup createFeatureLoginLookup() => AppI18nLoginLookup();
@@ -138,7 +143,6 @@ class AppI18nLookup extends I18nLookup {
 
   @override
   I18nLibRouterLookup createLibRouterLookup() => AppI18nLibRouterLookup();{{#enable_feature_qr_scanner}}
-
 
   @override
   I18nFeatureQrLookup createFeatureQrLookup() => AppI18nQrLookup();{{/enable_feature_qr_scanner}} {{#has_showcase}}
