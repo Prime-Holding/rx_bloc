@@ -4,7 +4,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
-import '../../base/common_services/validators/login_validator_service.dart';
+import '../../base/common_services/validators/credentials_validator_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/credentials_model.dart';
 import '../../base/models/errors/error_model.dart';
@@ -66,7 +66,7 @@ class LoginBloc extends $LoginBloc {
 
   final CoordinatorBlocType _coordinatorBloc;
   final UserAccountService _userAccountService;
-  final LoginValidatorService _validatorService;
+  final CredentialsValidatorService _validatorService;
   final RouterBlocType _routerBloc;
 
   @override

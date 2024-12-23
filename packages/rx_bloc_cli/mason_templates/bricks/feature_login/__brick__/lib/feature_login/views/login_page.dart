@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Divider(
-                              color: context.designSystem.colors.gray),
+                              color: context.designSystem.colors.dividerColor),
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
@@ -61,7 +61,7 @@ class LoginPage extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Divider(
-                              color: context.designSystem.colors.gray),
+                              color: context.designSystem.colors.dividerColor),
                             ),
                           ],
                       ),
@@ -92,7 +92,9 @@ class LoginPage extends StatelessWidget {
                         TextSpan(
                           text: context.l10n.featureLogin.dontHaveAccount,
                           style: context.designSystem.typography.h2Reg16
-                              .copyWith(color: context.designSystem.colors.gray),
+                              .copyWith(
+                                  color:
+                                      context.designSystem.colors.dividerColor),
                           children: [
                             const TextSpan(text: ' '),
                             TextSpan(

@@ -5,9 +5,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/app/config/app_constants.dart';
 import '../../base/common_services/onboarding_service.dart';
-import '../../base/common_services/validators/login_validator_service.dart';
+import '../../base/common_services/validators/credentials_validator_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
-import '../../base/extensions/string_extensions.dart';
 import '../../base/models/credentials_model.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
@@ -91,7 +90,7 @@ class OnboardingBloc extends $OnboardingBloc {
   final AuthService _authService;
   final PermissionsService _permissionsService;
   final OnboardingService _onboardingService;
-  final LoginValidatorService _validatorService;
+  final CredentialsValidatorService _validatorService;
   final RouterBlocType _routerBloc;
 
   @override
@@ -139,7 +138,7 @@ class OnboardingBloc extends $OnboardingBloc {
 
     return CredentialsModel(
       email: (emailResult as ResultSuccess<String>).data,
-      password: (passwordResult as ResultSuccess<String>).data.toSha256(),
+      password: (passwordResult as ResultSuccess<String>).data,
     );
   }
 

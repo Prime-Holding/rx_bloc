@@ -21,8 +21,8 @@ class OnboardingPageWithDependencies extends StatelessWidget {
       );
 
   List<Provider> get _services => [
-        Provider<LoginValidatorService>(
-          create: (context) => const LoginValidatorService(),
+        Provider<CredentialsValidatorService>(
+          create: (context) => const CredentialsValidatorService(),
         ),
       ];
 

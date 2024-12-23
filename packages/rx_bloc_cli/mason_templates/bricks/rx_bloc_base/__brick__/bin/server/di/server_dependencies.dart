@@ -8,7 +8,8 @@ import '../controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}
 import '../controllers/mfa_controller.dart';{{/enable_mfa}}
 import '../controllers/permissions_controller.dart';{{#enable_pin_code}}
 import '../controllers/pin_code_controller.dart';{{/enable_pin_code}}
-import '../controllers/push_notifications_controller.dart';
+import '../controllers/push_notifications_controller.dart';{{#enable_feature_onboarding}}
+import '../controllers/registration_controller.dart';{{/enable_feature_onboarding}}
 import '../controllers/translations_controller.dart';{{#enable_feature_onboarding}}
 import '../controllers/users_controller.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
 import '../repositories/auth_token_repository.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
@@ -66,6 +67,7 @@ class ServerDependencies{
     ..addController(PinCodeController(di.get()))
     {{/enable_pin_code}}{{#enable_feature_onboarding}}
     ..addController(UsersController(di.get(), di.get()))
+    ..addController(RegistrationController(di.get(), di.get()))
     ..addController(CountryCodesController(di.get()))
     {{/enable_feature_onboarding}}
     ;

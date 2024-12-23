@@ -5,7 +5,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../../base/common_services/validators/login_validator_service.dart';
+import '../../base/common_services/validators/credentials_validator_service.dart';
 import '../blocs/login_bloc.dart';
 import '../views/login_page.dart';
 
@@ -22,8 +22,8 @@ class LoginPageWithDependencies extends StatelessWidget {
     );
 
   List<SingleChildWidget> get _services => [
-        Provider<LoginValidatorService>(
-          create: (context) => const LoginValidatorService(),
+        Provider<CredentialsValidatorService>(
+          create: (context) => const CredentialsValidatorService(),
         ),
       ];
 
