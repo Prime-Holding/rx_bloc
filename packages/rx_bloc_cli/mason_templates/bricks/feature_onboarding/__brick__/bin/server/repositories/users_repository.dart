@@ -27,10 +27,11 @@ class UsersRepository {
   }) {
     final userIndex =
         _registeredUsers.indexWhere((element) => element.id == userId);
-    _registeredUsers[userIndex] = _registeredUsers[userIndex].copyWith(
+    final user = _registeredUsers[userIndex];
+    _registeredUsers[userIndex] = user.copyWith(
       phoneNumber: phoneNumber,
-      role: role,
-      confirmedCredentials: confirmedCredentials,
+      role: role ?? user.role,
+      confirmedCredentials: confirmedCredentials ?? user.confirmedCredentials,
     );
   }
 

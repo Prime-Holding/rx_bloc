@@ -4,6 +4,7 @@
 import 'dart:io' show Platform;{{/enable_social_logins}}
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../blocs/login_bloc.dart';
