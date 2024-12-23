@@ -61,6 +61,7 @@ class InfoPlistProcessor extends StringProcessor {
     <key>LSApplicationQueriesSchemes</key>
     <array>
       <string>${args.projectName}</string>
+      <string>mailto</string>
     </array>
     ''';
     buffer.insertBefore('</dict>', _urlSchemes);

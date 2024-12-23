@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../../base/common_services/count_down_service.dart';
 import '../../base/common_services/open_mail_app_service.dart';
-import '../../base/data_sources/local/open_mail_app_local_data_source.dart';
 import '../../base/repositories/open_mail_app_repository.dart';
 import '../blocs/onboarding_email_confirmation_bloc.dart';
 import '../views/onboarding_email_confirmation_page.dart';
@@ -22,19 +21,12 @@ class OnboardingEmailConfirmationPageWithDependencies extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
-          ..._dataSources,
           ..._repositories,
           ..._services,
           ..._blocs,
         ],
         child: const OnboardingEmailConfirmationPage(),
       );
-
-  List<Provider> get _dataSources => [
-        Provider<OpenMailAppDataSource>(
-          create: (context) => OpenMailAppDataSource(),
-        ),
-      ];
 
   List<Provider> get _repositories => [
         Provider<OpenMailAppRepository>(

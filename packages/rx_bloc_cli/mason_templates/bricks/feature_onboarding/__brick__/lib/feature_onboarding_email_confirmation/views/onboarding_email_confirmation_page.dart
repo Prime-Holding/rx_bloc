@@ -7,7 +7,6 @@ import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
-import '../../base/common_ui_components/app_open_mail_widget.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/models/errors/error_model.dart';
@@ -43,10 +42,6 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                     Center(
                       child: Column(
                         children: [
-                          AppOpenMailWidget<
-                              OnboardingEmailConfirmationBlocType>(
-                            openMailState: (bloc) => bloc.states.openMailApp,
-                          ),
                           AppErrorModalWidget<
                               OnboardingEmailConfirmationBlocType>(
                             errorState: (bloc) => bloc.states.errors,

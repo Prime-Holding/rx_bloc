@@ -1,7 +1,5 @@
 {{> licence.dart }}
 
-import 'package:open_mail/open_mail.dart';
-
 import '../repositories/open_mail_app_repository.dart';
 
 class OpenMailAppService {
@@ -9,7 +7,9 @@ class OpenMailAppService {
 
   OpenMailAppService(this._openMailAppRepository);
 
-  /// Opens the mail client/selection dialog with the given [title]
-  Future<List<MailApp>> openMailApp(String title) =>
-      _openMailAppRepository.openMailApp(title);
+  /// Opens the mail client.
+  ///
+  /// Currently opens the "Send e-mail" page in the client, should be replaced
+  /// with a dialog of available mail clients to choose from
+  Future<void> openMailApp() => _openMailAppRepository.openMailApp();
 }

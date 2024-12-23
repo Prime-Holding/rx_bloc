@@ -1,15 +1,18 @@
 {{> licence.dart }}
 
-import 'package:open_mail/open_mail.dart';
-
-import '../data_sources/local/open_mail_app_local_data_source.dart';
+import 'url_launcher_repository.dart';
 
 class OpenMailAppRepository {
-  final OpenMailAppDataSource _openMailAppDataSource;
+  OpenMailAppRepository(this._urlLauncherRepository);
 
-  OpenMailAppRepository(this._openMailAppDataSource);
+  final UrlLauncherRepository _urlLauncherRepository;
 
-  /// Opens the mail client/selection dialog with the given [title]
-  Future<List<MailApp>> openMailApp(String title) =>
-      _openMailAppDataSource.openMailApp(title);
+  /// Opens the mail client.
+  ///
+  /// Currently opens the "Send e-mail" page in the client, should be replaced
+  /// with a dialog of available mail clients to choose from
+  Future<void> openMailApp() => _urlLauncherRepository.openUri(
+        'mailto:',
+        isExternalApplicationMode: true,
+      );
 }

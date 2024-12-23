@@ -87,12 +87,24 @@ class AndroidManifestProcessor extends StringProcessor {
 ''';
     }
 
-    doc.addNodesToElement('activity', [
-      XmlComment(' Deep links '),
-      deeplinkMetadataNode,
-      deeplinkIntent.toXmlNode(),
-      XmlComment(' /Deep links '),
-    ]);
+    final mailtoIntent = '''<intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="mailto" />
+        </intent>'''
+        .toXmlNode();
+
+    doc
+      ..addNodesToElement('activity', [
+        XmlComment(' Deep links '),
+        deeplinkMetadataNode,
+        deeplinkIntent.toXmlNode(),
+        XmlComment(' /Deep links '),
+      ])
+      ..addNodeToElement(
+        'queries',
+        mailtoIntent,
+      );
   }
 
   void _addPushNotificationSupport(XmlDocument doc) {

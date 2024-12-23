@@ -36,8 +36,7 @@ dependencies: {{#enable_dev_menu}}
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.9.0
   jwt_decoder: ^2.0.1{{#enable_pin_code}}
-  local_session_timeout: ^3.2.0{{/enable_pin_code}}{{#enable_feature_onboarding}}
-  open_mail: ^0.0.5{{/enable_feature_onboarding}}
+  local_session_timeout: ^3.2.0{{/enable_pin_code}}
   provider: ^6.1.2
   retrofit: ^4.4.1
   rx_bloc: ^6.0.0

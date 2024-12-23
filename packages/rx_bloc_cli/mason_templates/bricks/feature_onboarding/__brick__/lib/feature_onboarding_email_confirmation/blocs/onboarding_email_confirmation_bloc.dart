@@ -1,6 +1,5 @@
 {{> licence.dart }}
 
-import 'package:open_mail/open_mail.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -43,7 +42,7 @@ abstract class OnboardingEmailConfirmationBlocStates {
   Stream<ErrorModel> get errors;
 
   /// State which returns a list of available email apps on the device
-  Stream<List<MailApp>> get openMailApp;
+  ConnectableStream<void> get openMailApp;
 
   /// The email state
   Stream<String> get email;
@@ -60,6 +59,8 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
     this._onboardingService,
     this._countDownService,
   ) {
+    openMailApp.connect().addTo(_compositeSubscription);
+
     /// Used for demo purposes, should be removed in a real app
     Rx.merge([
       _$openMockDeepLinkErrorEvent.switchMap(
@@ -81,11 +82,11 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  Stream<List<MailApp>> _mapToOpenMailAppState() => _$openMailClientEvent
-      .switchMap(
-          (title) => _openMailAppService.openMailApp(title).asResultStream())
+  ConnectableStream<void> _mapToOpenMailAppState() => _$openMailClientEvent
+      .switchMap((title) => _openMailAppService.openMailApp().asResultStream())
       .setResultStateHandler(this)
-      .whereSuccess();
+      .whereSuccess()
+      .publish();
 
   @override
   Stream<String> _mapToEmailState() => _$sendNewLinkEvent
