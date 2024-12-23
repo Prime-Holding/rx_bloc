@@ -8,8 +8,8 @@ import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/feature_login/blocs/login_bloc.dart';
 import 'package:{{project_name}}/lib_auth/services/user_account_service.dart';
 
-import '../../base/common_blocs/coordinator_bloc_mock.dart';{{#enable_feature_onboarding}}
-import '../../base/common_blocs/router_bloc_mock.dart';{{/enable_feature_onboarding}}
+import '../../base/common_blocs/coordinator_bloc_mock.dart';
+import '../../base/common_blocs/router_bloc_mock.dart';
 import '../stubs.dart';
 import 'login_test.mocks.dart';
 
@@ -62,8 +62,8 @@ void main() {
   LoginBloc loginBloc() => LoginBloc(
         coordinatorBloc,
         userAccountService,
-        validatorService,{{#enable_feature_onboarding}}
-        routerBlocMockFactory(),{{/enable_feature_onboarding}}
+        validatorService,
+        routerBlocMockFactory(),
       );
   setUp(() {
     coordinatorBloc = coordinatorBlocMockFactory();
