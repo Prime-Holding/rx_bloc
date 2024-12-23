@@ -550,6 +550,9 @@ The onboarding feature introduces an onboarding flow where the user can register
 The flow includes several screens which allow them to provide an email, password and phone number. 
 Each feature includes input validation as well as confirmation steps for the email and phone number.
 The feature also introduces a way to resume the onboarding process from where they left off last time if they didn't complete their account.
+
+For details on the API contracts used in the onboarding feature, please refer to the [API contracts][feature_onboarding_api].
+
 {{/enable_feature_onboarding}}
 
 ## Next Steps
@@ -599,3 +602,4 @@ The feature also introduces a way to resume the onboarding process from where th
 [golden_tests_with_smart_widgets_lnk]: docs/golden_tests.md
 [rx_bloc_cli_mfa_lnk]: docs/mfa.md
 [feature_creation]: docs/feature_creation.md
+[feature_onboarding_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/mason_templates/bricks/feature_onboarding/API_CONTRACTS.md

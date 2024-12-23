@@ -11,8 +11,7 @@ dependencies: {{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
   alice_dio: ^1.0.6{{/enable_dev_menu}}
   collection: ^1.18.0
-  copy_with_extension: ^5.0.4{{#has_authentication}}
-  crypto: ^3.0.6{{/has_authentication}}
+  copy_with_extension: ^6.0.0
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   equatable: ^2.0.5{{#analytics}}
@@ -63,7 +62,7 @@ dev_dependencies:
   # flutter_driver:
   #   sdk: flutter
   clean_coverage: ^0.0.3
-  copy_with_extension_gen: ^5.0.4
+  copy_with_extension_gen: ^6.0.0
   flutter_lints: any
   flutter_test:
     sdk: flutter
