@@ -17,7 +17,10 @@ class RoutesPath {  {{#has_showcase}}
   static const widgetToolkit = 'widget-toolkit';{{/enable_feature_widget_toolkit}}{{#enable_feature_otp}}
   static const otpRoute = '/otp-screen';{{/enable_feature_otp}}
   static const notifications = 'notifications';{{#has_authentication}}
-  static const login = '/login';{{/has_authentication}}{{#enable_feature_deeplinks}}
+  static const login = '/login';{{/has_authentication}}{{#enable_feature_onboarding}}
+  static const onboarding = '/onboarding';
+  static const onboardingEmailConfirmation = '/onboarding/email-confirmation';
+  static const onboardingEmailConfirmed = '/onboarding/email-confirmed/:token';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
   static const enterMessage = 'enterMessage';
   static const deepLinks = 'deepLinks';
   static const deepLinkDetails = ':id';{{/enable_feature_deeplinks}}

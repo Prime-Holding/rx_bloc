@@ -4,8 +4,12 @@
 import 'dart:io' show Platform;{{/enable_social_logins}}
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:widget_toolkit/ui_components.dart';
 
-import '../../app_extensions.dart';{{#enable_social_logins}}
+import '../blocs/login_bloc.dart';
+import '../../app_extensions.dart';
+import '../../base/extensions/async_snapshot_extensions.dart';{{#enable_social_logins}}
 import '../../lib_social_logins/ui_components/apple_login_widget.dart';
 import '../../lib_social_logins/ui_components/facebook_login_widget.dart';
 import '../../lib_social_logins/ui_components/google_login_widget.dart';{{/enable_social_logins}}{{#enable_login}}
@@ -44,22 +48,22 @@ class LoginPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            flex: 1,
-                            child: Divider(
-                                color: context.designSystem.colors.gray),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: context.designSystem.spacing.xs),
-                            child: Text(context.l10n.featureLogin.or),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Divider(
-                                color: context.designSystem.colors.gray),
-                          ),
-                        ],
+                            Expanded(
+                              flex: 1,
+                              child: Divider(
+                              color: context.designSystem.colors.dividerColor),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                              horizontal: context.designSystem.spacing.xs),
+                              child: Text(context.l10n.featureLogin.or),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Divider(
+                              color: context.designSystem.colors.dividerColor),
+                            ),
+                          ],
                       ),
                       SizedBox(height: context.designSystem.spacing.m),
                       const FacebookLoginWidget(),
@@ -75,23 +79,37 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text.rich(
-                  textAlign: TextAlign.center,
-                  TextSpan(
-                    text: context.l10n.featureLogin.dontHaveAccount,
-                    style: context.designSystem.typography.h2Reg16
-                        .copyWith(color: context.designSystem.colors.gray),
-                    children: [
-                      const TextSpan(text: ' '),
-                      TextSpan(
-                        text: context.l10n.featureLogin.signUpLabel,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                RxBlocBuilder<LoginBlocType, bool>(
+                  state: (bloc) => bloc.states.isLoading,
+                  builder: (context, isLoading, bloc) => Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: isLoading.isLoading
+                          ? null
+                          : bloc.events.goToRegistration,
+                      child: Text.rich(
+                        textAlign: TextAlign.center,
+                        TextSpan(
+                          text: context.l10n.featureLogin.dontHaveAccount,
+                          style: context.designSystem.typography.h2Reg16
+                              .copyWith(
+                                  color:
+                                      context.designSystem.colors.dividerColor),
+                          children: [
+                            const TextSpan(text: ' '),
+                            TextSpan(
+                              text: context.l10n.featureLogin.signUpLabel,
+                              style: context
+                                  .designSystem.typography.h1Bold16,
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
                 SizedBox(height: context.designSystem.spacing.xl),{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
-                Center(child: Text('No login option has been selected for the project.',textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
+                Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
               ],
             ),
           ),

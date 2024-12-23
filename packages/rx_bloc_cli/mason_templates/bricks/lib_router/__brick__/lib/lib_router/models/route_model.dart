@@ -61,7 +61,23 @@ enum RouteModel { {{#has_showcase}}
     pathName: RoutesPath.login,
     fullPath: '/login',
     permissionName: RoutePermissions.login,
-  ),{{/has_authentication}}{{#enable_feature_deeplinks}}
+  ),{{/has_authentication}}{{#enable_feature_onboarding}}
+  onboarding(
+    pathName: RoutesPath.onboarding,
+    fullPath: '/onboarding',
+    permissionName: RoutePermissions.onboarding,
+  ),
+  onboardingEmailConfirmation(
+    pathName: RoutesPath.onboardingEmailConfirmation,
+    fullPath: '/onboarding/email-confirmation',
+    permissionName: RoutePermissions.onboardingEmailConfirmation,
+  ),
+  onboardingEmailConfirmed(
+    pathName: RoutesPath.onboardingEmailConfirmed,
+    fullPath: '/onboarding/email-confirmed/:token',
+    permissionName: RoutePermissions.onboardingEmailConfirmed,
+  ),
+  {{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
   enterMessage(
     pathName: RoutesPath.enterMessage,
     fullPath: '/enterMessage',

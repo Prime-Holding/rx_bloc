@@ -2,13 +2,18 @@
 
 import 'package:shelf/shelf.dart';
 {{#has_authentication}}
-import '../services/authentication_service.dart';{{/has_authentication}}
+import '../services/authentication_service.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
+import '../services/users_service.dart';{{/enable_feature_onboarding}}
 import '../utils/api_controller.dart';
 
 class PermissionsController extends ApiController {
-  PermissionsController({{#has_authentication}}this._authenticationService{{/has_authentication}});{{#has_authentication}}
+  PermissionsController({{#has_authentication}}
+    this._authenticationService,{{#enable_feature_onboarding}}
+    this._usersService,{{/enable_feature_onboarding}}{{/has_authentication}}
+  );{{#has_authentication}}
 
-  final AuthenticationService _authenticationService;{{/has_authentication}}
+  final AuthenticationService _authenticationService;{{#enable_feature_onboarding}}
+  final UsersService _usersService;{{/enable_feature_onboarding}}{{/has_authentication}}
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -21,7 +26,7 @@ class PermissionsController extends ApiController {
 
   Response permissionsHandler(Request request) { {{#has_authentication}}
     final headers = request.headers;
-    if (!headers.containsKey(AuthenticationService.authHeader)) {
+    if (!headers.containsKey(AuthenticationService.authHeader) {{#enable_feature_onboarding}} || _usersService.isTempUser(_authenticationService.getUserIdFromAuthHeader(headers)) {{/enable_feature_onboarding}}) {
       return responseBuilder.buildOK(data: { {{#enable_mfa}}
         'MfaRoute': false,{{/enable_mfa}}{{#enable_pin_code}}
         'CreatePinRoute': false,
@@ -33,6 +38,9 @@ class PermissionsController extends ApiController {
         'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
         'NotificationsRoute': false,
         'LoginRoute': true,{{#enable_feature_onboarding}}
+        'OnboardingRoute': true,
+        'OnboardingEmailConfirmationRoute': true,
+        'OnboardingEmailConfirmedRoute': true,
         'OnboardingPhoneRoute' : true,
         'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
         'EnterMessageRoute': false,
@@ -54,6 +62,9 @@ class PermissionsController extends ApiController {
       'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
       'NotificationsRoute': true,{{#has_authentication}}
       'LoginRoute': true,{{/has_authentication}}{{#enable_feature_onboarding}}
+      'OnboardingRoute': true,
+      'OnboardingEmailConfirmationRoute': true,
+      'OnboardingEmailConfirmedRoute': true,
       'OnboardingPhoneRoute' : true,
       'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,

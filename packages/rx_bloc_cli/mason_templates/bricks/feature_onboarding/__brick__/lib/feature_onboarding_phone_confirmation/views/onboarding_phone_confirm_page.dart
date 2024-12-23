@@ -3,9 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
 import '../../app_extensions.dart';
-import '../../base/models/user_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
-import '../../lib_router/router.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../blocs/onboarding_phone_confirm_bloc.dart';
 
 /// Onboarding page where the user can confirm their phone number by entering a sms code.
 class OnboardingPhoneConfirmPage extends StatelessWidget {
@@ -69,6 +68,9 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
+                    errorState: (bloc) => bloc.states.errors,
+                  ),
                 ],
               ),
             ),
@@ -78,9 +80,9 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
 
   void _onCodeResult(BuildContext context, dynamic result) {
     FocusManager.instance.primaryFocus?.unfocus();
-    final updatedUser = result as UserModel?;
-    if (updatedUser != null && updatedUser.confirmedCredentials.phone) {
-      context.read<RouterBlocType>().events.go(const DashboardRoute());
-    }
+    context
+        .read<OnboardingPhoneConfirmBlocType>()
+        .events
+        .setConfirmationResult(result);
   }
 }
