@@ -84,7 +84,10 @@ enum CreateCommandArguments {
     type: CreateCommandArgumentType.boolean,
     defaultsTo: true,
     prompt: 'Enabled Onboarding feature:',
-    help: 'Enables Onboarding feature capability for the project',
+    help:
+        'Enables Onboarding feature capability for the project. The onboarding '
+        'feature includes a registration flow with unified steps such as email'
+        'and password authentication and email and phone verification',
   ),
 
   /// Dev menu

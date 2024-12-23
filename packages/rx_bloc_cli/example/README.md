@@ -22,8 +22,9 @@
 18. [CI/CD](#cicd)
 19. [Feature Pin Code](#feature-pin-code)
 20. [Multi-Factor Authentication](#multi-factor-authentication)
-21. [Feature QR Code](#feature-qr-code)
-22. [Next Steps](#next-steps)
+22. [Feature QR Code](#feature-qr-code)
+22. [Feature onboarding](#feature-onboarding)
+23. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -541,6 +542,16 @@ For more info please visit [widget_toolkit_qr](https://pub.dev/packages/widget_t
 
 On iOS, an issue may occur during the initial build of the application. This can be resolved by opening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
 
+
+
+## Feature Onboarding
+
+The onboarding feature introduces an onboarding flow where the user can register their account. 
+The flow includes several screens which allow them to provide an email, password and phone number. 
+Each feature includes input validation as well as confirmation steps for the email and phone number.
+The feature also introduces a way to resume the onboarding process from where they left off last time if they didn't complete their account.
+
+
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.
@@ -587,4 +598,4 @@ On iOS, an issue may occur during the initial build of the application. This can
 [rx_bloc_cli_cd_setup_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md
 [golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
 [rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
-[feature_creation]: docs/feature_creation.md
+[feature_creation]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md
