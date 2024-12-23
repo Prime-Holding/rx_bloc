@@ -130,13 +130,16 @@ abstract class $CounterBloc extends RxBlocBase
       BehaviorSubject<({int? p1, int? p2})>.seeded(const (p1: 0, p2: 1));
 
   /// Тhe [Subject] where events sink to by calling [withSeededPositionalEnum]
-  final _$withSeededPositionalEnumEvent =
-      BehaviorSubject<TestEnumParam>.seeded(TestEnumParam.seed);
+  final _$withSeededPositionalEnumEvent = BehaviorSubject<TestEnumParam>.seeded(
+    TestEnumParam.seed,
+  );
 
   /// Тhe [Subject] where events sink to by calling [withSeeded2PositionalEnum]
   final _$withSeeded2PositionalEnumEvent =
-      BehaviorSubject<({int pp1, TestEnumParam pp2})>.seeded(
-          const (pp1: 1, pp2: TestEnumParam.seed));
+      BehaviorSubject<({int pp1, TestEnumParam pp2})>.seeded(const (
+        pp1: 1,
+        pp2: TestEnumParam.seed,
+      ));
 
   /// The state of [isNotIgnored] implemented in [_mapToIsNotIgnoredState]
   late final Stream<bool> _isNotIgnoredState = _mapToIsNotIgnoredState();
@@ -170,222 +173,92 @@ abstract class $CounterBloc extends RxBlocBase
       _$withNamedDefaultParamEvent.add(np);
 
   @override
-  void withPositionalAndOptional(
-    int pp, [
-    int? op,
-  ]) =>
-      _$withPositionalAndOptionalEvent.add((
-        pp: pp,
-        op: op,
-      ));
+  void withPositionalAndOptional(int pp, [int? op]) =>
+      _$withPositionalAndOptionalEvent.add((pp: pp, op: op));
 
   @override
-  void withPositionalAndNamed(
-    int pp, {
-    required int np,
-  }) =>
-      _$withPositionalAndNamedEvent.add((
-        pp: pp,
-        np: np,
-      ));
+  void withPositionalAndNamed(int pp, {required int np}) =>
+      _$withPositionalAndNamedEvent.add((pp: pp, np: np));
 
   @override
-  void withPositionalAndOptionalDefaultParam(
-    int pp, [
-    int op = 0,
-  ]) =>
-      _$withPositionalAndOptionalDefaultParamEvent.add((
-        pp: pp,
-        op: op,
-      ));
+  void withPositionalAndOptionalDefaultParam(int pp, [int op = 0]) =>
+      _$withPositionalAndOptionalDefaultParamEvent.add((pp: pp, op: op));
 
   @override
-  void withPositionalAndNamedDefaultParam(
-    int pp, {
-    int np = 0,
-  }) =>
-      _$withPositionalAndNamedDefaultParamEvent.add((
-        pp: pp,
-        np: np,
-      ));
+  void withPositionalAndNamedDefaultParam(int pp, {int np = 0}) =>
+      _$withPositionalAndNamedDefaultParamEvent.add((pp: pp, np: np));
 
   @override
-  void with2Positional(
-    int pp1,
-    int pp2,
-  ) =>
-      _$with2PositionalEvent.add((
-        pp1: pp1,
-        pp2: pp2,
-      ));
+  void with2Positional(int pp1, int pp2) =>
+      _$with2PositionalEvent.add((pp1: pp1, pp2: pp2));
 
   @override
-  void with2Optional([
-    int? op1,
-    int? op2,
-  ]) =>
-      _$with2OptionalEvent.add((
-        op1: op1,
-        op2: op2,
-      ));
+  void with2Optional([int? op1, int? op2]) =>
+      _$with2OptionalEvent.add((op1: op1, op2: op2));
 
   @override
-  void with2Named({
-    required int np1,
-    required int np2,
-  }) =>
-      _$with2NamedEvent.add((
-        np1: np1,
-        np2: np2,
-      ));
+  void with2Named({required int np1, required int np2}) =>
+      _$with2NamedEvent.add((np1: np1, np2: np2));
 
   @override
-  void with2OptionalDefault([
-    int op1 = 0,
-    int op2 = 0,
-  ]) =>
-      _$with2OptionalDefaultEvent.add((
-        op1: op1,
-        op2: op2,
-      ));
+  void with2OptionalDefault([int op1 = 0, int op2 = 0]) =>
+      _$with2OptionalDefaultEvent.add((op1: op1, op2: op2));
 
   @override
-  void with2NamedDefault({
-    int np1 = 0,
-    int np2 = 0,
-  }) =>
-      _$with2NamedDefaultEvent.add((
-        np1: np1,
-        np2: np2,
-      ));
+  void with2NamedDefault({int np1 = 0, int np2 = 0}) =>
+      _$with2NamedDefaultEvent.add((np1: np1, np2: np2));
 
   @override
-  void with2PositionalAndOptional(
-    int pp1,
-    int pp2, [
-    int? op1,
-  ]) =>
-      _$with2PositionalAndOptionalEvent.add((
-        pp1: pp1,
-        pp2: pp2,
-        op1: op1,
-      ));
+  void with2PositionalAndOptional(int pp1, int pp2, [int? op1]) =>
+      _$with2PositionalAndOptionalEvent.add((pp1: pp1, pp2: pp2, op1: op1));
 
   @override
-  void with2PositionalAndNamed(
-    int pp1,
-    int pp2, {
-    required int np1,
-  }) =>
-      _$with2PositionalAndNamedEvent.add((
-        pp1: pp1,
-        pp2: pp2,
-        np1: np1,
-      ));
+  void with2PositionalAndNamed(int pp1, int pp2, {required int np1}) =>
+      _$with2PositionalAndNamedEvent.add((pp1: pp1, pp2: pp2, np1: np1));
 
   @override
-  void withPositionalAnd2Optional(
-    int pp, [
-    int? op1,
-    int? op2,
-  ]) =>
-      _$withPositionalAnd2OptionalEvent.add((
-        pp: pp,
-        op1: op1,
-        op2: op2,
-      ));
+  void withPositionalAnd2Optional(int pp, [int? op1, int? op2]) =>
+      _$withPositionalAnd2OptionalEvent.add((pp: pp, op1: op1, op2: op2));
 
   @override
-  void withPositionalAnd2Named(
-    int pp, {
-    int? np1,
-    int? np2,
-  }) =>
-      _$withPositionalAnd2NamedEvent.add((
-        pp: pp,
-        np1: np1,
-        np2: np2,
-      ));
+  void withPositionalAnd2Named(int pp, {int? np1, int? np2}) =>
+      _$withPositionalAnd2NamedEvent.add((pp: pp, np1: np1, np2: np2));
 
   @override
-  void withPositionalAnd1Named1Required(
-    int pp, {
-    int? np1,
-    required int np2,
-  }) =>
-      _$withPositionalAnd1Named1RequiredEvent.add((
-        pp: pp,
-        np1: np1,
-        np2: np2,
-      ));
+  void withPositionalAnd1Named1Required(int pp, {int? np1, required int np2}) =>
+      _$withPositionalAnd1Named1RequiredEvent.add((pp: pp, np1: np1, np2: np2));
 
   @override
-  void withTwoNamedRequired({
-    required int nr,
-    required bool nr2,
-  }) =>
-      _$withTwoNamedRequiredEvent.add((
-        nr: nr,
-        nr2: nr2,
-      ));
+  void withTwoNamedRequired({required int nr, required bool nr2}) =>
+      _$withTwoNamedRequiredEvent.add((nr: nr, nr2: nr2));
 
   @override
   void withAnnotationAndPositional(int pp) =>
       _$withAnnotationAndPositionalEvent.add(pp);
 
   @override
-  void withAnnotationAnd2Positional(
-    int pp1,
-    int pp2,
-  ) =>
-      _$withAnnotationAnd2PositionalEvent.add((
-        pp1: pp1,
-        pp2: pp2,
-      ));
+  void withAnnotationAnd2Positional(int pp1, int pp2) =>
+      _$withAnnotationAnd2PositionalEvent.add((pp1: pp1, pp2: pp2));
 
   @override
-  void withSeededPositionalAndOptional(
-    int pp, [
-    int? op,
-  ]) =>
-      _$withSeededPositionalAndOptionalEvent.add((
-        pp: pp,
-        op: op,
-      ));
+  void withSeededPositionalAndOptional(int pp, [int? op]) =>
+      _$withSeededPositionalAndOptionalEvent.add((pp: pp, op: op));
 
   @override
-  void withSeededTwoPositionalOptionalDefaultNull([
-    int? p1,
-    int? p2,
-  ]) =>
-      _$withSeededTwoPositionalOptionalDefaultNullEvent.add((
-        p1: p1,
-        p2: p2,
-      ));
+  void withSeededTwoPositionalOptionalDefaultNull([int? p1, int? p2]) =>
+      _$withSeededTwoPositionalOptionalDefaultNullEvent.add((p1: p1, p2: p2));
 
   @override
-  void withSeededTwoPositionalOptional([
-    int? p1,
-    int? p2,
-  ]) =>
-      _$withSeededTwoPositionalOptionalEvent.add((
-        p1: p1,
-        p2: p2,
-      ));
+  void withSeededTwoPositionalOptional([int? p1, int? p2]) =>
+      _$withSeededTwoPositionalOptionalEvent.add((p1: p1, p2: p2));
 
   @override
   void withSeededPositionalEnum(TestEnumParam op) =>
       _$withSeededPositionalEnumEvent.add(op);
 
   @override
-  void withSeeded2PositionalEnum(
-    int pp1,
-    TestEnumParam pp2,
-  ) =>
-      _$withSeeded2PositionalEnumEvent.add((
-        pp1: pp1,
-        pp2: pp2,
-      ));
+  void withSeeded2PositionalEnum(int pp1, TestEnumParam pp2) =>
+      _$withSeeded2PositionalEnumEvent.add((pp1: pp1, pp2: pp2));
 
   @override
   Stream<bool> get isNotIgnored => _isNotIgnoredState;
@@ -475,11 +348,8 @@ typedef _WithPositionalAnd2OptionalEventArgs = ({int pp, int? op1, int? op2});
 typedef _WithPositionalAnd2NamedEventArgs = ({int pp, int? np1, int? np2});
 
 // ignore: unused_element
-typedef _WithPositionalAnd1Named1RequiredEventArgs = ({
-  int pp,
-  int? np1,
-  int np2
-});
+typedef _WithPositionalAnd1Named1RequiredEventArgs =
+    ({int pp, int? np1, int np2});
 
 // ignore: unused_element
 typedef _WithTwoNamedRequiredEventArgs = ({int nr, bool nr2});
@@ -491,10 +361,8 @@ typedef _WithAnnotationAnd2PositionalEventArgs = ({int pp1, int pp2});
 typedef _WithSeededPositionalAndOptionalEventArgs = ({int pp, int? op});
 
 // ignore: unused_element
-typedef _WithSeededTwoPositionalOptionalDefaultNullEventArgs = ({
-  int? p1,
-  int? p2
-});
+typedef _WithSeededTwoPositionalOptionalDefaultNullEventArgs =
+    ({int? p1, int? p2});
 
 // ignore: unused_element
 typedef _WithSeededTwoPositionalOptionalEventArgs = ({int? p1, int? p2});
