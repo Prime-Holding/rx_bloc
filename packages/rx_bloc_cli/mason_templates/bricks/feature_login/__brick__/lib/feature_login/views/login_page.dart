@@ -4,16 +4,14 @@
 import 'dart:io' show Platform;{{/enable_social_logins}}
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
-import '../blocs/login_bloc.dart';
-import '../../app_extensions.dart';
-import '../../base/extensions/async_snapshot_extensions.dart';{{#enable_social_logins}}
+import '../../app_extensions.dart';{{#enable_social_logins}}
 import '../../lib_social_logins/ui_components/apple_login_widget.dart';
 import '../../lib_social_logins/ui_components/facebook_login_widget.dart';
 import '../../lib_social_logins/ui_components/google_login_widget.dart';{{/enable_social_logins}}{{#enable_login}}
-import '../ui_components/login_form.dart';{{/enable_login}}
+import '../ui_components/login_form.dart';
+import '../ui_components/sign_up_button.dart';{{/enable_login}}
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -79,35 +77,7 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                RxBlocBuilder<LoginBlocType, bool>(
-                  state: (bloc) => bloc.states.isLoading,
-                  builder: (context, isLoading, bloc) => Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: isLoading.isLoading
-                          ? null
-                          : bloc.events.goToRegistration,
-                      child: Text.rich(
-                        textAlign: TextAlign.center,
-                        TextSpan(
-                          text: context.l10n.featureLogin.dontHaveAccount,
-                          style: context.designSystem.typography.h2Reg16
-                              .copyWith(
-                                  color:
-                                      context.designSystem.colors.dividerColor),
-                          children: [
-                            const TextSpan(text: ' '),
-                            TextSpan(
-                              text: context.l10n.featureLogin.signUpLabel,
-                              style: context
-                                  .designSystem.typography.h1Bold16,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                SignUpButton(),
                 SizedBox(height: context.designSystem.spacing.xl),{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
                 Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
               ],

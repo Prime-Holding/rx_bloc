@@ -22,8 +22,9 @@
 18. [CI/CD](#cicd){{/cicd}}{{#enable_pin_code}}
 19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_mfa}}
 20. [Multi-Factor Authentication](#multi-factor-authentication){{/enable_mfa}}{{#enable_feature_qr_scanner}}
-21. [Feature QR Code](#feature-qr-code){{/enable_feature_qr_scanner}}
-22. [Next Steps](#next-steps)
+22. [Feature QR Code](#feature-qr-code){{/enable_feature_qr_scanner}}{{#enable_feature_onboarding}}
+22. [Feature onboarding](#feature-onboarding){{/enable_feature_onboarding}}
+23. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -541,6 +542,16 @@ For more info please visit [widget_toolkit_qr](https://pub.dev/packages/widget_t
 
 On iOS, an issue may occur during the initial build of the application. This can be resolved by opening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
 {{/enable_feature_qr_scanner}}
+
+{{#enable_feature_onboarding}}
+## Feature Onboarding
+
+The onboarding feature introduces an onboarding flow where the user can register their account. 
+The flow includes several screens which allow them to provide an email, password and phone number. 
+Each feature includes input validation as well as confirmation steps for the email and phone number.
+The feature also introduces a way to resume the onboarding process from where they left off last time if they didn't complete their account.
+{{/enable_feature_onboarding}}
+
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.
