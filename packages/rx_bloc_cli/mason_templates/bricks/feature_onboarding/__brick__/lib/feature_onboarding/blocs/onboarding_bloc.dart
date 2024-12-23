@@ -77,7 +77,6 @@ class OnboardingBloc extends $OnboardingBloc {
     registered.connect().addTo(_compositeSubscription);
     onRouting.connect().addTo(_compositeSubscription);
 
-    resumeOnboardingErrors.listen((_) {});
     _resumeOnboardingIfHasAuthToken();
   }
 
@@ -142,11 +141,6 @@ class OnboardingBloc extends $OnboardingBloc {
     );
   }
 
-  Future<void> _saveToken(AuthTokenModel authToken) async {
-    await _authService.saveToken(authToken.token);
-    await _authService.saveRefreshToken(authToken.refreshToken);
-  }
-
   Future<void> _navigateToNextStep(UserModel user) async {
     if (user.confirmedCredentials.email) {
       if (user.confirmedCredentials.phone) {
@@ -191,7 +185,7 @@ class OnboardingBloc extends $OnboardingBloc {
 
   Future<void> _saveTokenAndNavigateToNextStep(
       UserWithAuthTokenModel userWithAuthToken) async {
-    await _saveToken(userWithAuthToken.authToken);
+    await _authService.saveAuthToken(userWithAuthToken.authToken);
     await _navigateToNextStep(userWithAuthToken.user);
   }
 

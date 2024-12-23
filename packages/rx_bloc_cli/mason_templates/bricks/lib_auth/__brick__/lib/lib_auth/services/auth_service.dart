@@ -28,6 +28,11 @@ class AuthService {
   Future<void> saveRefreshToken(String newRefreshToken) =>
       _authRepository.saveRefreshToken(newRefreshToken);
 
+  Future<void> saveAuthToken(AuthTokenModel authToken) async {
+    await saveToken(authToken.token);
+    await saveRefreshToken(authToken.refreshToken);
+  }
+
   /// Deletes all saved tokens.
   Future<void> clearAuthData() => _authRepository.clearAuthData();
 
