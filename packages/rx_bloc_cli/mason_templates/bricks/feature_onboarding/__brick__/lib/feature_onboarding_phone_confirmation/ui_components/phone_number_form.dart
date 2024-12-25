@@ -7,6 +7,7 @@ import 'package:widget_toolkit/widget_toolkit.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
+import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/models/country_code_model.dart';
 import '../blocs/onboarding_phone_bloc.dart';
 import '../services/search_country_code_service.dart';
@@ -30,20 +31,29 @@ class PhoneNumberForm extends StatelessWidget {
   Widget _buildSelectCountry(BuildContext context) =>
       RxBlocBuilder<OnboardingPhoneBlocType, CountryCodeModel?>(
         state: (bloc) => bloc.states.countryCode,
-        builder: (context, countryCodeSnapshot, bloc) => PrimaryButton(
-          onPressed: () => _onCountryCodeSegmentPressed(
-            context,
-            countryCodeSnapshot.data,
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: context.designSystem.spacing.m,
+        builder: (context, countryCodeSnapshot, bloc) => ShimmerWrapper(
+          showShimmer: !countryCodeSnapshot.hasData,
+          child: GestureDetector(
+            onTap: () => _onCountryCodeSegmentPressed(
+              context,
+              countryCodeSnapshot.data,
             ),
-            child: Text(
-              '+${countryCodeSnapshot.data?.code ?? '1'}',
-              textAlign: TextAlign.center,
-              style: context.designSystem.typography.h2Reg16,
-            ),
+            child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                  bottom: BorderSide(
+                    color: context.designSystem.colors.primaryColor,
+                    width: 2,
+                  ),
+                )),
+                child: Padding(
+                  padding: EdgeInsets.all(context.designSystem.spacing.s),
+                  child: Text(
+                    '+${countryCodeSnapshot.data?.code ?? 'X'}',
+                    textAlign: TextAlign.center,
+                    style: context.designSystem.typography.h2Reg16,
+                  ),
+                )),
           ),
         ),
       );
