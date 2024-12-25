@@ -19,9 +19,11 @@
   "continueText" : "Продължи",
   "confirm" : "Потвърди",
 
-  "countrySelectionLabel" : "Изберете вашата държава",
-  "enterPhoneNumber" : "Въведете вашия телефонен номер",
-  "phoneNumberConfirmationHeader" : "Скоро ще получите код за потвърждение чрез SMS.",
+  "phoneNumberTitle" : "Какъв е твоят телефонен номер?",
+  "phoneNumberDescription" : "Въведете телефонния си номер по-долу, за да получите код за потвърждение чрез SMS.",
+  "phoneNumberHint" :"Телефонен номер",
+  "phoneNumberConfirmTitle" : "Потвърдете телефонния номер",
+  "phoneNumberConfirmDescription" : "Въведете кода, който ви изпратихме на телефонния номер, предоставен в предишната стъпка.",
 
   "selectCountry": "Изберете държава",
   "typeSubstring": "Въведете подниз",

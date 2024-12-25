@@ -19,9 +19,11 @@
   "continueText" : "Continue",
   "confirm" : "Confirm",
 
-  "countrySelectionLabel" : "Select your country",
-  "enterPhoneNumber" : "Enter your phone number",
-  "phoneNumberConfirmationHeader" : "You'll receive a confirmation code via SMS shortly.",
+  "phoneNumberTitle" : "What's your phone number?",
+  "phoneNumberDescription" : "Enter your phone number below to receive a confirmation code via SMS.",
+  "phoneNumberHint" :"Phone number",
+  "phoneNumberConfirmTitle" : "Confirm phone number",
+  "phoneNumberConfirmDescription" : "Enter the code we sent you to the phone number provided in previous step.",
 
   "selectCountry": "Select country",
   "typeSubstring": "Type substring",

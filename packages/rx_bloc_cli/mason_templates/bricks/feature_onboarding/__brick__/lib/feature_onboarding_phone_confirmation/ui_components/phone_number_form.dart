@@ -12,43 +12,15 @@ import '../blocs/onboarding_phone_bloc.dart';
 import '../services/search_country_code_service.dart';
 
 class PhoneNumberForm extends StatelessWidget {
-  const PhoneNumberForm({
-    this.phoneNumberHint = 'XX XXX XXXX',
-    super.key,
-  });
-
-  /// The hint text of the phone number input
-  final String phoneNumberHint;
+  const PhoneNumberForm({super.key});
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) => Row(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.public,
-                color: context.designSystem.colors.gray,
-                size: context.designSystem.spacing.xxl,
-              ),
-              SizedBox(width: context.designSystem.spacing.xs),
-              Expanded(child: _buildSelectCountry(context)),
-            ],
-          ),
-          SizedBox(height: context.designSystem.spacing.m),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.phone,
-                color: context.designSystem.colors.gray,
-                size: context.designSystem.spacing.xxl,
-              ),
-              SizedBox(width: context.designSystem.spacing.xs),
-              Flexible(
-                child: _buildPhoneNumber(context, hint: phoneNumberHint),
-              ),
-            ],
+          _buildSelectCountry(context),
+          SizedBox(width: context.designSystem.spacing.xs),
+          Expanded(
+            child: _buildPhoneNumber(context),
           ),
         ],
       );
@@ -68,8 +40,7 @@ class PhoneNumberForm extends StatelessWidget {
               vertical: context.designSystem.spacing.m,
             ),
             child: Text(
-              countryCodeSnapshot.data?.itemDisplayName ??
-                  context.l10n.featureOnboarding.countrySelectionLabel,
+              '+${countryCodeSnapshot.data?.code ?? '1'}',
               textAlign: TextAlign.center,
               style: context.designSystem.typography.h2Reg16,
             ),
@@ -77,10 +48,7 @@ class PhoneNumberForm extends StatelessWidget {
         ),
       );
 
-  Widget _buildPhoneNumber(
-    BuildContext context, {
-    String hint = 'XX XXX XXXX',
-  }) =>
+  Widget _buildPhoneNumber(BuildContext context) =>
       RxTextFormFieldBuilder<OnboardingPhoneBlocType>(
         state: (bloc) => bloc.states.phoneNumber.translate(context),
         onChanged: (bloc, value) => bloc.events.setPhoneNumber(value),
@@ -92,20 +60,10 @@ class PhoneNumberForm extends StatelessWidget {
           onEditingComplete: () =>
               FocusManager.instance.primaryFocus?.unfocus(),
           decoration: fieldState.decoration.copyWith(
-            hintText: hint,
+            hintText:
+                context.l10n.featureOnboarding.phoneNumberHint.toUpperCase(),
             errorText: fieldState.error,
             errorMaxLines: 2,
-            contentPadding: EdgeInsets.fromLTRB(
-              context.designSystem.spacing.m,
-              context.designSystem.spacing.m,
-              context.designSystem.spacing.xs,
-              context.designSystem.spacing.m,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(context.designSystem.spacing.xxl),
-              ),
-            ),
           ),
         ),
       );

@@ -6,9 +6,6 @@ import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
-import '../../base/models/user_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
-import '../../lib_router/router.dart';
 import '../blocs/onboarding_phone_bloc.dart';
 import '../ui_components/phone_number_form.dart';
 
@@ -26,35 +23,54 @@ class OnboardingPhonePage extends StatelessWidget {
                 horizontal: context.designSystem.spacing.xxxxl,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(
                     children: [
-                      Text(
-                        context.l10n.featureOnboarding.enterPhoneNumber,
-                        style: context.designSystem.typography.h1Reg20,
+                      Icon(
+                        Icons.phone,
+                        size: context.designSystem.spacing.xxxl,
                       ),
-                      SizedBox(height: context.designSystem.spacing.xxxxl),
-                      const PhoneNumberForm(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: context.designSystem.spacing.m,
+                        ),
+                        child: Text(
+                          context.l10n.featureOnboarding.phoneNumberTitle,
+                          textAlign: TextAlign.center,
+                          style:
+                              context.designSystem.typography.h1Reg22.copyWith(
+                            fontSize: context.designSystem.spacing.xxl,
+                            color: context.designSystem.colors.primaryColor,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: context.designSystem.spacing.m,
+                          bottom: context.designSystem.spacing.xxl,
+                        ),
+                        child: Text(
+                          context.l10n.featureOnboarding.phoneNumberDescription,
+                          textAlign: TextAlign.center,
+                          style: context.designSystem.typography.h2Reg16,
+                        ),
+                      ),
                     ],
                   ),
+                  const PhoneNumberForm(),
                   Column(
                     children: [
-                      RxBlocMultiBuilder2<OnboardingPhoneBlocType, bool, bool>(
-                        state1: (bloc) => bloc.states.submitPhoneNumberEnabled,
-                        state2: (bloc) => bloc.states.isLoading,
-                        builder:
-                            (context, enabledSnapshot, loadingSnapshot, bloc) {
-                          final enabled = enabledSnapshot.data ?? false;
+                      RxBlocBuilder<OnboardingPhoneBlocType, bool>(
+                        state: (bloc) => bloc.states.isLoading,
+                        builder: (context, loadingSnapshot, bloc) {
                           final loading = loadingSnapshot.data ?? false;
                           return GradientFillButton(
                             text: context.l10n.featureOnboarding.continueText,
-                            state: enabled
-                                ? (loading
-                                    ? ButtonStateModel.loading
-                                    : ButtonStateModel.enabled)
-                                : ButtonStateModel.disabled,
-                            onPressed: enabled && !loading
+                            state: loading
+                                ? ButtonStateModel.loading
+                                : ButtonStateModel.enabled,
+                            onPressed: !loading
                                 ? () => context
                                     .read<OnboardingPhoneBlocType>()
                                     .events

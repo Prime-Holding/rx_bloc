@@ -22,14 +22,40 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      context
-                          .l10n.featureOnboarding.phoneNumberConfirmationHeader,
-                      style: context.designSystem.typography.h1Reg20,
-                      textAlign: TextAlign.center,
-                    ),
+                  Column(
+                    children: [
+                      Icon(
+                        Icons.sms_outlined,
+                        size: context.designSystem.spacing.xxxl,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: context.designSystem.spacing.m,
+                        ),
+                        child: Text(
+                          context
+                              .l10n.featureOnboarding.phoneNumberConfirmTitle,
+                          style:
+                              context.designSystem.typography.h1Reg22.copyWith(
+                            fontSize: context.designSystem.spacing.xxl,
+                            color: context.designSystem.colors.primaryColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: context.designSystem.spacing.m,
+                          bottom: context.designSystem.spacing.xxl,
+                        ),
+                        child: Text(
+                          context.l10n.featureOnboarding
+                              .phoneNumberConfirmDescription,
+                          style: context.designSystem.typography.h2Reg16,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
                   Column(
                     children: [
@@ -49,27 +75,31 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
                       const ValidityWidget(),
                     ],
                   ),
-                  SizedBox(
-                    height: context.designSystem.spacing.xxxxl21,
-                    child: Column(
-                      children: [
-                        ResendCodeButton(
-                          activeStateIcon: Icon(
-                            Icons.send,
-                            color: context.designSystem.colors.primaryColor,
-                          ),
-                          pressedStateIcon: Icon(
-                            Icons.check_circle_outline,
-                            color: context
-                                .designSystem.colors.pinSuccessBorderColor,
-                          ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: context.designSystem.spacing.xxxxl21,
+                        child: Column(
+                          children: [
+                            ResendCodeButton(
+                              activeStateIcon: Icon(
+                                Icons.send,
+                                color: context.designSystem.colors.primaryColor,
+                              ),
+                              pressedStateIcon: Icon(
+                                Icons.check_circle_outline,
+                                color: context
+                                    .designSystem.colors.pinSuccessBorderColor,
+                              ),
+                            ),
+                            const ResendButtonTimer(),
+                          ],
                         ),
-                        const ResendButtonTimer(),
-                      ],
-                    ),
-                  ),
-                  AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
-                    errorState: (bloc) => bloc.states.errors,
+                      ),
+                      AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
+                        errorState: (bloc) => bloc.states.errors,
+                      ),
+                    ],
                   ),
                 ],
               ),

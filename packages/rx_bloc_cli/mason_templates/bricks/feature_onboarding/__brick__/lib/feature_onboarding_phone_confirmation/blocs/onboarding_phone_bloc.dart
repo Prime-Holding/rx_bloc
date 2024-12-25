@@ -101,7 +101,7 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   @override
   ConnectableStream<UserModel> _mapToPhoneSubmittedState() =>
       _$submitPhoneNumberEvent
-          .debounceTime(actionDebounceDuration)
+          .throttleTime(actionDebounceDuration)
           .withLatestFrom2(countryCode, phoneNumber,
               (_, country, phone) => '+${country?.code ?? ''} $phone')
           .switchMap((fullPhoneNumber) => _onboardingService
