@@ -24,7 +24,10 @@ class PhoneNumberForm extends StatelessWidget {
               _buildSelectCountry(context, countryCodeSnapshot.data),
               SizedBox(width: context.designSystem.spacing.xs),
               Expanded(
-                child: _buildPhoneNumber(context),
+                child: _buildPhoneNumber(
+                  context,
+                  countryCodeSnapshot.hasData,
+                ),
               ),
             ],
           ),
@@ -60,10 +63,11 @@ class PhoneNumberForm extends StatelessWidget {
             )),
       );
 
-  Widget _buildPhoneNumber(BuildContext context) =>
+  Widget _buildPhoneNumber(BuildContext context, bool enabled) =>
       RxTextFormFieldBuilder<OnboardingPhoneBlocType>(
         state: (bloc) => bloc.states.phoneNumber.translate(context),
-        onChanged: (bloc, value) => bloc.events.setPhoneNumber(value),
+        onChanged: (bloc, value) =>
+            enabled ? bloc.events.setPhoneNumber(value) : null,
         showErrorState: (bloc) => bloc.states.showErrors,
         builder: (fieldState) => TextFormField(
           textAlign: TextAlign.center,
