@@ -39,10 +39,7 @@ class OnboardingPhonePage extends StatelessWidget {
                           context.l10n.featureOnboarding.phoneNumberTitle,
                           textAlign: TextAlign.center,
                           style:
-                              context.designSystem.typography.h1Reg22.copyWith(
-                            fontSize: context.designSystem.spacing.xxl,
-                            color: context.designSystem.colors.primaryColor,
-                          ),
+                              context.designSystem.typography.onboardingTitle,
                         ),
                       ),
                       Padding(

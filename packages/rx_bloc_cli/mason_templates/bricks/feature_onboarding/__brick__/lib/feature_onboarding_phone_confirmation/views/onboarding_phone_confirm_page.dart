@@ -47,10 +47,7 @@ class _OnboardingPhoneConfirmPageState
                           context
                               .l10n.featureOnboarding.phoneNumberConfirmTitle,
                           style:
-                              context.designSystem.typography.h1Reg22.copyWith(
-                            fontSize: context.designSystem.spacing.xxl,
-                            color: context.designSystem.colors.primaryColor,
-                          ),
+                              context.designSystem.typography.onboardingTitle,
                           textAlign: TextAlign.center,
                         ),
                       ),
