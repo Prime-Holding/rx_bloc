@@ -74,7 +74,6 @@ class PhoneNumberForm extends StatelessWidget {
           decoration: fieldState.decoration.copyWith(
             hintText:
                 context.l10n.featureOnboarding.phoneNumberHint.toUpperCase(),
-            errorText: fieldState.error,
             errorMaxLines: 2,
           ),
         ),
