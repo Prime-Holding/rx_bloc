@@ -70,10 +70,15 @@ class PodfileProcessor extends StringProcessor {
   }
 
   void _addBuildConfigurations(StringBuffer buffer) {
-    String deploymentTargetsConfig;
-    deploymentTargetsConfig = '''\n
+    final deploymentTargetsConfig = '''\n
     target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '$_minSupportedIOSVersion'
+        ${args.qrScannerEnabled ? '''
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+            '\$(inherited)',
+            ## dart: PermissionGroup.camera
+            'PERMISSION_CAMERA=1',
+        ]''' : ''}
     end
 ''';
     const additionalBuildSettingsConfig =
