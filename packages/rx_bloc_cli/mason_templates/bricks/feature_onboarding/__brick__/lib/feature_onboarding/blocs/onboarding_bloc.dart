@@ -148,10 +148,10 @@ class OnboardingBloc extends $OnboardingBloc {
         return _routerBloc.events.go(const DashboardRoute());
       }
 
-      return _routerBloc.events.pushReplace(const OnboardingPhoneRoute());
+      return _routerBloc.events.push(const OnboardingPhoneRoute());
     }
     return _routerBloc.events
-        .pushReplace(OnboardingEmailConfirmationRoute(user.email));
+        .push(OnboardingEmailConfirmationRoute(user.email));
   }
 
   @override

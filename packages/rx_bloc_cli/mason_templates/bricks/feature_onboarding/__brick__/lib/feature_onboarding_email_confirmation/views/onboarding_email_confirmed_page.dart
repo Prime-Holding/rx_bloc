@@ -26,10 +26,7 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
         child: RxBlocBuilder<OnboardingEmailConfirmedBlocType, bool>(
           state: (bloc) => bloc.states.isLoading,
           builder: (context, loading, bloc) => Scaffold(
-            appBar: customAppBar(
-              context,
-              title: context.l10n.featureOnboarding.titleEmailConfirmation,
-            ),
+            appBar: customAppBar(context),
             body: SafeArea(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(
@@ -51,6 +48,7 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: context.designSystem.spacing.m,
                           children: [
                             ShimmerWrapper(
                               alignment: Alignment.center,
@@ -63,20 +61,33 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(context
                                                   .designSystem.spacing.s))),
-                                      width:
-                                          context.designSystem.spacing.xxxxl2,
-                                      height:
-                                          context.designSystem.spacing.xxxxl2,
+                                      width: context.designSystem.spacing.xxxl,
+                                      height: context.designSystem.spacing.xxxl,
                                     )
                                   : Icon(
                                       context.designSystem.icons.message,
-                                      size: context.designSystem.spacing.xxxxl2,
+                                      size: context.designSystem.spacing.xxxl,
                                       color: context
                                           .designSystem.colors.darkSeaGreen,
                                     ),
                             ),
-                            SizedBox(
-                              height: context.designSystem.spacing.xl,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: context.designSystem.spacing.m),
+                              child: ShimmerText(
+                                loading.isLoading
+                                    ? null
+                                    : context.l10n.featureOnboarding
+                                        .titleEmailConfirmation,
+                                style: context
+                                    .designSystem.typography.onboardingTitle
+                                    .copyWith(
+                                  color:
+                                      context.designSystem.colors.darkSeaGreen,
+                                ),
+                                textAlign: TextAlign.center,
+                                alignment: Alignment.center,
+                              ),
                             ),
                             ShimmerText(
                               loading.isLoading
@@ -85,6 +96,7 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                                       .titleEmailConfirmed,
                               textAlign: TextAlign.center,
                               alignment: Alignment.center,
+                              style: context.designSystem.typography.h2Reg16,
                             ),
                           ],
                         ),
@@ -108,13 +120,12 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
   Widget _startButton(
     BuildContext context, {
     bool isLoading = false,
-    bool isDisabled = false,
   }) =>
       GradientFillButton(
         areIconsClose: true,
         text: context.l10n.continueText,
         state: isLoading ? ButtonStateModel.loading : ButtonStateModel.enabled,
-        onPressed: isDisabled
+        onPressed: isLoading
             ? null
             : () => context
                 .read<OnboardingEmailConfirmedBlocType>()
