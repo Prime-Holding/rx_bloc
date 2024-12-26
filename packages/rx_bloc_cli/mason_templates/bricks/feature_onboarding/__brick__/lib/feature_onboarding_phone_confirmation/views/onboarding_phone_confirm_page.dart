@@ -46,8 +46,7 @@ class _OnboardingPhoneConfirmPageState
                         child: Text(
                           context
                               .l10n.featureOnboarding.phoneNumberConfirmTitle,
-                          style:
-                              context.designSystem.typography.onboardingTitle,
+                          style: context.designSystem.typography.h1Med32,
                           textAlign: TextAlign.center,
                         ),
                       ),
