@@ -16,8 +16,16 @@ class DesignSystemTypography {
   // Keep the general purpose styles declared as 'const'. If not possible then
   // declare them as late final properties.
 
+  final h1Med32 = const TextStyle(
+    fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 32.0);
+
+  final h1Reg32 = const TextStyle(
+    fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 32.0);
+
   final bold30 = const TextStyle(
       fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 30.0);
+
+
 
   final h1Med26 = const TextStyle(
       fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 26.0);
@@ -114,10 +122,5 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
     letterSpacing: 0.8,
     fontSize: 10.0)
       .copyWith(color: _designSystemColor.black);
-  {{/enable_feature_otp}}{{#enable_feature_onboarding}}
-
-  late final onboardingTitle = h1Reg22.copyWith(
-    fontSize: 32,
-    color: _designSystemColor.primaryColor,
-  );{{/enable_feature_onboarding}}
+  {{/enable_feature_otp}}
 }
