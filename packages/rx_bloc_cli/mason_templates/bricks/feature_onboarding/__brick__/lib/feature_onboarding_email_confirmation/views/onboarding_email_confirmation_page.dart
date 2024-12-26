@@ -26,7 +26,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
             state: (bloc) => bloc.states.isLoading,
             builder: (context, loading, bloc) => Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: context.designSystem.spacing.xxl2,
+                horizontal: context.designSystem.spacing.xxl,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -57,58 +57,37 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                               )
                             : Icon(
                                 context.designSystem.icons.message,
-                                size: context.designSystem.spacing.xxxl,
+                                size: context.designSystem.spacing.xxxxl3,
                               ),
                       ),
-                      SizedBox(
-                        height: context.designSystem.spacing.m,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            bottom: context.designSystem.spacing.m),
-                        child: Text(
-                          context.l10n.featureOnboarding.titleEmailConfirmation,
-                          style:
-                              context.designSystem.typography.onboardingTitle,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(
-                        height: context.designSystem.spacing.m,
-                      ),
-                      ShimmerText(
-                        loading.isLoading
-                            ? null
-                            : context
-                                .l10n.featureOnboarding.emailConfirmationSent,
+                      SizedBox(height: context.designSystem.spacing.l),
+                      Text(
+                        context.l10n.featureOnboarding.titleEmailConfirmation,
+                        style: context.designSystem.typography.h1Med32,
                         textAlign: TextAlign.center,
-                        alignment: Alignment.center,
-                        baseColor: context.designSystem.colors.white,
-                        highlightColor: context.designSystem.colors.white
-                            .withValues(alpha: 50),
-                        type: ShimmerType.fixed(placeholderLength: 2),
-                        style: context.designSystem.typography.h2Reg16,
                       ),
-                      if (loading.isLoading)
-                        SizedBox(
-                          height: context.designSystem.spacing.xs,
-                        ),
+                      SizedBox(height: context.designSystem.spacing.xs),
                       RxBlocBuilder<OnboardingEmailConfirmationBlocType,
                           String>(
                         state: (bloc) => bloc.states.email,
                         builder: (context, email, bloc) => ShimmerText(
-                          loading.isLoading ? null : email.data ?? '',
+                          loading.isLoading
+                              ? null
+                              : context.l10n.featureOnboarding
+                                  .emailConfirmationSent(email.data ?? ''),
                           textAlign: TextAlign.center,
                           alignment: Alignment.center,
                           baseColor: context.designSystem.colors.white,
                           highlightColor: context.designSystem.colors.white
                               .withValues(alpha: 50),
+                          type: ShimmerType.fixed(placeholderLength: 2),
                           style: context.designSystem.typography.h2Reg16,
                         ),
                       ),
                       SizedBox(
                         height: context.designSystem.spacing.xxl,
                       ),
+                      //TODO: Used for demo purposes, should be removed in areal app
                       Material(
                         child: InkWell(
                           borderRadius: BorderRadius.all(
@@ -116,8 +95,6 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                               context.designSystem.spacing.m,
                             ),
                           ),
-                          // Used for demo purposes, should be removed in a
-                          // real app
                           onTap: loading.isLoading
                               ? null
                               : () => showMockDeepLinkSheet(
@@ -150,7 +127,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                         text: context.l10n.featureOnboarding.openMailClient,
                       ),
                       SizedBox(
-                        height: context.designSystem.spacing.xl,
+                        height: context.designSystem.spacing.s,
                       ),
                       _sendNewLinkButton(),
                     ],

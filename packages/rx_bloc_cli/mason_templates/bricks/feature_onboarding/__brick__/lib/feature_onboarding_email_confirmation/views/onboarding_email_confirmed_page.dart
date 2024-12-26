@@ -30,10 +30,11 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
             body: SafeArea(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(
-                    context.designSystem.spacing.m,
-                    0,
-                    context.designSystem.spacing.m,
-                    context.designSystem.spacing.m),
+                  context.designSystem.spacing.l,
+                  0,
+                  context.designSystem.spacing.l,
+                  context.designSystem.spacing.m,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,52 +49,24 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: context.designSystem.spacing.m,
                           children: [
-                            ShimmerWrapper(
-                              alignment: Alignment.center,
-                              showShimmer: loading.isLoading,
-                              child: loading.isLoading
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                          color:
-                                              context.designSystem.colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(context
-                                                  .designSystem.spacing.s))),
-                                      width: context.designSystem.spacing.xxxl,
-                                      height: context.designSystem.spacing.xxxl,
-                                    )
-                                  : Icon(
-                                      context.designSystem.icons.message,
-                                      size: context.designSystem.spacing.xxxl,
-                                      color: context
-                                          .designSystem.colors.darkSeaGreen,
-                                    ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: context.designSystem.spacing.m),
-                              child: ShimmerText(
-                                loading.isLoading
-                                    ? null
-                                    : context.l10n.featureOnboarding
-                                        .titleEmailConfirmation,
-                                style: context
-                                    .designSystem.typography.onboardingTitle
-                                    .copyWith(
-                                  color:
-                                      context.designSystem.colors.darkSeaGreen,
-                                ),
-                                textAlign: TextAlign.center,
-                                alignment: Alignment.center,
-                              ),
-                            ),
+                            _Icon(loading: loading.isLoading),
+                            SizedBox(height: context.designSystem.spacing.l),
                             ShimmerText(
                               loading.isLoading
                                   ? null
                                   : context.l10n.featureOnboarding
                                       .titleEmailConfirmed,
+                              style: context.designSystem.typography.h1Med32,
+                              textAlign: TextAlign.center,
+                              alignment: Alignment.center,
+                            ),
+                            SizedBox(height: context.designSystem.spacing.xs),
+                            ShimmerText(
+                              loading.isLoading
+                                  ? null
+                                  : context.l10n.featureOnboarding
+                                      .titleEmailConfirmedDescription,
                               textAlign: TextAlign.center,
                               alignment: Alignment.center,
                               style: context.designSystem.typography.h2Reg16,
@@ -102,12 +75,18 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(context.designSystem.spacing.m),
-                      child: _startButton(
-                        context,
-                        isLoading: loading.isLoading,
-                      ),
+                    GradientFillButton(
+                      areIconsClose: true,
+                      text: context.l10n.continueText,
+                      state: loading.isLoading
+                          ? ButtonStateModel.loading
+                          : ButtonStateModel.enabled,
+                      onPressed: loading.isLoading
+                          ? null
+                          : () => context
+                              .read<OnboardingEmailConfirmedBlocType>()
+                              .events
+                              .goToPhonePage(),
                     ),
                   ],
                 ),
@@ -116,20 +95,31 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
           ),
         ),
       );
+}
 
-  Widget _startButton(
-    BuildContext context, {
-    bool isLoading = false,
-  }) =>
-      GradientFillButton(
-        areIconsClose: true,
-        text: context.l10n.continueText,
-        state: isLoading ? ButtonStateModel.loading : ButtonStateModel.enabled,
-        onPressed: isLoading
-            ? null
-            : () => context
-                .read<OnboardingEmailConfirmedBlocType>()
-                .events
-                .goToPhonePage(),
+class _Icon extends StatelessWidget {
+  const _Icon({
+    required this.loading,
+  });
+
+  final bool loading;
+
+  @override
+  Widget build(BuildContext context) => ShimmerWrapper(
+        alignment: Alignment.center,
+        showShimmer: loading,
+        child: loading
+            ? Container(
+                decoration: BoxDecoration(
+                    color: context.designSystem.colors.white,
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(context.designSystem.spacing.s))),
+                width: context.designSystem.spacing.xxxl,
+                height: context.designSystem.spacing.xxxl,
+              )
+            : Icon(
+                context.designSystem.icons.message,
+                size: context.designSystem.spacing.xxxxl3,
+              ),
       );
 }
