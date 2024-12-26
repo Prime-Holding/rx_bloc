@@ -1,17 +1,18 @@
 {
   "@@locale": "bg",
 
-  "registerPageTitle": "Регистрация",
+  "registerPageTitle": "Да започваме!",
   "register" : "Регистрация с E-mail",
-  "registerCredentialsHint" : "Въведете идентификационните си данни за регистрация: \n Валиден имейл адрес. \n Най-малко 6 знака парола.",
-  "titleEmailConfirmation": "Потвърди имейл",
-  "emailConfirmationSent": "Изпратихме писмо с линк за потвържение на:",
+  "registerCredentialsHint": "Въведете своя имейл адрес и създайте сигурна парола, за да започнете регистрацията. Ще ви насочим през останалите стъпки за нула време!",
+  "titleEmailConfirmation": "Потвърдете своя имейл",
+  "emailConfirmationSent": "Изпратихме линк за потвърждение на {email}. Моля, проверете своята поща и кликнете върху линка, за да потвърдите акаунта си.",
   "pleaseOpenEmail": "Моля, отворете този мейл през телефона и кликнете върху бутона за потвърждение, или докоснете тук!",
   "openMailClient": "Отворете вашата електронна поща",
   "selectMailApp": "Изберете приложение за електронна поща.",
   "noMailAppFound": "Нямате пощенски клиент на устройството. Моля инсталирайте или отворете с браузър.",
   "sendNewLink": "Изпрати нов линк",
-  "titleEmailConfirmed": "Потвърден имейл!",
+  "titleEmailConfirmed": "Имейлът е потвърден!",
+  "titleEmailConfirmedDescription": "Вашият имейл беше успешно потвърден. Готови сте да продължите напред!",
   "titleMockDeepLinkSuccess": "Mock Deep Link - Success:",
   "titleMockDeepLinkError": "Mock Deep Link - Error:",
 

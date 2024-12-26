@@ -14,13 +14,8 @@ import '../blocs/onboarding_bloc.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
-    required this.title,
-    required this.description,
     super.key,
   });
-
-  final String title;
-  final String description;
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -46,72 +41,40 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   @override
-  Widget build(BuildContext context) => RxUnfocuser(
-        child: SingleChildScrollView(
-          child: Column(
-            spacing: context.designSystem.spacing.m,
-            children: [
-              Padding(
-                padding:
-                    EdgeInsets.only(top: context.designSystem.spacing.xxxxl2),
-                child: Icon(
-                  context.designSystem.icons.avatar,
-                  size: context.designSystem.spacing.xxxl,
-                ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(bottom: context.designSystem.spacing.m),
-                child: Text(
-                  widget.title,
-                  style: context.designSystem.typography.onboardingTitle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              RxForceUnfocuser(
-                child: Text(
-                  widget.description,
-                  style: context.designSystem.typography.h2Reg16,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              RxTextFormFieldBuilder<OnboardingBlocType>(
-                state: (bloc) => bloc.states.email.translate(context),
-                showErrorState: (bloc) => bloc.states.showFieldErrors,
-                onChanged: (bloc, value) => bloc.events.setEmail(value),
-                builder: (fieldState) => _buildEmailField(
-                  fieldState,
-                  context,
-                ),
-              ),
-              RxTextFormFieldBuilder<OnboardingBlocType>(
-                state: (bloc) => bloc.states.password.translate(context),
-                showErrorState: (bloc) => bloc.states.showFieldErrors,
-                onChanged: (bloc, value) => bloc.events.setPassword(value),
-                obscureText: true,
-                builder: (fieldState) => _buildPasswordField(
-                  fieldState,
-                  context,
-                ),
-              ),
-              SizedBox(height: context.designSystem.spacing.s),
-              RxBlocBuilder<OnboardingBlocType, bool>(
-                state: (bloc) => bloc.states.isLoading,
-                builder: _buildRegisterButton,
-              ),
-              AppErrorModalWidget<OnboardingBlocType>(
-                errorState: (bloc) => bloc.states.errors,
-              ),
-              AppErrorModalWidget<OnboardingBlocType>(
-                errorState: (bloc) => bloc.states.resumeOnboardingErrors,
-                onRetry: (_, __) => context
-                    .read<OnboardingBlocType>()
-                    .events
-                    .resumeOnboarding(),
-              ),
-            ],
+  void initState() {
+    _emailFocusNode.requestFocus();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) => Column(
+        spacing: context.designSystem.spacing.m,
+        children: [
+          RxTextFormFieldBuilder<OnboardingBlocType>(
+            state: (bloc) => bloc.states.email.translate(context),
+            showErrorState: (bloc) => bloc.states.showFieldErrors,
+            onChanged: (bloc, value) => bloc.events.setEmail(value),
+            builder: (fieldState) => _buildEmailField(
+              fieldState,
+              context,
+            ),
           ),
-        ),
+          RxTextFormFieldBuilder<OnboardingBlocType>(
+            state: (bloc) => bloc.states.password.translate(context),
+            showErrorState: (bloc) => bloc.states.showFieldErrors,
+            onChanged: (bloc, value) => bloc.events.setPassword(value),
+            obscureText: true,
+            builder: (fieldState) => _buildPasswordField(
+              fieldState,
+              context,
+            ),
+          ),
+          SizedBox(height: context.designSystem.spacing.xs),
+          RxBlocBuilder<OnboardingBlocType, bool>(
+            state: (bloc) => bloc.states.isLoading,
+            builder: _buildRegisterButton,
+          ),
+        ],
       );
 
   TextFormField _buildPasswordField(
