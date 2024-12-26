@@ -114,5 +114,10 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
     letterSpacing: 0.8,
     fontSize: 10.0)
       .copyWith(color: _designSystemColor.black);
-  {{/enable_feature_otp}}
+  {{/enable_feature_otp}}{{#enable_feature_onboarding}}
+
+  late final onboardingTitle = h1Reg22.copyWith(
+    fontSize: 32,
+    color: _designSystemColor.primaryColor,
+  );{{/enable_feature_onboarding}}
 }

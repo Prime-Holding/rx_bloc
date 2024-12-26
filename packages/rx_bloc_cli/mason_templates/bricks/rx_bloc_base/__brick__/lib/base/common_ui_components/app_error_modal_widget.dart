@@ -31,16 +31,22 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
             ? showErrorBlurredBottomSheet(
                 context: context,
                 error: error.translate(context),
-                configuration: const ModalConfiguration(showCloseButton: true),
-                retryCallback: (context) => onRetry?.call(context, error),
+                configuration: const ModalConfiguration(
+                  showCloseButton: true,
+                  isDismissible: false,
+                ),
+                retryCallback: (context) {
+                  onRetry?.call(context, error);
+                  Navigator.of(context).pop();
+                },
                 onCancelCallback: onCancel,
               )
             : showBlurredBottomSheet(
                 context: context,
                 builder: (BuildContext context) => MessagePanelWidget(
-                message: error.translate(context),
-                messageState: MessagePanelState.neutral,
+                  message: error.translate(context),
+                  messageState: MessagePanelState.neutral,
                 ),
               ),
-        );
+      );
 }

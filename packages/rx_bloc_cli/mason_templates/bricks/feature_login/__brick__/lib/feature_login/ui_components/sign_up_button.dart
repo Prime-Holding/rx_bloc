@@ -23,19 +23,22 @@ class SignUpButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: isLoading ? null : onPressed,
-          child: Text.rich(
-            textAlign: TextAlign.center,
-            TextSpan(
-              text: context.l10n.featureLogin.dontHaveAccount,
-              style: context.designSystem.typography.h2Reg16
-                  .copyWith(color: context.designSystem.colors.dividerColor),
-              children: [
-                const TextSpan(text: ' '),
-                TextSpan(
-                  text: context.l10n.featureLogin.signUpLabel,
-                  style: context.designSystem.typography.h1Bold16,
-                ),
-              ],
+          child: Padding(
+            padding: EdgeInsets.all(context.designSystem.spacing.m),
+            child: Text.rich(
+              textAlign: TextAlign.center,
+              TextSpan(
+                text: context.l10n.featureLogin.dontHaveAccount,
+                style: context.designSystem.typography.h2Reg16
+                    .copyWith(color: context.designSystem.colors.dividerColor),
+                children: [
+                  const TextSpan(text: ' '),
+                  TextSpan(
+                    text: context.l10n.featureLogin.signUpLabel,
+                    style: context.designSystem.typography.h1Bold16,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
