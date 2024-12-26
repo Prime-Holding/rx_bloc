@@ -12,8 +12,8 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
-          resizeToAvoidBottomInset: false,
           child: SmsCodeProvider(
             sentNewCodeActivationTime: 2,
             smsCodeService: context.read<SmsCodeService>(),
