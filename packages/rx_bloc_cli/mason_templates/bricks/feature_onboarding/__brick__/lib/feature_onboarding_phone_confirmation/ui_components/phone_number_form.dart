@@ -5,9 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
-import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/models/country_code_model.dart';
 import '../blocs/onboarding_phone_bloc.dart';
 import '../services/search_country_code_service.dart';
@@ -16,46 +14,50 @@ class PhoneNumberForm extends StatelessWidget {
   const PhoneNumberForm({super.key});
 
   @override
-  Widget build(BuildContext context) => Row(
-        children: [
-          _buildSelectCountry(context),
-          SizedBox(width: context.designSystem.spacing.xs),
-          Expanded(
-            child: _buildPhoneNumber(context),
-          ),
-        ],
-      );
-
-  /// region Builders
-
-  Widget _buildSelectCountry(BuildContext context) =>
+  Widget build(BuildContext context) =>
       RxBlocBuilder<OnboardingPhoneBlocType, CountryCodeModel?>(
         state: (bloc) => bloc.states.countryCode,
         builder: (context, countryCodeSnapshot, bloc) => ShimmerWrapper(
           showShimmer: !countryCodeSnapshot.hasData,
-          child: GestureDetector(
-            onTap: () => _onCountryCodeSegmentPressed(
-              context,
-              countryCodeSnapshot.data,
-            ),
-            child: Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                  bottom: BorderSide(
-                    color: context.designSystem.colors.primaryColor,
-                    width: 2,
-                  ),
-                )),
-                child: Padding(
-                  padding: EdgeInsets.all(context.designSystem.spacing.s),
-                  child: Text(
-                    '+${countryCodeSnapshot.data?.code ?? 'X'}',
-                    textAlign: TextAlign.center,
-                    style: context.designSystem.typography.h2Reg16,
-                  ),
-                )),
+          child: Row(
+            children: [
+              _buildSelectCountry(context, countryCodeSnapshot.data),
+              SizedBox(width: context.designSystem.spacing.xs),
+              Expanded(
+                child: _buildPhoneNumber(context),
+              ),
+            ],
           ),
         ),
+      );
+
+  /// region Builders
+
+  Widget _buildSelectCountry(
+    BuildContext context,
+    CountryCodeModel? countryCode,
+  ) =>
+      GestureDetector(
+        onTap: () => _onCountryCodeSegmentPressed(
+          context,
+          countryCode,
+        ),
+        child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+              bottom: BorderSide(
+                color: context.designSystem.colors.primaryColor,
+                width: 2,
+              ),
+            )),
+            child: Padding(
+              padding: EdgeInsets.all(context.designSystem.spacing.s),
+              child: Text(
+                '+${countryCode?.code ?? 'X'}',
+                textAlign: TextAlign.center,
+                style: context.designSystem.typography.h2Reg16,
+              ),
+            )),
       );
 
   Widget _buildPhoneNumber(BuildContext context) =>

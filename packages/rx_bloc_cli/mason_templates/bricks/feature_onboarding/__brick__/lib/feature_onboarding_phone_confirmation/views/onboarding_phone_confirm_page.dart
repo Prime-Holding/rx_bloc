@@ -13,102 +13,96 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
+          resizeToAvoidBottomInset: false,
           child: SmsCodeProvider(
             sentNewCodeActivationTime: 2,
             smsCodeService: context.read<SmsCodeService>(),
             onResult: _onCodeResult,
             builder: (state) => Padding(
               padding: EdgeInsets.all(context.designSystem.spacing.l),
-              child: SingleChildScrollView(
-                child: Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
                     children: [
-                      Column(
-                        children: [
-                          Icon(
-                            Icons.sms_outlined,
-                            size: context.designSystem.spacing.xxxl,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: context.designSystem.spacing.m,
-                            ),
-                            child: Text(
-                              context.l10n.featureOnboarding
-                                  .phoneNumberConfirmTitle,
-                              style: context.designSystem.typography.h1Reg22
-                                  .copyWith(
-                                fontSize: context.designSystem.spacing.xxl,
-                                color: context.designSystem.colors.primaryColor,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: context.designSystem.spacing.m,
-                              bottom: context.designSystem.spacing.xxl,
-                            ),
-                            child: Text(
-                              context.l10n.featureOnboarding
-                                  .phoneNumberConfirmDescription,
-                              style: context.designSystem.typography.h2Reg16,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
+                      Icon(
+                        Icons.sms_outlined,
+                        size: context.designSystem.spacing.xxxl,
                       ),
-                      Column(
-                        children: [
-                          Text(
-                            context
-                                .l10n.featureOnboarding.confirmPhoneFieldHint,
-                            style: context.designSystem.typography.h2Reg16
-                                .copyWith(
-                              color: context.designSystem.colors.gray,
-                            ),
-                            textAlign: TextAlign.center,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: context.designSystem.spacing.m,
+                        ),
+                        child: Text(
+                          context
+                              .l10n.featureOnboarding.phoneNumberConfirmTitle,
+                          style:
+                              context.designSystem.typography.h1Reg22.copyWith(
+                            fontSize: context.designSystem.spacing.xxl,
+                            color: context.designSystem.colors.primaryColor,
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: context.designSystem.spacing.xs,
-                            ),
-                            child: const SmsCodeField(),
-                          ),
-                          const ValidityWidget(),
-                        ],
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: context.designSystem.spacing.xxxxl21,
-                            child: Column(
-                              children: [
-                                ResendCodeButton(
-                                  activeStateIcon: Icon(
-                                    Icons.send,
-                                    color: context
-                                        .designSystem.colors.primaryColor,
-                                  ),
-                                  pressedStateIcon: Icon(
-                                    Icons.check_circle_outline,
-                                    color: context.designSystem.colors
-                                        .pinSuccessBorderColor,
-                                  ),
-                                ),
-                                const ResendButtonTimer(),
-                              ],
-                            ),
-                          ),
-                          AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
-                            errorState: (bloc) => bloc.states.errors,
-                          ),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: context.designSystem.spacing.m,
+                          bottom: context.designSystem.spacing.xxl,
+                        ),
+                        child: Text(
+                          context.l10n.featureOnboarding
+                              .phoneNumberConfirmDescription,
+                          style: context.designSystem.typography.h2Reg16,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ],
                   ),
-                ),
+                  Column(
+                    children: [
+                      Text(
+                        context.l10n.featureOnboarding.confirmPhoneFieldHint,
+                        style: context.designSystem.typography.h2Reg16.copyWith(
+                          color: context.designSystem.colors.gray,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: context.designSystem.spacing.xs,
+                        ),
+                        child: const SmsCodeField(),
+                      ),
+                      const ValidityWidget(),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: context.designSystem.spacing.xxxxl21,
+                        child: Column(
+                          children: [
+                            ResendCodeButton(
+                              activeStateIcon: Icon(
+                                Icons.send,
+                                color: context.designSystem.colors.primaryColor,
+                              ),
+                              pressedStateIcon: Icon(
+                                Icons.check_circle_outline,
+                                color: context
+                                    .designSystem.colors.pinSuccessBorderColor,
+                              ),
+                            ),
+                            const ResendButtonTimer(),
+                          ],
+                        ),
+                      ),
+                      AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
+                        errorState: (bloc) => bloc.states.errors,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

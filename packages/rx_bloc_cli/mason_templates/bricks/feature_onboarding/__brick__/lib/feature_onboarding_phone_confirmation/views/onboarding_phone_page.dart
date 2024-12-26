@@ -23,7 +23,7 @@ class OnboardingPhonePage extends StatelessWidget {
                 horizontal: context.designSystem.spacing.xxxxl,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Column(
                     children: [
@@ -59,30 +59,35 @@ class OnboardingPhonePage extends StatelessWidget {
                     ],
                   ),
                   const PhoneNumberForm(),
-                  Column(
-                    children: [
-                      RxBlocBuilder<OnboardingPhoneBlocType, bool>(
-                        state: (bloc) => bloc.states.isLoading,
-                        builder: (context, loadingSnapshot, bloc) {
-                          final loading = loadingSnapshot.data ?? false;
-                          return GradientFillButton(
-                            text: context.l10n.featureOnboarding.continueText,
-                            state: loading
-                                ? ButtonStateModel.loading
-                                : ButtonStateModel.enabled,
-                            onPressed: !loading
-                                ? () => context
-                                    .read<OnboardingPhoneBlocType>()
-                                    .events
-                                    .submitPhoneNumber()
-                                : null,
-                          );
-                        },
-                      ),
-                      AppErrorModalWidget<OnboardingPhoneBlocType>(
-                        errorState: (bloc) => bloc.states.errors,
-                      ),
-                    ],
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: context.designSystem.spacing.xxl,
+                    ),
+                    child: Column(
+                      children: [
+                        RxBlocBuilder<OnboardingPhoneBlocType, bool>(
+                          state: (bloc) => bloc.states.isLoading,
+                          builder: (context, loadingSnapshot, bloc) {
+                            final loading = loadingSnapshot.data ?? false;
+                            return GradientFillButton(
+                              text: context.l10n.featureOnboarding.continueText,
+                              state: loading
+                                  ? ButtonStateModel.loading
+                                  : ButtonStateModel.enabled,
+                              onPressed: !loading
+                                  ? () => context
+                                      .read<OnboardingPhoneBlocType>()
+                                      .events
+                                      .submitPhoneNumber()
+                                  : null,
+                            );
+                          },
+                        ),
+                        AppErrorModalWidget<OnboardingPhoneBlocType>(
+                          errorState: (bloc) => bloc.states.errors,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
