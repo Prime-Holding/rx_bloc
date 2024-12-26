@@ -1,17 +1,18 @@
 {
   "@@locale": "en",
 
-  "registerPageTitle": "Registration",
+  "registerPageTitle": "Let's Get Started!",
   "register" : "Register with Email",
-  "registerCredentialsHint" : "Enter your registration credentials: \n A valid email address. \n At least 6 characters password.",
-  "titleEmailConfirmation": "Confirm Email",
-  "emailConfirmationSent": "We've sent you a confirmation link email to:",
+  "registerCredentialsHint" : "Enter your email address and create a secure password below to begin your registration. We'll guide you through the rest in no time!",
+  "titleEmailConfirmation": "Confirm Your Email",
+  "emailConfirmationSent": "We've sent a confirmation link to {email}. Please check your inbox and click the link to verify your account.",
   "pleaseOpenEmail": "Please, open this email from your phone and click on the button for confirmation, or tap here!",
   "openMailClient": "Open your e-mail",
   "selectMailApp": "Select email app to open",
   "noMailAppFound": "No e-mail client found on your device. Please, install one or open your mail provider with a browser",
   "sendNewLink": "Send new link",
-  "titleEmailConfirmed": "Confirmed E-mail!",
+  "titleEmailConfirmed": "Email Confirmed!",
+  "titleEmailConfirmedDescription": "Your email has been successfully verified. You're all set to continue with your journey!",
   "titleMockDeepLinkSuccess": "Mock Deep Link - Success:",
   "titleMockDeepLinkError": "Mock Deep Link - Error:",
 
