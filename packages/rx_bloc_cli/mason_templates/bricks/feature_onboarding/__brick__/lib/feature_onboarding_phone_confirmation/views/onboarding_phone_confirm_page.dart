@@ -58,7 +58,9 @@ class _OnboardingPhoneConfirmPageState
               builder: (codeState) => Center(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.all(context.designSystem.spacing.l),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.designSystem.spacing.l,
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
