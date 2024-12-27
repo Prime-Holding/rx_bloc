@@ -28,8 +28,9 @@ class _OnboardingPhoneConfirmPageState
         appBar: customAppBar(
           context,
           actions: [
-            GestureDetector(
-              onTap: () => showBlurredBottomSheet(
+            IconButton(
+              padding: EdgeInsets.only(right: context.designSystem.spacing.m),
+              onPressed: () => showBlurredBottomSheet(
                 context: context,
                 builder: (context) => Text(
                   context.l10n.featureOnboarding.confirmPhoneFieldHint,
@@ -39,12 +40,9 @@ class _OnboardingPhoneConfirmPageState
                   textAlign: TextAlign.center,
                 ),
               ),
-              child: Padding(
-                padding: EdgeInsets.only(right: context.designSystem.spacing.m),
-                child: Icon(
-                  context.designSystem.icons.info,
-                  color: context.designSystem.colors.primaryColor,
-                ),
+              icon: Icon(
+                context.designSystem.icons.info,
+                color: context.designSystem.colors.primaryColor,
               ),
             ),
           ],
