@@ -65,12 +65,6 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                         context.l10n.featureOnboarding.titleEmailConfirmation,
                         style: context.designSystem.typography.h1Med32,
                         textAlign: TextAlign.center,
-                        alignment: Alignment.center,
-                        baseColor: context.designSystem.colors.white,
-                        highlightColor: context.designSystem.colors.white
-                            .withValues(alpha: 0.2),
-                        type: ShimmerType.fixed(placeholderLength: 2),
-                        style: context.designSystem.typography.h2Reg16,
                       ),
                       SizedBox(height: context.designSystem.spacing.xs),
                       RxBlocBuilder<OnboardingEmailConfirmationBlocType,
@@ -93,7 +87,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                       SizedBox(
                         height: context.designSystem.spacing.xxl,
                       ),
-                      //TODO: Used for demo purposes, should be removed in areal app
+                      //TODO: Used for demo purposes, should be removed in a real app
                       Material(
                         child: InkWell(
                           borderRadius: BorderRadius.all(

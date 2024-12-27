@@ -17,6 +17,7 @@ class OnboardingPhonePage extends StatelessWidget {
   Widget build(BuildContext context) => RxForceUnfocuser(
         child: RxUnfocuser(
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: context.designSystem.spacing.xs1,
@@ -27,32 +28,24 @@ class OnboardingPhonePage extends StatelessWidget {
                 children: [
                   Column(
                     children: [
+                      SizedBox(height: context.designSystem.spacing.xxl),
                       Icon(
-                        Icons.phone,
-                        size: context.designSystem.spacing.xxxl,
+                        context.designSystem.icons.phone,
+                        size: context.designSystem.spacing.xxxxl3,
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: context.designSystem.spacing.m,
-                        ),
-                        child: Text(
-                          context.l10n.featureOnboarding.phoneNumberTitle,
-                          textAlign: TextAlign.center,
-                          style:
-                              context.designSystem.typography.onboardingTitle,
-                        ),
+                      SizedBox(height: context.designSystem.spacing.s),
+                      Text(
+                        context.l10n.featureOnboarding.phoneNumberTitle,
+                        textAlign: TextAlign.center,
+                        style: context.designSystem.typography.h1Med32,
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: context.designSystem.spacing.m,
-                          bottom: context.designSystem.spacing.xxl,
-                        ),
-                        child: Text(
-                          context.l10n.featureOnboarding.phoneNumberDescription,
-                          textAlign: TextAlign.center,
-                          style: context.designSystem.typography.h2Reg16,
-                        ),
+                      SizedBox(height: context.designSystem.spacing.xs),
+                      Text(
+                        context.l10n.featureOnboarding.phoneNumberDescription,
+                        textAlign: TextAlign.center,
+                        style: context.designSystem.typography.h2Reg16,
                       ),
+                      SizedBox(height: context.designSystem.spacing.l),
                     ],
                   ),
                   const PhoneNumberForm(),
