@@ -24,115 +24,126 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
         body: SafeArea(
           child: RxBlocBuilder<OnboardingEmailConfirmationBlocType, bool>(
             state: (bloc) => bloc.states.isLoading,
-            builder: (context, loading, bloc) => Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: context.designSystem.spacing.xxl,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
+            builder: (context, loading, bloc) => Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.designSystem.spacing.xxl,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      AppErrorModalWidget<OnboardingEmailConfirmationBlocType>(
-                        errorState: (bloc) => bloc.states.errors,
-                        onRetry: (_, error) => error is InvalidUrlErrorModel
-                            ? bloc.events.openMockDeepLinkSuccess()
-                            : bloc.events.sendNewLink(),
-                      ),
-                      ShimmerWrapper(
-                        alignment: Alignment.center,
-                        showShimmer: loading.isLoading,
-                        baseColor: context.designSystem.colors.white,
-                        highlightColor: context.designSystem.colors.white
-                            .withValues(alpha: 0.2),
-                        child: loading.isLoading
-                            ? Container(
-                                decoration: BoxDecoration(
-                                    color: context.designSystem.colors.white,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                            context.designSystem.spacing.s))),
-                                width: context.designSystem.spacing.xxxl,
-                                height: context.designSystem.spacing.xxxl,
-                              )
-                            : Icon(
-                                context.designSystem.icons.message,
-                                size: context.designSystem.spacing.xxxxl3,
+                      Column(
+                        children: [
+                          AppErrorModalWidget<
+                              OnboardingEmailConfirmationBlocType>(
+                            errorState: (bloc) => bloc.states.errors,
+                            onRetry: (_, error) => error is InvalidUrlErrorModel
+                                ? bloc.events.openMockDeepLinkSuccess()
+                                : bloc.events.sendNewLink(),
+                          ),
+                          ShimmerWrapper(
+                            alignment: Alignment.center,
+                            showShimmer: loading.isLoading,
+                            baseColor: context.designSystem.colors.white,
+                            highlightColor: context.designSystem.colors.white
+                                .withValues(alpha: 0.2),
+                            child: loading.isLoading
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        color:
+                                            context.designSystem.colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(context
+                                                .designSystem.spacing.s))),
+                                    width: context.designSystem.spacing.xxxl,
+                                    height: context.designSystem.spacing.xxxl,
+                                  )
+                                : Icon(
+                                    context.designSystem.icons.message,
+                                    size: context.designSystem.spacing.xxxxl3,
+                                  ),
+                          ),
+                          SizedBox(height: context.designSystem.spacing.l),
+                          Text(
+                            context
+                                .l10n.featureOnboarding.titleEmailConfirmation,
+                            style: context.designSystem.typography.h1Med32,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: context.designSystem.spacing.xs),
+                          RxBlocBuilder<OnboardingEmailConfirmationBlocType,
+                              String>(
+                            state: (bloc) => bloc.states.email,
+                            builder: (context, email, bloc) => ShimmerText(
+                              loading.isLoading
+                                  ? null
+                                  : context.l10n.featureOnboarding
+                                      .emailConfirmationSent(email.data ?? ''),
+                              textAlign: TextAlign.center,
+                              alignment: Alignment.center,
+                              baseColor: context.designSystem.colors.white,
+                              highlightColor: context.designSystem.colors.white
+                                  .withValues(alpha: 0.2),
+                              type: ShimmerType.fixed(placeholderLength: 2),
+                              style: context.designSystem.typography.h2Reg16,
+                            ),
+                          ),
+                          SizedBox(
+                            height: context.designSystem.spacing.xxl,
+                          ),
+                          //TODO: Used for demo purposes, should be removed in a real app
+                          Material(
+                            child: InkWell(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  context.designSystem.spacing.m,
+                                ),
                               ),
-                      ),
-                      SizedBox(height: context.designSystem.spacing.l),
-                      Text(
-                        context.l10n.featureOnboarding.titleEmailConfirmation,
-                        style: context.designSystem.typography.h1Med32,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: context.designSystem.spacing.xs),
-                      RxBlocBuilder<OnboardingEmailConfirmationBlocType,
-                          String>(
-                        state: (bloc) => bloc.states.email,
-                        builder: (context, email, bloc) => ShimmerText(
-                          loading.isLoading
-                              ? null
-                              : context.l10n.featureOnboarding
-                                  .emailConfirmationSent(email.data ?? ''),
-                          textAlign: TextAlign.center,
-                          alignment: Alignment.center,
-                          baseColor: context.designSystem.colors.white,
-                          highlightColor: context.designSystem.colors.white
-                              .withValues(alpha: 0.2),
-                          type: ShimmerType.fixed(placeholderLength: 2),
-                          style: context.designSystem.typography.h2Reg16,
-                        ),
+                              onTap: loading.isLoading
+                                  ? null
+                                  : () => showMockDeepLinkSheet(
+                                        context,
+                                        onDeepLinkSuccessTapped: () => bloc
+                                            .events
+                                            .openMockDeepLinkSuccess(),
+                                        onDeepLinkErrorTapped: () =>
+                                            bloc.events.openMockDeepLinkError(),
+                                      ),
+                              child: MessagePanelWidget(
+                                isLoading: loading.isLoading,
+                                message: context
+                                    .l10n.featureOnboarding.pleaseOpenEmail,
+                                messageState: MessagePanelState.positive,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: context.designSystem.spacing.xxl,
                       ),
-                      //TODO: Used for demo purposes, should be removed in a real app
-                      Material(
-                        child: InkWell(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              context.designSystem.spacing.m,
-                            ),
+                      Column(
+                        children: [
+                          GradientFillButton(
+                            onPressed: loading.isLoading
+                                ? null
+                                : () => context
+                                    .read<OnboardingEmailConfirmationBlocType>()
+                                    .events
+                                    .openMailClient(context
+                                        .l10n.featureOnboarding.selectMailApp),
+                            text: context.l10n.featureOnboarding.openMailClient,
                           ),
-                          onTap: loading.isLoading
-                              ? null
-                              : () => showMockDeepLinkSheet(
-                                    context,
-                                    onDeepLinkSuccessTapped: () =>
-                                        bloc.events.openMockDeepLinkSuccess(),
-                                    onDeepLinkErrorTapped: () =>
-                                        bloc.events.openMockDeepLinkError(),
-                                  ),
-                          child: MessagePanelWidget(
-                            isLoading: loading.isLoading,
-                            message:
-                                context.l10n.featureOnboarding.pleaseOpenEmail,
-                            messageState: MessagePanelState.positive,
+                          SizedBox(
+                            height: context.designSystem.spacing.s,
                           ),
-                        ),
+                          _sendNewLinkButton(),
+                        ],
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      GradientFillButton(
-                        onPressed: loading.isLoading
-                            ? null
-                            : () => context
-                                .read<OnboardingEmailConfirmationBlocType>()
-                                .events
-                                .openMailClient(context
-                                    .l10n.featureOnboarding.selectMailApp),
-                        text: context.l10n.featureOnboarding.openMailClient,
-                      ),
-                      SizedBox(
-                        height: context.designSystem.spacing.s,
-                      ),
-                      _sendNewLinkButton(),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
           ),

@@ -17,69 +17,74 @@ class OnboardingPhonePage extends StatelessWidget {
   Widget build(BuildContext context) => RxForceUnfocuser(
         child: RxUnfocuser(
           child: Scaffold(
-            resizeToAvoidBottomInset: false,
             body: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: context.designSystem.spacing.xs1,
                 horizontal: context.designSystem.spacing.xxxxl,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: context.designSystem.spacing.xxl),
-                      Icon(
-                        context.designSystem.icons.phone,
-                        size: context.designSystem.spacing.xxxxl3,
+                      Column(
+                        children: [
+                          SizedBox(height: context.designSystem.spacing.xxl),
+                          Icon(
+                            context.designSystem.icons.phone,
+                            size: context.designSystem.spacing.xxxxl3,
+                          ),
+                          SizedBox(height: context.designSystem.spacing.s),
+                          Text(
+                            context.l10n.featureOnboarding.phoneNumberTitle,
+                            textAlign: TextAlign.center,
+                            style: context.designSystem.typography.h1Med32,
+                          ),
+                          SizedBox(height: context.designSystem.spacing.xs),
+                          Text(
+                            context
+                                .l10n.featureOnboarding.phoneNumberDescription,
+                            textAlign: TextAlign.center,
+                            style: context.designSystem.typography.h2Reg16,
+                          ),
+                          SizedBox(height: context.designSystem.spacing.l),
+                        ],
                       ),
-                      SizedBox(height: context.designSystem.spacing.s),
-                      Text(
-                        context.l10n.featureOnboarding.phoneNumberTitle,
-                        textAlign: TextAlign.center,
-                        style: context.designSystem.typography.h1Med32,
+                      const PhoneNumberForm(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: context.designSystem.spacing.xxl,
+                        ),
+                        child: Column(
+                          children: [
+                            RxBlocBuilder<OnboardingPhoneBlocType, bool>(
+                              state: (bloc) => bloc.states.isLoading,
+                              builder: (context, loadingSnapshot, bloc) {
+                                final loading = loadingSnapshot.data ?? false;
+                                return GradientFillButton(
+                                  text: context
+                                      .l10n.featureOnboarding.continueText,
+                                  state: loading
+                                      ? ButtonStateModel.loading
+                                      : ButtonStateModel.enabled,
+                                  onPressed: !loading
+                                      ? () => context
+                                          .read<OnboardingPhoneBlocType>()
+                                          .events
+                                          .submitPhoneNumber()
+                                      : null,
+                                );
+                              },
+                            ),
+                            AppErrorModalWidget<OnboardingPhoneBlocType>(
+                              errorState: (bloc) => bloc.states.errors,
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: context.designSystem.spacing.xs),
-                      Text(
-                        context.l10n.featureOnboarding.phoneNumberDescription,
-                        textAlign: TextAlign.center,
-                        style: context.designSystem.typography.h2Reg16,
-                      ),
-                      SizedBox(height: context.designSystem.spacing.l),
                     ],
                   ),
-                  const PhoneNumberForm(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: context.designSystem.spacing.xxl,
-                    ),
-                    child: Column(
-                      children: [
-                        RxBlocBuilder<OnboardingPhoneBlocType, bool>(
-                          state: (bloc) => bloc.states.isLoading,
-                          builder: (context, loadingSnapshot, bloc) {
-                            final loading = loadingSnapshot.data ?? false;
-                            return GradientFillButton(
-                              text: context.l10n.featureOnboarding.continueText,
-                              state: loading
-                                  ? ButtonStateModel.loading
-                                  : ButtonStateModel.enabled,
-                              onPressed: !loading
-                                  ? () => context
-                                      .read<OnboardingPhoneBlocType>()
-                                      .events
-                                      .submitPhoneNumber()
-                                  : null,
-                            );
-                          },
-                        ),
-                        AppErrorModalWidget<OnboardingPhoneBlocType>(
-                          errorState: (bloc) => bloc.states.errors,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
