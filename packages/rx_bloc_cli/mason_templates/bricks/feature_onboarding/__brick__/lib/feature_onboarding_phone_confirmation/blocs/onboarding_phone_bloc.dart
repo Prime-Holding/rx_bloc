@@ -67,10 +67,6 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   /// The navigation bloc used to navigate the user
   final RouterBlocType _navigationBloc;
 
-  /// The initial country code to be presented. Most apps default to the
-  /// US country code.
-  final _initialCountryCode = CountryCodeModel(code: '1', name: 'USA');
-
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
@@ -87,10 +83,9 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
       .share();
 
   @override
-  Stream<CountryCodeModel?> _mapToCountryCodeState() => Rx.merge([
-        Stream.value(_initialCountryCode),
-        _$setCountryCodeEvent,
-      ]).shareReplay(maxSize: 1);
+  Stream<CountryCodeModel?> _mapToCountryCodeState() => _$setCountryCodeEvent
+      .startWith(CountryCodeModel.withDefault())
+      .shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToPhoneNumberState() => Rx.combineLatest2(
