@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/shimmer.dart';
+import 'package:widget_toolkit/ui_components.dart';
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../blocs/onboarding_phone_confirm_bloc.dart';
 
 /// Onboarding page where the user can confirm their phone number by entering a sms code.
@@ -22,6 +24,30 @@ class _OnboardingPhoneConfirmPageState
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: customAppBar(
+          context,
+          actions: [
+            GestureDetector(
+              onTap: () => showBlurredBottomSheet(
+                context: context,
+                builder: (context) => Text(
+                  context.l10n.featureOnboarding.confirmPhoneFieldHint,
+                  style: context.designSystem.typography.h2Reg16.copyWith(
+                    color: context.designSystem.colors.gray,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(right: context.designSystem.spacing.m),
+                child: Icon(
+                  Icons.info_outline,
+                  color: context.designSystem.colors.primaryColor,
+                ),
+              ),
+            ),
+          ],
+        ),
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: SmsCodeProvider(
@@ -35,44 +61,29 @@ class _OnboardingPhoneConfirmPageState
                 children: [
                   Column(
                     children: [
+                      SizedBox(height: context.designSystem.spacing.xxl),
                       Icon(
-                        Icons.sms_outlined,
-                        size: context.designSystem.spacing.xxxl,
+                        context.designSystem.icons.phoneConfirm,
+                        size: context.designSystem.spacing.xxxxl3,
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: context.designSystem.spacing.m,
-                        ),
-                        child: Text(
-                          context
-                              .l10n.featureOnboarding.phoneNumberConfirmTitle,
-                          style: context.designSystem.typography.h1Med32,
-                          textAlign: TextAlign.center,
-                        ),
+                      SizedBox(height: context.designSystem.spacing.s),
+                      Text(
+                        context.l10n.featureOnboarding.phoneNumberConfirmTitle,
+                        style: context.designSystem.typography.h1Med32,
+                        textAlign: TextAlign.center,
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: context.designSystem.spacing.m,
-                          bottom: context.designSystem.spacing.xxl,
-                        ),
-                        child: Text(
-                          context.l10n.featureOnboarding
-                              .phoneNumberConfirmDescription,
-                          style: context.designSystem.typography.h2Reg16,
-                          textAlign: TextAlign.center,
-                        ),
+                      SizedBox(height: context.designSystem.spacing.xs),
+                      Text(
+                        context.l10n.featureOnboarding
+                            .phoneNumberConfirmDescription,
+                        style: context.designSystem.typography.h2Reg16,
+                        textAlign: TextAlign.center,
                       ),
+                      SizedBox(height: context.designSystem.spacing.l),
                     ],
                   ),
                   Column(
                     children: [
-                      Text(
-                        context.l10n.featureOnboarding.confirmPhoneFieldHint,
-                        style: context.designSystem.typography.h2Reg16.copyWith(
-                          color: context.designSystem.colors.gray,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: context.designSystem.spacing.xs,

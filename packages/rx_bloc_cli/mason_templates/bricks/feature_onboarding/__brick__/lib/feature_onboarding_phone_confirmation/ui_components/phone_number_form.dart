@@ -10,42 +10,62 @@ import '../../base/models/country_code_model.dart';
 import '../blocs/onboarding_phone_bloc.dart';
 import '../services/search_country_code_service.dart';
 
-class PhoneNumberForm extends StatelessWidget {
+class PhoneNumberForm extends StatefulWidget {
   const PhoneNumberForm({super.key});
 
   @override
+  State<PhoneNumberForm> createState() => _PhoneNumberFormState();
+}
+
+class _PhoneNumberFormState extends State<PhoneNumberForm> {
+  final _phoneNumberFocusNode = FocusNode(debugLabel: 'phoneNumberFocus');
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneNumberFocusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    _phoneNumberFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) =>
-      RxBlocBuilder<OnboardingPhoneBlocType, CountryCodeModel?>(
-        state: (bloc) => bloc.states.countryCode,
-        builder: (context, countryCodeSnapshot, bloc) => ShimmerWrapper(
-          showShimmer: !countryCodeSnapshot.hasData,
-          child: Row(
-            children: [
-              _buildSelectCountry(context, countryCodeSnapshot.data),
-              SizedBox(width: context.designSystem.spacing.xs),
-              Expanded(
-                child: _buildPhoneNumber(
-                  context,
-                  countryCodeSnapshot.hasData,
-                ),
-              ),
-            ],
+      RxTextFormFieldBuilder<OnboardingPhoneBlocType>(
+        state: (bloc) => bloc.states.phoneNumber.translate(context),
+        onChanged: (bloc, value) => bloc.events.setPhoneNumber(value),
+        showErrorState: (bloc) => bloc.states.showErrors,
+        builder: (fieldState) => TextFormField(
+          focusNode: _phoneNumberFocusNode,
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.phone,
+          controller: fieldState.controller,
+          onEditingComplete: () =>
+              FocusManager.instance.primaryFocus?.unfocus(),
+          decoration: fieldState.decoration.copyWith(
+            prefixIcon: _buildSelectCountry(context),
+            hintText:
+                context.l10n.featureOnboarding.phoneNumberHint.toUpperCase(),
+            errorMaxLines: 2,
           ),
         ),
       );
 
   /// region Builders
 
-  Widget _buildSelectCountry(
-    BuildContext context,
-    CountryCodeModel? countryCode,
-  ) =>
-      GestureDetector(
-        onTap: () => _onCountryCodeSegmentPressed(
-          context,
-          countryCode,
-        ),
-        child: Container(
+  Widget _buildSelectCountry(BuildContext context) =>
+      RxBlocBuilder<OnboardingPhoneBlocType, CountryCodeModel?>(
+        state: (bloc) => bloc.states.countryCode,
+        builder: (context, countryCodeSnapshot, bloc) => GestureDetector(
+          onTap: () => _onCountryCodeSegmentPressed(
+            context,
+            countryCodeSnapshot.data,
+          ),
+          child: Container(
             decoration: BoxDecoration(
                 border: Border(
               bottom: BorderSide(
@@ -55,30 +75,21 @@ class PhoneNumberForm extends StatelessWidget {
             )),
             child: Padding(
               padding: EdgeInsets.all(context.designSystem.spacing.s),
-              child: Text(
-                '+${countryCode?.code ?? 'X'}',
-                textAlign: TextAlign.center,
-                style: context.designSystem.typography.h2Reg16,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '+${countryCodeSnapshot.data?.code ?? ''}',
+                    textAlign: TextAlign.center,
+                    style: context.designSystem.typography.h2Reg16,
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    color: context.designSystem.colors.primaryColor,
+                  ),
+                ],
               ),
-            )),
-      );
-
-  Widget _buildPhoneNumber(BuildContext context, bool enabled) =>
-      RxTextFormFieldBuilder<OnboardingPhoneBlocType>(
-        state: (bloc) => bloc.states.phoneNumber.translate(context),
-        onChanged: (bloc, value) =>
-            enabled ? bloc.events.setPhoneNumber(value) : null,
-        showErrorState: (bloc) => bloc.states.showErrors,
-        builder: (fieldState) => TextFormField(
-          textAlign: TextAlign.center,
-          keyboardType: TextInputType.phone,
-          controller: fieldState.controller,
-          onEditingComplete: () =>
-              FocusManager.instance.primaryFocus?.unfocus(),
-          decoration: fieldState.decoration.copyWith(
-            hintText:
-                context.l10n.featureOnboarding.phoneNumberHint.toUpperCase(),
-            errorMaxLines: 2,
+            ),
           ),
         ),
       );
@@ -116,6 +127,4 @@ class PhoneNumberForm extends StatelessWidget {
           safeAreaBottom: true,
         ),
       );
-
-  /// endregion
 }

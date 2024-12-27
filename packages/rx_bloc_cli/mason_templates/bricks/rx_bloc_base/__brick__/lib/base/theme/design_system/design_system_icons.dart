@@ -22,6 +22,10 @@ class DesignSystemIcons {
 
   final message = Icons.message;
 
+  final phone = Icons.phone_outlined;
+
+  final phoneConfirm = Icons.sms_outlined;
+
   final Icon calculateIcon = _getIcon(Icons.calculate);
 
   {{#enable_feature_widget_toolkit}}

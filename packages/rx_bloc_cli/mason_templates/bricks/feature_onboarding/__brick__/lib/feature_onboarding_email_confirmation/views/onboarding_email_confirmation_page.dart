@@ -87,7 +87,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                       SizedBox(
                         height: context.designSystem.spacing.xxl,
                       ),
-                      //TODO: Used for demo purposes, should be removed in areal app
+                      //TODO: Used for demo purposes, should be removed in a real app
                       Material(
                         child: InkWell(
                           borderRadius: BorderRadius.all(
