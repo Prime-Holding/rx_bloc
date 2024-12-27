@@ -48,84 +48,90 @@ class _OnboardingPhoneConfirmPageState
             ),
           ],
         ),
-        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: SmsCodeProvider(
             sentNewCodeActivationTime: 2,
             smsCodeService: context.read<SmsCodeService>(),
             onResult: _onCodeResult,
-            builder: (codeState) => Padding(
-              padding: EdgeInsets.all(context.designSystem.spacing.l),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
+            builder: (codeState) => Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(context.designSystem.spacing.l),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: context.designSystem.spacing.xxl),
-                      Icon(
-                        context.designSystem.icons.phoneConfirm,
-                        size: context.designSystem.spacing.xxxxl3,
-                      ),
-                      SizedBox(height: context.designSystem.spacing.s),
-                      Text(
-                        context.l10n.featureOnboarding.phoneNumberConfirmTitle,
-                        style: context.designSystem.typography.h1Med32,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: context.designSystem.spacing.xs),
-                      Text(
-                        context.l10n.featureOnboarding
-                            .phoneNumberConfirmDescription,
-                        style: context.designSystem.typography.h2Reg16,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: context.designSystem.spacing.l),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: context.designSystem.spacing.xs,
-                        ),
-                        child: ShimmerWrapper(
-                          showShimmer: codeState == TemporaryCodeState.loading,
-                          alignment: Alignment.center,
-                          child: SmsCodeField(
-                            controller: _controller,
+                      Column(
+                        children: [
+                          SizedBox(height: context.designSystem.spacing.xxl),
+                          Icon(
+                            context.designSystem.icons.phoneConfirm,
+                            size: context.designSystem.spacing.xxxxl3,
                           ),
-                        ),
+                          SizedBox(height: context.designSystem.spacing.s),
+                          Text(
+                            context
+                                .l10n.featureOnboarding.phoneNumberConfirmTitle,
+                            style: context.designSystem.typography.h1Med32,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: context.designSystem.spacing.xs),
+                          Text(
+                            context.l10n.featureOnboarding
+                                .phoneNumberConfirmDescription,
+                            style: context.designSystem.typography.h2Reg16,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: context.designSystem.spacing.l),
+                        ],
                       ),
-                      const ValidityWidget(),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: context.designSystem.spacing.xxxxl21,
-                        child: Column(
-                          children: [
-                            ResendCodeButton(
-                              activeStateIcon: Icon(
-                                context.designSystem.icons.send,
-                                color: context.designSystem.colors.primaryColor,
-                              ),
-                              pressedStateIcon: Icon(
-                                context.designSystem.icons.success,
-                                color: context
-                                    .designSystem.colors.pinSuccessBorderColor,
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: context.designSystem.spacing.xs,
+                            ),
+                            child: ShimmerWrapper(
+                              showShimmer:
+                                  codeState == TemporaryCodeState.loading,
+                              alignment: Alignment.center,
+                              child: SmsCodeField(
+                                controller: _controller,
                               ),
                             ),
-                            const ResendButtonTimer(),
-                          ],
-                        ),
+                          ),
+                          const ValidityWidget(),
+                        ],
                       ),
-                      AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
-                        errorState: (bloc) => bloc.states.errors,
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: context.designSystem.spacing.xxxxl21,
+                            child: Column(
+                              children: [
+                                ResendCodeButton(
+                                  activeStateIcon: Icon(
+                                    context.designSystem.icons.send,
+                                    color: context
+                                        .designSystem.colors.primaryColor,
+                                  ),
+                                  pressedStateIcon: Icon(
+                                    context.designSystem.icons.success,
+                                    color: context.designSystem.colors
+                                        .pinSuccessBorderColor,
+                                  ),
+                                ),
+                                const ResendButtonTimer(),
+                              ],
+                            ),
+                          ),
+                          AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
+                            errorState: (bloc) => bloc.states.errors,
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
