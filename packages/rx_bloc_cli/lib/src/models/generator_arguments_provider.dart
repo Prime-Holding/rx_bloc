@@ -85,6 +85,10 @@ class GeneratorArgumentsProvider {
     // Multi-Factor Authentication
     final mfaEnabled = _reader.read<bool>(CreateCommandArguments.mfa);
 
+    // Onboarding/Registration
+    final onboardingEnabled =
+        _reader.read<bool>(CreateCommandArguments.onboarding);
+
     if (mfaEnabled && !otpEnabled) {
       _logger
           .warn('Otp enabled, due to Multi-Factor Authentication requirement');
@@ -94,10 +98,11 @@ class GeneratorArgumentsProvider {
       _logger.warn('Pin code enabled, due to MFA feature requirement');
       pinCodeEnabled = true;
     }
-    if ((otpEnabled || pinCodeEnabled) &&
+    if ((otpEnabled || pinCodeEnabled || onboardingEnabled) &&
         !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
-      _logger.warn('Login enabled, due to OTP/PIN feature requirement');
+      _logger
+          .warn('Login enabled, due to OTP/PIN/Onboarding feature requirement');
       loginEnabled = true;
     }
 
@@ -151,7 +156,7 @@ class GeneratorArgumentsProvider {
     // Profile
     var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
 
-    // Onboarding
+    // Onboarding/Registration
     final onboardingEnabled =
         _reader.read<bool>(CreateCommandArguments.onboarding);
 
@@ -193,7 +198,14 @@ class GeneratorArgumentsProvider {
     final counterEnabled = _reader.read<bool>(CreateCommandArguments.counter);
 
     // Deep links
-    final deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
+    var deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
+    // Onboarding/Registration
+    final onboardingEnabled =
+        _reader.read<bool>(CreateCommandArguments.onboarding);
+    if (onboardingEnabled && !deepLinkEnabled) {
+      _logger.warn('Deep links enabled, due to Onboarding feature requirement');
+      deepLinkEnabled = true;
+    }
 
     // Qr Scanner
     final qrScannerEnabled =
