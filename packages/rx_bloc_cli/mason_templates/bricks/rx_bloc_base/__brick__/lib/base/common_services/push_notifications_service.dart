@@ -38,4 +38,10 @@ class PushNotificationsService {
 
   Future<bool> areNotificationsEnabled() async =>
       await _pushNotificationRepository.areNotificationsEnabled();
+
+  Future<bool> requestNotificationPermissions() =>
+      _pushNotificationRepository.requestNotificationPermissions();
+
+  Future<bool> areNotificationsSubscribed() =>
+      _pushNotificationRepository.areNotificationsSubscribed();
 }

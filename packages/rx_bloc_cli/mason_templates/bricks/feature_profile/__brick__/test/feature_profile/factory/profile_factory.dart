@@ -21,11 +21,10 @@ import '../mock/profile_mock.dart';
 /// Change the parameters according the the needs of the test
 Widget profileFactory({
   Result<bool>? areNotificationsEnabled,
-  Result<bool>? syncNotificationsStatus,
   bool? isLoading,
-  ErrorModel? errors, {{#enable_pin_code}}
+  ErrorModel? errors,
   bool? isPinCreated,
-  bool showBiometrics = false, {{/enable_pin_code}}
+  bool showBiometrics = false,
 }) =>
     Scaffold(
       body: MultiProvider(
@@ -33,7 +32,6 @@ Widget profileFactory({
           Provider<UserAccountBlocType>.value(
             value: userAccountBlocMockFactory(loggedIn: true),
           ),
-          {{#enable_pin_code}}
           Provider<BiometricsLocalDataSource>.value(
             value: pinBiometricsLocalDataSourceMockFactory(showBiometrics),
           ),
@@ -48,11 +46,9 @@ Widget profileFactory({
               isPinCreated: isPinCreated,
             ),
           ),
-          {{/enable_pin_code}}
           RxBlocProvider<ProfileBlocType>.value(
             value: profileMockFactory(
               areNotificationsEnabled: areNotificationsEnabled,
-              syncNotificationsStatus: syncNotificationsStatus,
               isLoading: isLoading,
               errors: errors,
             ),
@@ -61,3 +57,4 @@ Widget profileFactory({
         child: const ProfilePage(),
       ),
     );
+

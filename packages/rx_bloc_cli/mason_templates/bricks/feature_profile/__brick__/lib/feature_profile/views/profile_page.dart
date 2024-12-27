@@ -138,7 +138,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const AppDivider(),
                 {{/enable_pin_code}}
-                RxBlocBuilder<ProfileBlocType, Result<bool>>(
+               RxBlocBuilder<ProfileBlocType, Result<bool>>(
                   state: (bloc) => bloc.states.areNotificationsEnabled,
                   builder: (context, areNotificationsEnabled, bloc) =>
                       AppListTile(
@@ -154,20 +154,16 @@ class ProfilePage extends StatelessWidget {
                         : context.designSystem.icons.notificationsInactive,
                     trailing: Switch(
                       value: areNotificationsEnabled.value,
-                      onChanged: (_) => bloc.events.setNotifications(
-                        !areNotificationsEnabled.value,
-                      ),
+                      onChanged: (_) => bloc.events.toggleNotifications(),
                     ),
-                    onTap: () => bloc.events.setNotifications(
-                      !areNotificationsEnabled.value,
-                    ),
+                    onTap: () => bloc.events.toggleNotifications(),
                   ),
                 ),
                 AppErrorModalWidget<ProfileBlocType>(
                   errorState: (bloc) => bloc.states.errors,
                 ),
-                RxBlocListener<ProfileBlocType, Result<bool>>(
-                  state: (bloc) => bloc.states.syncNotificationsStatus,
+                 RxBlocListener<ProfileBlocType, Result<bool>>(
+                  state: (bloc) => bloc.states.areNotificationsEnabled,
                   condition: (previous, current) =>
                       current is ResultSuccess<bool>,
                   listener: (context, state) {
