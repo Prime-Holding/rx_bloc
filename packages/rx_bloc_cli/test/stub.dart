@@ -88,6 +88,12 @@ final class Stub {
     ..[CreateCommandArguments.login.name] = true
     ..[CreateCommandArguments.profile.name] = false;
 
+  static Map<String, Object> get onboardingEnabled =>
+      Map.from(Stub.defaultValues)
+        ..[CreateCommandArguments.onboarding.name] = true
+        ..[CreateCommandArguments.login.name] = false
+        ..[CreateCommandArguments.profile.name] = false;
+
   static final generatorArgumentsAllEnabled = GeneratorArguments(
     outputDirectory: Directory('some/output_directory'),
     projectConfiguration: ProjectConfiguration(

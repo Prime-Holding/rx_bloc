@@ -82,7 +82,7 @@ enum CreateCommandArguments {
   onboarding(
     name: 'enable-feature-onboarding',
     type: CreateCommandArgumentType.boolean,
-    defaultsTo: true,
+    defaultsTo: false,
     prompt: 'Enabled Onboarding feature:',
     help:
         'Enables Onboarding feature capability for the project. The onboarding '
