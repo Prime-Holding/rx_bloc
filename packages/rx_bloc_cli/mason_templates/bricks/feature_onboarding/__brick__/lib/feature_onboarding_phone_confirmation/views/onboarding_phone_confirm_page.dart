@@ -41,7 +41,7 @@ class _OnboardingPhoneConfirmPageState
               child: Padding(
                 padding: EdgeInsets.only(right: context.designSystem.spacing.m),
                 child: Icon(
-                  Icons.info_outline,
+                  context.designSystem.icons.info,
                   color: context.designSystem.colors.primaryColor,
                 ),
               ),
