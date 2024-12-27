@@ -7,21 +7,17 @@ import '../../base/models/country_code_model.dart';
 
 class SearchCountryCodeRepository {
   SearchCountryCodeRepository(this._countryCodesRemoteDataSource) {
-    fetchCountryCodes(force: true);
+    _getCountryCodes();
   }
 
   final CountryCodesRemoteDataSource _countryCodesRemoteDataSource;
-  late Completer<List<CountryCodeModel>> _completer;
+  final _completer = Completer<List<CountryCodeModel>>();
 
-  Future<List<CountryCodeModel>> fetchCountryCodes({bool force = false}) async {
-    if (force) {
-      _completer = Completer<List<CountryCodeModel>>();
-      final countryCodes =
-          await _countryCodesRemoteDataSource.getCountryCodes();
-      final data = countryCodes['countryCodes'] ?? [];
-      _completer.complete(data);
-    }
-
-    return _completer.future;
+  Future<void> _getCountryCodes() async {
+    final countryCodes = await _countryCodesRemoteDataSource.getCountryCodes();
+    final data = countryCodes['countryCodes'] ?? [];
+    _completer.complete(data);
   }
+
+  Future<List<CountryCodeModel>> get searchList => _completer.future;
 }

@@ -9,8 +9,7 @@ class SearchCountryCodeService extends SearchPickerService<CountryCodeModel> {
   final SearchCountryCodeRepository _searchRepository;
 
   @override
-  Future<List<CountryCodeModel>> getItems({bool force = false}) =>
-      _searchRepository.fetchCountryCodes(force: force);
+  Future<List<CountryCodeModel>> getItems() => _searchRepository.searchList;
 
   @override
   List<CountryCodeModel> getPlaceholderList() =>

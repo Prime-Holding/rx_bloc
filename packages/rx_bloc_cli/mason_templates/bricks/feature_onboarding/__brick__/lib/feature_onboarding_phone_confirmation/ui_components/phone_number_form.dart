@@ -41,15 +41,13 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
         showErrorState: (bloc) => bloc.states.showErrors,
         builder: (fieldState) => TextFormField(
           focusNode: _phoneNumberFocusNode,
-          textAlign: TextAlign.center,
           keyboardType: TextInputType.phone,
           controller: fieldState.controller,
           onEditingComplete: () =>
               FocusManager.instance.primaryFocus?.unfocus(),
           decoration: fieldState.decoration.copyWith(
             prefixIcon: _buildSelectCountry(context),
-            hintText:
-                context.l10n.featureOnboarding.phoneNumberHint.toUpperCase(),
+            hintText: context.l10n.featureOnboarding.phoneNumberHint,
             errorMaxLines: 2,
           ),
         ),
@@ -74,7 +72,12 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
               ),
             )),
             child: Padding(
-              padding: EdgeInsets.all(context.designSystem.spacing.s),
+              padding: EdgeInsets.fromLTRB(
+                context.designSystem.spacing.s,
+                context.designSystem.spacing.xss1,
+                context.designSystem.spacing.s,
+                context.designSystem.spacing.s,
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

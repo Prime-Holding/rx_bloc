@@ -107,11 +107,11 @@ class _OnboardingPhoneConfirmPageState
                           children: [
                             ResendCodeButton(
                               activeStateIcon: Icon(
-                                Icons.send,
+                                context.designSystem.icons.send,
                                 color: context.designSystem.colors.primaryColor,
                               ),
                               pressedStateIcon: Icon(
-                                Icons.check_circle_outline,
+                                context.designSystem.icons.success,
                                 color: context
                                     .designSystem.colors.pinSuccessBorderColor,
                               ),

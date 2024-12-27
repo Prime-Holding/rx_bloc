@@ -17,6 +17,7 @@ class OnboardingPhonePage extends StatelessWidget {
   Widget build(BuildContext context) => RxForceUnfocuser(
         child: RxUnfocuser(
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: context.designSystem.spacing.xs1,

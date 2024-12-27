@@ -26,6 +26,10 @@ class DesignSystemIcons {
 
   final phoneConfirm = Icons.sms_outlined;
 
+  final send = Icons.send;
+
+  final success = Icons.check_circle_outline;
+
   final Icon calculateIcon = _getIcon(Icons.calculate);
 
   {{#enable_feature_widget_toolkit}}
