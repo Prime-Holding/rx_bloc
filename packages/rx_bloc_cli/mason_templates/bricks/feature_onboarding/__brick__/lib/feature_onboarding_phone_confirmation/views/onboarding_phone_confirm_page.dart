@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/shimmer.dart';
 import 'package:widget_toolkit/ui_components.dart';
@@ -49,87 +50,89 @@ class _OnboardingPhoneConfirmPageState
           ],
         ),
         body: SafeArea(
-          child: SmsCodeProvider(
-            sentNewCodeActivationTime: 2,
-            smsCodeService: context.read<SmsCodeService>(),
-            onResult: _onCodeResult,
-            builder: (codeState) => Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(context.designSystem.spacing.l),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          SizedBox(height: context.designSystem.spacing.xxl),
-                          Icon(
-                            context.designSystem.icons.phoneConfirm,
-                            size: context.designSystem.spacing.xxxxl3,
-                          ),
-                          SizedBox(height: context.designSystem.spacing.s),
-                          Text(
-                            context
-                                .l10n.featureOnboarding.phoneNumberConfirmTitle,
-                            style: context.designSystem.typography.h1Med32,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: context.designSystem.spacing.xs),
-                          Text(
-                            context.l10n.featureOnboarding
-                                .phoneNumberConfirmDescription,
-                            style: context.designSystem.typography.h2Reg16,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: context.designSystem.spacing.l),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: context.designSystem.spacing.xs,
+          child: RxUnfocuser(
+            child: SmsCodeProvider(
+              sentNewCodeActivationTime: 2,
+              smsCodeService: context.read<SmsCodeService>(),
+              onResult: _onCodeResult,
+              builder: (codeState) => Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(context.designSystem.spacing.l),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(height: context.designSystem.spacing.xxl),
+                            Icon(
+                              context.designSystem.icons.phoneConfirm,
+                              size: context.designSystem.spacing.xxxxl3,
                             ),
-                            child: ShimmerWrapper(
-                              showShimmer:
-                                  codeState == TemporaryCodeState.loading,
-                              alignment: Alignment.center,
-                              child: SmsCodeField(
-                                controller: _controller,
+                            SizedBox(height: context.designSystem.spacing.s),
+                            Text(
+                              context.l10n.featureOnboarding
+                                  .phoneNumberConfirmTitle,
+                              style: context.designSystem.typography.h1Med32,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: context.designSystem.spacing.xs),
+                            Text(
+                              context.l10n.featureOnboarding
+                                  .phoneNumberConfirmDescription,
+                              style: context.designSystem.typography.h2Reg16,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: context.designSystem.spacing.l),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: context.designSystem.spacing.xs,
+                              ),
+                              child: ShimmerWrapper(
+                                showShimmer:
+                                    codeState == TemporaryCodeState.loading,
+                                alignment: Alignment.center,
+                                child: SmsCodeField(
+                                  controller: _controller,
+                                ),
                               ),
                             ),
-                          ),
-                          const ValidityWidget(),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: context.designSystem.spacing.xxxxl21,
-                            child: Column(
-                              children: [
-                                ResendCodeButton(
-                                  activeStateIcon: Icon(
-                                    context.designSystem.icons.send,
-                                    color: context
-                                        .designSystem.colors.primaryColor,
+                            const ValidityWidget(),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: context.designSystem.spacing.xxxxl21,
+                              child: Column(
+                                children: [
+                                  ResendCodeButton(
+                                    activeStateIcon: Icon(
+                                      context.designSystem.icons.send,
+                                      color: context
+                                          .designSystem.colors.primaryColor,
+                                    ),
+                                    pressedStateIcon: Icon(
+                                      context.designSystem.icons.success,
+                                      color: context.designSystem.colors
+                                          .pinSuccessBorderColor,
+                                    ),
                                   ),
-                                  pressedStateIcon: Icon(
-                                    context.designSystem.icons.success,
-                                    color: context.designSystem.colors
-                                        .pinSuccessBorderColor,
-                                  ),
-                                ),
-                                const ResendButtonTimer(),
-                              ],
+                                  const ResendButtonTimer(),
+                                ],
+                              ),
                             ),
-                          ),
-                          AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
-                            errorState: (bloc) => bloc.states.errors,
-                          ),
-                        ],
-                      ),
-                    ],
+                            AppErrorModalWidget<OnboardingPhoneConfirmBlocType>(
+                              errorState: (bloc) => bloc.states.errors,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
