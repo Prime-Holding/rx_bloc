@@ -232,9 +232,3 @@ class ProfilePage extends StatelessWidget {
   }
   {{/enable_pin_code}}
 }
-
-extension _StringX on String {
-  bool get isLoadingSubscription =>
-      this == ProfileBloc.tagNotificationUnsubscribe ||
-      this == ProfileBloc.tagNotificationSubscribe;
-}
