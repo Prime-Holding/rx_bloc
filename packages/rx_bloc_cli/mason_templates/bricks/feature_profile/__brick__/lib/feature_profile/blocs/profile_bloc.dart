@@ -12,8 +12,6 @@ part 'profile_bloc.rxb.g.dart';
 /// A contract class containing all events of the ProfileBloC.
 abstract class ProfileBlocEvents {
   void toggleNotifications();
-
-  void loadNotificationsSettings();
 }
 
 /// A contract class containing all states of the ProfileBloC.
@@ -44,20 +42,13 @@ class ProfileBloc extends $ProfileBloc {
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
-    @override
+  @override
   ConnectableStream<Result<bool>> _mapToAreNotificationsEnabledState() =>
       Rx.merge([
-        _$toggleNotificationsEvent
-            .switchMap((_) => _notificationService
-                .areNotificationsEnabled()
-                .asStream()
-                .switchMap((areEnabled) => _notificationService
-                    .requestNotificationPermissions()
-                    .asStream()))
-            .switchMap((_) => _notificationService
-                .toggleNotifications()
-                .asStream()
-                .asResultStream()),
+        _$toggleNotificationsEvent.switchMap((_) => _notificationService
+            .toggleNotifications()
+            .asStream()
+            .asResultStream()),
         _$loadNotificationsSettingsEvent.startWith(null).switchMap((value) =>
             _notificationService
                 .syncNotificationSettings()

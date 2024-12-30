@@ -28,10 +28,12 @@ class PushNotificationsService {
         ? _subscribe()
         : _unsubscribe());
   }
-    Future<bool> toggleNotifications() async {
-    final areNotificationsSubscribed =
-        await _pushNotificationRepository.areNotificationsSubscribed();
-    if (areNotificationsSubscribed) {
+ Future<bool> toggleNotifications() async {
+    if (!await areNotificationsEnabled()) {
+      await requestNotificationPermissions();
+    }
+    final areSubscribed = await areNotificationsSubscribed();
+    if (areSubscribed) {
       await _unsubscribe();
       return false;
     } else {
@@ -39,6 +41,7 @@ class PushNotificationsService {
       return true;
     }
   }
+  
   Future<void> _subscribe() async =>
       await _pushNotificationRepository.subscribeForPushNotifications();
 
