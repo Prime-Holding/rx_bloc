@@ -43,12 +43,8 @@ void main() {
           );
           return profileBloc();
         },
-        act: (bloc) async {
-          bloc.events.loadNotificationsSettings();
-        },
         state: (bloc) => bloc.states.areNotificationsEnabled,
         expect: [
-          Result.loading(),
           Result.loading(),
           Result.success(true),
         ]);
@@ -64,8 +60,6 @@ void main() {
         state: (bloc) => bloc.states.isLoading,
         expect: [
           false,
-          true,
-          false,
         ]);
   });
 
@@ -78,9 +72,6 @@ void main() {
                   Future.error(UnknownErrorModel()));
 
           return profileBloc();
-        },
-        act: (bloc) async {
-          bloc.events.loadNotificationsSettings();
         },
         state: (bloc) => bloc.states.errors,
         expect: [

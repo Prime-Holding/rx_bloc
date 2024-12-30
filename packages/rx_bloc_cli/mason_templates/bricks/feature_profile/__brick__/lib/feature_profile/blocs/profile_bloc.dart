@@ -33,9 +33,6 @@ class ProfileBloc extends $ProfileBloc {
   }
   final PushNotificationsService _notificationService;
 
-  static const tagNotificationSubscribe = 'tagNotificationSubscribe';
-  static const tagNotificationUnsubscribe = 'tagNotificationUnsubscribe';
-
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
@@ -49,12 +46,11 @@ class ProfileBloc extends $ProfileBloc {
             .toggleNotifications()
             .asStream()
             .asResultStream()),
-        _$loadNotificationsSettingsEvent.startWith(null).switchMap((value) =>
-            _notificationService
-                .syncNotificationSettings()
-                .asStream()
-                .switchMap((_) =>
-                    _notificationService.areNotificationsEnabled().asStream())
-                .asResultStream()),
+        _syncAndCheckNotifications().asResultStream(),
       ]).setResultStateHandler(this).publishReplay(maxSize: 1);
+
+  Future<bool> _syncAndCheckNotifications() async {
+    await _notificationService.syncNotificationSettings();
+    return await _notificationService.areNotificationsEnabled();
+  }
 }
