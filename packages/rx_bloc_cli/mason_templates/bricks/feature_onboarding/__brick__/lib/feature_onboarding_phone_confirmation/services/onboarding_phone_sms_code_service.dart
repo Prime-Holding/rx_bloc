@@ -36,7 +36,7 @@ class OnboardingPhoneSmsCodeService implements SmsCodeService {
 
   /// How long codes will be valid in seconds
   @override
-  Future<int> getValidityTime(bool reset) async => 30;
+  Future<int> getValidityTime(bool reset) async => 120;
 
   /// How long the resendCode button will be disabled after a code has been sent
   @override

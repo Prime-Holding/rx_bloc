@@ -19,6 +19,7 @@ abstract class OnboardingPhoneBlocEvents {
   void setCountryCode(CountryCodeModel countryCode);
 
   /// Sets the phone number
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setPhoneNumber(String phoneNumber);
 
   /// Initiates the submission of the phone number
@@ -38,9 +39,6 @@ abstract class OnboardingPhoneBlocStates {
 
   /// The phone number
   Stream<String> get phoneNumber;
-
-  /// The state of the submit phone number button
-  Stream<bool> get submitPhoneNumberEnabled;
 
   /// Error state of the bloc
   Stream<ErrorModel> get errors;
@@ -76,17 +74,18 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   @override
-  Stream<bool> _mapToShowErrorsState() =>
-      Rx.combineLatest2(countryCode, phoneNumber, (country, phone) => false)
-          .onErrorReturn(true)
-          .share();
+  Stream<bool> _mapToShowErrorsState() => _$submitPhoneNumberEvent
+      .switchMap((event) => Rx.combineLatest2(
+            countryCode,
+            phoneNumber,
+            (country, phone) => true,
+          ).onErrorReturn(true))
+      .share();
 
   @override
-  Stream<bool> _mapToSubmitPhoneNumberEnabledState() =>
-      showErrors.map((errors) => !errors).skip(1).startWith(false);
-
-  @override
-  Stream<CountryCodeModel?> _mapToCountryCodeState() => _$setCountryCodeEvent;
+  Stream<CountryCodeModel?> _mapToCountryCodeState() => _$setCountryCodeEvent
+      .startWith(CountryCodeModel.withDefault())
+      .shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToPhoneNumberState() => Rx.combineLatest2(
@@ -96,20 +95,40 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
       .map((args) => _numberValidatorService.validateNumberAndCountryCode(
           args.$1, args.$2))
       .startWith('')
-      .asBroadcastStream();
+      .shareReplay(maxSize: 1);
+
+  String? _validateAndFormatPhoneNumber(
+    Result<CountryCodeModel?> countryCodeResult,
+    Result<String> phoneResult,
+  ) {
+    if (countryCodeResult is ResultSuccess && phoneResult is ResultSuccess) {
+      final code =
+          (countryCodeResult as ResultSuccess<CountryCodeModel?>).data?.code ??
+              '';
+      final phone = (phoneResult as ResultSuccess<String>).data;
+
+      return '+$code $phone';
+    }
+
+    return null;
+  }
 
   @override
   ConnectableStream<UserModel> _mapToPhoneSubmittedState() =>
       _$submitPhoneNumberEvent
-          .debounceTime(actionDebounceDuration)
-          .withLatestFrom2(countryCode, phoneNumber,
-              (_, country, phone) => '+${country?.code ?? ''} $phone')
+          .throttleTime(actionDebounceDuration)
+          .withLatestFrom2(
+              countryCode.asResultStream(),
+              phoneNumber.asResultStream(),
+              (_, country, phone) =>
+                  _validateAndFormatPhoneNumber(country, phone))
+          .whereNotNull()
           .switchMap((fullPhoneNumber) => _onboardingService
               .submitPhoneNumber(fullPhoneNumber)
               .asResultStream())
           .setResultStateHandler(this)
           .whereSuccess()
           .doOnData((_) {
-        _navigationBloc.events.pushReplace(const OnboardingPhoneConfirmRoute());
+        _navigationBloc.events.push(const OnboardingPhoneConfirmRoute());
       }).publish();
 }

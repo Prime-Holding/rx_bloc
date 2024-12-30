@@ -27,6 +27,11 @@ class PhoneNumberValidatorService {
         errorKey: I18nErrorKeys.tooShort,
         fieldValue: phoneNumber,
       );
+    } else if (phoneNumber.length > 13) {
+      throw FieldErrorModel(
+        errorKey: I18nErrorKeys.tooLong,
+        fieldValue: phoneNumber,
+      );
     }
 
     return phoneNumber;

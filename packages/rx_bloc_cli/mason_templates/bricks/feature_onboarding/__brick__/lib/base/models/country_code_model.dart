@@ -11,9 +11,15 @@ class CountryCodeModel extends PickerItemModel {
     required this.name,
   });
 
+  /// Empty country code model
   CountryCodeModel.empty()
       : code = '',
         name = '';
+
+  /// Default country code model (set to USA)
+  CountryCodeModel.withDefault()
+      : code = '1',
+        name = 'United States of America (USA)';
 
   /// Name of the country
   final String name;
