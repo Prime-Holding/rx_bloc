@@ -116,4 +116,7 @@ class PushNotificationRepository {
       return await _errorMapper.execute(() async => action(requestModel));
     }
   }
+
+  Future<bool> areNotificationsSubscribed() async =>
+    await _localDataSource.notificationsSubscribed();
 }

@@ -28,7 +28,7 @@ class DevMenuDependencies {
         Provider<Alice>(
           create: (context) => Alice(
             configuration: AliceConfiguration(
-              showNotification: true,
+              showNotification: false,
               showInspectorOnShake: false,
               storage: AliceMemoryStorage(maxCallsCount: 1000),
             ),

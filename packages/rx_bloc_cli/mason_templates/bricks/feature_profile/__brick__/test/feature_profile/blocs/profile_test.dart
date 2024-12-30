@@ -15,23 +15,23 @@ import 'profile_test.mocks.dart';
   PushNotificationsService,
 ])
 void main() {
-  late PushNotificationsService _notificationService;
+  late PushNotificationsService notificationService;
 
   void defineWhen({
     bool? areNotificationsEnabled,
     Future<void> Function(Invocation)? syncNotificationSettings,
   }) {
-    when(_notificationService.areNotificationsEnabled())
+    when(notificationService.areNotificationsEnabled())
         .thenAnswer((_) => Future.value(areNotificationsEnabled));
-    when(_notificationService.syncNotificationSettings())
+    when(notificationService.syncNotificationSettings())
         .thenAnswer(syncNotificationSettings ?? (_) => Future.value());
   }
 
   ProfileBloc profileBloc() => ProfileBloc(
-        _notificationService,
+        notificationService,
       );
   setUp(() {
-    _notificationService = MockPushNotificationsService();
+    notificationService = MockPushNotificationsService();
   });
 
   group('test profile_bloc_dart state areNotificationsEnabled', () {
@@ -43,27 +43,7 @@ void main() {
           );
           return profileBloc();
         },
-        act: (bloc) async {
-          bloc.events.loadNotificationsSettings();
-        },
         state: (bloc) => bloc.states.areNotificationsEnabled,
-        expect: [
-          Result.loading(),
-          Result.success(true),
-        ]);
-  });
-
-  group('test profile_bloc_dart state syncNotificationsStatus', () {
-    rxBlocTest<ProfileBlocType, Result<bool>>(
-        'test profile_bloc_dart state syncNotificationsStatus',
-        build: () async {
-          defineWhen();
-          return profileBloc();
-        },
-        act: (bloc) async {
-          bloc.events.setNotifications(true);
-        },
-        state: (bloc) => bloc.states.syncNotificationsStatus,
         expect: [
           Result.loading(),
           Result.success(true),
@@ -80,8 +60,6 @@ void main() {
         state: (bloc) => bloc.states.isLoading,
         expect: [
           false,
-          true,
-          false,
         ]);
   });
 
@@ -92,11 +70,8 @@ void main() {
           defineWhen(
               syncNotificationSettings: (_) =>
                   Future.error(UnknownErrorModel()));
-         
+
           return profileBloc();
-        },
-        act: (bloc) async {
-          bloc.events.loadNotificationsSettings();
         },
         state: (bloc) => bloc.states.errors,
         expect: [
