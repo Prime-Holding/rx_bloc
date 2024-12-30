@@ -83,6 +83,9 @@ firebase_app_id_map = {
 # Path of the local keychain that is used for iOS builds
 keychain_path = File.join(Dir.getwd, '../devops/credentials/{{project_name.paramCase()}}-distribution.keychain')
 
+# Project path within the repository ending in '/' (used for mono-repo structure, empty otherwise)
+repo_project_path = ""
+
 # ----------------------------------------------------------------------------------------------- #
 
 private_lane :setup_environment_variable do |options|
@@ -286,7 +289,7 @@ platform :android do
             )
         end
 
-        build_output = "apps/<appname>/build/app/outputs"
+        build_output = "#{repo_project_path}build/app/outputs"
         copy_artifacts(
             target_path: "devops/artifacts/",
             artifacts: [
