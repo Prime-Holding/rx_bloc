@@ -44,7 +44,6 @@ class ProfileBloc extends $ProfileBloc {
       Rx.merge([
         _$toggleNotificationsEvent.switchMap((_) => _notificationService
             .toggleNotifications()
-            .asStream()
             .asResultStream()),
         _syncAndCheckNotifications().asResultStream(),
       ]).setResultStateHandler(this).publishReplay(maxSize: 1);
