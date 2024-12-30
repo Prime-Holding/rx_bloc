@@ -44,36 +44,20 @@ class ProfileBloc extends $ProfileBloc {
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
-  @override
+    @override
   ConnectableStream<Result<bool>> _mapToAreNotificationsEnabledState() =>
       Rx.merge([
         _$toggleNotificationsEvent
-            .switchMap((_) =>
-                _notificationService.areNotificationsEnabled().asStream())
-            .switchMap(
-              (areEnabled) => !areEnabled
-                  ? _notificationService
-                      .requestNotificationPermissions()
-                      .asStream()
-                  : Stream.value(areEnabled),
-            )
-            .switchMap((_) =>
-                _notificationService.areNotificationsSubscribed().asStream())
-            .switchMap(
-          (subscribePushNotifications) {
-            if (!subscribePushNotifications) {
-              return _notificationService
-                  .subscribe()
-                  .then((_) => true)
-                  .asResultStream(tag: tagNotificationSubscribe);
-            } else {
-              return _notificationService
-                  .unsubscribe()
-                  .then((_) => false)
-                  .asResultStream(tag: tagNotificationUnsubscribe);
-            }
-          },
-        ),
+            .switchMap((_) => _notificationService
+                .areNotificationsEnabled()
+                .asStream()
+                .switchMap((areEnabled) => _notificationService
+                    .requestNotificationPermissions()
+                    .asStream()))
+            .switchMap((_) => _notificationService
+                .toggleNotifications()
+                .asStream()
+                .asResultStream()),
         _$loadNotificationsSettingsEvent.startWith(null).switchMap((value) =>
             _notificationService
                 .syncNotificationSettings()

@@ -162,18 +162,16 @@ class ProfilePage extends StatelessWidget {
                 AppErrorModalWidget<ProfileBlocType>(
                   errorState: (bloc) => bloc.states.errors,
                 ),
-                 RxBlocListener<ProfileBlocType, Result<bool>>(
-                  state: (bloc) => bloc.states.areNotificationsEnabled,
-                  condition: (previous, current) =>
-                      current is ResultSuccess<bool>,
+                  RxBlocListener<ProfileBlocType, Result<bool>>(
+                  state: (bloc) => bloc.states.areNotificationsEnabled.skip(1),
+                  condition: (previousState, currentState) =>
+                      previousState is Result<bool>,
                   listener: (context, state) {
-                    if (state.tag.isLoadingSubscription) {
+                    if (state is ResultSuccess<bool>) {
                       showBlurredBottomSheet(
                         context: context,
                         builder: (BuildContext context) => MessagePanelWidget(
-                          message: (state as ResultSuccess<bool>)
-                              .data
-                              .translate(context),
+                          message: state.data.translate(context),
                           messageState: MessagePanelState.positiveCheck,
                         ),
                       );
