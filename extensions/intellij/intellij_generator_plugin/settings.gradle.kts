@@ -1,0 +1,1 @@
+rootProject.name = "rxbloc_generator_plugin"

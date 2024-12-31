@@ -2,7 +2,7 @@ package com.primeholding.rxbloc_generator_plugin.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 
 public class BootstrapTestsActionTest {
     BootstrapTestsAction bootstrapSingleTestAction = new BootstrapTestsAction();
-
 
     @Test
     public void testUpdate() {
@@ -30,7 +29,7 @@ public class BootstrapTestsActionTest {
         when(anActionEventMock.getProject()).thenReturn(projectMock);
         when(anActionEventMock.getDataContext()).thenReturn(dataContextMock);
 
-        when(dataContextMock.getData(DataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{folderMock});
+        when(dataContextMock.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{folderMock});
 
         when(folderMock.isDirectory()).thenReturn(true);
         when(folder2Mock.isDirectory()).thenReturn(true);
@@ -80,7 +79,7 @@ public class BootstrapTestsActionTest {
         bootstrapSingleTestAction.update(anActionEventMock);
         assertTrue(presentation.isVisible());
 
-        when(dataContextMock.getData(DataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{folder2Mock, folderMock});
+        when(dataContextMock.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{folder2Mock, folderMock});
         bootstrapSingleTestAction.update(anActionEventMock);
         assertTrue(presentation.isVisible());
     }

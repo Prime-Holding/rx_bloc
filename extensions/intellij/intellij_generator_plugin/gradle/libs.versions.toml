@@ -1,0 +1,19 @@
+[versions]
+#libraries
+junit = "4.13.2"
+fleshgrinder = "0.2.0"
+mockito = "5.14.2"
+
+#plugins
+intellijPlatform = "2.2.0"
+kotlin = "1.9.25"
+
+[libraries]
+kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+fleshgrinder = { group = "com.fleshgrinder.kotlin", name = "case-format", version.ref = "fleshgrinder" }
+
+[plugins]
+intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

@@ -29,6 +29,7 @@ build/*
 
 # IntelliJ
 /out/
+.intellijPlatform
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
