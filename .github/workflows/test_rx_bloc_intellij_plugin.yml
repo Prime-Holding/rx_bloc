@@ -31,9 +31,11 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-    - name: Build with Gradle
+    - name: Set up Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-version: '8.10.2'
         build-root-directory: extensions/intellij/intellij_generator_plugin
-        arguments: test
+
+    - name: Build with Gradle
+    - run: ./gradlew test
