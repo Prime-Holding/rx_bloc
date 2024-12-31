@@ -35,7 +35,6 @@ jobs:
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-version: '8.10.2'
-        build-root-directory: extensions/intellij/intellij_generator_plugin
 
     - name: Build with Gradle
       run: |
