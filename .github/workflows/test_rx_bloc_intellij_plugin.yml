@@ -38,4 +38,4 @@ jobs:
         build-root-directory: extensions/intellij/intellij_generator_plugin
 
     - name: Build with Gradle
-    - run: ./gradlew test
+      run: ./gradlew test
