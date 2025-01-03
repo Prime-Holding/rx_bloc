@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../models/errors/error_model.dart';
 import '../../models/response_models/sse_message_model.dart';
@@ -14,6 +15,8 @@ class SseRemoteDataSource {
   final Dio _dio;
 
   Stream<SseMessageModel> getEventStream() async* {
+    final cancelToken = CancelToken();
+
     final response = await _dio.get<ResponseBody>(
       '$_baseUrl/api/sse',
       options: Options(
@@ -23,10 +26,16 @@ class SseRemoteDataSource {
         },
         responseType: ResponseType.stream,
       ),
+      cancelToken: cancelToken,
     );
 
     if (response.data != null) {
       yield* response.data!.stream
+          .doOnCancel(() {
+            // Cancel the HTTP request because it looks like this is not done
+            // automatically when the stream is cosed.
+            cancelToken.cancel();
+          })
           .transform<List<int>>(
             StreamTransformer.fromHandlers(
               handleData: (data, sink) => sink.add(List<int>.from(data)),
