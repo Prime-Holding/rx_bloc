@@ -37,7 +37,7 @@ jobs:
     - name: Build Plugin
       run: |
         cd extensions/intellij/intellij_generator_plugin
-        ./gradlew assemble buildPlugin
+        ./gradlew buildPlugin
 
     - name: Zip file 
       run:  tar -cvf rxbloc_plugin.tar extensions/intellij/intellij_generator_plugin/build/distributions/*
