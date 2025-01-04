@@ -35,6 +35,8 @@ jobs:
       uses: gradle/actions/setup-gradle@v4
       with:
         build-root-directory: extensions/intellij/intellij_generator_plugin
+        
+    - name: Build Plugin
       run: ./gradlew buildPlugin
         
     - name: Zip file 
