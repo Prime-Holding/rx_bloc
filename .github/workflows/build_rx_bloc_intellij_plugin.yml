@@ -35,7 +35,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v4
       with:
         build-root-directory: extensions/intellij/intellij_generator_plugin
-        arguments: buildPlugin
+      run: ./gradlew buildPlugin
         
     - name: Zip file 
       run:  tar -cvf rxbloc_plugin.tar extensions/intellij/intellij_generator_plugin/build/distributions/*
