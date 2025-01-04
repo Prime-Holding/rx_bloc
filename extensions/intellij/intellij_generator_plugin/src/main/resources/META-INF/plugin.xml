@@ -4,7 +4,9 @@
     <vendor>Prime Holding JSC</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-    <idea-version since-build="233" until-build="242.*" />
+    <depends>com.intellij.modules.lang</depends>
+
+    <idea-version since-build="233" />
 
     <description>
         <![CDATA[

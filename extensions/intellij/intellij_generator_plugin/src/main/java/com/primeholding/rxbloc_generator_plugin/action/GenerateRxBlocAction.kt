@@ -76,7 +76,7 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
                 {
                     mainSourceGenerators.forEach { createSourceFile(project!!, it, directory!!) }
                 },
-                "Generate a new RxBloc",
+                "Generate A New RxBloc",
                 null
             )
         }
