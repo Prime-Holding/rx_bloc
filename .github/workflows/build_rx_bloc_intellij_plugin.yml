@@ -33,12 +33,12 @@ jobs:
     
     - name: Build with Gradle
       uses: gradle/actions/setup-gradle@v4
-      with:
-        build-root-directory: extensions/intellij/intellij_generator_plugin
 
     - name: Build Plugin
-      run: ./gradlew assemble buildPlugin
-      
+      run: |
+        cd extensions/intellij/intellij_generator_plugin
+        ./gradlew assemble buildPlugin
+
     - name: Zip file 
       run:  tar -cvf rxbloc_plugin.tar extensions/intellij/intellij_generator_plugin/build/distributions/*
      
