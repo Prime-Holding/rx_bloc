@@ -6,8 +6,9 @@ mockito = "5.14.2"
 commonsText = "1.13.0"
 
 #plugins
-intellijPlatform = "2.2.0"
+intellijPlatform = "2.2.1"
 kotlin = "1.9.25"
+changelog = "2.2.1"
 qodana = "2024.2.3"
 
 [libraries]
@@ -21,4 +22,5 @@ commonsText = { group = "org.apache.commons", name = "commons-text", version.ref
 [plugins]
 intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
 qodana = { id = "org.jetbrains.qodana", version.ref = "qodana" }
