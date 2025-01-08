@@ -71,8 +71,8 @@ class _LoginFormState extends State<LoginForm> {
             builder: _buildLoginButton,
           ),
           SizedBox(height: context.designSystem.spacing.l),
-          GestureDetector(
-            onTap: () => showBlurredBottomSheet(
+          TextButton(
+            onPressed: () => showBlurredBottomSheet(
               context: context,
               builder: (BuildContext context) => MessagePanelWidget(
                 message: context.l10n.featureLogin.notImplementedMessage,
