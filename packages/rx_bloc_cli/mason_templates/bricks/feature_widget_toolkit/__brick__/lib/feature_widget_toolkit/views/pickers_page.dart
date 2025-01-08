@@ -84,7 +84,7 @@ class PickersPage extends StatelessWidget {
                       child: MessagePanelWidget(
                         message:
                             context.l10n.featureWidgetToolkit.thereAreNoResults,
-                        messageState: MessagePanelState.neutral,
+                        messageState: MessagePanelState.informative,
                       ),
                     ),
                     modalConfiguration: const SearchPickerModalConfiguration(
