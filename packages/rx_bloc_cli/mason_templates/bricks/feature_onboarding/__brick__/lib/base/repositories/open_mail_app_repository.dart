@@ -22,10 +22,6 @@ class OpenMailAppRepository {
       return 'message://';
     }
 
-    if (Platform.isAndroid) {
-      return 'googlegmail://';
-    }
-
     return 'mailto:';
   }
 }
