@@ -441,7 +441,7 @@ platform :ios do
 
         copy_artifacts(
             target_path: "devops/artifacts/",
-            artifacts: ["apps/<appname>/build/app/outputs/symbols/app.ios-arm64.symbols"],
+            artifacts: ["build/app/outputs/symbols/app.ios-arm64.symbols"],
             keep_original: false,
             fail_on_missing: true,
         )
