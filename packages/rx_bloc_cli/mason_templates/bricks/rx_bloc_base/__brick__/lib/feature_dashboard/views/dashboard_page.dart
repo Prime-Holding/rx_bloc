@@ -19,7 +19,7 @@ class DashboardPage extends StatelessWidget {
             ),
           ],
         ),
-        body: Row(
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RxBlocListener<DashboardBlocType, ErrorModel>(
@@ -27,12 +27,39 @@ class DashboardPage extends StatelessWidget {
               listener: (context, error) => _onError,
             ),
             Center(
-                child: RxResultBuilder<DashboardBlocType, String>(
-              state: (bloc) => bloc.states.data,
-              buildLoading: (ctx, bloc) => const CircularProgressIndicator(),
-              buildError: (ctx, error, bloc) => Text(error.toString()),
-              buildSuccess: (ctx, state, bloc) => Text(state),
-            )),
+              child: RxResultBuilder<DashboardBlocType, String>(
+                state: (bloc) => bloc.states.data,
+                buildLoading: (ctx, bloc) => const CircularProgressIndicator(),
+                buildError: (ctx, error, bloc) => Text(error.toString()),
+                buildSuccess: (ctx, state, bloc) => Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: ctx.designSystem.spacing.m,
+                    horizontal: ctx.designSystem.spacing.l,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        context.designSystem.icons.dashboardOutlined,
+                        size: context.designSystem.spacing.xxxxl3,
+                      ),
+                      SizedBox(height: context.designSystem.spacing.s),
+                      Text(
+                        context.l10n.dashboard,
+                        style: context.designSystem.typography.h1Med32,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: context.designSystem.spacing.xs),
+                      Text(
+                        state,
+                        textAlign: TextAlign.center,
+                        style: context.designSystem.typography.h2Reg16,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       );
