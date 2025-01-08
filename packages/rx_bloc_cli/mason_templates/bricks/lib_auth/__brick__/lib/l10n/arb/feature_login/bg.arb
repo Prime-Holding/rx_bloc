@@ -17,5 +17,5 @@
   "appleLogin":"Вход с Apple",
   "googleLogin":"Вход с Google",
   "facebookLogin":"Вход с Facebook",{{/enable_social_logins}}
-  "notImplementedMessage" : "Функцията не е внедрена."
+  "notImplementedMessage" : "Все още не е реализирано."
 }
