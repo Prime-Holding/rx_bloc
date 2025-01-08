@@ -40,7 +40,7 @@ class DashboardPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.dashboard_outlined,
+                        context.designSystem.icons.dashboardOutlined,
                         size: context.designSystem.spacing.xxxxl3,
                       ),
                       SizedBox(height: context.designSystem.spacing.s),
