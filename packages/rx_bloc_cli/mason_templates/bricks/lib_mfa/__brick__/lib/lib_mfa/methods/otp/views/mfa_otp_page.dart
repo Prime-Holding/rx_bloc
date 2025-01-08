@@ -64,8 +64,9 @@ class MfaOtpPage extends StatelessWidget {
                     children: [
                       Text(
                         context.l10n.featureOtp.hint,
-                        style:
-                            TextStyle(color: context.designSystem.colors.gray),
+                        style:TextStyle(
+                          color: context.designSystem.colors.tintColor,
+                        ),
                       ),
                       SizedBox(height: context.designSystem.spacing.xs),
                       const SmsCodeField(),

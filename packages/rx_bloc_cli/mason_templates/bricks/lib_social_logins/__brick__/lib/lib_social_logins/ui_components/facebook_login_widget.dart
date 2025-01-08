@@ -39,7 +39,7 @@ class FacebookLoginWidget extends StatelessWidget {
             isLoading: (snapshot.data ?? false) ? false : true,
             backgroundColor: context.designSystem.colors.backgroundColor,
             borderSide: BorderSide(
-              color: context.designSystem.colors.white,
+              color: context.designSystem.colors.socialLoginBorderColor,
               width: 0.3,
             ),
             text: context.l10n.featureLogin.facebookLogin,

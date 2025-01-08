@@ -33,8 +33,9 @@ void showMockDeepLinkSheet(
             colorStyle: ButtonColorStyle.fromContext(
               context,
               activeGradientColorStart: context.designSystem.colors.errorColor,
-              activeGradientColorEnd: context.designSystem.colors.black,
-              activeButtonTextColor: context.designSystem.colors.white,
+              activeGradientColorEnd: context.designSystem.colors.messageColor,
+              activeButtonTextColor:
+                  context.designSystem.colors.activeButtonTextColor,
             ),
           ),
         ],

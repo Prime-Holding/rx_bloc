@@ -40,7 +40,7 @@ class AppleLoginWidget extends StatelessWidget {
             textStyle: context.designSystem.typography.socialButtonText,
             backgroundColor: context.designSystem.colors.backgroundColor,
             borderSide: BorderSide(
-              color: context.designSystem.colors.white,
+              color: context.designSystem.colors.socialLoginBorderColor,
               width: 0.3,
             ),
             text: context.l10n.featureLogin.appleLogin,

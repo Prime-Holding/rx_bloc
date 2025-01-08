@@ -98,12 +98,12 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
   late final counterText = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 96,
-    color: _designSystemColor.gray..withValues(alpha: 0.8),
+    color: _designSystemColor.tintColor.withValues(alpha: 0.8),
     letterSpacing: -1.5,
   );
 {{/enable_feature_counter}}
   late final fadedButtonText =
-      h3Med14.copyWith(color: _designSystemColor.black);
+      h3Med14.copyWith(color: _designSystemColor.messageColor);
   {{#enable_social_logins}}
   late final socialButtonText = TextStyle(
       fontSize: 14,
@@ -121,6 +121,6 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
     fontStyle: FontStyle.normal,
     letterSpacing: 0.8,
     fontSize: 10.0)
-      .copyWith(color: _designSystemColor.black);
+      .copyWith(color: _designSystemColor.messageColor);
   {{/enable_feature_otp}}
 }

@@ -37,8 +37,9 @@ class OtpPage extends StatelessWidget {
                     children: [
                       Text(
                         context.l10n.featureOtp.hint,
-                        style:
-                            TextStyle(color: context.designSystem.colors.gray),
+                        style: TextStyle(
+                          color: context.designSystem.colors.tintColor,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       const SmsCodeField(key: K.otpInput),
