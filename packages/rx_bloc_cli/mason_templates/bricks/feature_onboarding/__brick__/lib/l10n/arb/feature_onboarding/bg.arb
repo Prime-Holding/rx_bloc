@@ -13,8 +13,8 @@
   "sendNewLink": "Изпрати нов линк",
   "titleEmailConfirmed": "Имейлът е потвърден!",
   "titleEmailConfirmedDescription": "Вашият имейл беше успешно потвърден. Готови сте да продължите напред!",
-  "titleMockDeepLinkSuccess": "Mock Deep Link - Success:",
-  "titleMockDeepLinkError": "Mock Deep Link - Error:",
+  "titleMockDeepLinkSuccess": "Валиден линк",
+  "titleMockDeepLinkError": "Невалиден линк",
 
   "retry" : "Опитай отново",
   "continueText" : "Продължи",
