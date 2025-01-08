@@ -36,7 +36,7 @@ class VerifyPinCodePage extends StatelessWidget {
                   : pinCodeArguments.title,
               style: context.designSystem.typography.h1Reg22,
             ),
-            foregroundColor: context.designSystem.colors.white,
+            foregroundColor: context.designSystem.colors.pinAppBarColor,
             forceMaterialTransparency: true,
           ),
           extendBodyBehindAppBar: true,

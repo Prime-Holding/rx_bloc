@@ -45,14 +45,16 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                           ShimmerWrapper(
                             alignment: Alignment.center,
                             showShimmer: loading.isLoading,
-                            baseColor: context.designSystem.colors.white,
-                            highlightColor: context.designSystem.colors.white
+                            baseColor: context.designSystem.colors
+                                .progressIndicatorBackgroundColor,
+                            highlightColor: context.designSystem.colors
+                                .progressIndicatorBackgroundColor
                                 .withValues(alpha: 0.2),
                             child: loading.isLoading
                                 ? Container(
                                     decoration: BoxDecoration(
-                                        color:
-                                            context.designSystem.colors.white,
+                                        color: context.designSystem.colors
+                                            .progressIndicatorBackgroundColor,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(context
                                                 .designSystem.spacing.s))),
@@ -82,8 +84,10 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                                       .emailConfirmationSent(email.data ?? ''),
                               textAlign: TextAlign.center,
                               alignment: Alignment.center,
-                              baseColor: context.designSystem.colors.white,
-                              highlightColor: context.designSystem.colors.white
+                              baseColor: context.designSystem.colors
+                                  .progressIndicatorBackgroundColor,
+                              highlightColor: context.designSystem.colors
+                                  .progressIndicatorBackgroundColor
                                   .withValues(alpha: 0.2),
                               type: ShimmerType.fixed(placeholderLength: 2),
                               style: context.designSystem.typography.h2Reg16,

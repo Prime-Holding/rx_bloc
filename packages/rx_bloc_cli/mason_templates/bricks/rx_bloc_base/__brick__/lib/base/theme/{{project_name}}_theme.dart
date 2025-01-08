@@ -45,7 +45,7 @@ class {{project_name.pascalCase()}}Theme {
       ),
       cardTheme: CardTheme(
         color: designSystemColor.backgroundColor,
-        surfaceTintColor: designSystem.colors.gray,
+        surfaceTintColor: designSystem.colors.tintColor,
       ),
       extensions: <ThemeExtension<dynamic>>[
         designSystem,
