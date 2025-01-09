@@ -77,14 +77,14 @@ class DesignSystemColors {
   final gray = const Color(0xff808080);
 
   final Color updateIconAppBarColor;
+
+final Color textButtonColor;
   {{#enable_social_logins}}
   final Color appleBackground;
 
   final Color facebookBackground;
 
   final Color googleBackground;
-
-  final Color textButtonColor;
   {{/enable_social_logins}}
 {{#enable_feature_otp}}
 //otp colors
