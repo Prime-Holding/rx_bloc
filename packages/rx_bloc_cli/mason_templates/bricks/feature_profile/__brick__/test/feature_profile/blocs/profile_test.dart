@@ -19,12 +19,12 @@ void main() {
 
   void defineWhen({
     bool? areNotificationsEnabled,
-    Future<void> Function(Invocation)? syncNotificationSettings,
+    Future<bool> Function(Invocation)? areNotificationsEnabledError,
   }) {
-    when(notificationService.areNotificationsEnabled())
-        .thenAnswer((_) => Future.value(areNotificationsEnabled));
-    when(notificationService.syncNotificationSettings())
-        .thenAnswer(syncNotificationSettings ?? (_) => Future.value());
+    when(notificationService.areNotificationsEnabled()).thenAnswer(
+      areNotificationsEnabledError ??
+          (_) => Future.value(areNotificationsEnabled),
+    );
   }
 
   ProfileBloc profileBloc() => ProfileBloc(
@@ -53,7 +53,9 @@ void main() {
   group('test profile_bloc_dart state isLoading', () {
     rxBlocTest<ProfileBlocType, bool>('test profile_bloc_dart state isLoading',
         build: () async {
-          defineWhen();
+          defineWhen(
+            areNotificationsEnabled: false,
+          );
           return profileBloc();
         },
         act: (bloc) async {},
@@ -68,8 +70,9 @@ void main() {
         'test profile_bloc_dart state errors',
         build: () async {
           defineWhen(
-              syncNotificationSettings: (_) =>
-                  Future.error(UnknownErrorModel()));
+            areNotificationsEnabledError: (_) =>
+                  Future.error(UnknownErrorModel()),
+          );
 
           return profileBloc();
         },
