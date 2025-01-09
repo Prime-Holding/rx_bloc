@@ -111,7 +111,8 @@ class _Icon extends StatelessWidget {
         child: loading
             ? Container(
                 decoration: BoxDecoration(
-                    color: context.designSystem.colors.white,
+                    color: context
+                        .designSystem.colors.progressIndicatorBackgroundColor,
                     borderRadius: BorderRadius.all(
                         Radius.circular(context.designSystem.spacing.s))),
                 width: context.designSystem.spacing.xxxl,

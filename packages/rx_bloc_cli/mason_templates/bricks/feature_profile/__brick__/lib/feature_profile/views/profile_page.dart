@@ -58,7 +58,7 @@ class ProfilePage extends StatelessWidget {
                         child: Icon(
                           context.designSystem.icons.avatar,
                           size: 75,
-                          color: context.designSystem.colors.white,
+                          color: context.designSystem.colors.circleAvatarColor,
                         ),
                       ),
                     ),

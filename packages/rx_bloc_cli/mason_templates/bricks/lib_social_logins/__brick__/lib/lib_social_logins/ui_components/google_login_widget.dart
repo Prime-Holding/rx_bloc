@@ -39,7 +39,7 @@ class GoogleLoginWidget extends StatelessWidget {
             isLoading: (loadingState.data ?? false) ? false : true,
             text: context.l10n.featureLogin.googleLogin,
             borderSide: BorderSide(
-              color: context.designSystem.colors.white,
+              color: context.designSystem.colors.socialLoginBorderColor,
               width: 0.3,
             ),
             textStyle: context.designSystem.typography.socialButtonText,

@@ -64,17 +64,9 @@ class DesignSystemColors {
 
   /// region General purpose colors
 
-  final blanchedAlmond = const Color(0xffffebcd);
+  final Color messageColor = Colors.black87;
 
-  final darkSeaGreen = const Color(0xff8fbc8f);
-
-  final snow = const Color(0xfffffafa);
-
-  final black = Colors.black87;
-
-  final white = Colors.white;
-
-  final gray = const Color(0xff808080);
+  final Color tintColor = const Color(0xff808080);
 
   final Color updateIconAppBarColor;
 
@@ -85,8 +77,13 @@ final Color textButtonColor;
   final Color facebookBackground;
 
   final Color googleBackground;
-  {{/enable_social_logins}}
-{{#enable_feature_otp}}
+
+  final Color socialLoginBorderColor = Colors.white;
+  {{/enable_social_logins}}{{#enable_pin_code}}
+  final Color pinAppBarColor = Colors.white;
+  {{/enable_pin_code}}{{#enable_profile}}
+  final Color circleAvatarColor = Colors.white;
+  {{/enable_profile}}{{#enable_feature_otp}}
 //otp colors
   final Color pinBgColor = const Color(0xE5EEEEEE);
 

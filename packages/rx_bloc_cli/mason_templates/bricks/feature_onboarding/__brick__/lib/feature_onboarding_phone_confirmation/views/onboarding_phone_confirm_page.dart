@@ -35,7 +35,7 @@ class _OnboardingPhoneConfirmPageState
                 builder: (context) => Text(
                   context.l10n.featureOnboarding.confirmPhoneFieldHint,
                   style: context.designSystem.typography.h2Reg16.copyWith(
-                    color: context.designSystem.colors.gray,
+                    color: context.designSystem.colors.tintColor,
                   ),
                   textAlign: TextAlign.center,
                 ),
