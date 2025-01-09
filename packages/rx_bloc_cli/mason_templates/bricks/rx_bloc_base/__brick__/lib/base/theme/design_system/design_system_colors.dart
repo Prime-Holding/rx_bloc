@@ -17,7 +17,7 @@ class DesignSystemColors {
         dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFF000000),
         googleBackground = const Color(0xFFFFFFFF),
-        socialButtonText = const Color.fromRGBO(0, 0, 0, 0.54),
+        textButtonColor = const Color.fromRGBO(0, 0, 0, 0.54),
         facebookBackground = const Color(0xFF1877F2){{/enable_social_logins}};
 
   const DesignSystemColors.dark()
@@ -29,7 +29,7 @@ class DesignSystemColors {
         dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFFFFFFFF),
         googleBackground = Colors.black,
-        socialButtonText = const Color(0xFFFFFFFF),
+        textButtonColor = const Color(0xFFFFFFFF),
         facebookBackground = const Color(0xFFFFFFFF){{/enable_social_logins}};
 
   final Brightness brightness;
@@ -84,7 +84,7 @@ class DesignSystemColors {
 
   final Color googleBackground;
 
-  final Color socialButtonText;
+  final Color textButtonColor;
   {{/enable_social_logins}}
 {{#enable_feature_otp}}
 //otp colors

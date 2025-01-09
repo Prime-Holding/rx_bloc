@@ -107,7 +107,7 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
   {{#enable_social_logins}}
   late final socialButtonText = TextStyle(
       fontSize: 14,
-      color: _designSystemColor.socialButtonText,
+      color: _designSystemColor.textButtonColor,
   );
   {{/enable_social_logins}}
   {{#enable_feature_otp}}

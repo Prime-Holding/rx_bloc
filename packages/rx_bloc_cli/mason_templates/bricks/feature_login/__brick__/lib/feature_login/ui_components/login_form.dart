@@ -70,7 +70,7 @@ class _LoginFormState extends State<LoginForm> {
             state: (bloc) => bloc.states.isLoading,
             builder: _buildLoginButton,
           ),
-          SizedBox(height: context.designSystem.spacing.l),
+          SizedBox(height: context.designSystem.spacing.xss1),
           TextButton(
             onPressed: () => showBlurredBottomSheet(
               context: context,
