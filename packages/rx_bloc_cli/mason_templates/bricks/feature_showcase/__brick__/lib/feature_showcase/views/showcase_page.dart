@@ -58,13 +58,14 @@ class ShowcasePage extends StatelessWidget {
 extension on BuildContext {
   List<({String title, String subtitle, RouteDataModel route, Icon icon})>
       get features => [
-            (
-              title: l10n.featureNotifications.notificationPageTitle,
-              subtitle: l10n.featureNotifications.notificationPageSubtitle,
-              route: const NotificationsRoute(),
-              icon: designSystem.icons.notifications,
-            ), {{#enable_feature_counter}}
-            (
+            // TODO: Removed until: rx_bloc#929 or rx_bloc#941 is resolved
+            // (
+            //   title: l10n.featureNotifications.notificationPageTitle,
+            //   subtitle: l10n.featureNotifications.notificationPageSubtitle,
+            //   route: const NotificationsRoute(),
+            //   icon: designSystem.icons.notifications,
+            // ),
+            {{#enable_feature_counter}}(
               title: l10n.featureShowcase.counterShowcase,
               subtitle: l10n.featureShowcase.counterShowcaseDescription,
               route: const CounterRoute(),

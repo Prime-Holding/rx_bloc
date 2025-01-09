@@ -14,10 +14,10 @@ class DesignSystemColors {
         backgroundColor = Colors.white,
         scaffoldBackgroundColor = Colors.white,
         updateIconAppBarColor = Colors.black,
+        textButtonColor = const Color.fromRGBO(0, 0, 0, 0.54),
         dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFF000000),
         googleBackground = const Color(0xFFFFFFFF),
-        socialButtonText = const Color.fromRGBO(0, 0, 0, 0.54),
         facebookBackground = const Color(0xFF1877F2){{/enable_social_logins}};
 
   const DesignSystemColors.dark()
@@ -26,10 +26,10 @@ class DesignSystemColors {
         backgroundColor = Colors.black,
         scaffoldBackgroundColor = Colors.black,
         updateIconAppBarColor = Colors.white,
+        textButtonColor = const Color(0xFFFFFFFF),
         dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFFFFFFFF),
         googleBackground = Colors.black,
-        socialButtonText = const Color(0xFFFFFFFF),
         facebookBackground = const Color(0xFFFFFFFF){{/enable_social_logins}};
 
   final Brightness brightness;
@@ -69,14 +69,14 @@ class DesignSystemColors {
   final Color tintColor = const Color(0xff808080);
 
   final Color updateIconAppBarColor;
+
+final Color textButtonColor;
   {{#enable_social_logins}}
   final Color appleBackground;
 
   final Color facebookBackground;
 
   final Color googleBackground;
-
-  final Color socialButtonText;
 
   final Color socialLoginBorderColor = Colors.white;
   {{/enable_social_logins}}{{#enable_pin_code}}

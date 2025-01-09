@@ -17,5 +17,5 @@
   "appleLogin":"Sign in with Apple",
   "googleLogin":"Sign in with Google",
   "facebookLogin":"Login with Facebook",{{/enable_social_logins}}
-  "notImplementedMessage" : "Feature not implemented."
+  "notImplementedMessage" : "Not implemented yet."
 }

@@ -14,6 +14,7 @@ import '../../lib_router/router.dart';
 import '../bloc/update_and_verify_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
 import '../services/update_pin_code_service.dart';
+import '../ui_components/pin_code_app_bar.dart';
 
 class UpdatePinPage extends StatelessWidget {
   const UpdatePinPage({
@@ -31,15 +32,11 @@ class UpdatePinPage extends StatelessWidget {
             .events
             .deleteSavedData(),
         child: Scaffold(
-          appBar: AppBar(
-          title: Text(
-              pinCodeArguments.title.isEmpty
+          appBar: pinCodeAppBar(
+            context,
+            title: pinCodeArguments.title.isEmpty
                 ? context.l10n.libPinCode.updatePinPage
-                  : pinCodeArguments.title,
-              style: context.designSystem.typography.h1Reg22,
-            ),
-            foregroundColor: context.designSystem.colors.pinAppBarColor,
-            forceMaterialTransparency: true,
+                : pinCodeArguments.title,
           ),
           extendBodyBehindAppBar: true,
           body: SizedBox(

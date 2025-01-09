@@ -47,6 +47,9 @@ class {{project_name.pascalCase()}}Theme {
         color: designSystemColor.backgroundColor,
         surfaceTintColor: designSystem.colors.tintColor,
       ),
+      textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+              foregroundColor: designSystemColor.textButtonColor)),
       extensions: <ThemeExtension<dynamic>>[
         designSystem,
         isLightTheme ? WidgetToolkitTheme.light() : WidgetToolkitTheme.dark(),
