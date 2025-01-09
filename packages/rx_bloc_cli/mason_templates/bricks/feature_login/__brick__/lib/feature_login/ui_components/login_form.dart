@@ -55,7 +55,6 @@ class _LoginFormState extends State<LoginForm> {
               context,
             ),
           ),
-          SizedBox(height: context.designSystem.spacing.xs1),
           RxTextFormFieldBuilder<LoginBlocType>(
             state: (bloc) => bloc.states.password.translate(context),
             showErrorState: (bloc) => bloc.states.showErrors,
@@ -71,11 +70,15 @@ class _LoginFormState extends State<LoginForm> {
             state: (bloc) => bloc.states.isLoading,
             builder: _buildLoginButton,
           ),
-          SizedBox(height: context.designSystem.spacing.l),
-          GestureDetector(
-            onTap: () {
-              // Implement your logic here
-            },
+          SizedBox(height: context.designSystem.spacing.xss1),
+          TextButton(
+            onPressed: () => showBlurredBottomSheet(
+              context: context,
+              builder: (BuildContext context) => MessagePanelWidget(
+                message: context.l10n.featureLogin.notImplementedMessage,
+                messageState: MessagePanelState.lessImportant,
+              ),
+            ),
             child: Text(context.l10n.featureLogin.forgottenPassword),
           ),
           SizedBox(height: context.designSystem.spacing.xs1),
