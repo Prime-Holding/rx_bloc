@@ -32,52 +32,54 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [{{#enable_login}}
                 Expanded(
-                  flex: 1,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(context.l10n.featureLogin.loginPageTitle,
-                          textAlign: TextAlign.center,
-                          style: context.designSystem.typography.h1Bold24),
-                      SizedBox(height: context.designSystem.spacing.xxxxl),
-                      LoginForm(
-                        title: context.l10n.featureLogin.loginCredentialsHint,
-                      ),{{/enable_login}}{{#enable_social_logins}}
-                      SizedBox(height: context.designSystem.spacing.xs1),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child:  Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                            Expanded(
-                              flex: 1,
-                              child: Divider(
-                              color: context.designSystem.colors.dividerColor),
+                          Text(context.l10n.featureLogin.loginPageTitle,
+                              textAlign: TextAlign.center,
+                              style: context.designSystem.typography.h1Bold24),
+                          SizedBox(height: context.designSystem.spacing.xxxxl),
+                          LoginForm(
+                            title: context.l10n.featureLogin.loginCredentialsHint,
+                          ),{{/enable_login}}{{#enable_social_logins}}
+                          SizedBox(height: context.designSystem.spacing.xs1),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                                Expanded(
+                                  child: Divider(
+                                  color: context.designSystem.colors.dividerColor),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                  horizontal: context.designSystem.spacing.xs),
+                                  child: Text(context.l10n.featureLogin.or),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Divider(
+                                  color: context.designSystem.colors.dividerColor),
+                                ),
+                            ],
+                          ),
+                          SizedBox(height: context.designSystem.spacing.m),
+                          const FacebookLoginWidget(),
+                          if (Platform.isIOS)
+                            Column(
+                              children: [
+                                SizedBox(height: context.designSystem.spacing.xs),
+                                const AppleLoginWidget(),
+                              ],
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                              horizontal: context.designSystem.spacing.xs),
-                              child: Text(context.l10n.featureLogin.or),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Divider(
-                              color: context.designSystem.colors.dividerColor),
-                            ),
-                          ],
+                          SizedBox(height: context.designSystem.spacing.xs),
+                          const GoogleLoginWidget(),{{/enable_social_logins}}{{#enable_login}}
+                        ],
                       ),
-                      SizedBox(height: context.designSystem.spacing.m),
-                      const FacebookLoginWidget(),
-                      if (Platform.isIOS)
-                        Column(
-                          children: [
-                            SizedBox(height: context.designSystem.spacing.xs),
-                            const AppleLoginWidget(),
-                          ],
-                        ),
-                      SizedBox(height: context.designSystem.spacing.xs),
-                      const GoogleLoginWidget(),{{/enable_social_logins}}{{#enable_login}}
-                    ],
+                    ),
                   ),
                 ),
                 RxBlocBuilder<LoginBlocType, bool>(
