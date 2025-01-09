@@ -37,6 +37,17 @@ extension StringBufferExtensions on StringBuffer {
     return true;
   }
 
+  /// Inserts [content] at the beginning of the first found [pattern] starting
+  /// from the [start] index. Returns `true` if content was successfully
+  /// inserted, `false` otherwise.
+  bool insertBeforeLast(String pattern, String content, [int start = 0]) {
+    final source = toString();
+    final pos = source.lastIndexOf(pattern, start);
+    if (pos < 0) return false;
+    insertAt(pos, content);
+    return true;
+  }
+
   /// Inserts [content] at the end of the first found [pattern] starting
   /// from the [start] index. Returns `true` if content was successfully
   /// inserted, `false` otherwise.
