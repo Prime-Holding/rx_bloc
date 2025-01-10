@@ -25,7 +25,7 @@ abstract class UserAccountBlocStates {
   ConnectableStream<bool> get loggedIn;
 
   /// The loading state
-  Stream<bool> get isLoading;
+  ConnectableStream<bool> get isLoading;
 
   /// The error state
   Stream<ErrorModel> get errors;
@@ -40,13 +40,15 @@ class UserAccountBloc extends $UserAccountBloc {
     this._routerBloc,
   ) {
     loggedIn.connect().addTo(_compositeSubscription);
+    isLoading.connect().addTo(_compositeSubscription);
 
     _$logoutEvent
         .throttleTime(const Duration(seconds: 1))
         .exhaustMap((value) =>
-            _userAccountService.logout().then((_) => false).asResultStream())
+            _userAccountService.logout().asResultStream())
         .setResultStateHandler(this)
         .whereSuccess()
+        .mapTo(false)
         .emitAuthenticatedToCoordinator(_coordinatorBloc){{#enable_feature_otp}}
         .emitOtpConfirmedToCoordinator(_coordinatorBloc){{/enable_feature_otp}}{{#enable_pin_code}}
         .emitLoggedOutToCoordinator(_coordinatorBloc)
@@ -77,5 +79,5 @@ class UserAccountBloc extends $UserAccountBloc {
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  ConnectableStream<bool> _mapToIsLoadingState() => loadingState.publish();
 }

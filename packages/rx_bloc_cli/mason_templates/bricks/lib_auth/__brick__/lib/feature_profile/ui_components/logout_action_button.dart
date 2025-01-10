@@ -21,7 +21,7 @@ class LogoutActionButton extends StatelessWidget {
           builder: (context, loading, bloc) => loading.isLoading
               ? AppLoadingIndicator.textButtonValue(
                   context,
-                  color: context.designSystem.colors.backgroundColor,
+                  color: context.designSystem.colors.textButtonColor,
                 )
               : IconButton(
                   icon: context.designSystem.icons.logoutIcon,
