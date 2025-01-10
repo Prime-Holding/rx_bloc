@@ -45,11 +45,6 @@ class ProfileBloc extends $ProfileBloc {
         _$toggleNotificationsEvent.switchMap((_) => _notificationService
             .toggleNotifications()
             .asResultStream()),
-        _syncAndCheckNotifications().asResultStream(),
+        _notificationService.areNotificationsEnabled().asResultStream(),
       ]).setResultStateHandler(this).publishReplay(maxSize: 1);
-
-  Future<bool> _syncAndCheckNotifications() async {
-    await _notificationService.syncNotificationSettings();
-    return await _notificationService.areNotificationsEnabled();
-  }
 }

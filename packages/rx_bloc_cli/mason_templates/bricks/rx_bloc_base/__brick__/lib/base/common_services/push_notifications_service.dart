@@ -8,26 +8,6 @@ class PushNotificationsService {
   );
   final PushNotificationRepository _pushNotificationRepository;
 
-  Future<void> syncNotificationSettings() async {
-    final areNotificationsEnabledDevice =
-        await _pushNotificationRepository.areNotificationsEnabledDevice();
-    final areNotificationsEnabledUser =
-        await _pushNotificationRepository.notificationsEnabledUser();
-    final isDeviceSubscribed =
-        await _pushNotificationRepository.notificationsSubscribed();
-
-    if (!areNotificationsEnabledDevice && areNotificationsEnabledUser) {
-      await _unsubscribe(true);
-      return;
-    }
-    if (areNotificationsEnabledUser && isDeviceSubscribed) {
-      await _subscribe();
-      return;
-    }
-    await ((areNotificationsEnabledUser && areNotificationsEnabledDevice)
-        ? _subscribe()
-        : _unsubscribe());
-  }
  Future<bool> toggleNotifications() async {
     if (!await areNotificationsEnabled()) {
       await requestNotificationPermissions();
