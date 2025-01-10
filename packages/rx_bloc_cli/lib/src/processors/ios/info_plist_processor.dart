@@ -64,6 +64,6 @@ class InfoPlistProcessor extends StringProcessor {
       <string>mailto</string>
     </array>
     ''';
-    buffer.insertBefore('</dict>', _urlSchemes);
+    buffer.insertBeforeLast('</dict>', _urlSchemes);
   }
 }
