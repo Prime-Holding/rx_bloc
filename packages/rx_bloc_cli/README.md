@@ -16,6 +16,115 @@ $ dart pub global activate rx_bloc_cli
 
 ![Create command][create_command_gif_lnk]
 
+
+<table>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignUp.gif" alt="SignUp GIF">
+</td>
+    <td>
+      <h3>Sign Up Flow</h3>
+      <p>The onboarding flow begins with users creating an account by entering their email and password. After registration, users receive a confirmation email containing a deep link, which they must click to verify their email address. Next, users are prompted to confirm their phone number by entering an OTP (One-Time Password) sent via SMS. This two-step verification process ensures both email and phone number are authenticated for secure account access.</p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li>Initiate the flow by providing email and password.</li>
+        <li>Provide and confirm an email through a deep link</li>
+        <li>Provide and confirm an phone number through a OTP</li>
+        <li>Resume the flow to the proper place if the app is restarted.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignIn.gif" alt="SignUp GIF">
+</td>
+    <td>
+      <h3>Authentication</h3>
+      <p>Sign in to your account easily by using your email and password, or choose a social login option for quicker access. You can sign in with your Apple ID, Facebook, or Google account. If you’ve forgotten your password, simply reset it through the link provided. Choose the method that’s most convenient for you and get started right away</p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li>Authenticate via credentials (email and password).</li>
+        <li>Social logins (Apple, Google, Facebook)</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/Biometrics.gif" alt="Biometrics"></td>
+    <td>
+      <h3>Biometrics</h3>
+      <p></p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/CreatePIN.gif" alt="Biometrics"></td>
+    <td>
+      <h3>Create PIN Code</h3>
+      <p></p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/WidgetToolkit.gif" alt="Biometrics"></td>
+    <td>
+      <h3>Reusable Components (widget_toolkit)</h3>
+      <p></p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/ChangeLanguage.gif" alt="Biometrics"></td>
+    <td>
+      <h3>Change Language</h3>
+      <p></p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/MFA.gif" alt="Biometrics"></td>
+    <td>
+      <h3>MFA (Multi-Factor Authentication)</h3>
+      <p></p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/EnableNotifications.gif" alt="Biometrics"></td>
+    <td>
+      <h3>Notifications</h3>
+      <p></p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/ScanQR.gif" alt="Biometrics"></td>
+    <td>
+      <h3>QR Scanner</h3>
+      <p></p>
+      <p>Key functionalities:</p>
+      <ul>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 Non-Interactive usage
 ```sh
 $ rx_bloc_cli create <output_dir> <parameters> --no-interactive
@@ -131,3 +240,11 @@ Rx Bloc Command Line Interface supports [extendability] with the help of mason t
 [dio_http_client_lnk]: https://pub.dev/packages/dio
 [interceptors_lnk]: https://pub.dev/documentation/dio/latest/dio/Interceptor-class.html
 [extendability]: /packages/rx_bloc_cli/mason_templates/README.md
+
+
+
+
+
+
+
+
