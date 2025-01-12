@@ -16,7 +16,7 @@ $ dart pub global activate rx_bloc_cli
 
 ![Create command][create_command_gif_lnk]
 
-
+## Features
 <table>
   <tr>
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignUp.gif" alt="SignUp GIF">
@@ -50,10 +50,11 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/Biometrics.gif" alt="Biometrics"></td>
     <td>
       <h3>Biometrics</h3>
-      <p></p>
+      <p>A biometric authentication, providing users with secure and effortless access. This feature supports fingerprint and facial recognition for enhanced security.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li></li>
+        <li>Supports fingerprint and facial recognition for seamless login.</li>
+        <li>Enhances app security with device-based biometric sensors.</li>
       </ul>
     </td>
   </tr>
@@ -61,10 +62,11 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/CreatePIN.gif" alt="Biometrics"></td>
     <td>
       <h3>Create PIN Code</h3>
-      <p></p>
+      <p>The PIN code allows the users to protect sensitive actions as well as providing application lock/unlock capabilities. This feature ensures encrypted local storage of PIN codes and seamless biometric authentication for enhanced user security.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li></li>
+        <li>Secure PIN Code Management: PIN codes are encrypted and stored in the device's secure storage.</li>
+        <li>Automatic Biometric Login: Enables automatic biometric authentication on app restart when PIN is stored.</li>
       </ul>
     </td>
   </tr>
@@ -72,10 +74,23 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/WidgetToolkit.gif" alt="Biometrics"></td>
     <td>
       <h3>Reusable Components (widget_toolkit)</h3>
-      <p></p>
+      <p>The Widget Toolkit package offers a set of customizable UI components designed to boost productivity and reduce development time. These components provide flexible and efficient solutions for various common UI needs.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li></li>
+        <li>Item Picker (Multi-Select): Allows users to select multiple items from a list with ease.
+</li>
+        <li>Item Picker (Single Select): Enables single item selection for simplified user interaction.
+</li>
+        <li>Search Picker: Combines search functionality with item selection for an enhanced user experience.
+</li>
+        <li>Shimmer Effect: Displays placeholder loading animations to improve perceived loading times.
+</li>
+        <li>Launch URL: Facilitates easy linking and URL launching within the app.
+</li>
+        <li>Error Bottom Sheet: Provides a user-friendly interface for displaying error messages.
+</li>
+        <li>Text Field Dialog: Offers customizable dialogs with text input fields for various use cases.
+</li>
       </ul>
     </td>
   </tr>
