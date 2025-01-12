@@ -1,48 +1,41 @@
 # Rx Bloc CLI
 
-Rx Bloc Command Line Interface helps you creating fully functional and feature-rich projects in just a moment. It comes with pre-generated features (such as flavors, app localization, etc) so you can start working on your project right away
+The Rx Bloc Command Line Interface enables you to quickly create fully functional, feature-rich projects. It comes with pre-built features and capabilities, including sign-up, sign-in, biometric/PIN code authentication, reusable components, localization, multi-factor authentication, notifications, QR scanner, app flavors, and more—so you can jump right into developing your project without delay.
 
 ---
 
 ## Installing
 
 ```sh
-$ dart pub global activate rx_bloc_cli
+dart pub global activate rx_bloc_cli
 ```
 
-## Commands
 
-### `$ rx_bloc_cli create`
-
-![Create command][create_command_gif_lnk]
-
-## Features
+## Included features
 <table>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignUp.gif" alt="SignUp GIF">
-</td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignUp.gif" alt="SignUp GIF"></td>
     <td>
-      <h3>Sign Up Flow</h3>
-      <p>The onboarding flow begins with users creating an account by entering their email and password. After registration, users receive a confirmation email containing a deep link, which they must click to verify their email address. Next, users are prompted to confirm their phone number by entering an OTP (One-Time Password) sent via SMS. This two-step verification process ensures both email and phone number are authenticated for secure account access.</p>
+      <h3>Sign Up </h3>
+      <p>The onboarding process begins with users creating an account by providing their email and password. After registration, a confirmation email is sent with a deep link to verify their email address. Users are then prompted to confirm their phone number by entering a One-Time Password (OTP) sent via SMS. This two-step verification ensures secure authentication of both the email and phone number.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>Initiate the flow by providing email and password.</li>
-        <li>Provide and confirm an email through a deep link</li>
-        <li>Provide and confirm an phone number through a OTP</li>
-        <li>Resume the flow to the proper place if the app is restarted.</li>
+        <li>Start the flow by entering an email and password.</li>
+        <li>Verify the email through a deep link.</li>
+        <li>Confirm the phone number via OTP.</li>
+        <li>Resume the flow from the correct step if the app is restarted.</li>
       </ul>
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignIn.gif" alt="SignUp GIF">
-</td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignIn.gif" alt="SignUp GIF"></td>
     <td>
-      <h3>Authentication</h3>
-      <p>Sign in to your account easily by using your email and password, or choose a social login option for quicker access. You can sign in with your Apple ID, Facebook, or Google account. If you’ve forgotten your password, simply reset it through the link provided. Choose the method that’s most convenient for you and get started right away</p>
+      <h3>Sign In </h3>
+      <p>Easily sign in using your email and password, or choose a social login for quicker access. You can log in with your Apple ID, Facebook, or Google account. If you’ve forgotten your password, simply follow the reset link. Choose the method that’s most convenient for you and get started immediately.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>Authenticate via credentials (email and password).</li>
-        <li>Social logins (Apple, Google, Facebook)</li>
+        <li>Authenticate using email and password.</li>
+        <li>Social login options (Apple, Google, Facebook).</li>
       </ul>
     </td>
   </tr>
@@ -50,7 +43,7 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/Biometrics.gif" alt="Biometrics"></td>
     <td>
       <h3>Biometrics</h3>
-      <p>A biometric authentication, providing users with secure and effortless access. This feature supports fingerprint and facial recognition for enhanced security.</p>
+      <p>Biometric authentication provides users with secure and effortless access. This feature supports fingerprint and facial recognition for enhanced security.</p>
       <p>Key functionalities:</p>
       <ul>
         <li>Supports fingerprint and facial recognition for seamless login.</li>
@@ -62,50 +55,40 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/CreatePIN.gif" alt="Biometrics"></td>
     <td>
       <h3>Create PIN Code</h3>
-      <p>The PIN code allows the users to protect sensitive actions as well as providing application lock/unlock capabilities. This feature ensures encrypted local storage of PIN codes and seamless biometric authentication for enhanced user security.</p>
+      <p>PIN codes help protect sensitive actions and provide lock/unlock capabilities for the app. The feature ensures encrypted storage of PIN codes and seamless biometric authentication for added user security.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>Secure PIN Code Management: PIN codes are encrypted and stored in the device's secure storage.</li>
-        <li>Automatic Biometric Login: Enables automatic biometric authentication on app restart when PIN is stored.</li>
+        <li>PIN codes are securely encrypted and stored in the device's secure storage.</li>
+        <li>Automatic biometric login when the app restarts and the PIN is stored.</li>
       </ul>
     </td>
   </tr>
   <tr>
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/WidgetToolkit.gif" alt="Biometrics"></td>
     <td>
-      <h3>Reusable Components (widget_toolkit)</h3>
-      <p>The Widget Toolkit package offers a set of customizable UI components designed to boost productivity and reduce development time. These components provide flexible and efficient solutions for various common UI needs.</p>
+      <h3>Reusable Components (Widget Toolkit)</h3>
+      <p>The Widget Toolkit package provides a set of customizable UI components designed to enhance productivity and reduce development time. These components offer flexible and efficient solutions for common UI needs.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>Item Picker (Multi-Select): Allows users to select multiple items from a list with ease.
-</li>
-        <li>Item Picker (Single Select): Enables single item selection for simplified user interaction.
-</li>
-        <li>Search Picker: Combines search functionality with item selection for an enhanced user experience.
-</li>
-        <li>Shimmer Effect: Displays placeholder loading animations to improve perceived loading times.
-</li>
-        <li>Launch URL: Facilitates easy linking and URL launching within the app.
-</li>
-        <li>Error Bottom Sheet: Provides a user-friendly interface for displaying error messages.
-</li>
-        <li>Text Field Dialog: Offers customizable dialogs with text input fields for various use cases.
-</li>
+        <li>Item Picker (Multi-Select): Allows users to select multiple items from a list.</li>
+        <li>Item Picker (Single Select): Enables the selection of a single item.</li>
+        <li>Search Picker: Combines search functionality with item selection for a better user experience.</li>
+        <li>Shimmer Effect: Displays placeholder animations to improve perceived loading times.</li>
+        <li>Launch URL: Facilitates easy linking and URL launching within the app.</li>
+        <li>Error Bottom Sheet: Provides a user-friendly interface for displaying error messages.</li>
+        <li>Text Field Dialog: Offers customizable dialogs with text input fields for various use cases.</li>
       </ul>
     </td>
   </tr>
   <tr>
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/ChangeLanguage.gif" alt="Biometrics"></td>
     <td>
-      <h3>Localisation</h3>
-      <p>Localization is vital for creating versatile, globally accessible apps with a personalized user experience.
-</p>
+      <h3>Localization</h3>
+      <p>Localization is crucial for building versatile, globally accessible apps with personalized user experiences.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>Seamless Integration in the widgets: Developers can easily integrate translations into the code.
-</li>
-        <li>Remote Localization Lookup: Supports fetching remote localizations during app start, allowing dynamic updates without requiring a new app release.
-</li>
+        <li>Seamless integration within widgets: Developers can easily integrate translations.</li>
+        <li>Remote Localization Lookup: Supports fetching remote localizations on app start, allowing dynamic updates without requiring an app release.</li>
       </ul>
     </td>
   </tr>
@@ -113,14 +96,13 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/MFA.gif" alt="Biometrics"></td>
     <td>
       <h3>MFA (Multi-Factor Authentication)</h3>
-      <p>The goal of Multi-Factor Authentication is to enable the business representative to configure the required authentication methods, such as PIN/Biometric, OTP, etc., for particular actions, such as unlock, change password, etc.
-</p>
+      <p>Multi-Factor Authentication (MFA) enables business representatives to configure required authentication methods, such as PIN/Biometric, OTP, etc., for specific actions like unlocking or changing the password.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>PIN Code authentication.</li>
+        <li>PIN code authentication.</li>
         <li>Biometric authentication.</li>
-        <li>One Time Password (OTP)</li>
-        <li>Other authentication methods can be easely integrated.</li>
+        <li>One-Time Password (OTP).</li>
+        <li>Other authentication methods can be easily integrated.</li>
       </ul>
     </td>
   </tr>
@@ -128,12 +110,12 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/EnableNotifications.gif" alt="Biometrics"></td>
     <td>
       <h3>Notifications</h3>
-      <p>Integrated Firebase Cloud Messaging (FCM) into the app starter to enable robust notification management, enhancing user engagement with timely updates and alerts.</p>
+      <p>Firebase Cloud Messaging (FCM) integration allows for robust notification management, enhancing user engagement with timely updates and alerts.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>Integrated Firebase Cloud Messaging (FCM): Set up and managed push notifications using Firebase.</li>
-        <li>Notification Settings: Allowed users to enable, disable, their notification preferences.</li>
-        <li>Automatic notifications unsibscribtion when the user logs out.</li>
+        <li>Integrated Firebase Cloud Messaging (FCM): Set up and manage push notifications using Firebase.</li>
+        <li>Notification Settings: Let users enable or disable their notification preferences.</li>
+        <li>Automatic unsubscribe from notifications upon logout.</li>
       </ul>
     </td>
   </tr>
@@ -141,17 +123,23 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/ScanQR.gif" alt="Biometrics"></td>
     <td>
       <h3>QR Scanner</h3>
-      <p>Pre-built functionality that provides a QR scanner widget that was easily integrated into applications, enhancing functionality with efficient QR code scanning capabilities.</p>
+      <p>Pre-built functionality offers an easy-to-integrate QR scanner widget, enhancing the app’s capabilities with efficient QR code scanning.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>Customizable QR Scanner Widget: Offered the QrScannerWidget<T>, which displayed a QR scanner with a loading indicator, configurable to return expected values upon successful validation.</li>
-          <li>Camera Permission Handling: Included functions like showAppCameraPermissionBottomSheet() to prompt users for camera access, facilitating seamless scanning experiences.</li>
-          <li>Error Handling: Provided showQrScannerErrorBottomModalSheet() to display errors encountered during scanning, enhancing user feedback mechanisms.</li>
-          <li>Integration with Validation Services: Allowed implementation of custom QrValidationService<T> to validate scanned QR codes as per application requirements.</li>
+        <li>Customizable QR Scanner Widget: Displays a QR scanner with a loading indicator, configurable to return expected values upon successful validation.</li>
+        <li>Camera Permission Handling: Includes functions like showAppCameraPermissionBottomSheet() to prompt users for camera access, ensuring seamless scanning experiences.</li>
+        <li>Error Handling: Provides showQrScannerErrorBottomModalSheet() to display errors encountered during scanning, improving user feedback.</li>
+        <li>Integration with Validation Services: Allows implementation of custom QrValidationService<T> to validate scanned QR codes based on app requirements.</li>
       </ul>
     </td>
   </tr>
 </table>
+
+## Commands
+
+### `$ rx_bloc_cli create`
+
+![Create command][create_command_gif_lnk]
 
 Non-Interactive usage
 ```sh
@@ -221,7 +209,7 @@ Available commands:
 Run "rx_bloc_cli help <command>" for more information about a command.
 ```
 
-## What's Included? 📦
+## Capabilities? 📦
 
 Out of the box, a Rx Bloc CLI created projects includes:
 
