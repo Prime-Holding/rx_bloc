@@ -97,11 +97,15 @@ $ dart pub global activate rx_bloc_cli
   <tr>
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/ChangeLanguage.gif" alt="Biometrics"></td>
     <td>
-      <h3>Change Language</h3>
-      <p></p>
+      <h3>Localisation</h3>
+      <p>Localization is vital for creating versatile, globally accessible apps with a personalized user experience.
+</p>
       <p>Key functionalities:</p>
       <ul>
-        <li></li>
+        <li>Seamless Integration in the widgets: Developers can easily integrate translations into the code.
+</li>
+        <li>Remote Localization Lookup: Supports fetching remote localizations during app start, allowing dynamic updates without requiring a new app release.
+</li>
       </ul>
     </td>
   </tr>
@@ -109,10 +113,14 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/MFA.gif" alt="Biometrics"></td>
     <td>
       <h3>MFA (Multi-Factor Authentication)</h3>
-      <p></p>
+      <p>The goal of Multi-Factor Authentication is to enable the business representative to configure the required authentication methods, such as PIN/Biometric, OTP, etc., for particular actions, such as unlock, change password, etc.
+</p>
       <p>Key functionalities:</p>
       <ul>
-        <li></li>
+        <li>PIN Code authentication.</li>
+        <li>Biometric authentication.</li>
+        <li>One Time Password (OTP)</li>
+        <li>Other authentication methods can be easely integrated.</li>
       </ul>
     </td>
   </tr>
@@ -120,10 +128,12 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/EnableNotifications.gif" alt="Biometrics"></td>
     <td>
       <h3>Notifications</h3>
-      <p></p>
+      <p>Integrated Firebase Cloud Messaging (FCM) into the app starter to enable robust notification management, enhancing user engagement with timely updates and alerts.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li></li>
+        <li>Integrated Firebase Cloud Messaging (FCM): Set up and managed push notifications using Firebase.</li>
+        <li>Notification Settings: Allowed users to enable, disable, their notification preferences.</li>
+        <li>Automatic notifications unsibscribtion when the user logs out.</li>
       </ul>
     </td>
   </tr>
@@ -131,10 +141,13 @@ $ dart pub global activate rx_bloc_cli
     <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/ScanQR.gif" alt="Biometrics"></td>
     <td>
       <h3>QR Scanner</h3>
-      <p></p>
+      <p>Pre-built functionality that provides a QR scanner widget that was easily integrated into applications, enhancing functionality with efficient QR code scanning capabilities.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li></li>
+        <li>Customizable QR Scanner Widget: Offered the QrScannerWidget<T>, which displayed a QR scanner with a loading indicator, configurable to return expected values upon successful validation.</li>
+          <li>Camera Permission Handling: Included functions like showAppCameraPermissionBottomSheet() to prompt users for camera access, facilitating seamless scanning experiences.</li>
+          <li>Error Handling: Provided showQrScannerErrorBottomModalSheet() to display errors encountered during scanning, enhancing user feedback mechanisms.</li>
+          <li>Integration with Validation Services: Allowed implementation of custom QrValidationService<T> to validate scanned QR codes as per application requirements.</li>
       </ul>
     </td>
   </tr>
