@@ -58,7 +58,7 @@ dart pub global activate rx_bloc_cli
       <p>PIN codes help protect sensitive actions and provide lock/unlock capabilities for the app. The feature ensures encrypted storage of PIN codes and seamless biometric authentication for added user security.</p>
       <p>Key functionalities:</p>
       <ul>
-        <li>PIN codes are securely encrypted and stored.</li>
+        <li>The PIN code is securely encrypted and stored.</li>
         <li>Automatic biometric login when the app restarts and the PIN is stored.</li>
       </ul>
     </td>
