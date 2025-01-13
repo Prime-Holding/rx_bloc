@@ -14,7 +14,7 @@ dart pub global activate rx_bloc_cli
 ## Included features
 <table>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignUp.gif" alt="SignUp GIF"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/SignUp.gif" alt="SignUp GIF"></td>
     <td>
       <h3>Sign Up </h3>
       <p>The onboarding process begins with users creating an account by providing their email and password. After registration, a confirmation email is sent with a deep link to verify their email address. Users are then prompted to confirm their phone number by entering a One-Time Password (OTP) sent via SMS. This two-step verification ensures secure authentication of both the email and phone number.</p>
@@ -28,7 +28,7 @@ dart pub global activate rx_bloc_cli
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/SignIn.gif" alt="SignUp GIF"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/SignIn.gif" alt="SignUp GIF"></td>
     <td>
       <h3>Sign In </h3>
       <p>Easily sign in using your email and password, or choose a social login for quicker access. You can log in with your Apple ID, Facebook, or Google account. If you’ve forgotten your password, simply follow the reset link. Choose the method that’s most convenient for you and get started immediately.</p>
@@ -40,7 +40,7 @@ dart pub global activate rx_bloc_cli
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/Biometrics.gif" alt="Biometrics"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/Biometrics.gif" alt="Biometrics"></td>
     <td>
       <h3>Biometrics</h3>
       <p>Biometric authentication provides users with secure and effortless access. This feature supports fingerprint and facial recognition for enhanced security.</p>
@@ -52,7 +52,7 @@ dart pub global activate rx_bloc_cli
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/CreatePIN.gif" alt="Biometrics"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/CreatePIN.gif" alt="Biometrics"></td>
     <td>
       <h3>Create PIN Code</h3>
       <p>PIN codes help protect sensitive actions and provide lock/unlock capabilities for the app. The feature ensures encrypted storage of PIN codes and seamless biometric authentication for added user security.</p>
@@ -64,7 +64,7 @@ dart pub global activate rx_bloc_cli
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/WidgetToolkit.gif" alt="Biometrics"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/WidgetToolkit.gif" alt="Biometrics"></td>
     <td>
       <h3>Reusable Components (Widget Toolkit)</h3>
       <p>The Widget Toolkit package provides a set of customizable UI components designed to enhance productivity and reduce development time. These components offer flexible and efficient solutions for common UI needs.</p>
@@ -81,7 +81,7 @@ dart pub global activate rx_bloc_cli
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/ChangeLanguage.gif" alt="Biometrics"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/ChangeLanguage.gif" alt="Biometrics"></td>
     <td>
       <h3>Localization</h3>
       <p>Localization is crucial for building versatile, globally accessible apps with personalized user experiences.</p>
@@ -93,7 +93,7 @@ dart pub global activate rx_bloc_cli
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/MFA.gif" alt="Biometrics"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/MFA.gif" alt="Biometrics"></td>
     <td>
       <h3>MFA (Multi-Factor Authentication)</h3>
       <p>Multi-Factor Authentication (MFA) enables business representatives to configure required authentication methods, such as PIN/Biometric, OTP, etc., for specific actions like unlocking or changing the password.</p>
@@ -107,7 +107,7 @@ dart pub global activate rx_bloc_cli
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/EnableNotifications.gif" alt="Biometrics"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/EnableNotifications.gif" alt="Biometrics"></td>
     <td>
       <h3>Notifications</h3>
       <p>Firebase Cloud Messaging (FCM) integration allows for robust notification management, enhancing user engagement with timely updates and alerts.</p>
@@ -120,7 +120,7 @@ dart pub global activate rx_bloc_cli
     </td>
   </tr>
   <tr>
-    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/docs/rx_bloc_cli_features/packages/rx_bloc_cli/doc/assets/ScanQR.gif" alt="Biometrics"></td>
+    <td width="30%"><img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/refs/heads/develop/packages/rx_bloc_cli/doc/assets/ScanQR.gif" alt="Biometrics"></td>
     <td>
       <h3>QR Scanner</h3>
       <p>Pre-built functionality offers an easy-to-integrate QR scanner widget, enhancing the app’s capabilities with efficient QR code scanning.</p>
