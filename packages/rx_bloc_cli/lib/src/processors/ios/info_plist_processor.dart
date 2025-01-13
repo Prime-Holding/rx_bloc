@@ -13,14 +13,14 @@ class InfoPlistProcessor extends StringProcessor {
     if (input == null) return '';
     final buffer = StringBuffer(input!);
 
-    if (args.deepLinkEnabled) {
-      _updateInfoPlistDeepLink(buffer);
-    }
     if (args.qrScannerEnabled) {
       _updateInfoPlistPermissionsCamera(buffer);
     }
     if (args.pinCodeEnabled) {
       _updateInfoPlistPermissionsBiometrics(buffer);
+    }
+    if (args.deepLinkEnabled) {
+      _updateInfoPlistDeepLink(buffer);
     }
 
     return buffer.toString();
@@ -61,9 +61,9 @@ class InfoPlistProcessor extends StringProcessor {
     <key>LSApplicationQueriesSchemes</key>
     <array>
       <string>${args.projectName}</string>
-      <string>mailto</string>
+      <string>message</string>
     </array>
     ''';
-    buffer.insertBeforeLast('</dict>', _urlSchemes);
+    buffer.insertBefore('</dict>', _urlSchemes);
   }
 }
