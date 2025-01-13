@@ -30,3 +30,17 @@ dependency_overrides:
 
 executables:
   rx_bloc_cli:
+
+screenshots:
+  - description: "Sign In"
+    path: doc/assets/images/sign_in.png
+  - description: "Sign Up"
+    path: doc/assets/images/sign_up.png
+  - description: "Profile"
+    path: doc/assets/images/profile.png
+  - description: "Widget Toolkit"
+    path: doc/assets/images/toolkit.png
+  - description: "Showcases"
+    path: doc/assets/images/showcases.png
+  - description: "QR Scanner"
+    path: doc/assets/images/qr_scanner.png
