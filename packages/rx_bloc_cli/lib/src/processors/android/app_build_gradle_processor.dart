@@ -119,11 +119,19 @@ class AppBuildGradleProcessor extends StringProcessor {
     if (sIndex < 0) return;
     final startIndex = buffer.nthIndexOf('}', n: 1, start: sIndex);
 
-    const content = '''
+
+    var content = "";
+
+    if (!args.pushNotificationsEnabled) {
+      //this can be removed if we stop using local_notifications
+      content = '''
 
         coreLibraryDesugaringEnabled true
     }
     ''';
+    }
+
+    if(content.isEmpty) return;
 
     buffer.replaceRange(startIndex, startIndex + 1 , content);
   }
