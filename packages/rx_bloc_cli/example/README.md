@@ -389,7 +389,7 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
 
-*Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
+*Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a project ID and service account key for cloud messaging from the Firebase Console. The project ID can be found in the Firebase project settings, and the service account key can be generated from the Firebase Console under Project Settings > Service Accounts. Then you have to assign these values to the `firebaseProjectId` and `firebaseServiceAccountKey` constants located inside the `bin/server/config.dart` file.
 
 
 ## Social Logins Library
