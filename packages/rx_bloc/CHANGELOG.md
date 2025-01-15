@@ -1,3 +1,6 @@
+## [6.0.1]
+* Fix static analysis issue with angle brackets interpreted as HTML
+
 ## [6.0.0]
 * Update `rxdart` to use version `0.28.0`
 
