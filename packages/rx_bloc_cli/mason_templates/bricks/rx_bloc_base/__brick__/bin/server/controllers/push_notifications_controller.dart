@@ -143,15 +143,15 @@ class PushNotificationsController extends ApiController {
       String firebaseMessagingScope =
           'https://www.googleapis.com/auth/firebase.messaging';
 
-      //get the service account from the environment variables or from the .env file where it has been stored.
-      //it is advised not to hardcode the service account details in the code
-      Map<String, dynamic> serviceAccount =
-          json.decode(const String.fromEnvironment('FIREBASE_SERVICE_ACCOUNT'));
+      //get the service account from the json file 
+      final serviceAccount =
+          json.decode(await File(serviceAccountKeyPath).readAsString());
       final client = await clientViaServiceAccount(
           ServiceAccountCredentials.fromJson(serviceAccount),
           [firebaseMessagingScope]);
 
       final accessToken = client.credentials.accessToken.data;
+      client.close();
       return accessToken;
     } catch (_) {
       //handle your error here
