@@ -44,16 +44,8 @@ class UserAccountBloc extends $UserAccountBloc {
 
     _$logoutEvent
         .throttleTime(const Duration(seconds: 1))
-        .exhaustMap((value) =>
-            _userAccountService.logout().asResultStream())
+        .exhaustMap((value) => _logOut().asResultStream())
         .setResultStateHandler(this)
-        .whereSuccess()
-        .mapTo(false)
-        .emitAuthenticatedToCoordinator(_coordinatorBloc){{#enable_feature_otp}}
-        .emitOtpConfirmedToCoordinator(_coordinatorBloc){{/enable_feature_otp}}{{#enable_pin_code}}
-        .emitLoggedOutToCoordinator(_coordinatorBloc)
-        .emitPinCodeConfirmedToCoordinator(_coordinatorBloc){{/enable_pin_code}}
-        .doOnData((_) => _routerBloc.events.go(const LoginRoute()))
         .listen(null)
         .addTo(_compositeSubscription);
   }
@@ -63,7 +55,17 @@ class UserAccountBloc extends $UserAccountBloc {
   final AuthService _authService;
   final RouterBlocType _routerBloc;
 
-  @override
+Future<bool> _logOut() async {
+  await _userAccountService.logout();
+  _coordinatorBloc.events.authenticated(isAuthenticated: false);{{#enable_feature_otp}}
+  _coordinatorBloc.events.otpConfirmed(isOtpConfirmed: false);{{/enable_feature_otp}}{{#enable_pin_code}}
+  _coordinatorBloc.events.userLoggedOut();
+  _coordinatorBloc.events.pinCodeConfirmed(isPinCodeConfirmed: false);{{/enable_pin_code}}
+  _routerBloc.events.go(const LoginRoute());
+  return false;
+}
+
+@override
   ConnectableStream<bool> _mapToLoggedInState() => Rx.merge([
         _coordinatorBloc.states.isAuthenticated,
         _authService.isAuthenticated().asStream(),
