@@ -122,7 +122,7 @@ class AppBuildGradleProcessor extends StringProcessor {
 
     var content = '';
 
-    if (!args.pushNotificationsEnabled) {
+    if (args.pushNotificationsEnabled) {
       //this can be removed if we stop using local_notifications
       content = '''
 
