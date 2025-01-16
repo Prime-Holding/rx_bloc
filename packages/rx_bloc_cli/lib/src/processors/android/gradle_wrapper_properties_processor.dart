@@ -24,18 +24,9 @@ class GradleWrapperPropertiesProcessor extends StringProcessor {
     StringBuffer buffer, {
     String gradleWrapperUrl = kGradleWrapperUrl,
   }) {
-    void _replaceVal(String content, String replacement) {
-      final start = buffer.nthIndexOf(content);
-      if (start < 0) return;
-      final end = start + content.length;
-      buffer.replaceRange(start, end, replacement);
-    }
-
     void _replaceQuotedVal(
       String content,
-      String replacement, {
-      int start = 0,
-    }) {
+      String replacement) {
       final start = buffer.nthIndexOf(content);
       final sIndex = buffer.nthIndexOf('=',
               start: buffer.nthIndexOf(content, start: start)) +
