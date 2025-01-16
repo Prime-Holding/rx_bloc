@@ -13,6 +13,7 @@ import '../../l10n/l10n.dart';
 import '../bloc/update_and_verify_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
 import '../services/verify_pin_code_service.dart';
+import '../ui_components/pin_code_app_bar.dart';
 
 class VerifyPinCodePage extends StatelessWidget {
   const VerifyPinCodePage({
@@ -28,16 +29,11 @@ class VerifyPinCodePage extends StatelessWidget {
         onPopInvokedWithResult: (didPop, dynamic) =>
             context.read<UpdateAndVerifyPinBlocType>().events.deleteSavedData(),
         child: Scaffold(
-          appBar: AppBar(
-            surfaceTintColor: Colors.red,
-            title: Text(
-              pinCodeArguments.title.isEmpty
-                  ? context.l10n.libPinCode.verifyPinCodePage
-                  : pinCodeArguments.title,
-              style: context.designSystem.typography.h1Reg22,
-            ),
-            foregroundColor: context.designSystem.colors.white,
-            forceMaterialTransparency: true,
+          appBar: pinCodeAppBar(
+            context,
+            title: pinCodeArguments.title.isEmpty
+                ? context.l10n.libPinCode.verifyPinCodePage
+                : pinCodeArguments.title,
           ),
           extendBodyBehindAppBar: true,
           body: SizedBox(
@@ -46,6 +42,7 @@ class VerifyPinCodePage extends StatelessWidget {
               children: [
                 Expanded(
                   child: PinCodeKeyboard(
+                    autoPromptBiometric: true,
                     mapBiometricMessageToString: (message) =>
                         _exampleMapMessageToString(message, context),
                     pinCodeService: context.read<VerifyPinCodeService>(),

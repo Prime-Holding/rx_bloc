@@ -22,8 +22,9 @@
 18. [CI/CD](#cicd)
 19. [Feature Pin Code](#feature-pin-code)
 20. [Multi-Factor Authentication](#multi-factor-authentication)
-21. [Feature QR Code](#feature-qr-code)
-22. [Next Steps](#next-steps)
+22. [Feature QR Code](#feature-qr-code)
+22. [Feature onboarding](#feature-onboarding)
+23. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -388,7 +389,7 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
 
-*Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
+*Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a project ID and service account key for cloud messaging from the Firebase Console. The project ID can be found in the Firebase project settings, and the service account key can be generated from the Firebase Console under Project Settings > Service Accounts. Then you have to assign these values to the `firebaseProjectId` and `firebaseServiceAccountKey` constants located inside the `bin/server/config.dart` file.
 
 
 ## Social Logins Library
@@ -541,6 +542,19 @@ For more info please visit [widget_toolkit_qr](https://pub.dev/packages/widget_t
 
 On iOS, an issue may occur during the initial build of the application. This can be resolved by opening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
 
+
+
+## Feature Onboarding
+
+The onboarding feature introduces an onboarding flow where the user can register their account. 
+The flow includes several screens which allow them to provide an email, password and phone number. 
+Each feature includes input validation as well as confirmation steps for the email and phone number.
+The feature also introduces a way to resume the onboarding process from where they left off last time if they didn't complete their account.
+
+For details on the API contracts used in the onboarding feature, please refer to the [API contracts][feature_onboarding_api].
+
+
+
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.
@@ -588,3 +602,4 @@ On iOS, an issue may occur during the initial build of the application. This can
 [golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
 [rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
 [feature_creation]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md
+[feature_onboarding_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/onboarding_api_contracts.md

@@ -9,12 +9,14 @@ import 'package:{{project_name}}/lib_mfa/models/mfa_method_request.dart';
 import 'package:{{project_name}}/lib_mfa/models/mfa_response.dart';
 import 'package:{{project_name}}/lib_mfa/models/payload/response/mfa_last_login_payload_response.dart';
 
-
+import '../services/pin_code_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
+import '../utils/utilities.dart';
 
 class MfaController extends ApiController {
-  MfaController();
+  MfaController(this._pinCodeService);
+  final PinCodeService _pinCodeService;
 
   static const String _changeAddressTransactionId = '1';
   static const String _changeAddressSecurityToken1 = 'dasfgfsde123fd';
@@ -27,7 +29,6 @@ class MfaController extends ApiController {
 
   static const String _otpCode = '0000';
   static const String _otpIncorrectCompleteCode = '3333';
-  static const String _pinCode = '0000';
 
   String get _expiresDate =>
       DateTime.now().add(const Duration(seconds: 60)).toIso8601String();
@@ -84,7 +85,7 @@ class MfaController extends ApiController {
 
     await Future.delayed(const Duration(milliseconds: 300));
 
-    _validateAuthRequest(formData);
+    await _validateAuthRequest(formData, request.headers);
 
     return responseBuilder.buildOK(
       data: switch (formData['securityToken'] as String) {
@@ -120,7 +121,8 @@ class MfaController extends ApiController {
       );
 
   Future<Response> _authenticateUnlock(Request request) async {
-    _validateAuthRequest(await request.bodyFromFormData());
+    final formData = await request.bodyFromFormData();
+    await _validateAuthRequest(formData, request.headers);
 
     return responseBuilder.buildOK(
       data: MfaResponse(
@@ -136,14 +138,16 @@ class MfaController extends ApiController {
     );
   }
 
-  void _validateAuthRequest(Map<String, dynamic> formData) {
+  Future<void> _validateAuthRequest(
+      Map<String, dynamic> formData, Map<String, String> headers) async {
     final methodRequest = MfaMethodRequest.fromJson(formData);
 
     if (methodRequest.payload.type == MfaMethod.pinBiometric.name) {
+      final userId = getUserIdFromAuthToken(headers);
       final payload = methodRequest.payload as MfaPinCodePayload;
-
-      if (payload.code != _pinCode) {
-        throw UnprocessableEntityException('The pin code should be $_pinCode');
+      final pinCode = _pinCodeService.getPinCode(userId);
+      if (payload.code != pinCode) {
+        throw UnprocessableEntityException('The pin code should be $pinCode');
       }
     }
 

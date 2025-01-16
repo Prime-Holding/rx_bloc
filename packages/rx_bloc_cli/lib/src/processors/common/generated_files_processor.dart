@@ -1,5 +1,7 @@
 import 'package:rx_bloc_cli/src/processors/android/android_main_activity_processor.dart';
 import 'package:rx_bloc_cli/src/processors/android/app_build_gradle_processor.dart';
+import 'package:rx_bloc_cli/src/processors/android/gradle_wrapper_properties_processor.dart';
+import 'package:rx_bloc_cli/src/processors/android/settings_gradle_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
 
 import 'package:rx_bloc_cli/src/processors/ios/flutter_xcconfig_file_processor.dart';
@@ -27,6 +29,8 @@ class GeneratedFilesProcessor {
   List<(String, StringProcessor)> get _processors => [
         ('android/app/build.gradle', AppBuildGradleProcessor(args)),
         ('android/build.gradle', AndroidBuildGradleProcessor(args)),
+        ('android/gradle/wrapper/gradle-wrapper.properties', GradleWrapperPropertiesProcessor(args)),
+        ('android/settings.gradle', SettingsGradle(args)),
         (
           'android/app/src/main/AndroidManifest.xml',
           AndroidManifestProcessor(args),

@@ -13,23 +13,24 @@ class DesignSystemColors {
         primaryColor = const Color(0xff2196f3),
         backgroundColor = Colors.white,
         scaffoldBackgroundColor = Colors.white,
-        updateIconAppBarColor = Colors.black{{#enable_social_logins}},
+        updateIconAppBarColor = Colors.black,
+        textButtonColor = const Color.fromRGBO(0, 0, 0, 0.54),
+        dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFF000000),
-        appleButtonText = Colors.white,
         googleBackground = const Color(0xFFFFFFFF),
-        googleButtonText = const Color.fromRGBO(0, 0, 0, 0.54){{/enable_social_logins}};
+        facebookBackground = const Color(0xFF1877F2){{/enable_social_logins}};
 
   const DesignSystemColors.dark()
       : brightness = Brightness.dark,
         primaryColor = const Color(0xffce93d8),
         backgroundColor = Colors.black,
         scaffoldBackgroundColor = Colors.black,
-        updateIconAppBarColor = Colors.white{{#enable_social_logins}},
+        updateIconAppBarColor = Colors.white,
+        textButtonColor = const Color(0xFFFFFFFF),
+        dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFFFFFFFF),
-        appleButtonText = Colors.black,
         googleBackground = Colors.black,
-        googleButtonText = const Color(0xFFFFFFFF)
-        {{/enable_social_logins}};
+        facebookBackground = const Color(0xFFFFFFFF){{/enable_social_logins}};
 
   final Brightness brightness;
 
@@ -40,6 +41,8 @@ class DesignSystemColors {
   final Color backgroundColor;
 
   final Color scaffoldBackgroundColor;
+
+  final Color dividerColor;
 
   final errorColor = Colors.red;
 
@@ -61,33 +64,26 @@ class DesignSystemColors {
 
   /// region General purpose colors
 
-  final blanchedAlmond = const Color(0xffffebcd);
+  final Color messageColor = Colors.black87;
 
-  final darkSeaGreen = const Color(0xff8fbc8f);
-
-  final snow = const Color(0xfffffafa);
-
-  final black = Colors.black87;
-
-  final white = Colors.white;
-
-  final gray = const Color(0xff808080);
+  final Color tintColor = const Color(0xff808080);
 
   final Color updateIconAppBarColor;
+
+final Color textButtonColor;
   {{#enable_social_logins}}
   final Color appleBackground;
 
-  final Color appleButtonText;
-
-  final facebookBackground = const Color(0xFF1877f2);
-
-  final facebookTextColor = const Color(0xFFFFFFFF);
+  final Color facebookBackground;
 
   final Color googleBackground;
 
-  final Color googleButtonText;
-  {{/enable_social_logins}}
-{{#enable_feature_otp}}
+  final Color socialLoginBorderColor = Colors.white;
+  {{/enable_social_logins}}{{#enable_pin_code}}
+  final Color pinAppBarColor = Colors.white;
+  {{/enable_pin_code}}{{#enable_profile}}
+  final Color circleAvatarColor = Colors.white;
+  {{/enable_profile}}{{#enable_feature_otp}}
 //otp colors
   final Color pinBgColor = const Color(0xE5EEEEEE);
 
@@ -95,11 +91,12 @@ class DesignSystemColors {
 
   final pinBgSuccessColor = const Color.fromRGBO(102, 240, 174, .5);
 
-  final Color pinSuccessBorderColor = Colors.green;
-
   final pinErrorBorderColor = Colors.red;
 
   final pinBgSubmittedColor = const Color.fromRGBO(222, 231, 240, .7);
-{{/enable_feature_otp}}
+{{/enable_feature_otp}}{{#has_otp}}
+
+  final Color pinSuccessBorderColor = Colors.green;{{/has_otp}}
+
   ///
 }

@@ -37,8 +37,9 @@ class OtpPage extends StatelessWidget {
                     children: [
                       Text(
                         context.l10n.featureOtp.hint,
-                        style:
-                            TextStyle(color: context.designSystem.colors.gray),
+                        style: TextStyle(
+                          color: context.designSystem.colors.tintColor,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       const SmsCodeField(key: K.otpInput),
@@ -52,11 +53,11 @@ class OtpPage extends StatelessWidget {
                       children: [
                         ResendCodeButton(
                           activeStateIcon: Icon(
-                            Icons.send,
+                            context.designSystem.icons.send,
                             color: context.designSystem.colors.primaryColor,
                           ),
                           pressedStateIcon: Icon(
-                            Icons.check_circle_outline,
+                            context.designSystem.icons.success,
                             color: context
                                 .designSystem.colors.pinSuccessBorderColor,
                           ),

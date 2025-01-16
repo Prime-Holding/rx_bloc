@@ -16,8 +16,16 @@ class DesignSystemTypography {
   // Keep the general purpose styles declared as 'const'. If not possible then
   // declare them as late final properties.
 
+  final h1Med32 = const TextStyle(
+    fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 32.0);
+
+  final h1Reg32 = const TextStyle(
+    fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 32.0);
+
   final bold30 = const TextStyle(
       fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 30.0);
+
+
 
   final h1Med26 = const TextStyle(
       fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 26.0);
@@ -45,6 +53,9 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
 
   final h2Med18 = const TextStyle(
       fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 18.0);
+
+  final h1Bold16 = const TextStyle(
+      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 16.0);
 
   final h2Med18Italic = const TextStyle(
       fontWeight: FontWeight.w500, fontStyle: FontStyle.italic, fontSize: 18.0);
@@ -87,27 +98,16 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
   late final counterText = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 96,
-    color: _designSystemColor.gray.withOpacity(0.8),
+    color: _designSystemColor.tintColor..withValues(alpha: 0.8),
     letterSpacing: -1.5,
   );
 {{/enable_feature_counter}}
   late final fadedButtonText =
-      h3Med14.copyWith(color: _designSystemColor.black);
+      h3Med14.copyWith(color: _designSystemColor.messageColor);
   {{#enable_social_logins}}
-  late final googleButtonText = TextStyle(
-    fontSize: 14,
-    backgroundColor: _designSystemColor.googleBackground,
-    color: _designSystemColor.googleButtonText,
-  );
-
-  late final facebookButtonText = TextStyle(
-    fontSize: 14,
-    backgroundColor: _designSystemColor.facebookBackground,
-    color: _designSystemColor.facebookTextColor,
-  );
-  late final appleButtonText = TextStyle(
-    fontSize: 14,
-    color: _designSystemColor.appleButtonText,
+  late final socialButtonText = TextStyle(
+      fontSize: 14,
+      color: _designSystemColor.textButtonColor,
   );
   {{/enable_social_logins}}
   {{#enable_feature_otp}}
@@ -121,6 +121,6 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
     fontStyle: FontStyle.normal,
     letterSpacing: 0.8,
     fontSize: 10.0)
-      .copyWith(color: _designSystemColor.black);
+      .copyWith(color: _designSystemColor.messageColor);
   {{/enable_feature_otp}}
 }

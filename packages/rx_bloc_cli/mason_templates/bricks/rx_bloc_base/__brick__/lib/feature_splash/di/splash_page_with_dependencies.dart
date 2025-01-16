@@ -21,7 +21,8 @@ class SplashPageWithDependencies extends StatelessWidget {
             context.read(),
             context.read(),{{#has_authentication}}
             context.read(),{{/has_authentication}}{{#enable_pin_code}}
-            context.read(),{{/enable_pin_code}}
+            context.read(),{{/enable_pin_code}}{{#enable_feature_onboarding}}
+            context.read(),{{/enable_feature_onboarding}}
             redirectLocation: redirectToLocation,
           ),
         ),

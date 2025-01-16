@@ -23,6 +23,12 @@ UserAccountBlocType userAccountBlocMockFactory({
   when(userAccountBloc.events).thenReturn(eventsMock);
   when(userAccountBloc.states).thenReturn(statesMock);
 
+  final loadingState = (isLoading != null
+          ? Stream.value(isLoading)
+          : const Stream<bool>.empty())
+      .publishReplay(maxSize: 1)
+    ..connect();
+
   when(statesMock.loggedIn).thenAnswer(
     (_) => Stream.value(loggedIn).publishReplay(maxSize: 1),
   );
@@ -31,9 +37,7 @@ UserAccountBlocType userAccountBlocMockFactory({
     (_) => error != null ? Stream.value(error) : const Stream.empty(),
   );
 
-  when(statesMock.isLoading).thenAnswer(
-    (_) => isLoading != null ? Stream.value(isLoading) : const Stream.empty(),
-  );
+  when(statesMock.isLoading).thenAnswer((_) => loadingState);
 
   return userAccountBloc;
 }

@@ -18,7 +18,9 @@ extension _StringExtensions on String {
 
 /// It is the main [DartFormatter]
 extension _SpecExtensions on Spec {
-  String toDartCodeString() => DartFormatter().format(
+  String toDartCodeString() => DartFormatter(
+        languageVersion: DartFormatter.latestLanguageVersion,
+      ).format(
         toRawDartCodeString(),
       );
 
@@ -44,8 +46,8 @@ extension _EventMethodElement on MethodElement {
   /// Provides the stream generic type
   ///
   /// Example:
-  /// if `fetchNews(int param)` then -> PublishSubject<int>
-  /// if `fetchNews(String param)` then -> PublishSubject<String>
+  /// if `fetchNews(int param)` then -> PublishSubject`<int>`
+  /// if `fetchNews(String param)` then -> PublishSubject`<String>`
   /// if `fetchNews(int p1, int p2)` then -> PublishSubject<_FetchNewsEventArgs>
   List<Reference> get streamTypeArguments => [refer(publishSubjectGenericType)];
 

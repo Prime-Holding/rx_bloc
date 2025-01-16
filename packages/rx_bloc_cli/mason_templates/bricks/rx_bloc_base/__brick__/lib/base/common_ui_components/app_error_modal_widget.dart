@@ -15,20 +15,38 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
     extends StatelessWidget {
   const AppErrorModalWidget({
     required this.errorState,
+    this.onRetry,
+    this.onCancel,
     super.key,
   });
 
   final ErrorStateCallback<BlocType> errorState;
+  final Function(BuildContext, ErrorModel)? onRetry;
+  final Function()? onCancel;
 
   @override
   Widget build(BuildContext context) => RxBlocListener<BlocType, ErrorModel>(
         state: (bloc) => errorState(bloc),
-        listener: (context, error) => showBlurredBottomSheet(
-          context: context,
-          builder: (BuildContext context) => MessagePanelWidget(
-            message: error.translate(context),
-            messageState: MessagePanelState.neutral,
-          ),
-        ),
+        listener: (context, error) => onRetry != null
+            ? showErrorBlurredBottomSheet(
+                context: context,
+                error: error.translate(context),
+                configuration: const ModalConfiguration(
+                  showCloseButton: true,
+                  isDismissible: false,
+                ),
+                retryCallback: (context) {
+                  onRetry?.call(context, error);
+                  Navigator.of(context).pop();
+                },
+                onCancelCallback: onCancel,
+              )
+            : showBlurredBottomSheet(
+                context: context,
+                builder: (BuildContext context) => MessagePanelWidget(
+                  message: error.translate(context),
+                  messageState: MessagePanelState.neutral,
+                ),
+              ),
       );
 }

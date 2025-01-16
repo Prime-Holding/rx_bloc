@@ -58,7 +58,7 @@ class ProfilePage extends StatelessWidget {
                         child: Icon(
                           context.designSystem.icons.avatar,
                           size: 75,
-                          color: context.designSystem.colors.white,
+                          color: context.designSystem.colors.circleAvatarColor,
                         ),
                       ),
                     ),
@@ -138,7 +138,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const AppDivider(),
                 {{/enable_pin_code}}
-                RxBlocBuilder<ProfileBlocType, Result<bool>>(
+               RxBlocBuilder<ProfileBlocType, Result<bool>>(
                   state: (bloc) => bloc.states.areNotificationsEnabled,
                   builder: (context, areNotificationsEnabled, bloc) =>
                       AppListTile(
@@ -154,30 +154,24 @@ class ProfilePage extends StatelessWidget {
                         : context.designSystem.icons.notificationsInactive,
                     trailing: Switch(
                       value: areNotificationsEnabled.value,
-                      onChanged: (_) => bloc.events.setNotifications(
-                        !areNotificationsEnabled.value,
-                      ),
+                      onChanged: (_) => bloc.events.toggleNotifications(),
                     ),
-                    onTap: () => bloc.events.setNotifications(
-                      !areNotificationsEnabled.value,
-                    ),
+                    onTap: () => bloc.events.toggleNotifications(),
                   ),
                 ),
                 AppErrorModalWidget<ProfileBlocType>(
                   errorState: (bloc) => bloc.states.errors,
                 ),
-                RxBlocListener<ProfileBlocType, Result<bool>>(
-                  state: (bloc) => bloc.states.syncNotificationsStatus,
-                  condition: (previous, current) =>
-                      current is ResultSuccess<bool>,
+                  RxBlocListener<ProfileBlocType, Result<bool>>(
+                  state: (bloc) => bloc.states.areNotificationsEnabled.skip(1),
+                  condition: (previousState, currentState) =>
+                      previousState is Result<bool>,
                   listener: (context, state) {
-                    if (state.tag.isLoadingSubscription) {
+                    if (state is ResultSuccess<bool>) {
                       showBlurredBottomSheet(
                         context: context,
                         builder: (BuildContext context) => MessagePanelWidget(
-                          message: (state as ResultSuccess<bool>)
-                              .data
-                              .translate(context),
+                          message: state.data.translate(context),
                           messageState: MessagePanelState.positiveCheck,
                         ),
                       );
@@ -237,10 +231,4 @@ class ProfilePage extends StatelessWidget {
     return context.l10n.libPinCode.createPin;
   }
   {{/enable_pin_code}}
-}
-
-extension _StringX on String {
-  bool get isLoadingSubscription =>
-      this == ProfileBloc.tagNotificationUnsubscribe ||
-      this == ProfileBloc.tagNotificationSubscribe;
 }

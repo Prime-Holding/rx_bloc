@@ -4,11 +4,13 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../base/common_services/validators/credentials_validator_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/credentials_model.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../lib_auth/services/user_account_service.dart';
-import '../models/credentials_model.dart';
-import '../services/login_validator_service.dart';
+import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';
 
 part 'login_bloc.rxb.g.dart';
 part 'login_bloc_extensions.dart';
@@ -22,6 +24,8 @@ abstract class LoginBlocEvents {
   void setPassword(String password);
 
   void login();
+
+  void goToRegistration();
 }
 
 /// A contract class containing all states of the LoginBloC.
@@ -43,6 +47,9 @@ abstract class LoginBlocStates {
 
   /// The error state
   Stream<ErrorModel> get errors;
+
+  /// The routing state for navigating to registration page
+  ConnectableStream<void> get onRouting;
 }
 
 @RxBloc()
@@ -51,13 +58,17 @@ class LoginBloc extends $LoginBloc {
     this._coordinatorBloc,
     this._userAccountService,
     this._validatorService,
+    this._routerBloc,
   ) {
     loggedIn.connect().addTo(_compositeSubscription);
+    onRouting.connect().addTo(_compositeSubscription);
   }
 
   final CoordinatorBlocType _coordinatorBloc;
   final UserAccountService _userAccountService;
-  final LoginValidatorService _validatorService;
+  final CredentialsValidatorService _validatorService;
+  {{^enable_feature_onboarding}}// ignore: unused_field{{/enable_feature_onboarding}}
+  final RouterBlocType _routerBloc;
 
   @override
   Stream<String> _mapToEmailState() => _$setEmailEvent
@@ -94,7 +105,13 @@ class LoginBloc extends $LoginBloc {
       .startWith(false)
       .publish();
 
-  CredentialsModel? _validateAndReturnCredentials(
+  @override
+  ConnectableStream<void> _mapToOnRoutingState() => _$goToRegistrationEvent{{#enable_feature_onboarding}}
+      .doOnData((_) => _routerBloc.events.push(const OnboardingRoute())){{/enable_feature_onboarding}}
+    .publishReplay(maxSize: 1);
+
+
+CredentialsModel? _validateAndReturnCredentials(
       Result<String> emailResult, Result<String> passwordResult) {
     if (emailResult is ResultError || passwordResult is ResultError) {
       return null;

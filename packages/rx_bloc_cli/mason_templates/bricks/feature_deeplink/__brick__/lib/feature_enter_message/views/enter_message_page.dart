@@ -34,7 +34,7 @@ class EnterMessagePage extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: context.designSystem.colors.black,
+                    color: context.designSystem.colors.messageColor,
                   ),
                   borderRadius: BorderRadius.all(
                     Radius.circular(

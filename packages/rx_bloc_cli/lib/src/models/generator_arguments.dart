@@ -112,6 +112,10 @@ class GeneratorArguments
   @override
   bool get counterEnabled => _showcaseConfiguration.counterEnabled;
 
+  /// Onboarding feature
+  @override
+  bool get onboardingEnabled => _featureConfiguration.onboardingEnabled;
+
   /// Dev menu
   @override
   bool get devMenuEnabled => _featureConfiguration.devMenuEnabled;
@@ -159,6 +163,14 @@ class GeneratorArguments
 
   @override
   bool get deepLinkEnabled => _showcaseConfiguration.deepLinkEnabled;
+
+  /// endregion
+
+  /// region Other
+
+  /// Flag indicating if the project uses OTP functionality
+  bool get hasOtp =>
+      _authConfiguration.otpEnabled || _featureConfiguration.onboardingEnabled;
 
   /// endregion
 }

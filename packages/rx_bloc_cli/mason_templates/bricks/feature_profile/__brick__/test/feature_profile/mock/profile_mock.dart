@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
@@ -10,7 +12,6 @@ import 'profile_mock.mocks.dart';
 @GenerateMocks([ProfileBlocStates, ProfileBlocEvents, ProfileBlocType])
 ProfileBlocType profileMockFactory({
   Result<bool>? areNotificationsEnabled,
-  Result<bool>? syncNotificationsStatus,
   bool? isLoading,
   ErrorModel? errors,
 }) {
@@ -21,12 +22,8 @@ ProfileBlocType profileMockFactory({
   when(blocMock.events).thenReturn(eventsMock);
   when(blocMock.states).thenReturn(statesMock);
 
-  final areNotificationsEnabledState = areNotificationsEnabled != null
-      ? Stream.value(areNotificationsEnabled).shareReplay(maxSize: 1)
-      : const Stream<Result<bool>>.empty();
-
-  final syncNotificationsStatusState = (syncNotificationsStatus != null
-          ? Stream.value(syncNotificationsStatus)
+  final areNotificationsEnabledState = (areNotificationsEnabled != null
+          ? Stream.value(areNotificationsEnabled)
           : const Stream<Result<bool>>.empty())
       .publishReplay(maxSize: 1)
     ..connect();
@@ -41,8 +38,6 @@ ProfileBlocType profileMockFactory({
 
   when(statesMock.areNotificationsEnabled)
       .thenAnswer((_) => areNotificationsEnabledState);
-  when(statesMock.syncNotificationsStatus)
-      .thenAnswer((_) => syncNotificationsStatusState);
   when(statesMock.isLoading).thenAnswer((_) => isLoadingState);
   when(statesMock.errors).thenAnswer((_) => errorsState);
 

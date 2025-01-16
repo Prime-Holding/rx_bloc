@@ -11,16 +11,13 @@ part 'profile_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the ProfileBloC.
 abstract class ProfileBlocEvents {
-  void setNotifications(bool enabled);
-
-  void loadNotificationsSettings();
+  void toggleNotifications();
 }
 
 /// A contract class containing all states of the ProfileBloC.
 abstract class ProfileBlocStates {
-  Stream<Result<bool>> get areNotificationsEnabled;
-
-  ConnectableStream<Result<bool>> get syncNotificationsStatus;
+  /// The state representing the if the notifications are enabled
+  ConnectableStream<Result<bool>> get areNotificationsEnabled;
 
   /// The loading state
   Stream<bool> get isLoading;
@@ -32,12 +29,9 @@ abstract class ProfileBlocStates {
 @RxBloc()
 class ProfileBloc extends $ProfileBloc {
   ProfileBloc(this._notificationService) {
-    syncNotificationsStatus.connect().addTo(_compositeSubscription);
+    areNotificationsEnabled.connect().addTo(_compositeSubscription);
   }
   final PushNotificationsService _notificationService;
-
-  static const tagNotificationSubscribe = 'tagNotificationSubscribe';
-  static const tagNotificationUnsubscribe = 'tagNotificationUnsubscribe';
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
@@ -46,37 +40,11 @@ class ProfileBloc extends $ProfileBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  ConnectableStream<Result<bool>> _mapToSyncNotificationsStatusState() =>
+  ConnectableStream<Result<bool>> _mapToAreNotificationsEnabledState() =>
       Rx.merge([
-        _$setNotificationsEvent.switchMap(
-          (subscribePushNotifications) {
-            if (subscribePushNotifications) {
-              return _notificationService
-                  .subscribe()
-                  .then((_) => true)
-                  .asResultStream(tag: tagNotificationSubscribe);
-            }
-
-            return _notificationService
-                .unsubscribe()
-                .then((_) => false)
-                .asResultStream(tag: tagNotificationUnsubscribe);
-          },
-        ),
-        _$loadNotificationsSettingsEvent.startWith(null).switchMap((value) =>
-            _notificationService
-                .syncNotificationSettings()
-                .then((_) => true)
-                .asResultStream()),
-      ]).setResultStateHandler(this).publish();
-
-  @override
-  Stream<Result<bool>> _mapToAreNotificationsEnabledState() => Rx.merge([
-        _$loadNotificationsSettingsEvent.startWith(null),
-        syncNotificationsStatus.whereSuccess(),
-      ])
-          .switchMap((value) =>
-              _notificationService.areNotificationsEnabled().asResultStream())
-          .setResultStateHandler(this)
-          .shareReplay(maxSize: 1);
+        _$toggleNotificationsEvent.switchMap((_) => _notificationService
+            .toggleNotifications()
+            .asResultStream()),
+        _notificationService.areNotificationsEnabled().asResultStream(),
+      ]).setResultStateHandler(this).publishReplay(maxSize: 1);
 }

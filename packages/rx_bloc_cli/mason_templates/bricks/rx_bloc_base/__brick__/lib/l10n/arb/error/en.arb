@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "accessDenied": "You don't have access to this resource.",
+  "badRequest" : "Bad or malformed request.",
   "network": "A network error occurred.",
   "noConnection": "It looks like your device is not connected to the internet. Please check your settings.",
   "connectionRefused": "Unable to connect to server. Connection refused. Check if the local server is up and running then try again.",
@@ -15,5 +16,7 @@
   "tooLong": "The entered text is too long",{{#enable_social_logins}}
   "googleAuthError":"Google authorization failed",{{/enable_social_logins}}
   "tooShort": "The entered text is too short",
-  "notificationsDisabledMessage":"Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings."
+  "notificationsDisabledMessage":"Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings.",
+  "noMailApp": "No e-mail client found on your device. Please, install one or open your mail provider with a browser.",
+  "invalidUrl": "Invalid URL"
 }

@@ -1,7 +1,9 @@
 {{> licence.dart }}
 
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart';
 
@@ -36,7 +38,6 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _registerPushHandler(Request request) async {
-
     final params = await request.bodyFromFormData();
     final pushToken = params['pushToken'];
 
@@ -51,7 +52,6 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _unregisterPushHandler(Request request) async {
-
     final params = await request.bodyFromFormData();
     final pushToken = params['pushToken'];
 
@@ -66,7 +66,6 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _broadcastPushHandler(Request request) async {
-
     final params = await request.bodyFromFormData();
     final title = params['title'];
     final message = params['message'];
@@ -85,39 +84,79 @@ class PushNotificationsController extends ApiController {
     if (!(_pushTokens.tokens.any((element) => element.token == pushToken))) {
       throw NotFoundException('Notifications disabled by the user');
     }
-
-    Future.delayed(Duration(seconds: delay),
-       () async => _sendMessage(title: title, message: message, data: data));
+    final accessToken = await _getAccessToken();
+    for (var token in _pushTokens.tokens) {
+      Future.delayed(
+        Duration(seconds: delay),
+        () async => _sendMessage(
+          accessToken: accessToken,
+          title: title,
+          message: message,
+          data: data,
+          pushToken: token.token,
+        ),
+      );
+    }
 
     return responseBuilder.buildOK();
   }
 
-  Future<http.Response> _sendMessage({
+  Future<void> _sendMessage({
+    required String accessToken,
     String? title,
     String message = '',
     Map<String, Object?>? data,
     bool logMessage = true,
+    String? pushToken,
   }) async {
-    final res = await http.post(
-      Uri.parse('https://fcm.googleapis.com/fcm/send'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'key=$firebasePushServerKey',
-      },
-      body: jsonEncode({
-        'registration_ids': _pushTokens.tokens.map((e) => e.token).toList(),
-        // "to" : single_push_token, // Use this for only one recipient
-        'notification': {
-          'title': title ?? 'Hello world!',
-          'body': message,
+    try {
+      final res = await http.post(
+        Uri.parse(
+            'https://fcm.googleapis.com/v1/projects/$projectId/messages:send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accessToken',
         },
-        'data': data ?? {},
-      }),
-    );
-    if (logMessage) {
-      print(
-          'Notification sent: StatusCode: ${res.statusCode}  ResponseBody: ${res.body}');
+        body: jsonEncode({
+          'message': {
+            'token': pushToken,
+            // "topic": topic, // Use this for a topic
+            'notification': {
+              'title': title ?? 'Hello world!',
+              'body': message,
+            },
+            'data': data ?? {},
+          },
+        }),
+      );
+      if (logMessage) {
+        print(
+            'Notification sent: StatusCode: ${res.statusCode}  ResponseBody: ${res.body}');
+      }
+    } catch (e) {
+      throw ServerException('Error sending push notification');
     }
-    return res;
+  }
+
+  Future<String> _getAccessToken() async {
+    try {
+      //the scope url for the firebase messaging
+      String firebaseMessagingScope =
+          'https://www.googleapis.com/auth/firebase.messaging';
+
+      //get the service account from the json file 
+      final serviceAccount =
+          json.decode(await File(serviceAccountKeyPath).readAsString());
+      final client = await clientViaServiceAccount(
+          ServiceAccountCredentials.fromJson(serviceAccount),
+          [firebaseMessagingScope]);
+
+      final accessToken = client.credentials.accessToken.data;
+      client.close();
+      return accessToken;
+    } catch (_) {
+      //handle your error here
+      throw Exception('Error getting access token');
+    }
   }
 }

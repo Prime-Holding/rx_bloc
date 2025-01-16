@@ -1,5 +1,6 @@
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_cicd_fastlane_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/feature_onboarding_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_profile_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_qr_scanner_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_showcase_bundle.dart';
@@ -51,6 +52,7 @@ class BundleGenerator {
   final _libAnalyticsBundle = libAnalyticsBundle;
   final _featureProfile = featureProfileBundle;
   final _featureShowcase = featureShowcaseBundle;
+  final _featureOnboarding = featureOnboardingBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
@@ -148,6 +150,12 @@ class BundleGenerator {
     if (arguments.showcaseEnabled) {
       _bundle.files.addAll(_featureShowcase.files);
     }
+
+    // Add onboarding feature to _bundle when needed
+    if (arguments.onboardingEnabled) {
+      _bundle.files.addAll(_featureOnboarding.files);
+    }
+
     return _bundle;
   }
 }

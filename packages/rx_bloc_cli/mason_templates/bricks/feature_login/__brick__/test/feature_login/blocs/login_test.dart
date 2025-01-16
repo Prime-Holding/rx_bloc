@@ -3,24 +3,25 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:{{project_name}}/base/common_blocs/coordinator_bloc.dart';
+import 'package:{{project_name}}/base/common_services/validators/credentials_validator_service.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/feature_login/blocs/login_bloc.dart';
-import 'package:{{project_name}}/feature_login/services/login_validator_service.dart';
 import 'package:{{project_name}}/lib_auth/services/user_account_service.dart';
 
 import '../../base/common_blocs/coordinator_bloc_mock.dart';
+import '../../base/common_blocs/router_bloc_mock.dart';
 import '../stubs.dart';
 import 'login_test.mocks.dart';
 
 @GenerateMocks([
   CoordinatorBlocType,
   UserAccountService,
-  LoginValidatorService,
+  CredentialsValidatorService,
 ])
 void main() {
   late CoordinatorBlocType coordinatorBloc;
   late UserAccountService userAccountService;
-  late LoginValidatorService validatorService;
+  late CredentialsValidatorService validatorService;
 
   void defineWhen({String? username, String? password, ErrorModel? error}) {
     when(userAccountService.loadPermissions())
@@ -62,11 +63,12 @@ void main() {
         coordinatorBloc,
         userAccountService,
         validatorService,
+        routerBlocMockFactory(),
       );
   setUp(() {
     coordinatorBloc = coordinatorBlocMockFactory();
     userAccountService = MockUserAccountService();
-    validatorService = MockLoginValidatorService();
+    validatorService = MockCredentialsValidatorService();
   });
 
   group('test login_bloc_dart', () {

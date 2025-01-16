@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../../../../app_extensions.dart';
 import '../../../../base/extensions/error_model_extensions.dart';
 import '../../../../base/extensions/error_model_translations.dart';
+import '../../../../lib_pin_code/ui_components/pin_code_app_bar.dart';
 import '../../../../lib_router/blocs/router_bloc.dart';
 import '../../../extensions/exception_extensions.dart';
 import '../../../models/mfa_response.dart';
@@ -23,9 +25,9 @@ class MfaPinBiometricsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(context.l10n.featureMfa.pinBiometrics),
-          forceMaterialTransparency: true,
+        appBar: pinCodeAppBar(
+          context,
+          title: context.l10n.featureMfa.pinBiometrics,
         ),
         extendBodyBehindAppBar: true,
         body: SizedBox(
@@ -42,7 +44,6 @@ class MfaPinBiometricsPage extends StatelessWidget {
                           .pop(Result<MfaResponse>.error(error));
                     }
                   },
-
                   onAuthenticated: (response) {
                     if (response is MfaResponse) {
                       context
@@ -51,6 +52,9 @@ class MfaPinBiometricsPage extends StatelessWidget {
                           .pop(Result<MfaResponse>.success(response));
                     }
                   }, // Handle error states
+                  autoPromptBiometric: true,
+                  biometricsLocalDataSource:
+                      context.read<BiometricsLocalDataSource>(),
                   pinCodeService: context.read<MfaPinCodeService>(),
                   translateError: (error) =>
                       error.asErrorModel().translate(context),

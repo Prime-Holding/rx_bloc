@@ -9,10 +9,12 @@ export 'package:widget_toolkit/models.dart'
     show L10nErrorKeyProvider;
 
 part 'access_denied_error_model.dart';
+part 'bad_request_error_model.dart';
 part 'connection_refused_error_model.dart';
 part 'error_server_generic_model.dart';
 part 'field_error_model.dart';
-part 'field_required_error_model.dart';
+part 'field_required_error_model.dart';{{#enable_feature_onboarding}}
+part 'invalid_url_error_model.dart';{{/enable_feature_onboarding}}
 part 'network_error_model.dart';
 part 'no_connection_error_model.dart';
 part 'not_found_error_model.dart';

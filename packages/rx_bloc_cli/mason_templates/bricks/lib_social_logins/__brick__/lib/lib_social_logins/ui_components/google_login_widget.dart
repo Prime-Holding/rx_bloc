@@ -28,49 +28,48 @@ class GoogleLoginWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final current = Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AppErrorModalWidget<SocialLoginBlocType>(
-              errorState: (bloc) => bloc.states.errors,
-          ),
-          RxBlocBuilder<SocialLoginBlocType, bool>(
-            state: (bloc) => bloc.states.isLoading,
-            builder: (context, loadingState, bloc) => SocialLoginButton(
-              isLoading: (loadingState.data ?? false) ? false : true,
-              text: context.l10n.featureLogin.googleLogin,
-              borderSide: BorderSide(
-                color: context.designSystem.colors.white,
-                width: 0.3,
-              ),
-              textStyle: context.designSystem.typography.googleButtonText,
-              backgroundColor: context.designSystem.colors.googleBackground,
-              progressIndicatorColor:
-                  context.designSystem.colors.googleButtonText,
-              onPressed: (loadingState.data ?? false)
-                  ? null
-                  : () => bloc.events.login(),
-              child: SvgPicture.asset(
-                context.designSystem.images.googleLogo,
-                height: context.designSystem.spacing.xl,
-              ),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AppErrorModalWidget<SocialLoginBlocType>(
+          errorState: (bloc) => bloc.states.errors,
+        ),
+        RxBlocBuilder<SocialLoginBlocType, bool>(
+          state: (bloc) => bloc.states.isLoading,
+          builder: (context, loadingState, bloc) => SocialLoginButton(
+            isLoading: (loadingState.data ?? false) ? false : true,
+            text: context.l10n.featureLogin.googleLogin,
+            borderSide: BorderSide(
+              color: context.designSystem.colors.socialLoginBorderColor,
+              width: 0.3,
+            ),
+            textStyle: context.designSystem.typography.socialButtonText,
+            backgroundColor: context.designSystem.colors.googleBackground,
+            progressIndicatorColor:
+                context.designSystem.colors.textButtonColor,
+            onPressed:
+                (loadingState.data ?? false) ? null : () => bloc.events.login(),
+            child: SvgPicture.asset(
+              context.designSystem.images.googleLogo,
+              height: context.designSystem.spacing.xl,
             ),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
     if (isInTestMode) {
       return current;
     }
 
     return MultiProvider(
-        providers: [
-          ..._dataSources,
-          ..._repositories,
-          ..._services,
-          ..._blocs,
-        ],
-        child: current,
-      );
+      providers: [
+        ..._dataSources,
+        ..._repositories,
+        ..._services,
+        ..._blocs,
+      ],
+      child: current,
+    );
   }
 
   List<Provider> get _dataSources => [

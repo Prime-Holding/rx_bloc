@@ -1,0 +1,38 @@
+{
+  "@@locale": "en",
+
+  "registerPageTitle": "Let's Get Started!",
+  "register" : "Register with Email",
+  "registerCredentialsHint" : "Enter your email address and create a secure password below to begin your registration. We'll guide you through the rest in no time!",
+  "titleEmailConfirmation": "Confirm Your Email",
+  "emailConfirmationSent": "We've sent a confirmation link to {email}. Please check your inbox and click the link to verify your account.",
+  "pleaseOpenEmail": "Please, open this email from your phone and click on the button for confirmation, or tap here!",
+  "openMailClient": "Open your e-mail",
+  "selectMailApp": "Select email app to open",
+  "noMailAppFound": "No e-mail client found on your device. Please, install one or open your mail provider with a browser",
+  "sendNewLink": "Send new link",
+  "titleEmailConfirmed": "Email Confirmed!",
+  "titleEmailConfirmedDescription": "Your email has been successfully verified. You're all set to continue with your journey!",
+  "titleMockDeepLinkSuccess": "Mock Deep Link - Success:",
+  "titleMockDeepLinkError": "Mock Deep Link - Error:",
+
+  "retry" : "Retry",
+  "continueText" : "Continue",
+  "confirm" : "Confirm",
+
+  "phoneNumberTitle" : "What's your phone number?",
+  "phoneNumberDescription" : "Enter your phone number below to receive a confirmation code via SMS.",
+  "phoneNumberHint" :"Phone number",
+  "phoneNumberConfirmTitle" : "Confirm phone number",
+  "phoneNumberConfirmDescription" : "Enter the code we sent you to the phone number provided in previous step.",
+
+  "selectCountry": "Select country",
+  "typeSubstring": "Type substring",
+  "thereAreNoResults": "There are no results for the searched query!",
+
+  "invalidCountryCode" : "Invalid country code.",
+  "invalidPhoneNumber" : "Invalid phone number.",
+  "phoneNumberTooShort" : "Phone number is too short.",
+
+  "confirmPhoneFieldHint" : "Use code 1234 to simulate an error.\nAny other code will result in a successful submission."
+}

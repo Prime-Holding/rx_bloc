@@ -26,4 +26,9 @@ abstract class StringProcessor extends AbstractProcessor<String> {
 
   /// Optional string input
   late final String? input;
+
+  /// Return package ID in the format:
+  /// domain.orgName.projectName
+  String get packageId =>
+      '${args.organisationDomain}.${args.organisationName}.${args.projectName}';
 }

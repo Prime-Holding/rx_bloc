@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import '../src/model/result.dart';
 
 extension ResultMapStreamX<E> on Stream<E> {
-  /// Map the value of the stream to ResultSuccess<E>
+  /// Map the value of the stream to ResultSuccess`<E>`
   ///
   /// Example:
   /// ```

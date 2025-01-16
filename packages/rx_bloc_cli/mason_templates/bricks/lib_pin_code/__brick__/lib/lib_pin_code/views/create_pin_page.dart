@@ -14,6 +14,7 @@ import '../../lib_router/router.dart';
 import '../bloc/create_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
 import '../services/create_pin_code_service.dart';
+import '../ui_components/pin_code_app_bar.dart';
 
 class CreatePinPage extends StatefulWidget {
   const CreatePinPage({
@@ -39,15 +40,11 @@ class _CreatePinPageState extends State<CreatePinPage> {
   @override
   Widget build(BuildContext context) => Builder(
         builder: (context) => Scaffold(
-          appBar: AppBar(
-             title: Text(
-                widget.pinCodeArguments.title.isEmpty
-                  ? context.l10n.libPinCode.createPinPage
-                  : widget.pinCodeArguments.title,
-               style: context.designSystem.typography.h1Reg22,
-           ),
-            foregroundColor: context.designSystem.colors.white,
-            forceMaterialTransparency: true,
+          appBar: pinCodeAppBar(
+            context,
+            title: widget.pinCodeArguments.title.isEmpty
+                ? context.l10n.libPinCode.createPinPage
+                : widget.pinCodeArguments.title,
           ),
           extendBodyBehindAppBar: true,
           body: SizedBox(

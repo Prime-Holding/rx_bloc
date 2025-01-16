@@ -2,8 +2,10 @@
 
 import 'dart:math';
 
+import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:shelf/shelf.dart';
 
+import '../config.dart';
 import 'api_controller.dart';
 import 'dependency_injector.dart';
 import 'response_builder.dart';
@@ -81,4 +83,20 @@ Future<({RouteGenerator routeGenerator, DependencyInjector di})>
 
   // Return record with given generated values
   return (routeGenerator: rg, di: di);
+}
+
+/// Extracts the user ID from the JWT token in the Authorization header
+String getUserIdFromAuthToken(Map<String, String> headers) {
+  final authToken = headers['Authorization']?.split(' ')[1] ?? '';
+
+  final JwtClaim decClaimSet = verifyJwtHS256Signature(
+    authToken,
+    jwtSigningKey,
+    maxAge: const Duration(hours: 1),
+  );
+  decClaimSet.validate(
+    issuer: jwtIssuer,
+    audience: jwtAudiences.first,
+  );
+  return decClaimSet.payload['userId'];
 }

@@ -8,6 +8,7 @@
 import 'dart:async';
 
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_list/extensions.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 

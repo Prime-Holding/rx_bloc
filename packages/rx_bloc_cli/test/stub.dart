@@ -88,6 +88,12 @@ final class Stub {
     ..[CreateCommandArguments.login.name] = true
     ..[CreateCommandArguments.profile.name] = false;
 
+  static Map<String, Object> get onboardingEnabled =>
+      Map.from(Stub.defaultValues)
+        ..[CreateCommandArguments.onboarding.name] = true
+        ..[CreateCommandArguments.login.name] = false
+        ..[CreateCommandArguments.profile.name] = false;
+
   static final generatorArgumentsAllEnabled = GeneratorArguments(
     outputDirectory: Directory('some/output_directory'),
     projectConfiguration: ProjectConfiguration(
@@ -113,6 +119,7 @@ final class Stub {
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
       profileEnabled: true,
+      onboardingEnabled: true,
     ),
     showcaseConfiguration: ShowcaseConfiguration(
       counterEnabled: true,
@@ -155,6 +162,7 @@ final class Stub {
       cicdCodemagicEnabled:
           CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
       profileEnabled: CreateCommandArguments.profile.defaultValue(),
+      onboardingEnabled: CreateCommandArguments.onboarding.defaultValue(),
     ),
     showcaseConfiguration: ShowcaseConfiguration(
       counterEnabled: CreateCommandArguments.counter.defaultValue(),

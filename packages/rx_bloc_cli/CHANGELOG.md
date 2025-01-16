@@ -1,3 +1,13 @@
+## [5.4.0]
+* Added `--enable-feature-onboarding` flag to configure an Onboarding/Registration flow for the project, including resuming Onboarding from a different device
+* Fix issue where camera permission was not available on iOS devices for the QR scanner feature
+* Added functionality on the profile page where the toggle switch for notifications prompts the user for notification permission when toggled
+* Fixed an issue where the HTTP request for SSE was not canceled when the stream is closed
+
+## [5.3.2]
+* Fix issues in generated project related to pin code and biometrics authentication
+* Update the fastlane file to fix compatibility issues with the latest flutter stable
+
 ## [5.3.1]
 * Design uplift for the generated project
 
