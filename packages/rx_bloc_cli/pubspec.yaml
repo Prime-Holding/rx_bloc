@@ -32,15 +32,15 @@ executables:
   rx_bloc_cli:
 
 screenshots:
-  - description: "Sign In"
+  - description: "Sign In Pages"
     path: doc/assets/images/sign_in.png
-  - description: "Sign Up"
+  - description: "Sign Up Pages"
     path: doc/assets/images/sign_up.png
-  - description: "Profile"
+  - description: "Profile Pages"
     path: doc/assets/images/profile.png
-  - description: "Widget Toolkit"
+  - description: "Widget Toolkit Pages"
     path: doc/assets/images/toolkit.png
-  - description: "Showcases"
+  - description: "Showcases Page"
     path: doc/assets/images/showcases.png
-  - description: "QR Scanner"
+  - description: "QR Scanner Page"
     path: doc/assets/images/qr_scanner.png
