@@ -18,6 +18,7 @@ class AppBuildGradleProcessor extends StringProcessor {
     _modifyValues(buffer);
     _addKeyPropertiesConfig(buffer);
     _adjustBuildTypesAndSigningConfigs(buffer);
+    _adjustCompileOptionsConfigs(buffer);
     _buildDependenciesList(buffer);
 
     if (!args.socialLoginsEnabled) {
@@ -113,6 +114,28 @@ class AppBuildGradleProcessor extends StringProcessor {
     buffer.replaceRange(sIndex, eIndex, content);
   }
 
+  void _adjustCompileOptionsConfigs(StringBuffer buffer) {
+    final sIndex = buffer.nthIndexOf('compileOptions') - 4;
+    if (sIndex < 0) return;
+    final startIndex = buffer.nthIndexOf('}', n: 1, start: sIndex);
+
+
+    var content = '';
+
+    if (args.pushNotificationsEnabled) {
+      //this can be removed if we stop using local_notifications
+      content = '''
+
+        coreLibraryDesugaringEnabled true
+    }
+    ''';
+    }
+
+    if(content.isEmpty) return;
+
+    buffer.replaceRange(startIndex, startIndex + 1 , content);
+  }
+
   void _addKeyPropertiesConfig(StringBuffer buffer) {
     const beforePattern = 'def localProperties = new Properties()';
 
@@ -141,7 +164,12 @@ if (keystorePropertiesFile.exists()) {
     var content = 'dependencies {\n';
     if (args.patrolTestsEnabled) {
       content +=
-          '${_tabSpace}androidTestUtil "androidx.test:orchestrator:1.4.2"\n';
+      '${_tabSpace}androidTestUtil "androidx.test:orchestrator:1.4.2"\n';
+    }
+
+    if (args.pushNotificationsEnabled) {
+      content +=
+      '    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.2.2"\n';
     }
     content += '}';
 
