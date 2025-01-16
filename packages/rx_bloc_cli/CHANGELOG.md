@@ -1,3 +1,6 @@
+## [5.4.1]
+* Fix static analysis issue with multiline if statement brackets after linter update
+
 ## [5.4.0]
 * Added `--enable-feature-onboarding` flag to configure an Onboarding/Registration flow for the project, including resuming Onboarding from a different device
 * Fix issue where camera permission was not available on iOS devices for the QR scanner feature
