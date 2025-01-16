@@ -169,8 +169,7 @@ if (keystorePropertiesFile.exists()) {
 
     if (args.pushNotificationsEnabled) {
       content +=
-      '${_tabSpace}coreLibraryDesugaring ' +
-          '"com.android.tools:desugar_jdk_libs:1.2.2"\n';
+  '${_tabSpace}coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.2.2"\n';
     }
     content += '}';
 
