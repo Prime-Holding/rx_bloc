@@ -51,7 +51,9 @@ class AndroidManifestProcessor extends StringProcessor {
         if (xmlAttr.elementName == 'intent-filter' ||
             xmlAttr.getAncestorWithName('intent-filter',
                     hasAttributes: ['android:autoVerify']) !=
-                null) return false;
+                null) {
+          return false;
+        }
 
         return true;
       });
