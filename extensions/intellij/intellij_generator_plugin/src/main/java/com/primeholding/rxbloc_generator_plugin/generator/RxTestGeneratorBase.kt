@@ -52,12 +52,11 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_initiate_bloc_initialization_fields_setUp = "initiate_bloc_initialization_fields"
 
 
-    private val includeDiMocksFlag: Boolean
+    private val includeDiMocksFlag: Boolean = includeDiMocks
     private val templateString: String
     private val templateValues: MutableMap<String, String>
 
     init {
-        includeDiMocksFlag = includeDiMocks
         templateValues = mutableMapOf(
             TEMPLATE_BLOC_PASCAL_CASE to pascalCase(),
             TEMPLATE_BLOC_DOLLAR_PASCAL_CASE to dollarPascalCase(),
@@ -180,7 +179,7 @@ abstract class RxTestGeneratorBase(
             }
         }
         sb.append("\n")
-        bloc.stateVariableNames.forEach { it ->
+        bloc.stateVariableNames.forEach {
             sb.append("  when(statesMock.${it}).thenAnswer((_) => ${it}State);\n")
         }
         return sb.toString()
@@ -279,7 +278,7 @@ abstract class RxTestGeneratorBase(
         val snake = needle.trim().replace("?", "").toLowerSnakeCase()
         lines.forEach { line ->
             if (line.contains("import '") && line.contains("$snake.dart")) {
-                sb.appendln(
+                sb.appendLine(
                     Utils.fixRelativeImports(line, libFolder, bloc.file)
                 )
             }
@@ -298,11 +297,11 @@ abstract class RxTestGeneratorBase(
             bloc.stateVariableTypes.forEach {
                 if (it.contains("Result<") && !resultAdded) {
                     resultAdded = true
-                    sb.appendln("import 'package:rx_bloc/rx_bloc.dart';")
+                    sb.appendLine("import 'package:rx_bloc/rx_bloc.dart';")
                 }
                 if (it.contains("PaginatedList<") && !paginatedListAdded) {
                     paginatedListAdded = true
-                    sb.appendln("import 'package:rx_bloc_list/models.dart';")
+                    sb.appendLine("import 'package:rx_bloc_list/models.dart';")
                 }
                 sb.append(searchInSubTypes(lines, it, libFolder.parent))
             }
@@ -327,7 +326,7 @@ abstract class RxTestGeneratorBase(
                     if (line.contains("import '")) {
 
                         if (line.contains("$snake.dart")) {
-                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
+                            sb.appendLine(Utils.fixRelativeImports(line, libFolder.parent, file))
                         }
 
                         if (snake.endsWith("bloc_type") && line.contains(
@@ -339,7 +338,7 @@ abstract class RxTestGeneratorBase(
                                 }.dart"
                             )
                         ) {
-                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
+                            sb.appendLine(Utils.fixRelativeImports(line, libFolder.parent, file))
                         }
                     }
                 }
@@ -351,11 +350,11 @@ abstract class RxTestGeneratorBase(
         bloc.constructorFieldTypes.forEach {
             if (it.contains("Result<") && !resultAdded) {
                 resultAdded = true
-                sb.appendln("import 'package:rx_bloc/rx_bloc.dart';")
+                sb.appendLine("import 'package:rx_bloc/rx_bloc.dart';")
             }
             if (it.contains("PaginatedList<") && !paginatedListAdded) {
                 paginatedListAdded = true
-                sb.appendln("import 'package:rx_bloc_list/models.dart';")
+                sb.appendLine("import 'package:rx_bloc_list/models.dart';")
             }
         }
         return sb.toString()

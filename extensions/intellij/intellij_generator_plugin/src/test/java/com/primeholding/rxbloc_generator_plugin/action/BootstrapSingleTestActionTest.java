@@ -2,7 +2,7 @@ package com.primeholding.rxbloc_generator_plugin.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -36,7 +36,7 @@ public class BootstrapSingleTestActionTest {
         when(anActionEventMock.getProject()).thenReturn(projectMock);
         when(anActionEventMock.getDataContext()).thenReturn(dataContextMock);
 
-        when(dataContextMock.getData(DataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{blocFileMock});
+        when(dataContextMock.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{blocFileMock});
 
         bootstrapSingleTestAction.update(anActionEventMock);
         assertFalse(presentation.isVisible());
@@ -95,17 +95,17 @@ public class BootstrapSingleTestActionTest {
         addFields(constructorFields);
         constructorParams = bootstrapSingleTestAction.generateConstructorParams(constructorFields, constructorNamedFields);
         assertFalse(constructorParams.isEmpty());
-        assertEquals(constructorParams, "        myName2,\n        myName,\n");
+        assertEquals("        myName2,\n        myName,\n", constructorParams);
 
         //case named and non-named fields
         addNamed(constructorNamedFields, "myName");
         constructorParams = bootstrapSingleTestAction.generateConstructorParams(constructorFields, constructorNamedFields);
-        assertEquals(constructorParams, "        myName2,\n        myName: myName,\n");
+        assertEquals("        myName2,\n        myName: myName,\n", constructorParams);
 
         //case only named fields
         addNamed(constructorNamedFields, "myName2");
         constructorParams = bootstrapSingleTestAction.generateConstructorParams(constructorFields, constructorNamedFields);
-        assertEquals(constructorParams, "        myName2: myName2,\n        myName: myName,\n");
+        assertEquals("        myName2: myName2,\n        myName: myName,\n", constructorParams);
 
     }
 
@@ -123,7 +123,7 @@ public class BootstrapSingleTestActionTest {
         when(anActionEventMock.getProject()).thenReturn(projectMock);
         when(anActionEventMock.getDataContext()).thenReturn(dataContextMock);
 
-        when(dataContextMock.getData(DataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{repoFileMock});
+        when(dataContextMock.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{repoFileMock});
         File file = new File("src/test/resources/bootstrap_repos_tests/empty_repository.dart");
 
         when(repoFileMock.getPath()).thenReturn(file.getPath());
@@ -210,7 +210,7 @@ public class BootstrapSingleTestActionTest {
         when(anActionEventMock.getProject()).thenReturn(projectMock);
         when(anActionEventMock.getDataContext()).thenReturn(dataContextMock);
 
-        when(dataContextMock.getData(DataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{serviceFileMock});
+        when(dataContextMock.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{serviceFileMock});
         File file = new File("src/test/resources/bootstrap_services_tests/empty_service.dart");
 
         when(serviceFileMock.getPath()).thenReturn(file.getPath());
@@ -292,11 +292,12 @@ public class BootstrapSingleTestActionTest {
         String classes = bootstrapSingleTestAction.generateImportsFromFileAndClasses(text, values, rootDir, file);
         assertEquals("", classes);
 
-        text = "import 'package:rx_bloc/rx_bloc.dart';\n" +
-                "import 'package:rxdart/rxdart.dart';\n" +
-                "import '../../base/extensions/error_model_extensions.dart';\n" +
-                "import '../../../base/models/errors/profile_data.dart';\n" +
-                "class MyBloc {}";
+        text = """
+                import 'package:rx_bloc/rx_bloc.dart';
+                import 'package:rxdart/rxdart.dart';
+                import '../../base/extensions/error_model_extensions.dart';
+                import '../../../base/models/errors/profile_data.dart';
+                class MyBloc {}""";
 
         values.add("List<ProfileData>");
         classes = bootstrapSingleTestAction.generateImportsFromFileAndClasses(text, values, rootDir, file);
@@ -315,5 +316,4 @@ public class BootstrapSingleTestActionTest {
         assertEquals("import 'package:my_app/subfolder/feature_x2r4/blocs/profile_data.dart';",
                 classes.trim());
     }
-
 }

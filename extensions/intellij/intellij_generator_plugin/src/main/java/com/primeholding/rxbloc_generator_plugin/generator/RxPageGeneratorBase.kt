@@ -18,7 +18,6 @@ abstract class RxPageGeneratorBase(
     private val TEMPLATE_FEATURE_PASCAL_CASE = "feature_pascal_case"
     private val TEMPLATE_FEATURE_SNAKE_CASE = "feature_snake_case"
 
-    private val includeAutoRouteFlag: GenerateRxBlocDialog.RoutingIntegration
     private val templateString: String
     private val templateValues: MutableMap<String, String> = mutableMapOf(
         TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
@@ -26,7 +25,6 @@ abstract class RxPageGeneratorBase(
     )
 
     init {
-        includeAutoRouteFlag = routingIntegration
         try {
             val templateFolder = StringBuilder()
 

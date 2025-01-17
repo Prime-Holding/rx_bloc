@@ -1,6 +1,7 @@
 package com.primeholding.rxbloc_generator_plugin.action
 
 import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -24,9 +25,11 @@ class BootstrapSingleTestAction : AnAction(), GenerateRxBlocTestDialog.Listener 
     private var project: Project? = null
     private var selectedFile: VirtualFile? = null
 
-    override fun update(e: AnActionEvent?) {
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
+
+    override fun update(e: AnActionEvent) {
         super.update(e)
-        val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         var isVisible = false
 
         var file: VirtualFile?
@@ -36,37 +39,37 @@ class BootstrapSingleTestAction : AnAction(), GenerateRxBlocTestDialog.Listener 
             file = files?.get(i)
             if (!file?.isDirectory!!) {
                 if (isBlocFile(file)) {
-                    e?.presentation?.text = "RxBloc Test"
+                    e.presentation.text = "RxBloc Test"
                     isVisible = true
                     break
                 }
 
                 if (isServiceFile(file)) {
-                    e?.presentation?.text = "Service Test"
+                    e.presentation.text = "Service Test"
                     isVisible = true
                     break
                 }
 
                 if (isRepositoryFile(file)) {
-                    e?.presentation?.text = "Repository Test"
+                    e.presentation.text = "Repository Test"
                     isVisible = true
                     break
                 }
 
                 if (isUIFile(file)) {
-                    e?.presentation?.text = "Golden Test"
+                    e.presentation.text = "Golden Test"
                     isVisible = true
                     break
                 }
             }
         }
-        e?.presentation?.isVisible = isVisible
+        e.presentation.isVisible = isVisible
     }
 
-    override fun actionPerformed(e: AnActionEvent?) {
+    override fun actionPerformed(e: AnActionEvent) {
 
-        project = e?.project
-        val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
+        project = e.project
+        val files = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
 
         var file: VirtualFile?
 
@@ -130,7 +133,7 @@ class BootstrapSingleTestAction : AnAction(), GenerateRxBlocTestDialog.Listener 
     }
 
     override fun onGenerateBlocTestClicked(selectedTestLibrary: TestLibrary) {
-        if(selectedFile != null) {
+        if (selectedFile != null) {
             generateGoldenTest(selectedFile!!, project!!, selectedTestLibrary)
         }
     }
@@ -206,8 +209,8 @@ class BootstrapSingleTestAction : AnAction(), GenerateRxBlocTestDialog.Listener 
         )
         val methods = Utils.getMethods(text, className)
 
-        sb.appendln("import 'package:flutter_test/flutter_test.dart';")
-        sb.appendln("import 'package:mockito/annotations.dart';")
+        sb.appendLine("import 'package:flutter_test/flutter_test.dart';")
+        sb.appendLine("import 'package:mockito/annotations.dart';")
 
         project?.let {
             val sub = file.path.replace("${it.basePath!!}/lib", "")
@@ -223,38 +226,37 @@ class BootstrapSingleTestAction : AnAction(), GenerateRxBlocTestDialog.Listener 
             )
         }
 
+        sb.appendLine("import '${file.name.replace(".dart", "_test.mocks.dart")}';")
 
-        sb.appendln("import '${file.name.replace(".dart", "_test.mocks.dart")}';")
-
-        sb.appendln("@GenerateMocks([")
+        sb.appendLine("@GenerateMocks([")
         constructorFields.forEach {
-            sb.appendln("  ${it.value},")
+            sb.appendLine("  ${it.value},")
         }
-        sb.appendln("])")
-        sb.appendln("void main() {")
+        sb.appendLine("])")
+        sb.appendLine("void main() {")
         constructorFields.forEach {
-            sb.appendln("  late ${it.value} ${convertToLocal(it.key)};")
+            sb.appendLine("  late ${it.value} ${convertToLocal(it.key)};")
         }
 
-        sb.appendln("")
-        sb.appendln("  setUp(() {")
+        sb.appendLine("")
+        sb.appendLine("  setUp(() {")
         constructorFields.forEach {
-            sb.appendln("    ${convertToLocal(it.key)} = Mock${it.value}();")
+            sb.appendLine("    ${convertToLocal(it.key)} = Mock${it.value}();")
         }
-        sb.appendln("  });")
-        sb.appendln("")
+        sb.appendLine("  });")
+        sb.appendLine("")
 
         sb.append("    final service = $className(")
             .append(generateConstructorParams(constructorFields, constructorNamedFields)).append(");\n")
         methods.forEach { classMethod ->
-            sb.appendln(" group('$className ${classMethod.name} tests', () {")
-            sb.appendln("")
-            sb.appendln("    test('test $className ${classMethod.name} case 1', () async {")
-            sb.appendln("    });")
-            sb.appendln(" });")
+            sb.appendLine(" group('$className ${classMethod.name} tests', () {")
+            sb.appendLine("")
+            sb.appendLine("    test('test $className ${classMethod.name} case 1', () async {")
+            sb.appendLine("    });")
+            sb.appendLine(" });")
         }
 
-        sb.appendln("}")
+        sb.appendLine("}")
         return sb.toString()
     }
 
@@ -421,7 +423,10 @@ Scaffold(
         }
         sb = StringBuffer()
 
-        val goldenFileContent = (if (selectedTestLibrary == TestLibrary.GoldenToolkit) createGoldenToolkitFileContent(blocFieldCase, blocSnakeCase) else createAlchemistGoldenFileContent(blocFieldCase, blocSnakeCase))
+        val goldenFileContent = (if (selectedTestLibrary == TestLibrary.GoldenToolkit) createGoldenToolkitFileContent(
+            blocFieldCase,
+            blocSnakeCase
+        ) else createAlchemistGoldenFileContent(blocFieldCase, blocSnakeCase))
 
         sb.append(goldenFileContent)
 

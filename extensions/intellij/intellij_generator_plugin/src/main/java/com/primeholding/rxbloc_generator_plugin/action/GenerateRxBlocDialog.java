@@ -1,5 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.action;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,16 +9,21 @@ import javax.swing.*;
 public class GenerateRxBlocDialog extends DialogWrapper {
 
     private final Listener listener;
+    @SuppressWarnings("unused")
     private JTextField blocNameTextField;
+    @SuppressWarnings("unused")
     private JCheckBox withDefaultStates;
+    @SuppressWarnings("unused")
     private JPanel contentPanel;
+    @SuppressWarnings("unused")
     private JCheckBox includeLocalService;
     @SuppressWarnings("unused")
     private JLabel routingIntegration;
+    @SuppressWarnings("unused")
     private JComboBox<String> routingIntegrationSelection;
 
     public GenerateRxBlocDialog(final Listener listener, boolean hideAutoRoute) {
-        super(null);
+        super((Project) null);
         this.listener = listener;
         if (hideAutoRoute) {
             routingIntegration.setVisible(false);
@@ -30,7 +36,7 @@ public class GenerateRxBlocDialog extends DialogWrapper {
     }
 
     public GenerateRxBlocDialog(final Listener listener) {
-        super(null);
+        super((Project) null);
         this.listener = listener;
         init();
     }

@@ -19,6 +19,8 @@ class GenerateRxListBlocAction : AnAction(), GenerateRxListBlocDialog.Listener {
         dialog.show()
     }
 
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
+
     override fun onGenerateBlocClicked(
         blocName: String?
     ) {
@@ -64,7 +66,7 @@ class GenerateRxListBlocAction : AnAction(), GenerateRxListBlocDialog.Listener {
                 {
                     mainSourceGenerators.forEach { createSourceFile(project!!, it, directory!!) }
                 },
-                "Generate a new RxBloc",
+                "Generate A New RxBloc",
                 null
             )
         }

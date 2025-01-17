@@ -172,12 +172,12 @@ class Utils {
                 }
             }
 
-            list.sortWith(Comparator { bloc1, bloc2 ->
+            list.sortWith { bloc1, bloc2 ->
                 val file1 = (if (bloc1.isLib) "lib_" else "feature_") + bloc1.file.name
                 val file2 = (if (bloc2.isLib) "lib_" else "feature_") + bloc2.file.name
 
                 file1.compareTo(file2)
-            })
+            }
             return list
         }
 

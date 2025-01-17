@@ -30,6 +30,8 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         dialog.show()
     }
 
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
+
     override fun onGenerateBlocClicked(
         blocName: String?,
         withDefaultStates: Boolean,
@@ -39,7 +41,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         blocName?.let { name ->
             if (name.isEmpty()) {
                 Messages.showMessageDialog(
-                    "Provide Feature Name",
+                    "Provide feature name",
                     "Empty Name",
                     null
                 )
@@ -118,7 +120,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
                         goRouteAdditions(name, featureSubDirectory)
                     }
                 },
-                "Generate a new RxBloc Feature",
+                "Generate A New RxBloc Feature",
                 null
             )
         }
