@@ -23,20 +23,24 @@ class UsersService {
 
   void createUser(UserModel user) => _usersRepository.createUser(user);
 
+  bool isEmailInUse(String email) => _usersRepository.isEmailInUse(email);
+
   void updateUser(
     String userId, {
+    String? email,
     String? phoneNumber,
     UserRole? role,
     ConfirmedCredentialsModel? confirmedCredentials,
   }) =>
       _usersRepository.updateUser(
         userId,
+        email: email,
         phoneNumber: phoneNumber,
         role: role,
         confirmedCredentials: confirmedCredentials,
       );
 
-  void deleteUser(String id) => _usersRepository.deleteUser(id);
+  void deleteUser(String id, UserRole role) => _usersRepository.deleteUser(id, role);
 
   UserModel registerOrFindUser(String email, String password) {
     final user = getUserByEmail(email);

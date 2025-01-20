@@ -66,6 +66,14 @@ class RequestTimeoutException extends ResponseException {
   RequestTimeoutException(String message) : super(408, message);
 }
 
+/// [RequestTimeoutException] : Error 408 - Request Timeout
+///
+/// Indicates that the server did not receive a complete request from the client
+/// within the server’s allotted timeout period.
+class RequestConflictException extends ResponseException {
+  RequestConflictException(String message) : super(409, message);
+}
+
 /// [UnsupportedMediaTypeException] : Error 415 - Request Timeout
 ///
 /// The mediatype in Content-type of the request is not supported by the server.

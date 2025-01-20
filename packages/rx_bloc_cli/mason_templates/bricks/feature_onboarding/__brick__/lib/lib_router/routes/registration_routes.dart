@@ -58,6 +58,7 @@ class OnboardingEmailConfirmedRoute extends GoRouteData
         key: state.pageKey,
         child: OnboardingEmailConfirmedPageWithDependencies(
           verifyEmailToken: token,
+          isOnboarding: true,
         ),
       );
 
