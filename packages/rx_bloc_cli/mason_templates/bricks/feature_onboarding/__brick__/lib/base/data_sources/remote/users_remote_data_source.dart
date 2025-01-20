@@ -20,4 +20,16 @@ abstract class UsersRemoteDataSource {
   @PATCH('/api/users/me')
   Future<UserModel> submitPhoneNumber(
       @Body() PhoneNumberRequestModel phoneNumber);
+
+  /// Initiates the email change process with the new email
+  @PATCH('/api/users/me/email')
+  Future<UserModel> changeEmail(@Body() ChangeEmailRequestModel email);
+
+  /// Confirms the new email of the user
+  @POST('/api/users/me/email/confirm')
+  Future<UserModel> confirmEmail(@Body() ConfirmEmailModel confirmEmailModel);
+  
+  /// Resends the confirmation email to the user
+  @POST('/api/users/me/email/resend-confirmation')
+  Future<UserModel> resendConfirmationEmail();
 }

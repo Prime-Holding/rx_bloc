@@ -3,7 +3,22 @@
 import '../../lib_permissions/models/route_permissions.dart';
 import 'routes_path.dart';
 
-enum RouteModel { {{#has_showcase}}
+enum RouteModel { {{#enable_feature_onboarding}}
+    emailChange(
+    pathName: RoutesPath.emailChange,
+    fullPath: '/change-email',
+    permissionName: RoutePermissions.emailChange,
+  ),
+  emailChangeConfirm(
+    pathName: RoutesPath.emailChangeConfirm,
+    fullPath: '/change-email/email-confirmation',
+    permissionName: RoutePermissions.emailChangeConfirmation,
+  ),
+  emailChangeConfirmed(
+    pathName: RoutesPath.emailChangeConfirmed,
+    fullPath: '/change-email/email-confirmed/:token',
+    permissionName: RoutePermissions.emailChangeConfirmed,
+  ), {{/enable_feature_onboarding}} {{#has_showcase}}
     showcase(
     pathName: RoutesPath.showcase,
     fullPath: '/showcase',

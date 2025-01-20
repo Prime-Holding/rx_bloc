@@ -38,6 +38,9 @@ class PermissionsController extends ApiController {
         'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
         'NotificationsRoute': false,
         'LoginRoute': true,{{#enable_feature_onboarding}}
+        'EmailChangeRoute': true,
+        'EmailChangeConfirmationRoute': true,
+        'EmailChangeConfirmedRoute': true,
         'OnboardingRoute': true,
         'OnboardingEmailConfirmationRoute': true,
         'OnboardingEmailConfirmedRoute': true,
@@ -62,6 +65,9 @@ class PermissionsController extends ApiController {
       'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
       'NotificationsRoute': true,{{#has_authentication}}
       'LoginRoute': true,{{/has_authentication}}{{#enable_feature_onboarding}}
+      'EmailChangeRoute': true,
+      'EmailChangeConfirmationRoute': true,
+      'EmailChangeConfirmedRoute': true,
       'OnboardingRoute': true,
       'OnboardingEmailConfirmationRoute': true,
       'OnboardingEmailConfirmedRoute': true,
