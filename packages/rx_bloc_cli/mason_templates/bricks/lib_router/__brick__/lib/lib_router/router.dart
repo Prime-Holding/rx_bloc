@@ -13,8 +13,8 @@ import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#ena
 import '../feature_counter/di/counter_page_with_dependencies.dart';{{/enable_feature_counter}}
 import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
-import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
-import '../feature_email_change/di/email_change_page_with_dependencies.dart';
+import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';{{/enable_feature_deeplinks}}{{#enable_feature_onboarding}}
+import '../feature_email_change/di/email_change_page_with_dependencies.dart';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/enable_feature_deeplinks}}
 import '../feature_home/views/home_page.dart';{{#has_authentication}}{{#enable_login}}
 import '../feature_login/di/login_page_with_dependencies.dart';{{/enable_login}}{{^enable_login}}
@@ -48,8 +48,8 @@ import 'models/route_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
-part 'router.g.dart';{{#has_authentication}}
-part 'routes/change_email_routes.dart';
+part 'router.g.dart'; {{#enable_feature_onboarding}}
+part 'routes/change_email_routes.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
 part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_profile}}
 part 'routes/profile_routes.dart';{{/enable_profile}}{{#enable_feature_onboarding}}
 part 'routes/registration_routes.dart';{{/enable_feature_onboarding}}

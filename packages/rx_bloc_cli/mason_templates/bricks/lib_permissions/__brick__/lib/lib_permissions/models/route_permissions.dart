@@ -12,6 +12,9 @@ class RoutePermissions { {{#has_showcase}}
   static const notifications = 'NotificationsRoute';{{#enable_pin_code}}
   static const pinCode = 'VerifyPinCode';{{/enable_pin_code}}
   static const login = 'LoginRoute';{{#enable_feature_onboarding}}
+  static const emailChange = 'EmailChangeRoute';
+  static const emailChangeConfirmation = 'EmailChangeConfirmationRoute';
+  static const emailChangeConfirmed = 'EmailChangeConfirmedRoute';
   static const onboarding = 'OnboardingRoute';
   static const onboardingEmailConfirmation = 'OnboardingEmailConfirmationRoute';
   static const onboardingEmailConfirmed = 'OnboardingEmailConfirmedRoute';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}

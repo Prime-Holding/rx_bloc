@@ -3,6 +3,8 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../models/request_models/change_email_request_model.dart';
+import '../../models/request_models/confirm_email_model.dart';
 import '../../models/request_models/phone_number_request_model.dart';
 import '../../models/user_model.dart';
 
