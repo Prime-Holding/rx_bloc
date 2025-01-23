@@ -31,7 +31,7 @@ class LogoutActionButton extends StatelessWidget {
                   : context.designSystem.icons.logoutIcon,
               onPressed: loading.isLoading
                   ? null
-                  : context.read<UserAccountBlocType>().events.logout,
+                  : bloc.events.logout,
             ),
           ),
         ),
