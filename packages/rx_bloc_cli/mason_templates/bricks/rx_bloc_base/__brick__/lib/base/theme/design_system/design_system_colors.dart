@@ -70,7 +70,9 @@ class DesignSystemColors {
 
   final Color updateIconAppBarColor;
 
-final Color textButtonColor;
+  final Color textButtonColor;
+
+  final Color transparent = Colors.transparent;
   {{#enable_social_logins}}
   final Color appleBackground;
 
