@@ -45,7 +45,7 @@ abstract class OnboardingEmailConfirmedBlocStates {
 class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   OnboardingEmailConfirmedBloc(
     this._verifyEmailToken,
-    this.isOnboarding,
+    this._isOnboarding,
     this._onboardingService,
     this._routerBloc,
   ) {
@@ -54,7 +54,7 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   }
 
   final String _verifyEmailToken;
-  final bool isOnboarding;
+  final bool _isOnboarding;
   final OnboardingService _onboardingService;
   final RouterBlocType _routerBloc;
 
@@ -79,7 +79,7 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   ConnectableStream<void> _mapToOnRoutingState() => Rx.merge([
         _$goToNextPageEvent.doOnData(
           (_) {
-            if (isOnboarding) {
+            if (_isOnboarding) {
               _routerBloc.events.pushReplace(const OnboardingPhoneRoute());
             } else {
               _routerBloc.events.go(const ProfileRoute());
@@ -87,7 +87,7 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
           },
         ),
         _$goToInitialPageEvent.doOnData((_) {
-          if (isOnboarding) {
+          if (_isOnboarding) {
             _routerBloc.events.go(const LoginRoute());
           } else {
             _routerBloc.events.go(const ProfileRoute());

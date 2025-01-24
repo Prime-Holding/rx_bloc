@@ -129,7 +129,7 @@ class UsersController extends ApiController {
     if (user == null) {
       throw NotFoundException('User not found.');
     }
-    // Create a
+    
     _usersService.createUser(
       user.copyWith(email: email, role: UserRole.tempUser),
     );

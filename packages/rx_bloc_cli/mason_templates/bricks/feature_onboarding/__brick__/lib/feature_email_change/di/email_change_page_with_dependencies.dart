@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';

@@ -78,16 +78,15 @@ class ProfilePage extends StatelessWidget {
                   featureTitle: context.l10n.featureOnboarding.changeEmail,
                   featureSubtitle: context.l10n.featureOnboarding.manageEmail,
                   icon: context.designSystem.icons.accountIcon,
-                  onTap: () {
-                    showBlurredBottomSheet(
-                        context: context,
-                        configuration: ModalConfiguration(
-                          safeAreaBottom: false,
-                          haveOnlyOneSheet: false,
-                        ),
-                        builder: (BuildContext context) =>
-                            const EmailChangePageWithDependencies());
-                  },
+                  onTap: () => showBlurredBottomSheet(
+                    context: context,
+                    configuration: ModalConfiguration(
+                      safeAreaBottom: false,
+                      haveOnlyOneSheet: false,
+                    ),
+                    builder: (BuildContext context) =>
+                        const EmailChangePageWithDependencies(),
+                  ),
                 ),
                 const AppDivider(), {{/enable_feature_onboarding}}
                 {{#enable_pin_code}}

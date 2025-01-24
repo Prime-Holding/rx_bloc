@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../../base/models/user_model.dart';
 import '../../base/repositories/users_repository.dart';
 

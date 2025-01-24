@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -85,10 +87,7 @@ class EmailChangeBloc extends $EmailChangeBloc {
 
   @override
   Stream<bool> _mapToShowFieldErrorsState() => _$changeEmailEvent
-      .switchMap((_) => email
-          .map((email) => email.isNotEmpty)
-          .onErrorReturn(false)
-          .mapTo(true))
+      .switchMap((_) => email.map((email) => email.isEmpty).onErrorReturn(true))
       .startWith(false)
       .share();
 

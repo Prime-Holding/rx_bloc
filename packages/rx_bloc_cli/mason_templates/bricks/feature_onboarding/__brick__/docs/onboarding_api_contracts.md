@@ -278,7 +278,8 @@ Success (200):
 ## Initiate Email Change
 **Endpoint**: `PATCH /api/users/me/email`
 **Headers**: `Authorization: Bearer <token>` 
-**Description**: Sends the email the new email address to the backend to initiate the email change. Backend checks if the email is already in use, and if not sends a UserModel to the application. On the beckend side a new temporary user is created with the new email and role of TempUser. The user is sent a confirmation link to their new email address.
+**Description**: Sends the new email address to the backend to initiate the email change. Backend checks if the email is already in use, and if not sends a UserModel to the application. On the beckend side a new temporary user is created with the new email and role of TempUser. The user is sent a confirmation link to their new email address.
+
 
 **Request**
 
