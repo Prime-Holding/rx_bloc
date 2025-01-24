@@ -272,3 +272,112 @@ Success (200):
   ]
 }
 ```
+
+---
+
+## Initiate Email Change
+**Endpoint**: `PATCH /api/users/me/email`
+**Headers**: `Authorization: Bearer <token>` 
+**Description**: Sends the new email address to the backend to initiate the email change. Backend checks if the email is already in use, and if not sends a UserModel to the application. On the backend side a new temporary user is created with the new email and role of TempUser. The user is sent a confirmation link to their new email address.
+
+
+**Request**
+
+```json
+{
+  "email": "newuser@example.com"
+}
+```
+
+Success (200):
+```json
+{
+    "id": "12345",
+    "email": "user@example.com",
+    "phoneNumber": null,
+    "role": "User",
+    "confirmedCredentials": {
+        "email": true,
+        "phone": true
+    }
+}
+```
+
+Conflict (409):
+```json
+{
+  "error": "This email is already in use."
+}
+```
+
+Unprocessable Entity (422):
+```json
+{
+  "error": "Invalid email format."
+}
+```
+
+---
+
+## Verify New Email
+**Endpoint**: `POST /api/users/me/email/confirm`
+**Headers**: `Authorization: Bearer <token>` 
+**Description**: Verifies the token in the confirmation link when the user opens it in the mobile app.
+
+**Request**
+
+```json
+{
+  "token": "uniqueToken123" 
+}
+```
+
+Success (200):
+```json
+{
+    "id": "12345",
+    "email": "newuser@example.com",
+    "phoneNumber": null,
+    "role": "TempUser",
+    "confirmedCredentials": {
+        "email": true,
+        "phone": true
+    }
+}
+```
+
+Bad Request (400):
+```json
+{
+  "error": "Invalid or expired token."
+}
+```
+
+---
+
+## Resend Verification Email
+**Endpoint**: `POST /api/users/me/email/resend-confirmation`
+**Headers**: `Authorization: Bearer <token>` 
+**Description**: Resends the confirmation link to the user.  
+
+
+Success (200):
+```json
+{
+    "id": "12345",
+    "email": "user@example.com",
+    "phoneNumber": null,
+    "role": "User",
+    "confirmedCredentials": {
+        "email": true,
+        "phone": true
+    }
+}
+```
+
+Error (400):
+```json
+{
+  "error": "Invalid or expired user."
+}
+```

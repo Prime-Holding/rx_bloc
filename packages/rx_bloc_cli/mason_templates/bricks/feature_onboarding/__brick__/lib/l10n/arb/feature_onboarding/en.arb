@@ -34,5 +34,8 @@
   "invalidPhoneNumber" : "Invalid phone number.",
   "phoneNumberTooShort" : "Phone number is too short.",
 
-  "confirmPhoneFieldHint" : "Use code 1234 to simulate an error.\nAny other code will result in a successful submission."
+  "confirmPhoneFieldHint" : "Use code 1234 to simulate an error.\nAny other code will result in a successful submission.",
+
+  "changeEmail":"Change Email",
+  "manageEmail":"Manage email address of your account"
 }

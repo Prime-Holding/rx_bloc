@@ -1,5 +1,5 @@
 /// Indicates the version of the package
-const rxBlocCliPackageVersion = '5.4.1';
+const rxBlocCliPackageVersion = '5.5.0';
 
 /// Generated project's Android Compile SDK version
 const kAndroidCompileSDKVersion = 34;
@@ -14,7 +14,8 @@ const kAndroidMinSDKVersion = 22;
 const kGradlePluginVersion = '8.3.2';
 
 /// Generated project's Android Min SDK version
-const kGradleWrapperUrl = 'https\\://services.gradle.org/distributions/gradle-8.4-all.zip';
+const kGradleWrapperUrl =
+    'https\\://services.gradle.org/distributions/gradle-8.4-all.zip';
 
 /// Different build modes of the flavor
 const kIOSBuildModes = ['Debug', 'Profile', 'Release'];

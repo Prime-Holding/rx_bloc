@@ -19,8 +19,11 @@ class UsersRepository {
 
   void createUser(UserModel user) => _registeredUsers.add(user);
 
+  bool isEmailInUse(String email) =>
+      _registeredUsers.any((user) => user.email == email);
   void updateUser(
     String userId, {
+    String? email,
     String? phoneNumber,
     UserRole? role,
     ConfirmedCredentialsModel? confirmedCredentials,
@@ -29,12 +32,13 @@ class UsersRepository {
         _registeredUsers.indexWhere((element) => element.id == userId);
     final user = _registeredUsers[userIndex];
     _registeredUsers[userIndex] = user.copyWith(
+      email: email ?? user.email,
       phoneNumber: phoneNumber,
       role: role ?? user.role,
       confirmedCredentials: confirmedCredentials ?? user.confirmedCredentials,
     );
   }
 
-  void deleteUser(String id) =>
-      _registeredUsers.removeWhere((user) => user.id == id);
+  void deleteUser(String id, UserRole role) => _registeredUsers
+      .removeWhere((user) => (user.id == id && user.role == role));
 }

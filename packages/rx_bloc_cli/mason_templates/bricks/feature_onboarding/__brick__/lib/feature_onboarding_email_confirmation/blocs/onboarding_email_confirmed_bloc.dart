@@ -18,11 +18,12 @@ abstract class OnboardingEmailConfirmedBlocEvents {
   /// Verify the user's email with the provided token
   void verifyEmail();
 
-  /// Redirect back to the login page in case of error
-  void goToLogin();
+  /// Redirect back to the initial page of the process
+  void goToInitialPage();
 
-  /// Redirect to the phone entry page to continue onboarding
-  void goToPhonePage();
+  /// Redirect to the phone page to continue onboarding
+  /// or profile page if the user is changing the email
+  void goToNextPage();
 }
 
 /// A contract class containing all states of the OnboardingEmailConfirmedBloC.
@@ -44,6 +45,7 @@ abstract class OnboardingEmailConfirmedBlocStates {
 class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   OnboardingEmailConfirmedBloc(
     this._verifyEmailToken,
+    this._isOnboarding,
     this._onboardingService,
     this._routerBloc,
   ) {
@@ -52,6 +54,7 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   }
 
   final String _verifyEmailToken;
+  final bool _isOnboarding;
   final OnboardingService _onboardingService;
   final RouterBlocType _routerBloc;
 
@@ -74,9 +77,21 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => Rx.merge([
-        _$goToPhonePageEvent.doOnData((_) =>
-            _routerBloc.events.pushReplace(const OnboardingPhoneRoute())),
-        _$goToLoginEvent
-            .doOnData((_) => _routerBloc.events.go(const LoginRoute())),
+        _$goToNextPageEvent.doOnData(
+          (_) {
+            if (_isOnboarding) {
+              _routerBloc.events.pushReplace(const OnboardingPhoneRoute());
+            } else {
+              _routerBloc.events.go(const ProfileRoute());
+            }
+          },
+        ),
+        _$goToInitialPageEvent.doOnData((_) {
+          if (_isOnboarding) {
+            _routerBloc.events.go(const LoginRoute());
+          } else {
+            _routerBloc.events.go(const ProfileRoute());
+          }
+        }),
       ]).publishReplay(maxSize: 1);
 }

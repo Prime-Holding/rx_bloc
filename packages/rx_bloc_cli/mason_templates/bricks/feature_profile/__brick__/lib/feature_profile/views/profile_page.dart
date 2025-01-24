@@ -5,13 +5,14 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:widget_toolkit/models.dart';
-import 'package:widget_toolkit/ui_components.dart';{{#enable_pin_code}}
+import 'package:widget_toolkit/widget_toolkit.dart';{{#enable_pin_code}}
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/app_divider.dart';
-import '../../base/common_ui_components/app_list_tile.dart'; {{#enable_change_language}}
+import '../../base/common_ui_components/app_list_tile.dart';  {{#enable_feature_onboarding}}
+import '../../feature_email_change/di/email_change_page_with_dependencies.dart'; {{/enable_feature_onboarding}}{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#enable_pin_code}}
@@ -72,7 +73,22 @@ class ProfilePage extends StatelessWidget {
               {{/has_authentication}}
             ),
             SliverList(
-              delegate: SliverChildListDelegate([
+              delegate: SliverChildListDelegate([ {{#enable_feature_onboarding}}
+                 AppListTile(
+                  featureTitle: context.l10n.featureOnboarding.changeEmail,
+                  featureSubtitle: context.l10n.featureOnboarding.manageEmail,
+                  icon: context.designSystem.icons.accountIcon,
+                  onTap: () => showBlurredBottomSheet(
+                    context: context,
+                    configuration: ModalConfiguration(
+                      safeAreaBottom: false,
+                      haveOnlyOneSheet: false,
+                    ),
+                    builder: (BuildContext context) =>
+                        const EmailChangePageWithDependencies(),
+                  ),
+                ),
+                const AppDivider(), {{/enable_feature_onboarding}}
                 {{#enable_pin_code}}
                 RxBlocBuilder<CreatePinBlocType, bool>(
                   state: (bloc) => bloc.states.isPinCreated,

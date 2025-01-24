@@ -1,6 +1,9 @@
 {{> licence.dart }}
 
-class RoutesPath {  {{#has_showcase}}
+class RoutesPath {  {{#enable_feature_onboarding}}
+  static const emailChange = '/change-email';
+  static const emailChangeConfirm = '/change-email/email-confirmation';
+  static const emailChangeConfirmed = '/change-email/email-confirmed/:token'; {{/enable_feature_onboarding}}{{#has_showcase}}
   static const showcase = '/showcase'; {{/has_showcase}} {{#enable_feature_otp}}
   static const showcaseOtp = 'otp';{{/enable_feature_otp}}{{#enable_feature_qr_scanner}}
   static const qrCode = 'qrCode';{{/enable_feature_qr_scanner}} {{#enable_mfa}}
