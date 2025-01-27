@@ -1,0 +1,26 @@
+[versions]
+#libraries
+junit = "4.13.2"
+fleshgrinder = "0.2.0"
+mockito = "5.14.2"
+commonsText = "1.13.0"
+
+#plugins
+intellijPlatform = "2.2.1"
+kotlin = "1.9.25"
+changelog = "2.2.1"
+qodana = "2024.2.3"
+
+[libraries]
+kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+fleshgrinder = { group = "com.fleshgrinder.kotlin", name = "case-format", version.ref = "fleshgrinder" }
+commonsText = { group = "org.apache.commons", name = "commons-text", version.ref = "commonsText" }
+
+
+[plugins]
+intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
+qodana = { id = "org.jetbrains.qodana", version.ref = "qodana" }
