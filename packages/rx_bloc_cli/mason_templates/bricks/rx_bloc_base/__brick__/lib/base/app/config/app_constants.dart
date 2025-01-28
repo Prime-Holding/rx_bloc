@@ -16,3 +16,5 @@ const String webVapidKey = '';
 /// The duration to debounce actions to prevent multiple actions from being
 /// triggered in a short period of time.
 const actionDebounceDuration = Duration(milliseconds: 500);
+
+const String firebaseProjectUrl = 'https://console.firebase.google.com/';

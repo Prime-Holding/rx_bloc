@@ -28,9 +28,11 @@ class DesignSystemIcons {
 
   final send = Icons.send;
 
+  final copy = Icons.copy;
+
   final success = Icons.check_circle_outline;
 
-final dashboardOutlined = Icons.dashboard_outlined;
+  final dashboardOutlined = Icons.dashboard_outlined;
 
   final Icon calculateIcon = _getIcon(Icons.calculate);
 

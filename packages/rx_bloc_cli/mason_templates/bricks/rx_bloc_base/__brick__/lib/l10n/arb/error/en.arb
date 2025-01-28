@@ -18,5 +18,6 @@
   "tooShort": "The entered text is too short",
   "notificationsDisabledMessage":"Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings.",
   "noMailApp": "No e-mail client found on your device. Please, install one or open your mail provider with a browser.",
-  "invalidUrl": "Invalid URL"
+  "invalidUrl": "Invalid URL",
+"notImplemented": "This feature is not implemented"
 }

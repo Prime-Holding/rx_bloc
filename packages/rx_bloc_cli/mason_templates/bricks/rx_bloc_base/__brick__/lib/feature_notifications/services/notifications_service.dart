@@ -7,19 +7,9 @@ class NotificationService {
 
   final PushNotificationRepository _repository;
 
-  Future<void> sendPushMessage({
-    required String message,
-    String? title,
-    int? delay,
-    Map<String, Object?>? data,
-  }) =>
-      _repository.sendPushMessage(
-        message: message,
-        title: title,
-        delay: delay,
-        data: data,
-      );
-
   Future<bool> requestNotificationPermissions() =>
       _repository.requestNotificationPermissions();
+
+  Future<String?> getPushToken() =>
+      _repository.getToken();
 }
