@@ -30,7 +30,7 @@ class DesignSystemIcons {
 
   final success = Icons.check_circle_outline;
 
-final dashboardOutlined = Icons.dashboard_outlined;
+  final dashboardOutlined = Icons.dashboard_outlined;
 
   final Icon calculateIcon = _getIcon(Icons.calculate);
 
@@ -70,6 +70,8 @@ final dashboardOutlined = Icons.dashboard_outlined;
   final Icon language = _getIcon(Icons.language);
   {{/enable_change_language}}
   final Icon arrowForward = _getIcon(Icons.arrow_forward_ios);
+
+  final Icon phoneIcon = _getIcon(Icons.phone_outlined);
 
   static Icon _getIcon(IconData iconData) => Icon(iconData);
   

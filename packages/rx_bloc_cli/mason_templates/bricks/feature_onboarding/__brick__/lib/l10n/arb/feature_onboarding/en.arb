@@ -37,5 +37,8 @@
   "confirmPhoneFieldHint" : "Use code 1234 to simulate an error.\nAny other code will result in a successful submission.",
 
   "changeEmail":"Change Email",
-  "manageEmail":"Manage email address of your account"
+  "manageEmail":"Manage email address of your account",
+  "changePhoneNumber":"Change Phone Number",
+  "managePhoneNumber":"Manage phone number of your account",
+  "phoneNumberUpdated" : "Your phone number has been successfully updated."
 }

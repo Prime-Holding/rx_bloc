@@ -88,7 +88,19 @@ class ProfilePage extends StatelessWidget {
                         const EmailChangePageWithDependencies(),
                   ),
                 ),
-                const AppDivider(), {{/enable_feature_onboarding}}
+                const AppDivider(),
+                AppListTile(
+                  featureTitle:
+                      context.l10n.featureOnboarding.changePhoneNumber,
+                  featureSubtitle:
+                      context.l10n.featureOnboarding.managePhoneNumber,
+                  icon: context.designSystem.icons.phoneIcon,
+                  onTap: () => context
+                      .read<RouterBlocType>()
+                      .events
+                      .push(const PhoneChangeRoute()),
+                ),
+                const AppDivider(),{{/enable_feature_onboarding}}
                 {{#enable_pin_code}}
                 RxBlocBuilder<CreatePinBlocType, bool>(
                   state: (bloc) => bloc.states.isPinCreated,
@@ -193,7 +205,19 @@ class ProfilePage extends StatelessWidget {
                       );
                     }
                   },
-                ),
+                ),{{#enable_feature_onboarding}}
+                RxBlocListener<ProfileBlocType, void>(
+                  state: (bloc) => bloc.states.phoneNumberUpdated,
+                  listener: (context, _) => showBlurredBottomSheet(
+                    context: context,
+                    builder: (context) => MessagePanelWidget(
+                      isLoading: false,
+                      message:
+                          context.l10n.featureOnboarding.phoneNumberUpdated,
+                      messageState: MessagePanelState.positive,
+                    ),
+                  ),
+                ),{{/enable_feature_onboarding}}
                 {{#enable_pin_code}}
                 RxBlocListener<CreatePinBlocType, bool>(
                   state: (bloc) => bloc.states.isPinCreated,

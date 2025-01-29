@@ -117,8 +117,18 @@ enum RouteModel { {{#enable_feature_onboarding}}
     pathName: RoutesPath.onboardingPhoneConfirm,
     fullPath: '/onboarding/phone/confirm',
     permissionName: RoutePermissions.onboardingPhoneConfirm,
+  ),
+  phoneChange(
+    pathName: RoutesPath.phoneChange,
+    fullPath: '/change-phone',
+    permissionName: RoutePermissions.phoneChange,
+  ),
+  phoneChangeConfirm(
+    pathName: RoutesPath.phoneChangeConfirm,
+    fullPath: '/change-phone/confirm',
+    permissionName: RoutePermissions.phoneChangeConfirm,
   ){{/enable_feature_onboarding}}
-;
+  ;
 
   final String pathName;
   final String fullPath;
