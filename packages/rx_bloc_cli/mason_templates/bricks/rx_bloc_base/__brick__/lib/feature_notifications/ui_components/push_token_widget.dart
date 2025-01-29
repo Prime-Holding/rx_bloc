@@ -17,12 +17,7 @@ class PushTokenWidget extends StatelessWidget {
   Widget build(BuildContext context) => InkWell(
         onTap: () {
           if (value != null) {
-            Clipboard.setData(ClipboardData(text: value!)).then((_) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(context.l10n.copiedToYourKeyboard)));
-              }
-            });
+            Clipboard.setData(ClipboardData(text: value!));
           }
         },
         customBorder: const CircleBorder(),
@@ -76,7 +71,6 @@ class PushTokenWidget extends StatelessWidget {
                         bottom: context.textFieldDialogTheme.spacingXS),
                     child: Material(
                       color: Colors.transparent,
-                      //.copyWith(color: _getValueColor(context));
                       child: Icon(context.designSystem.icons.copy),
                     ),
                   ),

@@ -9,16 +9,10 @@ import '../services/notifications_service.dart';
 part 'notifications_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the NotificationsBloC.
-abstract class NotificationsBlocEvents {
-  /// Requests permissions for displaying push notifications
-  void requestNotificationPermissions();
-}
+abstract class NotificationsBlocEvents {}
 
 /// A contract class containing all states of the NotificationsBloC.
 abstract class NotificationsBlocStates {
-  /// Are the permissions for displaying push notifications granted
-  Stream<bool> get permissionsAuthorized;
-
   /// The push token to which the developers can send notifications
   ConnectableStream<Result<String>> get pushToken;
 }
@@ -30,16 +24,6 @@ class NotificationsBloc extends $NotificationsBloc {
   }
 
   final NotificationService _service;
-
-
-  @override
-  Stream<bool> _mapToPermissionsAuthorizedState() =>
-_$requestNotificationPermissionsEvent
-    .switchMap(
-(_) => _service.requestNotificationPermissions().asResultStream(),
-)
-    .setResultStateHandler(this)
-    .whereSuccess();
 
   @override
   ConnectableStream<Result<String>> _mapToPushTokenState() =>

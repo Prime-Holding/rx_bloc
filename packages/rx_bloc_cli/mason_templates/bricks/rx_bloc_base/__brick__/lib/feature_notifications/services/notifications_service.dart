@@ -7,9 +7,6 @@ class NotificationService {
 
   final PushNotificationRepository _repository;
 
-  Future<bool> requestNotificationPermissions() =>
-      _repository.requestNotificationPermissions();
-
   Future<String?> getPushToken() =>
       _repository.getToken();
 }

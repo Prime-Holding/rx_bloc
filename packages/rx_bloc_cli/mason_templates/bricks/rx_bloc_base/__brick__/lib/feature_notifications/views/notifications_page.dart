@@ -60,16 +60,6 @@ class NotificationsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppListTile(
-                  featureTitle: context.l10n.featureNotifications
-                      .notificationPermissionRequestText,
-                  trailing: const SizedBox(),
-                  icon: const Icon(Icons.notification_add_outlined),
-                  onTap: () => context
-                      .read<NotificationsBlocType>()
-                      .events
-                      .requestNotificationPermissions(),
-                ),
                 SizedBox(
                   height: context.designSystem.spacing.m,
                 ),
@@ -110,36 +100,6 @@ class NotificationsPage extends StatelessWidget {
                   ),
                 ),
               ),
-                RxBlocListener<NotificationsBlocType, bool>(
-                  state: (bloc) => bloc.states.permissionsAuthorized,
-                  listener: (ctx, authorized) async {
-                    if (authorized) return;
-
-                    // If not authorized, show a dialog popup
-                    await showAdaptiveDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        content: Text(
-                          context.l10n.featureNotifications
-                              .notificationsPermissionsDenied,
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: <Widget>[
-                          Center(
-                            child: TextButton(
-                              onPressed: () => context.pop(),
-                              child: Text(
-                                context.l10n.ok,
-                                style: context
-                                    .designSystem.typography.fadedButtonText,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
               ],
             ),
           ),
