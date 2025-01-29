@@ -36,7 +36,7 @@ extension _DioErrorMapper on DioException {
       if (response!.statusCode == 409) {
         return ConflictErrorModel(
           message: response!.mapToString(),
-          errorLogDetails: errorLogDetails,
+          {{#analytics}}errorLogDetails: errorLogDetails,{{/analytics}}
         );
       }
 
