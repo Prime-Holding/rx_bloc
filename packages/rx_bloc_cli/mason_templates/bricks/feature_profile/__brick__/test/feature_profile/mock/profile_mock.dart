@@ -13,7 +13,8 @@ import 'profile_mock.mocks.dart';
 ProfileBlocType profileMockFactory({
   Result<bool>? areNotificationsEnabled,
   bool? isLoading,
-  ErrorModel? errors,
+  ErrorModel? errors,{{#enable_feature_onboarding}}
+  bool isPhoneNumberUpdated = false,{{/enable_feature_onboarding}}
 }) {
   final blocMock = MockProfileBlocType();
   final eventsMock = MockProfileBlocEvents();
@@ -34,12 +35,17 @@ ProfileBlocType profileMockFactory({
 
   final errorsState = errors != null
       ? Stream.value(errors).shareReplay(maxSize: 1)
-      : const Stream<ErrorModel>.empty();
+      : const Stream<ErrorModel>.empty();{{#enable_feature_onboarding}}
+
+  final phoneNumberUpdatedState =
+      isPhoneNumberUpdated ? Stream.value(null) : const Stream<void>.empty();{{/enable_feature_onboarding}}
 
   when(statesMock.areNotificationsEnabled)
       .thenAnswer((_) => areNotificationsEnabledState);
   when(statesMock.isLoading).thenAnswer((_) => isLoadingState);
-  when(statesMock.errors).thenAnswer((_) => errorsState);
+  when(statesMock.errors).thenAnswer((_) => errorsState);{{#enable_feature_onboarding}}
+  when(statesMock.phoneNumberUpdated)
+      .thenAnswer((_) => phoneNumberUpdatedState);{{/enable_feature_onboarding}}
 
   return blocMock;
 }
