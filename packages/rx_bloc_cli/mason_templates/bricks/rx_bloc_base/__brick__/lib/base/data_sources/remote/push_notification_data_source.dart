@@ -22,7 +22,4 @@ abstract class PushNotificationsDataSource {
   Future<void> unsubscribePushToken(
     @Body() PushNotificationDataRequestModel pushToken,
   );
-
-  @POST('/api/send-push-message')
-  Future<void> sendPushMessage(@Body() PushMessageRequestModel message);
 }
