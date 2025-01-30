@@ -32,11 +32,9 @@ final Map<String, String> _unconfirmedPhoneNumbers = {};
 
   bool confirmPhoneNumber(String userId) {
     final user = getUserById(userId);
-    if (!_unconfirmedPhoneNumbers.containsKey(userId) || user == null) {
-      return false;
-    }
+    final phoneNumber = _unconfirmedPhoneNumbers[userId];
+    if (phoneNumber == null || user == null) return false;
 
-    final phoneNumber = _unconfirmedPhoneNumbers[userId]!;
     updateUser(
       userId,
       phoneNumber: phoneNumber,
