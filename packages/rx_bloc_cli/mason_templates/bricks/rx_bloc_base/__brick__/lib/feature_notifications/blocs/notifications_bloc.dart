@@ -26,11 +26,10 @@ class NotificationsBloc extends $NotificationsBloc {
   final NotificationService _service;
 
   @override
-  ConnectableStream<Result<String>> _mapToPushTokenState() =>
-      PublishSubject<String>()
-          .startWith('')
-          .switchMap((_) => _service.getPushToken().asResultStream())
-          .setResultStateHandler(this)
-          .mapResult((token) => token ?? (throw NotFoundErrorModel()))
-          .publish();
+  ConnectableStream<Result<String>> _mapToPushTokenState() => _service
+    .getPushToken()
+    .asResultStream()
+    .setResultStateHandler(this)
+    .mapResult((token) => token ?? (throw NotFoundErrorModel()))
+    .publish();
 }
