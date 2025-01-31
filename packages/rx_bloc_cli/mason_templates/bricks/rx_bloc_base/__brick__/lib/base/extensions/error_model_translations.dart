@@ -20,6 +20,10 @@ extension ErrorModelL10n on ErrorModel {
       return (this as NotFoundErrorModel).translate(context);
     }
 
+    if (this is ConflictErrorModel) {
+      return (this as ConflictErrorModel).translate(context);
+    }
+
     if (this is FieldErrorModel) {
       return (this as FieldErrorModel).translate(context);
     }
@@ -48,6 +52,11 @@ extension ErrorBadRequestModelL10n on BadRequestErrorModel {
 extension ErrorNotFoundL10n on NotFoundErrorModel {
   String translate(BuildContext context) =>
       message ?? context.l10n.error.notFound;
+}
+
+extension ConflictErrorModelL10n on ConflictErrorModel {
+  String translate(BuildContext context) =>
+      message ?? context.l10n.error.conflict;
 }
 
 extension ErrorFieldModelL10n on FieldErrorModel {

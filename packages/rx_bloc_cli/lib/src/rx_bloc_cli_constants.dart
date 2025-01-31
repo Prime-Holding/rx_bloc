@@ -5,7 +5,7 @@ const rxBlocCliPackageVersion = '5.5.0';
 const kAndroidCompileSDKVersion = 34;
 
 /// Generated project's Android Target SDK version
-const kAndroidTargetSDKVersion = 34;
+const kAndroidTargetSDKVersion = 35;
 
 /// Generated project's Android Min SDK version
 const kAndroidMinSDKVersion = 22;

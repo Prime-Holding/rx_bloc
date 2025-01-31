@@ -10,7 +10,13 @@ import '../services/search_country_code_service.dart';
 import '../views/onboarding_phone_page.dart';
 
 class OnboardingPhonePageWithDependencies extends StatelessWidget {
-  const OnboardingPhonePageWithDependencies({super.key});
+  const OnboardingPhonePageWithDependencies({
+    required this.isOnboarding,
+    super.key,
+  });
+
+  /// Indicates if the user is onboarding
+  final bool isOnboarding;
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -44,6 +50,7 @@ class OnboardingPhonePageWithDependencies extends StatelessWidget {
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<OnboardingPhoneBlocType>(
           create: (context) => OnboardingPhoneBloc(
+            isOnboarding,
             context.read(),
             context.read(),
             context.read(),
