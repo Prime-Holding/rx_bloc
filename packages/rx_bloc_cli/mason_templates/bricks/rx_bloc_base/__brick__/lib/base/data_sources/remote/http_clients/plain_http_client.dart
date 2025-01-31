@@ -32,21 +32,4 @@ class PlainHttpClient with DioMixin implements Dio {
       analyticsInterceptor,{{/analytics}}
     ]);
   }
-
-  @override
-  Future<Response> download(
-    String urlPath,
-    dynamic savePath, {
-    ProgressCallback? onReceiveProgress,
-    Map<String, dynamic>? queryParameters,
-    CancelToken? cancelToken,
-    bool deleteOnError = true,
-    FileAccessMode fileAccessMode = FileAccessMode.write,
-    String lengthHeader = Headers.contentLengthHeader,
-    Object? data,
-    Options? options,
-  }) {
-    // TODO: implement download
-    throw UnimplementedError();
-  }
 }
