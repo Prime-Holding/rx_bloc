@@ -2,30 +2,37 @@
 
 set -e
 
-USAGE="Usage: generate_test_project.sh default|all_enabled|all_disabled|without_showcase_features"
-PROJECT_TYPES=("default" "all_enabled" "all_disabled" "without_showcase_features")
+if [ $# -lt 1 ]; then
+    echo "Usage: generate_test_project.sh <project_type> [output_directory]"
+    echo "project_type: default | all_enabled | all_disabled | without_showcase_features"
+    echo "output_directory: defaults to <rx_bloc_cli_root>/example/testapp"
+    echo ""
+    exit 1
+fi
 
-if [ $# != 1 ]; then
-    echo $USAGE && exit 1
+project_type=$1
+output_directory=$2
+
+if [ -z "$output_directory" ]; then
+  output_directory="example/testapp"
 fi
 
 function generate(){
-  dirname="testapp"
-  rm -rf example/$dirname
-  dart run $(dirname "$0")/rx_bloc_cli.dart create \
+  rm -rf "$output_directory"
+  dart run "$(dirname "$0")"/rx_bloc_cli.dart create \
    --no-interactive \
    --project-name=testapp \
    --organisation=com.primeholding \
-   $@ \
-   example/$dirname
+   "$@" \
+   "$output_directory"
 }
 
-if [ $1 == "default" ]; then
+if [ "$project_type" == "default" ]; then
   # Generated project should use default configuration
   generate
 fi
 
-if [ $1 == "all_enabled" ]; then
+if [ "$project_type" == "all_enabled" ]; then
   # Generated project uses all features enabled
   generate --enable-analytics \
   --enable-feature-counter \
@@ -47,7 +54,7 @@ if [ $1 == "all_enabled" ]; then
   --enable-feature-onboarding
 fi 
 
-if [ $1 == "all_disabled" ]; then
+if [ "$project_type" == "all_disabled" ]; then
   # Generated project uses all features disabled
   generate --no-enable-analytics \
   --no-enable-feature-counter \
@@ -69,7 +76,7 @@ if [ $1 == "all_disabled" ]; then
   --no-enable-feature-onboarding
 fi 
 
-if [ $1 == "without_showcase_features" ]; then
+if [ "$project_type" == "without_showcase_features" ]; then
   # Generated project uses all features enabled except for showcase features
   generate --enable-analytics \
     --enable-login \

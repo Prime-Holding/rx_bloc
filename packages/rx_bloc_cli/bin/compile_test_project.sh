@@ -41,11 +41,16 @@ function prepare_example_directory() {
 
 ##### Main
 
-. $(dirname "$0")/compile_bundles.sh
+project_type=$1
+if [ -z "$project_type" ]; then
+  project_type="all_enabled"
+fi
+
+. "$(dirname "$0")"/compile_bundles.sh
 
 rm -rf example/testapp
 mkdir example/testapp
 
-$(dirname "$0")/generate_test_project.sh all_enabled
+"$(dirname "$0")"/generate_test_project.sh "$project_type"
 
 prepare_example_directory
