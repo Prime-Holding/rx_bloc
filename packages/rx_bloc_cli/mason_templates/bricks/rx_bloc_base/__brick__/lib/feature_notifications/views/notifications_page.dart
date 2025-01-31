@@ -2,12 +2,14 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
 import '../../base/app/config/app_constants.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/app_list_tile.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../lib_router/router.dart';
@@ -29,6 +31,15 @@ class NotificationsPage extends StatelessWidget {
                 builder: (BuildContext context) => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                  AppErrorModalWidget<NotificationsBlocType>(
+                    errorState: (bloc) => bloc.states.errors,
+                    onRetry: (_, __) => context
+                        .read<NotificationsBlocType>()
+                        .events
+                        .fetchPushToken(),
+                    onCancel: () =>
+                        Navigator.of(context).pop(),
+                    ),
                     Text(
                       context.l10n.featureNotifications
                           .notificationsPageDescription,
