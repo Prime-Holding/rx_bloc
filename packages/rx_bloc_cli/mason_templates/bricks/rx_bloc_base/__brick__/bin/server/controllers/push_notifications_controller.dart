@@ -1,12 +1,7 @@
 {{> licence.dart }}
 
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:googleapis_auth/auth_io.dart';
 import 'package:shelf/shelf.dart';
 
-import '../config.dart';
 import '../repositories/push_token_repository.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
@@ -57,27 +52,5 @@ class PushNotificationsController extends ApiController {
     _pushTokens.removePushToken(pushToken);
 
     return responseBuilder.buildOK();
-  }
-
-  Future<String> _getAccessToken() async {
-    try {
-      //the scope url for the firebase messaging
-      String firebaseMessagingScope =
-          'https://www.googleapis.com/auth/firebase.messaging';
-
-      //get the service account from the json file 
-      final serviceAccount =
-          json.decode(await File(serviceAccountKeyPath).readAsString());
-      final client = await clientViaServiceAccount(
-          ServiceAccountCredentials.fromJson(serviceAccount),
-          [firebaseMessagingScope]);
-
-      final accessToken = client.credentials.accessToken.data;
-      client.close();
-      return accessToken;
-    } catch (_) {
-      //handle your error here
-      throw Exception('Error getting access token');
-    }
   }
 }
