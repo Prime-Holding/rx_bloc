@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 dart pub upgrade
@@ -6,7 +6,7 @@ dart pub upgrade
 ##### Functions
 
 # Create a mason bundle from a brick with the same name
-function create_mason_bundle() {
+create_mason_bundle() {
   dart run mason_cli:mason bundle \
     -t dart \
     -o lib/src/templates/ \
