@@ -34,14 +34,18 @@ class PlainHttpClient with DioMixin implements Dio {
   }
 
   @override
-  Future<Response> download(String urlPath, savePath,
-      {ProgressCallback? onReceiveProgress,
-        Map<String, dynamic>? queryParameters,
-        CancelToken? cancelToken,
-        bool deleteOnError = true,
-        String lengthHeader = Headers.contentLengthHeader,
-        Object? data,
-        Options? options}) {
+  Future<Response> download(
+    String urlPath,
+    dynamic savePath, {
+    ProgressCallback? onReceiveProgress,
+    Map<String, dynamic>? queryParameters,
+    CancelToken? cancelToken,
+    bool deleteOnError = true,
+    FileAccessMode fileAccessMode = FileAccessMode.write,
+    String lengthHeader = Headers.contentLengthHeader,
+    Object? data,
+    Options? options,
+  }) {
     // TODO: implement download
     throw UnimplementedError();
   }
