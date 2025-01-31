@@ -51,12 +51,16 @@ abstract class OnboardingPhoneBlocStates {
 @RxBloc()
 class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   OnboardingPhoneBloc(
+    this._isOnboarding,
     this._onboardingService,
     this._numberValidatorService,
     this._navigationBloc,
   ) {
     phoneSubmitted.connect().addTo(_compositeSubscription);
   }
+
+  /// Indicates if the user is onboarding
+  final bool _isOnboarding;
 
   /// Service used to validate user provided phone number
   final PhoneNumberValidatorService _numberValidatorService;
@@ -129,6 +133,10 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
           .setResultStateHandler(this)
           .whereSuccess()
           .doOnData((_) {
-        _navigationBloc.events.push(const OnboardingPhoneConfirmRoute());
+        if (_isOnboarding) {
+          _navigationBloc.events.push(const OnboardingPhoneConfirmRoute());
+        } else {
+          _navigationBloc.events.push(const PhoneChangeConfirmRoute());
+        }
       }).publish();
 }

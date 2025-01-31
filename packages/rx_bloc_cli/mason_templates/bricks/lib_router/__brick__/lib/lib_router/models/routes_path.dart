@@ -26,7 +26,9 @@ class RoutesPath {  {{#enable_feature_onboarding}}
   static const onboardingEmailConfirmed = '/onboarding/email-confirmed/:token';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
   static const enterMessage = 'enterMessage';
   static const deepLinks = 'deepLinks';
-  static const deepLinkDetails = ':id';{{/enable_feature_deeplinks}}
+  static const deepLinkDetails = ':id';{{/enable_feature_deeplinks}}{{#enable_feature_onboarding}}
   static const onboardingPhone = '/onboarding/phone';
   static const onboardingPhoneConfirm = '/onboarding/phone/confirm';
+  static const phoneChange = '/change-phone';
+  static const phoneChangeConfirm = '/change-phone/confirm';{{/enable_feature_onboarding}}
 }

@@ -33,7 +33,10 @@ abstract class CoordinatorEvents {
 
   {{#analytics}}
   void navigationChanged(String location);
-  {{/analytics}}
+  {{/analytics}}{{#enable_feature_onboarding}}
+
+  /// Event that signals that the phone number was updated
+  void updatePhoneNumber();{{/enable_feature_onboarding}}
 }
 
 abstract class CoordinatorStates {
@@ -57,7 +60,11 @@ abstract class CoordinatorStates {
   Stream<String> get navigationChange;
 
   Stream<LogEventModel> get errorLogEvent;
-  {{/analytics}}
+  {{/analytics}}{{#enable_feature_onboarding}}
+
+  /// State indicating that the phone number was updated
+  @RxBlocIgnoreState()
+  Stream<void> get phoneNumberUpdated;{{/enable_feature_onboarding}}
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -81,7 +88,10 @@ class CoordinatorBloc extends $CoordinatorBloc {
   Stream<void> _mapToUserLogOutState() => _$userLoggedOutEvent;
 
   @override
-  Stream<void> get userLoggedIn => _$checkUserLoggedInEvent; {{/enable_pin_code}}
+  Stream<void> get userLoggedIn => _$checkUserLoggedInEvent; {{/enable_pin_code}}{{#enable_feature_onboarding}}
+
+  @override
+  Stream<void> get phoneNumberUpdated => _$updatePhoneNumberEvent;{{/enable_feature_onboarding}}
 
   {{#analytics}}
   @override
