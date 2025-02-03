@@ -11,5 +11,7 @@
   "notificationsMessage": "This is a notification!",
   "notificationsDelayed": "This is a delayed notification!",
   "notificationRedirecing":"This is a redirecting notification",
-  "notificationPageSubtitle": "Demonstrates notifications functionallity"
+  "notificationPageSubtitle": "Demonstrates notifications functionallity",
+  "notificationTokenLabel": "Firebase Push Token",
+  "notificationConsoleLabel": "Firebase Console URL"
 }

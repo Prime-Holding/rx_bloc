@@ -11,5 +11,7 @@
   "notificationsMessage": "Това е нотификация!",
   "notificationsDelayed": "Това е забавена нотификация!",
   "notificationRedirecing":"Това е пренасочващо известие",
-  "notificationPageSubtitle": "Демонстрира функционалността на известията"
+  "notificationPageSubtitle": "Демонстрира функционалността на известията",
+  "notificationTokenLabel": "Firebase Тукън за известия",
+  "notificationConsoleLabel": "Линк към Firebase конзола"
 }

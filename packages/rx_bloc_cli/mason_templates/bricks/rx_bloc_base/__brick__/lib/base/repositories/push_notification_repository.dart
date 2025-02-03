@@ -23,28 +23,6 @@ class PushNotificationRepository {
   final FirebaseMessaging _firebaseMessaging;
   final NotificationsLocalDataSource _localDataSource;
 
-  // Sends a push notification to the server which will be broadcast to all
-  // logged in users.
-  Future<void> sendPushMessage({
-    required String message,
-    String? title,
-    int? delay,
-    Map<String, Object?>? data,
-  }) async {
-    final pushToken = await getToken();
-    return _errorMapper.execute(
-      () => _pushDataSource.sendPushMessage(
-        PushMessageRequestModel(
-          message: message,
-          title: title,
-          delay: delay ?? 0,
-          data: data ?? {},
-          pushToken: pushToken,
-        ),
-      ),
-    );
-  }
-
   // Checks if the user has granted permissions for displaying push messages.
   // If called the very first time, the user is asked to grant permissions.
   Future<bool> requestNotificationPermissions() =>
