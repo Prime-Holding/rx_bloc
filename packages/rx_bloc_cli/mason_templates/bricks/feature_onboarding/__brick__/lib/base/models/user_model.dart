@@ -52,4 +52,7 @@ class UserModel with EquatableMixin {
         role,
         confirmedCredentials,
       ];
+
+  @override
+  String toString() => toJson().toString();
 }

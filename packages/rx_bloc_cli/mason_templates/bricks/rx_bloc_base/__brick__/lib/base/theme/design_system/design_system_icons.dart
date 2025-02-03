@@ -73,6 +73,8 @@ class DesignSystemIcons {
   {{/enable_change_language}}
   final Icon arrowForward = _getIcon(Icons.arrow_forward_ios);
 
+  final Icon phoneIcon = _getIcon(Icons.phone_outlined);
+
   static Icon _getIcon(IconData iconData) => Icon(iconData);
   
 }

@@ -10,6 +10,7 @@ export 'package:widget_toolkit/models.dart'
 
 part 'access_denied_error_model.dart';
 part 'bad_request_error_model.dart';
+part 'conflict_error_model.dart';
 part 'connection_refused_error_model.dart';
 part 'error_server_generic_model.dart';
 part 'field_error_model.dart';

@@ -33,6 +33,13 @@ extension _DioErrorMapper on DioException {
         );
       }
 
+      if (response!.statusCode == 409) {
+        return ConflictErrorModel(
+          message: response!.mapToString(),
+          {{#analytics}}errorLogDetails: errorLogDetails,{{/analytics}}
+        );
+      }
+
       if (response!.statusCode == 422) {
         return ErrorServerGenericModel(
           message: response!.mapToString(),
