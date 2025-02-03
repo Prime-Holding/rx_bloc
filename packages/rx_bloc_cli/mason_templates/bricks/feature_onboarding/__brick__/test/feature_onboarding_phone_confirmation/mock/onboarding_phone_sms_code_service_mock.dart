@@ -25,10 +25,10 @@ SmsCodeService createSmsCodeService() {
       .thenAnswer((_) async => false);
 
   when(mockCreatePinCodeService.getValidityTime(any))
-      .thenAnswer((_) async => 15);
+      .thenAnswer((_) async => 1);
 
   when(mockCreatePinCodeService.getResendButtonThrottleTime(any))
-      .thenAnswer((_) async => 10);
+      .thenAnswer((_) async => 1);
 
   return mockCreatePinCodeService;
 }
