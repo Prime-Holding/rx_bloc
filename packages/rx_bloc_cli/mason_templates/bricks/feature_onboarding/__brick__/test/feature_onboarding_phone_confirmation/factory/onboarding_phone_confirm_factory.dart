@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:testapp/base/models/errors/error_model.dart';
+import 'package:{{project_name}}/base/models/errors/error_model.dart';
 
-import 'package:{{project_name}}/feature_onboarding_phone_confirm/blocs/onboarding_phone_confirm_bloc.dart';
-import 'package:{{project_name}}/feature_onboarding_phone_confirm/views/onboarding_phone_confirm_page.dart';
+import 'package:{{project_name}}/feature_onboarding_phone_confirmation/blocs/onboarding_phone_confirm_bloc.dart';
+import 'package:{{project_name}}/feature_onboarding_phone_confirmation/views/onboarding_phone_confirm_page.dart';
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
 import '../mock/onboarding_phone_confirm_mock.dart';

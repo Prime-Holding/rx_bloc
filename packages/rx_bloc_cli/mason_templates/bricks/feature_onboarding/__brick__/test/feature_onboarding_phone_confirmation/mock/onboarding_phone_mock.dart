@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:{{project_name}}/base/models/country_code_model.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
-import 'package:{{project_name}}/feature_onboarding_phone_confirm/blocs/onboarding_phone_bloc.dart';
+import 'package:{{project_name}}/feature_onboarding_phone_confirmation/blocs/onboarding_phone_bloc.dart';
 
 import 'onboarding_phone_mock.mocks.dart';
 

@@ -1,8 +1,8 @@
 {{> licence.dart }}
 
 import 'package:shelf/shelf.dart';
-import 'package:testapp/base/models/user_model.dart';
-import 'package:testapp/base/models/user_role.dart';
+import 'package:{{project_name}}/base/models/user_model.dart';
+import 'package:{{project_name}}/base/models/user_role.dart';
 
 import '../services/authentication_service.dart';
 import '../services/users_service.dart';
