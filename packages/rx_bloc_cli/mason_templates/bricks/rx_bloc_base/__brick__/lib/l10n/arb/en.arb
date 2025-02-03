@@ -16,5 +16,6 @@
     "english" : "English",
     "bulgarian" : "Bulgarian",
     "changeLanguage" : "Change Language",
-    "navShowcase":"Showcase"
+    "navShowcase":"Showcase",
+    "copiedToYourKeyboard":"Copied to your clipboard !"
 }

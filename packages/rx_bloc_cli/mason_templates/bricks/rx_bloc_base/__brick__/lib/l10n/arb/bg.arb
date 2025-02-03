@@ -16,5 +16,6 @@
   "english": "Английски",
   "bulgarian": "Български",
   "changeLanguage" : "Смени език",
-  "navShowcase":"Страница с демонстрации"
+  "navShowcase":"Страница с демонстрации",
+  "copiedToYourKeyboard":"Стойността беше копирана във вашия клипборд"
 }

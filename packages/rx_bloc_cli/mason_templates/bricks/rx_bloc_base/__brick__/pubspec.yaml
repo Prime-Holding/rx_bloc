@@ -22,8 +22,8 @@ dependencies: {{#enable_dev_menu}}
   firebase_messaging: ^15.1.3{{/push_notifications}}
   flutter:
     sdk: flutter{{#enable_social_logins}}
-  flutter_facebook_auth: ^7.1.1{{/enable_social_logins}}
-  flutter_local_notifications: ^17.2.3
+  flutter_facebook_auth: ^7.1.1{{/enable_social_logins}}{{#push_notifications}}
+  flutter_local_notifications: ^17.2.3{{/push_notifications}}
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^7.0.0
@@ -31,7 +31,6 @@ dependencies: {{#enable_dev_menu}}
   flutter_svg: ^2.0.10{{/enable_social_logins}}
   go_router: ^14.3.0{{#enable_social_logins}}
   google_sign_in: ^6.2.1{{/enable_social_logins}}
-  googleapis_auth: ^1.6.0 # This package is used for the local server (if not used, can be removed)
   http: ^1.2.2 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.9.0

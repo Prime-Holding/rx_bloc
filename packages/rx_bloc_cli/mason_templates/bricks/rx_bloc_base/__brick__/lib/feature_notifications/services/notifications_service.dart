@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import '../../base/models/errors/error_model.dart';
 import '../../base/repositories/push_notification_repository.dart';
 
 class NotificationService {
@@ -7,19 +8,6 @@ class NotificationService {
 
   final PushNotificationRepository _repository;
 
-  Future<void> sendPushMessage({
-    required String message,
-    String? title,
-    int? delay,
-    Map<String, Object?>? data,
-  }) =>
-      _repository.sendPushMessage(
-        message: message,
-        title: title,
-        delay: delay,
-        data: data,
-      );
-
-  Future<bool> requestNotificationPermissions() =>
-      _repository.requestNotificationPermissions();
+  Future<String> getPushToken() async =>
+      await _repository.getToken() ?? (throw NotFoundErrorModel());
 }
