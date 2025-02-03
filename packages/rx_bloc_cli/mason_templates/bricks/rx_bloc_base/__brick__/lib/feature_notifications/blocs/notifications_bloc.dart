@@ -43,6 +43,5 @@ class NotificationsBloc extends $NotificationsBloc {
             (_) => _service.getPushToken().asResultStream(),
           )
           .setResultStateHandler(this)
-          .mapResult((token) => token ?? (throw NotFoundErrorModel()))
           .publish();
 }
