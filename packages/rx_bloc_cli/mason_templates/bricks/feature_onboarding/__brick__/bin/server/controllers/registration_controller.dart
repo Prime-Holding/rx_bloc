@@ -50,7 +50,7 @@ class RegistrationController extends ApiController {
     router.addRequest(
       RequestType.POST,
       '/api/register/phone/confirm',
-      _confirmSmsCodeHandler,
+      _confirmPhoneNumberHandler,
     );
 
     router.addRequest(
@@ -103,7 +103,7 @@ class RegistrationController extends ApiController {
     );
   }
 
-  Future<Response> _confirmSmsCodeHandler(Request request) async {
+  Future<Response> _confirmPhoneNumberHandler(Request request) async {
     final params = await request.bodyFromFormData();
     final smsCode = params['smsCode'] as String?;
 
@@ -112,17 +112,14 @@ class RegistrationController extends ApiController {
 
     if (smsCode == null || smsCode.length > 4 || smsCode == '1234') {
       return responseBuilder.buildErrorResponse(
-        BadRequestException('Invalid or expired SMS code.'),
+        BadRequestException('Invalid or expired code.'),
       );
     }
 
     final userId =
         _authenticationService.getUserIdFromAuthHeader(request.headers);
-    _usersService.updateUser(
-      userId,
-      role: UserRole.user,
-      confirmedCredentials: ConfirmedCredentialsModel(email: true, phone: true),
-    );
+    final updateSuccess = _usersService.confirmPhoneNumber(userId);
+    if (updateSuccess) _usersService.updateUser(userId, role: UserRole.user);
 
     return responseBuilder.buildOK(
       data: _getUserJson(userId),

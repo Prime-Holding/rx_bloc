@@ -37,7 +37,7 @@ class UsersController extends ApiController {
     router.addRequest(
       RequestType.PATCH,
       '/api/users/me',
-      _sendSmsCodeHandler,
+      _upsertPhoneNumberHandler,
     );
 
     router.addRequest(
@@ -58,6 +58,9 @@ class UsersController extends ApiController {
       _resendEmailVerificationHandler,
     );
   }
+
+  Map<String, dynamic> _getUserJson(String userId) =>
+      _usersService.getUserById(userId)!.toJson();
 
   /// Resend Email Verification
   Future<Response> _resendEmailVerificationHandler(Request request) async {
@@ -139,10 +142,7 @@ class UsersController extends ApiController {
     );
   }
 
-  Map<String, dynamic> _getUserJson(String userId) =>
-      _usersService.getUserById(userId)!.toJson();
-
-  Future<Response> _sendSmsCodeHandler(Request request) async {
+  Future<Response> _upsertPhoneNumberHandler(Request request) async {
     final params = await request.bodyFromFormData();
     final phoneNumber = params['phoneNumber'] as String?;
 
@@ -158,12 +158,24 @@ class UsersController extends ApiController {
       );
     }
 
+    if (_usersService.isPhoneInUse(phoneNumber)) {
+      return responseBuilder.buildErrorResponse(
+        RequestConflictException('This phone number is already in use.'),
+      );
+    }
+
     final userId =
         _authenticationService.getUserIdFromAuthHeader(request.headers);
-    _usersService.updateUser(
-      userId,
-      phoneNumber: phoneNumber,
-    );
+    var user = _usersService.getUserById(userId);
+    if (user == null) throw NotFoundException('User not found.');
+
+    if (user.phoneNumber == null) {
+      _usersService.updateUser(
+        userId,
+        phoneNumber: phoneNumber,
+      );
+    }
+    _usersService.addUnconfirmedPhoneNumber(userId, phoneNumber);
 
     return responseBuilder.buildOK(
       data: _getUserJson(userId),

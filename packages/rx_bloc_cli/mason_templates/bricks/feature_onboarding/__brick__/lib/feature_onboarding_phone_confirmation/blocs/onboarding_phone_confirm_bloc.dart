@@ -1,6 +1,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
@@ -26,14 +27,25 @@ abstract class OnboardingPhoneConfirmBlocStates {
 @RxBloc()
 class OnboardingPhoneConfirmBloc extends $OnboardingPhoneConfirmBloc {
   OnboardingPhoneConfirmBloc(
+    this._isOnboarding,
     this._routerBloc,
     this._permissionsService,
+    this._coordinatorBloc,
   ) {
     onRouting.connect().addTo(_compositeSubscription);
   }
 
+  /// Indicates if the user is onboarding
+  final bool _isOnboarding;
+
+  /// The routing bloc used to navigate the user
   final RouterBlocType _routerBloc;
+
+  /// Service used to handle permissions
   final PermissionsService _permissionsService;
+
+  /// Coordinator bloc used to communicate with other blocs
+  final CoordinatorBlocType _coordinatorBloc;
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$setConfirmationResultEvent
@@ -49,6 +61,12 @@ class OnboardingPhoneConfirmBloc extends $OnboardingPhoneConfirmBloc {
     if (updatedUser == null || !updatedUser.confirmedCredentials.phone) return;
 
     await _permissionsService.getPermissions(force: true);
+
+    if (!_isOnboarding) {
+      _coordinatorBloc.events.updatePhoneNumber();
+      return _routerBloc.events.go(const ProfileRoute());
+    }
+
     return _routerBloc.events.go(const DashboardRoute());
   }
 }

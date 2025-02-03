@@ -49,7 +49,8 @@ import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
 part 'router.g.dart'; {{#enable_feature_onboarding}}
-part 'routes/change_email_routes.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
+part 'routes/change_email_routes.dart';
+part 'routes/change_phone_number_routes.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
 part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_profile}}
 part 'routes/profile_routes.dart';{{/enable_profile}}{{#enable_feature_onboarding}}
 part 'routes/registration_routes.dart';{{/enable_feature_onboarding}}

@@ -1,20 +1,25 @@
-{{> licence.dart }}
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_test/rx_bloc_test.dart';
+import 'package:rx_bloc_test/rx_bloc_test.dart';{{#enable_feature_onboarding}}
+import 'package:{{project_name}}/base/common_blocs/coordinator_bloc.dart';{{/enable_feature_onboarding}}
 import 'package:{{project_name}}/base/common_services/push_notifications_service.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/feature_profile/blocs/profile_bloc.dart';
 
+{{#enable_feature_onboarding}}
+import '../../base/common_blocs/coordinator_bloc_mock.dart';{{/enable_feature_onboarding}}
 import 'profile_test.mocks.dart';
 
 @GenerateMocks([
+  {{#enable_feature_onboarding}}CoordinatorBlocType,{{/enable_feature_onboarding}}
   PushNotificationsService,
 ])
 void main() {
+  {{#enable_feature_onboarding}}
+  late CoordinatorBlocType coordinatorBloc;{{/enable_feature_onboarding}}
   late PushNotificationsService notificationService;
 
   void defineWhen({
@@ -28,9 +33,11 @@ void main() {
   }
 
   ProfileBloc profileBloc() => ProfileBloc(
-        notificationService,
+        notificationService,{{#enable_feature_onboarding}}
+        coordinatorBloc,{{/enable_feature_onboarding}}
       );
-  setUp(() {
+  setUp(() { {{#enable_feature_onboarding}}
+    coordinatorBloc = coordinatorBlocMockFactory();{{/enable_feature_onboarding}}
     notificationService = MockPushNotificationsService();
   });
 

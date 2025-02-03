@@ -8,6 +8,7 @@ import 'package:{{project_name}}/base/models/user_role.dart';
 
 class UsersRepository {
   final List<UserModel> _registeredUsers = [];
+final Map<String, String> _unconfirmedPhoneNumbers = {};
 
   List<UserModel> getUsers() => _registeredUsers;
 
@@ -21,7 +22,30 @@ class UsersRepository {
 
   bool isEmailInUse(String email) =>
       _registeredUsers.any((user) => user.email == email);
-  void updateUser(
+
+  bool isPhoneInUse(String phoneNumber) =>
+      _registeredUsers.any((user) => user.phoneNumber == phoneNumber);
+
+  void addUnconfirmedPhoneNumber(String userId, String phoneNumber) {
+    _unconfirmedPhoneNumbers[userId] = phoneNumber;
+  }
+
+  bool confirmPhoneNumber(String userId) {
+    final user = getUserById(userId);
+    final phoneNumber = _unconfirmedPhoneNumbers[userId];
+    if (phoneNumber == null || user == null) return false;
+
+    updateUser(
+      userId,
+      phoneNumber: phoneNumber,
+      confirmedCredentials: user.confirmedCredentials.copyWith(phone: true),
+    );
+    _unconfirmedPhoneNumbers.remove(userId);
+
+    return true;
+  }
+
+  UserModel? updateUser(
     String userId, {
     String? email,
     String? phoneNumber,
@@ -33,10 +57,11 @@ class UsersRepository {
     final user = _registeredUsers[userIndex];
     _registeredUsers[userIndex] = user.copyWith(
       email: email ?? user.email,
-      phoneNumber: phoneNumber,
+      phoneNumber: phoneNumber ?? user.phoneNumber,
       role: role ?? user.role,
       confirmedCredentials: confirmedCredentials ?? user.confirmedCredentials,
     );
+    return _registeredUsers[userIndex];
   }
 
   void deleteUser(String id, UserRole role) => _registeredUsers

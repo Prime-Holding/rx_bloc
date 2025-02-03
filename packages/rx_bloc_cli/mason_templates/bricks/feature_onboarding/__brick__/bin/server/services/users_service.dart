@@ -25,6 +25,15 @@ class UsersService {
 
   bool isEmailInUse(String email) => _usersRepository.isEmailInUse(email);
 
+  bool isPhoneInUse(String phoneNumber) =>
+      _usersRepository.isPhoneInUse(phoneNumber);
+
+  void addUnconfirmedPhoneNumber(String userId, String phoneNumber) =>
+      _usersRepository.addUnconfirmedPhoneNumber(userId, phoneNumber);
+
+  bool confirmPhoneNumber(String userId) =>
+      _usersRepository.confirmPhoneNumber(userId);
+
   void updateUser(
     String userId, {
     String? email,
