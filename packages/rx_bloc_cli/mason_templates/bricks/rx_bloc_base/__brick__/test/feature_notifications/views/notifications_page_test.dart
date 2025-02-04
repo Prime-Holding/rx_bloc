@@ -1,8 +1,8 @@
 {{> licence.dart }}
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 
-import '../../../integration_test/main/configuration/build_app.dart';
 import '../../helpers/golden_helper.dart';
 import '../stubs.dart';
 import 'factories/notifications_page_factory.dart';
