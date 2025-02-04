@@ -50,6 +50,8 @@ class PushTokenWidget extends StatelessWidget {
                       SizedBox(height: context.textFieldDialogTheme.spacingXSS),
                       ShimmerText(
                         error ?? value,
+                        type:
+                            ShimmerType.fixed(placeholderLength: label.length),
                         style: context.textFieldDialogTheme
                             .editFieldTextNotEditedTextStyle
                             .copyWith(
