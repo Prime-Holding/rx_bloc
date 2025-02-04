@@ -16,7 +16,7 @@ class PushTokenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
         onTap: () {
-          if (value != null) {
+          if (value != null && error == null) {
             Clipboard.setData(ClipboardData(text: value!));
           }
         },
@@ -62,7 +62,7 @@ class PushTokenWidget extends StatelessWidget {
                   ),
                 ),
                 Visibility(
-                  visible: value != null,
+                  visible: valueText != null && error == null,
                   replacement: SizedBox(),
                   child: Padding(
                     padding: EdgeInsets.only(
