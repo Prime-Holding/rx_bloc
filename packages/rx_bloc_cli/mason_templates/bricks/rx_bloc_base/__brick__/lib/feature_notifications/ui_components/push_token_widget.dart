@@ -62,7 +62,7 @@ class PushTokenWidget extends StatelessWidget {
                   ),
                 ),
                 Visibility(
-                  visible: valueText != null && error == null,
+                  visible: value != null && error == null,
                   replacement: SizedBox(),
                   child: Padding(
                     padding: EdgeInsets.only(
