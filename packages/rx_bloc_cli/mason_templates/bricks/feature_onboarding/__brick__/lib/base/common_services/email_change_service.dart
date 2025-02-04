@@ -9,9 +9,9 @@ import 'onboarding_service.dart';
 /// Fake deep link for successful email confirmation.
 /// Used for demo purposes, should be removed in a real app
 const mockEmailDeepLinkSuccess =
-    'testapp://testapp/change-email/email-confirmed/11111111';
+    '{{project_name}}://{{project_name}}/change-email/email-confirmed/11111111';
 const mockEmailDeepLinkError =
-    'testapp://testapp/change-email/email-confirmed/00000000';
+    '{{project_name}}://{{project_name}}/change-email/email-confirmed/00000000';
 
 class EmailChangeService extends OnboardingService {
   EmailChangeService(
