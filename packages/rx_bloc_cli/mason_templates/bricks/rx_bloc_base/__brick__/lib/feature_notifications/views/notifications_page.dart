@@ -98,16 +98,19 @@ class NotificationsPage extends StatelessWidget {
                     label: context
                         .l10n.featureNotifications.notificationTokenLabel,
                     value: pushToken,
+                    key: const Key('pushTokenSuccessWidget'),
                   ),
                   buildError: (context, error, bloc) => PushTokenWidget(
                     label: context
                         .l10n.featureNotifications.notificationTokenLabel,
                     error: context.l10n.error.notImplemented,
+                    key: const Key('pushTokenErrorWidget'),
                   ),
                   buildLoading: (context, bloc) => PushTokenWidget(
                     label: context
                         .l10n.featureNotifications.notificationTokenLabel,
                     value: null,
+                    key: const Key('pushTokenLoadingWidget'),
                   ),
                 ),
               ),
