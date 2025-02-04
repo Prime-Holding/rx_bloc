@@ -25,8 +25,9 @@ NotificationsBlocType notificationsBlocMockFactory({
 
   final pushTokenState = (pushToken != null
           ? Stream.value(Result.success(pushToken))
-          : Stream<Result<String>>.value(
-              Result<String>.error(NotFoundErrorModel())))
+          : error == null
+              ? Stream<Result<String>>.value(Result.loading())
+              : Stream<Result<String>>.value(Result<String>.error(error)))
       .publishReplay(maxSize: 1)
     ..connect();
 

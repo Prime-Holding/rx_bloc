@@ -17,9 +17,6 @@ void main() {
           widget: notificationsPageFactory(
             pushToken: Stubs.pushToken,
           ),
-          customPumpBeforeTest: (tester) async => await tester.pump(
-            const Duration(seconds: 5),
-          ),
         ),
         buildScenario(
           scenario: 'error',
@@ -30,9 +27,6 @@ void main() {
         buildScenario(
           scenario: 'loading',
           widget: notificationsPageFactory(),
-          customPumpBeforeTest: (tester) async => await tester.pump(
-            const Duration(seconds: 5),
-          ),
         ),
       ],
     ),
