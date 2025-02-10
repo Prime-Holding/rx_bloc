@@ -10,11 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../common_blocs/push_notifications_bloc.dart';
+import '../../common_services/push_notifications_service.dart';
 import '../../models/notification_model.dart';
 import '../../utils/local_notifications.dart';
 
 /// Callback executed once the app receives a FCM message while in foreground
-void onForegroundMessage(BuildContext context, RemoteMessage message) {
+void onForegroundMessage(BuildContext context, RemoteMessage message) async {
   log('Foreground Message received!');
   final notification = message.notification;
 
@@ -26,11 +27,17 @@ void onForegroundMessage(BuildContext context, RemoteMessage message) {
     // Present the foreground notification on Android only
     // https://firebase.flutter.dev/docs/messaging/notifications/#application-in-foreground
     if (!kIsWeb && androidNotification != null) {
-       showLocalNotification(
-        id: notification.hashCode,
-        title: title,
-        content: body,
-      );
+       final notificationsEnabled = await context
+          .read<PushNotificationsService>()
+          .areNotificationsEnabled();
+
+      if (notificationsEnabled) {
+        await showLocalNotification(
+          id: notification.hashCode,
+          title: title,
+          content: body,
+        );
+      }
     } else if (kIsWeb) {
       // TODO: Implement your own logic of presenting notifications on web
       log('Web notification received: ');
