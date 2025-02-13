@@ -14,6 +14,7 @@ class FeatureConfiguration {
     required this.cicdCodemagicEnabled,
     required this.profileEnabled,
     required this.onboardingEnabled,
+    required this.forgottenPassword,
   });
 
   /// Analytics
@@ -54,4 +55,7 @@ class FeatureConfiguration {
 
   /// Onboarding feature
   final bool onboardingEnabled;
+
+  /// Forgotten password feature
+  final bool forgottenPassword;
 }

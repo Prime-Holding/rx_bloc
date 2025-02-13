@@ -1,0 +1,27 @@
+{
+  "@@locale": "en",
+
+  "passwordReset": "Password Reset",
+  "request" : "Request password reset",
+  "requestPageHeader" : "Enter your email address below to reset your password. If the user exists, an email will be sent with a link.",
+
+  "titleEmailConfirmation": "Confirm Your Email",
+  "emailConfirmationSent": "We've sent a confirmation link to {email}. Please check your inbox and click the link to continue resetting your password.",
+  "pleaseOpenEmail": "Please, open this email from your phone and click on the button for confirmation, or tap here!",
+  "openMailClient": "Open your e-mail",
+  "selectMailApp": "Select email app to open",
+  "noMailAppFound": "No e-mail client found on your device. Please, install one or open your mail provider with a browser",
+  "sendNewLink": "Send new link",
+
+  "titleMockDeepLinkSuccess": "Mock Deep Link - Success:",
+  "titleMockDeepLinkError": "Mock Deep Link - Error:",
+
+  "resetPageHeader" : "Enter your new password below to reset your password.",
+  "reset" : "Reset password",
+  "tokenResent": "A new link to reset your password has been sent to your email address.",
+  "resetSuccess": "Your password has been successfully reset!",
+
+  "retry" : "Retry",
+  "continueText" : "Continue",
+  "confirm" : "Confirm"
+}

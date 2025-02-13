@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:crypto/crypto.dart';
 import 'package:shelf/shelf.dart';
 import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
@@ -65,7 +66,18 @@ class RegistrationController extends ApiController {
     final email = params['email'];
     final password = params['password'];
 
+    throwIfEmpty(
+      params['email'],
+      BadRequestException('The username cannot be empty.'),
+    );
+    throwIfEmpty(
+      params['password'],
+      BadRequestException('The password cannot be empty.'),
+    );
+
     final newUser = _usersService.registerOrFindUser(email, password);
+    _usersService.setPasswordForUser(
+        email, sha256.convert(password!.codeUnits).toString());
     final token =
         _authenticationService.issueNewToken(null, userId: newUser.id);
 

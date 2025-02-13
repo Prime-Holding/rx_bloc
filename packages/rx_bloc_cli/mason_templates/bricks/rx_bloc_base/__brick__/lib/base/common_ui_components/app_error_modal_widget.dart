@@ -17,12 +17,14 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
     required this.errorState,
     this.onRetry,
     this.onCancel,
+    this.retryButtonText = 'Retry',
     super.key,
   });
 
   final ErrorStateCallback<BlocType> errorState;
   final Function(BuildContext, ErrorModel)? onRetry;
   final Function()? onCancel;
+  final String retryButtonText;
 
   @override
   Widget build(BuildContext context) => RxBlocListener<BlocType, ErrorModel>(
@@ -40,6 +42,7 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
                   Navigator.of(context).pop();
                 },
                 onCancelCallback: onCancel,
+                retryButtonText: retryButtonText,
               )
             : showBlurredBottomSheet(
                 context: context,

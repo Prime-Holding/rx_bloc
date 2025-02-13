@@ -120,6 +120,7 @@ final class Stub {
       cicdCodemagicEnabled: true,
       profileEnabled: true,
       onboardingEnabled: true,
+      forgottenPassword: true,
     ),
     showcaseConfiguration: ShowcaseConfiguration(
       counterEnabled: true,
@@ -163,6 +164,8 @@ final class Stub {
           CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
       profileEnabled: CreateCommandArguments.profile.defaultValue(),
       onboardingEnabled: CreateCommandArguments.onboarding.defaultValue(),
+      forgottenPassword:
+          CreateCommandArguments.forgottenPassword.defaultValue(),
     ),
     showcaseConfiguration: ShowcaseConfiguration(
       counterEnabled: CreateCommandArguments.counter.defaultValue(),

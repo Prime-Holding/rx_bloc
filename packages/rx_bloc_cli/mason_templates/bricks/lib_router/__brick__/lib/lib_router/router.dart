@@ -28,7 +28,10 @@ import '../feature_onboarding_email_confirmation/di/onboarding_email_confirmatio
 import '../feature_onboarding_email_confirmation/di/onboarding_email_confirmed_page_with_dependencies.dart';
 import '../feature_onboarding_phone_confirmation/di/onboarding_phone_confirm_page_with_dependencies.dart';
 import '../feature_onboarding_phone_confirmation/di/onboarding_phone_page_with_dependencies.dart';{{/enable_feature_onboarding}}{{#enable_feature_otp}}
-import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}{{#enable_profile}}
+import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}{{#enable_forgotten_password}}
+import '../feature_password_reset/di/password_reset_page_with_dependencies.dart';
+import '../feature_password_reset_confirmation/di/password_reset_confirmation_page_with_dependencies.dart';
+import '../feature_password_reset_request/di/password_reset_request_page_with_dependencies.dart';{{/enable_forgotten_password}}{{#enable_profile}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
 import '../feature_qr_scanner/di/qr_scanner_page_with_dependencies.dart';{{/enable_feature_qr_scanner}}{{#has_showcase}}
 import '../feature_showcase/views/showcase_page.dart';{{/has_showcase}}
@@ -51,7 +54,8 @@ import 'views/error_page.dart';
 part 'router.g.dart'; {{#enable_feature_onboarding}}
 part 'routes/change_email_routes.dart';
 part 'routes/change_phone_number_routes.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
-part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_profile}}
+part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_forgotten_password}}
+part 'routes/password_reset_routes.dart';{{/enable_forgotten_password}}{{#enable_profile}}
 part 'routes/profile_routes.dart';{{/enable_profile}}{{#enable_feature_onboarding}}
 part 'routes/registration_routes.dart';{{/enable_feature_onboarding}}
 part 'routes/routes.dart';{{#has_showcase}}

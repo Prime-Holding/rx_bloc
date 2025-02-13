@@ -48,7 +48,10 @@ class PermissionsController extends ApiController {
         'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
         'EnterMessageRoute': false,
         'DeepLinksRoute': false,
-        'DeepLinkDetailsRoute': false,{{/enable_feature_deeplinks}}
+        'DeepLinkDetailsRoute': false,{{/enable_feature_deeplinks}}{{#enable_forgotten_password}}
+        'PasswordResetRoute': true,
+        'PasswordResetConfirmationRoute': true,
+        'PasswordResetRequestRoute': true,{{/enable_forgotten_password}}
       });
     }
 
@@ -75,7 +78,10 @@ class PermissionsController extends ApiController {
       'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
-      'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}
+      'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}{{#enable_forgotten_password}}
+      'PasswordResetRoute': true,
+      'PasswordResetConfirmationRoute': true,
+      'PasswordResetRequestRoute': true,{{/enable_forgotten_password}}
     });
   }
 }

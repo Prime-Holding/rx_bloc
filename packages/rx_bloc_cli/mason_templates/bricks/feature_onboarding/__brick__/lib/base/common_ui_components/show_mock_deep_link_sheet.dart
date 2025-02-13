@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_services/onboarding_service.dart';
+import '../common_services/onboarding_service.dart';
 
 /// Shows a selection of fake deep links for email confirmation.
 /// Used for demo purposes, should be removed in a real app
 void showMockDeepLinkSheet(
   BuildContext context, {
+  String deepLinkSuccess = mockEmailDeepLinkSuccess,
+  String deepLinkError = mockEmailDeepLinkError,
   required Function() onDeepLinkSuccessTapped,
   required Function() onDeepLinkErrorTapped,
 }) =>
@@ -21,14 +23,14 @@ void showMockDeepLinkSheet(
           Text(context.l10n.featureOnboarding.titleMockDeepLinkSuccess),
           SizedBox(height: context.designSystem.spacing.m),
           GradientFillButton(
-            text: mockEmailDeepLinkSuccess,
+            text: deepLinkSuccess,
             onPressed: onDeepLinkSuccessTapped,
           ),
           SizedBox(height: context.designSystem.spacing.xl),
           Text(context.l10n.featureOnboarding.titleMockDeepLinkError),
           SizedBox(height: context.designSystem.spacing.m),
           GradientFillButton(
-            text: mockEmailDeepLinkError,
+            text: deepLinkError,
             onPressed: onDeepLinkErrorTapped,
             colorStyle: ButtonColorStyle.fromContext(
               context,

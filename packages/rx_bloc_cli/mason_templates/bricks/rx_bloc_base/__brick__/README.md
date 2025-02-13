@@ -23,8 +23,9 @@
 19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_mfa}}
 20. [Multi-Factor Authentication](#multi-factor-authentication){{/enable_mfa}}{{#enable_feature_qr_scanner}}
 22. [Feature QR Code](#feature-qr-code){{/enable_feature_qr_scanner}}{{#enable_feature_onboarding}}
-22. [Feature onboarding](#feature-onboarding){{/enable_feature_onboarding}}
-23. [Next Steps](#next-steps)
+22. [Feature onboarding](#feature-onboarding){{/enable_feature_onboarding}}{{#enable_forgotten_password}}
+22. [Forgotten Password](#forgotten-password){{/enable_forgotten_password}}
+24. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -555,6 +556,16 @@ For details on the API contracts used in the onboarding feature, please refer to
 
 {{/enable_feature_onboarding}}
 
+{{#enable_forgotten_password}}
+## Forgotten Password
+
+The Forgotten password feature lets a registered user reset their password and set a new one.
+The flow includes screens which allow the user to provide their email and continue with a link to reset.
+When that link is opened, the user can set their new password.
+
+For details on the API contracts used in the Forgotten password feature, please refer to the [API contracts][feature_forgotten_pass_api].
+{{/enable_forgotten_password}}
+
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.
@@ -603,3 +614,4 @@ For details on the API contracts used in the onboarding feature, please refer to
 [rx_bloc_cli_mfa_lnk]: docs/mfa.md
 [feature_creation]: docs/feature_creation.md
 [feature_onboarding_api]: docs/onboarding_api_contracts.md
+[feature_forgotten_pass_api]: docs/forgotten_pass_api_contracts.md

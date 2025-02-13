@@ -89,6 +89,10 @@ class GeneratorArgumentsProvider {
     final onboardingEnabled =
         _reader.read<bool>(CreateCommandArguments.onboarding);
 
+    // Forgotten Password
+    final forgottenPassword =
+        _reader.read<bool>(CreateCommandArguments.forgottenPassword);
+
     if (mfaEnabled && !otpEnabled) {
       _logger
           .warn('Otp enabled, due to Multi-Factor Authentication requirement');
@@ -98,11 +102,14 @@ class GeneratorArgumentsProvider {
       _logger.warn('Pin code enabled, due to MFA feature requirement');
       pinCodeEnabled = true;
     }
-    if ((otpEnabled || pinCodeEnabled || onboardingEnabled) &&
+    if ((otpEnabled ||
+            pinCodeEnabled ||
+            onboardingEnabled ||
+            forgottenPassword) &&
         !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
-      _logger
-          .warn('Login enabled, due to OTP/PIN/Onboarding feature requirement');
+      _logger.warn(
+          'Login enabled, due to OTP/PIN/Onboarding/Forgotten Pass feature requirement');
       loginEnabled = true;
     }
 
@@ -157,8 +164,18 @@ class GeneratorArgumentsProvider {
     var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
 
     // Onboarding/Registration
-    final onboardingEnabled =
+    var onboardingEnabled =
         _reader.read<bool>(CreateCommandArguments.onboarding);
+
+    // Forgotten Password
+    final forgottenPassword =
+        _reader.read<bool>(CreateCommandArguments.forgottenPassword);
+
+    if (forgottenPassword && !onboardingEnabled) {
+      _logger.warn(
+          'Onboarding enabled, due to Forgotten Password feature requirement');
+      onboardingEnabled = true;
+    }
 
     // Authentication
     final authenticationEnabled = authConfiguration.authenticationEnabled;
@@ -174,18 +191,20 @@ class GeneratorArgumentsProvider {
     }
 
     return FeatureConfiguration(
-        changeLanguageEnabled: changeLanguageEnabled,
-        remoteTranslationsEnabled: remoteTranslationsEnabled,
-        analyticsEnabled: analyticsEnabled,
-        pushNotificationsEnabled: pushNotificationsEnabled,
-        realtimeCommunicationEnabled: realtimeCommunicationEnabled,
-        devMenuEnabled: devMenuEnabled,
-        patrolTestsEnabled: patrolTestsEnabled,
-        cicdEnabled: cicdEnabled,
-        cicdGithubEnabled: cicdGithubEnabled,
-        cicdCodemagicEnabled: cicdCodemagicEnabled,
-        profileEnabled: profileEnabled,
-        onboardingEnabled: onboardingEnabled);
+      changeLanguageEnabled: changeLanguageEnabled,
+      remoteTranslationsEnabled: remoteTranslationsEnabled,
+      analyticsEnabled: analyticsEnabled,
+      pushNotificationsEnabled: pushNotificationsEnabled,
+      realtimeCommunicationEnabled: realtimeCommunicationEnabled,
+      devMenuEnabled: devMenuEnabled,
+      patrolTestsEnabled: patrolTestsEnabled,
+      cicdEnabled: cicdEnabled,
+      cicdGithubEnabled: cicdGithubEnabled,
+      cicdCodemagicEnabled: cicdCodemagicEnabled,
+      profileEnabled: profileEnabled,
+      onboardingEnabled: onboardingEnabled,
+      forgottenPassword: forgottenPassword,
+    );
   }
 
   /// endregion

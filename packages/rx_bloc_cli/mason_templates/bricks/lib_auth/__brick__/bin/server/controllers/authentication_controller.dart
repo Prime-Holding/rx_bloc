@@ -1,17 +1,23 @@
 {{> licence.dart }}
 
+{{#enable_feature_onboarding}}import 'package:crypto/crypto.dart';{{/enable_feature_onboarding}}
 import 'package:shelf/shelf.dart';
 
-import '../services/authentication_service.dart';
+import '../services/authentication_service.dart';{{#enable_feature_onboarding}}
+import '../services/users_service.dart';{{/enable_feature_onboarding}}
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
 
 // ignore_for_file: cascade_invocations
 
 class AuthenticationController extends ApiController {
-  AuthenticationController(this._authenticationService);
+  AuthenticationController(
+    this._authenticationService,{{#enable_feature_onboarding}}
+    this._usersService,{{/enable_feature_onboarding}}
+  );
 
-  final AuthenticationService _authenticationService;
+  final AuthenticationService _authenticationService;{{#enable_feature_onboarding}}
+  final UsersService _usersService;{{/enable_feature_onboarding}}
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -70,7 +76,21 @@ class AuthenticationController extends ApiController {
       BadRequestException('The password cannot be empty.'),
     );
 
-    final token = _authenticationService.issueNewToken(null);
+    {{#enable_feature_onboarding}}
+    /// If user is registered, check if the password is correct.
+    /// Otherwise, log them in with a temp user
+    if (_usersService.isUserRegistered(params['username'])) {
+      if (_usersService.getPasswordForUser(params['username']) !=
+          sha256.convert(params['password']!.codeUnits).toString()) {
+        throw BadRequestException('Invalid password');
+      }
+
+      final userId = _usersService.getUserByEmail(params['username'])!.id;
+      final token = _authenticationService.issueNewToken(null, userId: userId);
+      return responseBuilder.buildOK(data: token.toJson());
+    }
+
+    {{/enable_feature_onboarding}}final token = _authenticationService.issueNewToken(null);
     return responseBuilder.buildOK(data: token.toJson());
   }
 {{#enable_social_logins}}
