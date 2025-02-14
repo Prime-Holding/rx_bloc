@@ -94,6 +94,14 @@ final class Stub {
         ..[CreateCommandArguments.login.name] = false
         ..[CreateCommandArguments.profile.name] = false;
 
+  static Map<String, Object> get forgottenPassEnabled =>
+      Map.from(Stub.defaultValues)
+        ..[CreateCommandArguments.forgottenPassword.name] = true
+        ..[CreateCommandArguments.onboarding.name] = false
+        ..[CreateCommandArguments.deepLink.name] = false
+        ..[CreateCommandArguments.login.name] = false
+        ..[CreateCommandArguments.profile.name] = false;
+
   static final generatorArgumentsAllEnabled = GeneratorArguments(
     outputDirectory: Directory('some/output_directory'),
     projectConfiguration: ProjectConfiguration(

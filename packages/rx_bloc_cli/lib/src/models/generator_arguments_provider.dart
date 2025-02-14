@@ -33,7 +33,10 @@ class GeneratorArgumentsProvider {
     final projectConfiguration = _readProjectConfiguration();
     final authConfiguration = _readAuthConfiguration();
     final featureConfiguration = _readFeatureConfiguration(authConfiguration);
-    final showcaseConfiguration = _readShowcaseConfiguration(authConfiguration);
+    final showcaseConfiguration = _readShowcaseConfiguration(
+      authConfiguration,
+      featureConfiguration,
+    );
     return GeneratorArguments(
       outputDirectory: _outputDirectory,
       projectConfiguration: projectConfiguration,
@@ -212,15 +215,16 @@ class GeneratorArgumentsProvider {
   /// region Showcase Configuration
 
   ShowcaseConfiguration _readShowcaseConfiguration(
-      AuthConfiguration authConfiguration) {
+    AuthConfiguration authConfiguration,
+    FeatureConfiguration featureConfiguration,
+  ) {
     // Counter
     final counterEnabled = _reader.read<bool>(CreateCommandArguments.counter);
 
     // Deep links
     var deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
     // Onboarding/Registration
-    final onboardingEnabled =
-        _reader.read<bool>(CreateCommandArguments.onboarding);
+    final onboardingEnabled = featureConfiguration.onboardingEnabled;
     if (onboardingEnabled && !deepLinkEnabled) {
       _logger.warn('Deep links enabled, due to Onboarding feature requirement');
       deepLinkEnabled = true;
