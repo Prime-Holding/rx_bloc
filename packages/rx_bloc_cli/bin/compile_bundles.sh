@@ -1,129 +1,42 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 set -e
 dart pub upgrade
 
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/rx_bloc_base
+##### Functions
 
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/rx_bloc_flavor_config
+# Create a mason bundle from a brick with the same name
+create_mason_bundle() {
+  dart run mason_cli:mason bundle \
+    -t dart \
+    -o lib/src/templates/ \
+    mason_templates/bricks/"$1"
+}
 
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/rx_bloc_distribution_repository
+##### Main
 
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_counter
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_deeplink
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_change_language
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_translations
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_pin_code
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_widget_toolkit
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_router
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_permissions
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_auth
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_login
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_social_logins
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_dev_menu
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/patrol_integration_tests
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_realtime_communication
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_otp
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_cicd_fastlane
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_analytics
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/lib_mfa
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_qr_scanner
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_profile
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_showcase
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_onboarding
+create_mason_bundle rx_bloc_base
+create_mason_bundle rx_bloc_flavor_config
+create_mason_bundle rx_bloc_distribution_repository
+create_mason_bundle feature_counter
+create_mason_bundle feature_deeplink
+create_mason_bundle lib_change_language
+create_mason_bundle lib_translations
+create_mason_bundle lib_pin_code
+create_mason_bundle feature_widget_toolkit
+create_mason_bundle lib_router
+create_mason_bundle lib_permissions
+create_mason_bundle lib_auth
+create_mason_bundle feature_login
+create_mason_bundle lib_social_logins
+create_mason_bundle lib_dev_menu
+create_mason_bundle patrol_integration_tests
+create_mason_bundle lib_realtime_communication
+create_mason_bundle feature_otp
+create_mason_bundle feature_cicd_fastlane
+create_mason_bundle lib_analytics
+create_mason_bundle lib_mfa
+create_mason_bundle feature_qr_scanner
+create_mason_bundle feature_profile
+create_mason_bundle feature_showcase
+create_mason_bundle feature_onboarding
