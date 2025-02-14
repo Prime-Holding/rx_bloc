@@ -22,9 +22,9 @@
 18. [CI/CD](#cicd){{/cicd}}{{#enable_pin_code}}
 19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_mfa}}
 20. [Multi-Factor Authentication](#multi-factor-authentication){{/enable_mfa}}{{#enable_feature_qr_scanner}}
-22. [Feature QR Code](#feature-qr-code){{/enable_feature_qr_scanner}}{{#enable_feature_onboarding}}
+21. [Feature QR Code](#feature-qr-code){{/enable_feature_qr_scanner}}{{#enable_feature_onboarding}}
 22. [Feature onboarding](#feature-onboarding){{/enable_feature_onboarding}}{{#enable_forgotten_password}}
-22. [Forgotten Password](#forgotten-password){{/enable_forgotten_password}}
+23. [Forgotten Password](#forgotten-password){{/enable_forgotten_password}}
 24. [Next Steps](#next-steps)
 
 ## Getting started

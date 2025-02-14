@@ -22,9 +22,9 @@
 18. [CI/CD](#cicd)
 19. [Feature Pin Code](#feature-pin-code)
 20. [Multi-Factor Authentication](#multi-factor-authentication)
-22. [Feature QR Code](#feature-qr-code)
+21. [Feature QR Code](#feature-qr-code)
 22. [Feature onboarding](#feature-onboarding)
-22. [Forgotten_Password](#forgotten-password)
+23. [Forgotten Password](#forgotten-password)
 24. [Next Steps](#next-steps)
 
 ## Getting started
@@ -614,4 +614,4 @@ For details on the API contracts used in the Forgotten password feature, please 
 [rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
 [feature_creation]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md
 [feature_onboarding_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/onboarding_api_contracts.md
-[feature_forgotten_pass_api]: docs/forgotten_pass_api_contracts.md
+[feature_forgotten_pass_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/forgotten_pass_api_contracts.md
