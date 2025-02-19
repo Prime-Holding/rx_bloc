@@ -65,7 +65,13 @@ class FlavorGenerator {
   Future<void> _addFlavorizrToProject(String outputDir) async {
     await Process.run(
       'flutter',
-      ['pub', 'add', 'flutter_flavorizr'],
+      [
+        'pub',
+        'add',
+
+        /// TODO: Remove the git flag once the flutter_flavorizr package is updated
+        'flutter_flavorizr:{"git":"https://github.com/DavidDWiser/flutter_flavorizr"}'
+      ],
       workingDirectory: outputDir,
     );
 

@@ -24,7 +24,6 @@ class SettingsGradle extends StringProcessor {
     StringBuffer buffer, {
     String gradlePluginVersion = kGradlePluginVersion,
   }) {
-
     void _replaceQuotedVal(
       String content,
       String replacement, {
@@ -41,5 +40,6 @@ class SettingsGradle extends StringProcessor {
 
     _replaceQuotedVal('com.android.application', gradlePluginVersion);
   }
+
   /// endregion
 }

@@ -1,4 +1,5 @@
 ## [5.5.0]
+* Support flutter 3.29
 * Added change email feature in the generated project
 * Added change phone number feature in the generated project
 
