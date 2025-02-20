@@ -116,7 +116,7 @@ class GeneratorArguments
   @override
   bool get onboardingEnabled => _featureConfiguration.onboardingEnabled;
 
-  /// Forgotten pass feature
+  /// Forgotten Password feature
   @override
   bool get forgottenPassword => _featureConfiguration.forgottenPassword;
 

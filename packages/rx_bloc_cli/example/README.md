@@ -563,7 +563,7 @@ The Forgotten password feature lets a registered user reset their password and s
 The flow includes screens which allow the user to provide their email and continue with a link to reset.
 When that link is opened, the user can set their new password.
 
-For details on the API contracts used in the Forgotten password feature, please refer to the [API contracts][feature_forgotten_pass_api].
+For details on the API contracts used in the Forgotten password feature, please refer to the [API contracts][feature_forgotten_password_api].
 
 
 ## Next Steps
@@ -614,4 +614,4 @@ For details on the API contracts used in the Forgotten password feature, please 
 [rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
 [feature_creation]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md
 [feature_onboarding_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/onboarding_api_contracts.md
-[feature_forgotten_pass_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/forgotten_pass_api_contracts.md
+[feature_forgotten_password_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/forgotten_password_api_contracts.md

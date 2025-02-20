@@ -74,7 +74,9 @@ class PasswordResetBloc extends $PasswordResetBloc {
   final CredentialsValidatorService _validatorService;
   final RouterBlocType _routerBloc;
 
+  /// The token received from the Email link, to be checked by the backend
   final String _token;
+  /// The Email of the user, to be used in case of resending the link
   final String _email;
 
   @override

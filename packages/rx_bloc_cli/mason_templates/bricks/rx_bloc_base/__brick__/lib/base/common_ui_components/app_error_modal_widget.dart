@@ -5,6 +5,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
+import '../../app_extensions.dart';
 import '../extensions/error_model_translations.dart';
 import '../models/errors/error_model.dart';
 
@@ -17,14 +18,14 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
     required this.errorState,
     this.onRetry,
     this.onCancel,
-    this.retryButtonText = 'Retry',
+    this.retryButtonText,
     super.key,
   });
 
   final ErrorStateCallback<BlocType> errorState;
   final Function(BuildContext, ErrorModel)? onRetry;
   final Function()? onCancel;
-  final String retryButtonText;
+  final String? retryButtonText;
 
   @override
   Widget build(BuildContext context) => RxBlocListener<BlocType, ErrorModel>(
@@ -42,7 +43,7 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
                   Navigator.of(context).pop();
                 },
                 onCancelCallback: onCancel,
-                retryButtonText: retryButtonText,
+                retryButtonText: retryButtonText ?? context.l10n.retry,
               )
             : showBlurredBottomSheet(
                 context: context,

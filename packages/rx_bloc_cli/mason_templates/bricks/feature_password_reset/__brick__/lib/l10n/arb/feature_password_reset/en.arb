@@ -21,7 +21,6 @@
   "tokenResent": "A new link to reset your password has been sent to your email address.",
   "resetSuccess": "Your password has been successfully reset!",
 
-  "retry" : "Retry",
   "continueText" : "Continue",
   "confirm" : "Confirm"
 }

@@ -112,7 +112,7 @@ class GeneratorArgumentsProvider {
         !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
       _logger.warn(
-          'Login enabled, due to OTP/PIN/Onboarding/Forgotten Pass feature requirement');
+          'Login enabled, due to OTP/PIN/Onboarding/Forgotten Password feature requirement');
       loginEnabled = true;
     }
 

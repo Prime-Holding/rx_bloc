@@ -90,7 +90,7 @@ class UsersService {
     Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
-        if (timer.tick == 60) {
+        if (timer.tick == kPasswordResetTimeoutInSeconds) {
           _usersRepository.unlockPasswordResetForUser(email);
           return timer.cancel();
         }

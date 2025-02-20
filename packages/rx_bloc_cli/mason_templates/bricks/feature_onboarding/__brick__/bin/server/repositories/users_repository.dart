@@ -6,6 +6,8 @@ import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
 
+const kPasswordResetTimeoutInSeconds = 60;
+
 class UsersRepository {
   final List<UserModel> _registeredUsers = [];
   final Map<String, String> _passwords = {};
@@ -80,10 +82,10 @@ class UsersRepository {
       _passwordResetLockedUsers.keys.contains(email);
 
   int getPasswordResetTimeoutForUser(String email) =>
-      _passwordResetLockedUsers[email] ?? 60;
+      _passwordResetLockedUsers[email] ?? kPasswordResetTimeoutInSeconds;
 
   void lockPasswordResetForUser(String email) =>
-      _passwordResetLockedUsers[email] = 60;
+      _passwordResetLockedUsers[email] = kPasswordResetTimeoutInSeconds;
 
   void decrementPasswordResetTimeoutForUser(String email) =>
       _passwordResetLockedUsers.update(email, (timeout) => --timeout);
