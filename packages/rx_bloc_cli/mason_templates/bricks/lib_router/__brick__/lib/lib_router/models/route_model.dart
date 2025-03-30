@@ -127,7 +127,22 @@ enum RouteModel { {{#enable_feature_onboarding}}
     pathName: RoutesPath.phoneChangeConfirm,
     fullPath: '/change-phone/confirm',
     permissionName: RoutePermissions.phoneChangeConfirm,
-  ){{/enable_feature_onboarding}}
+  ){{/enable_feature_onboarding}}{{#enable_forgotten_password}},
+  passwordResetRequest(
+    pathName: RoutesPath.passwordResetRequest,
+    fullPath: '/password-reset/request',
+    permissionName: RoutePermissions.passwordResetRequest,
+  ),
+  passwordResetConfirmation(
+    pathName: RoutesPath.passwordResetConfirmation,
+    fullPath: '/password-reset/confirmation',
+    permissionName: RoutePermissions.passwordResetConfirmation,
+  ),
+  passwordReset(
+    pathName: RoutesPath.passwordReset,
+    fullPath: '/password-reset',
+    permissionName: RoutePermissions.passwordReset,
+  ){{/enable_forgotten_password}}
   ;
 
   final String pathName;

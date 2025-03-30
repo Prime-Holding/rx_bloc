@@ -13,6 +13,7 @@ part 'bad_request_error_model.dart';
 part 'conflict_error_model.dart';
 part 'connection_refused_error_model.dart';
 part 'error_server_generic_model.dart';
+part 'error_timeout_model.dart';
 part 'field_error_model.dart';
 part 'field_required_error_model.dart';{{#enable_feature_onboarding}}
 part 'invalid_url_error_model.dart';{{/enable_feature_onboarding}}

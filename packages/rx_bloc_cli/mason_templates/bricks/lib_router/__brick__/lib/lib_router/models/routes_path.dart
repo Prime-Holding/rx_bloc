@@ -30,5 +30,8 @@ class RoutesPath {  {{#enable_feature_onboarding}}
   static const onboardingPhone = '/onboarding/phone';
   static const onboardingPhoneConfirm = '/onboarding/phone/confirm';
   static const phoneChange = '/change-phone';
-  static const phoneChangeConfirm = '/change-phone/confirm';{{/enable_feature_onboarding}}
+  static const phoneChangeConfirm = '/change-phone/confirm';{{/enable_feature_onboarding}}{{#enable_forgotten_password}}
+  static const passwordResetRequest = '/password-reset/request';
+  static const passwordResetConfirmation = '/password-reset/confirmation';
+  static const passwordReset = '/password-reset';{{/enable_forgotten_password}}
 }

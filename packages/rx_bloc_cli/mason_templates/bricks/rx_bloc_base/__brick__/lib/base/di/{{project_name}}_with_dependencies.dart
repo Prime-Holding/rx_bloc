@@ -67,12 +67,14 @@ import '../data_sources/remote/country_codes_remote_data_source.dart';{{/enable_
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
-import '../data_sources/remote/http_clients/plain_http_client.dart';
+import '../data_sources/remote/http_clients/plain_http_client.dart';{{#enable_forgotten_password}}
+import '../data_sources/remote/password_reset_remote_data_source.dart';{{/enable_forgotten_password}}
 import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
 import '../data_sources/remote/register_remote_data_source.dart';
 import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
-import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
+import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}{{#enable_forgotten_password}}
+import '../repositories/password_reset_repository.dart';{{/enable_forgotten_password}}
 import '../repositories/push_notification_repository.dart';{{#enable_feature_onboarding}}
 import '../repositories/url_launcher_repository.dart';
 import '../repositories/register_repository.dart';
@@ -255,7 +257,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
         Provider<UrlLauncherLocalDataSource>(
           create: (context) => UrlLauncherLocalDataSource(),
-        ),{{/enable_feature_onboarding}}
+        ),{{/enable_feature_onboarding}}{{#enable_forgotten_password}}
+        Provider<PasswordResetRemoteDataSource>(
+          create: (context) => PasswordResetRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),{{/enable_forgotten_password}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -347,7 +354,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
           ),
-        ),{{/enable_feature_onboarding}}
+        ),{{/enable_feature_onboarding}}{{#enable_forgotten_password}}
+        Provider<PasswordResetRepository>(
+          create: (context) => PasswordResetRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),{{/enable_forgotten_password}}
       ];
 
   List<Provider> get _services => [{{#has_authentication}}

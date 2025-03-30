@@ -24,5 +24,8 @@ class RoutePermissions { {{#has_showcase}}
   static const onboardingPhone = 'OnboardingPhoneRoute';
   static const onboardingPhoneConfirm = 'OnboardingPhoneConfirmRoute';
   static const phoneChange = 'PhoneChangeRoute';
-  static const phoneChangeConfirm = 'PhoneChangeConfirmRoute';{{/enable_feature_onboarding}}
+  static const phoneChangeConfirm = 'PhoneChangeConfirmRoute';{{/enable_feature_onboarding}}{{#enable_forgotten_password}}
+  static const passwordResetRequest = 'PasswordResetRequestRoute';
+  static const passwordResetConfirmation = 'PasswordResetConfirmationRoute';
+  static const passwordReset = 'PasswordResetRoute';{{/enable_forgotten_password}}
 }

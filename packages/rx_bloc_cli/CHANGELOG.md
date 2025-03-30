@@ -1,6 +1,7 @@
 ## [5.5.0]
 * Added change email feature in the generated project
 * Added change phone number feature in the generated project
+* Added Forgotten password feature in the generated project
 
 ## [5.4.1]
 * Fix static analysis issue with multiline if statement brackets after linter update

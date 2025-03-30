@@ -81,14 +81,15 @@ class AndroidManifestProcessor extends StringProcessor {
     <data android:scheme="${args.projectName}"/>
     <data android:host="${args.projectName}"/>
     <data android:pathPattern="/onboarding/email-confirmed/.*" />
-    <data android:pathPattern="/change-email/email-confirmed/.*"/>
-</intent-filter>
-''';
-    } else {
-      deeplinkIntent += '''
-</intent-filter>
-''';
+    <data android:pathPattern="/change-email/email-confirmed/.*"/>''';
+      if (args.forgottenPassword) {
+        deeplinkIntent += '''
+    <data android:pathPattern="/password-reset.*"/>''';
+      }
     }
+    deeplinkIntent += '''
+</intent-filter>
+''';
 
     final mailtoIntent = '''<intent>
             <action android:name="android.intent.action.VIEW" />

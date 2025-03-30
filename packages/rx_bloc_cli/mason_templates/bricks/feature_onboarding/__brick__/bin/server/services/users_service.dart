@@ -1,6 +1,8 @@
 {{> licence.dart }}
 
-import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
+{{#enable_forgotten_password}}import 'dart:async';
+
+{{/enable_forgotten_password}}import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
 
@@ -20,6 +22,9 @@ class UsersService {
 
   UserModel? getUserByEmail(String email) =>
       _usersRepository.getUserByEmail(email);
+
+  bool isUserRegistered(String email) =>
+      _usersRepository.isUserRegistered(email);
 
   void createUser(UserModel user) => _usersRepository.createUser(user);
 
@@ -67,4 +72,30 @@ class UsersService {
     createUser(newUser);
     return newUser;
   }
+
+  void setPasswordForUser(String email, String password) =>
+      _usersRepository.setPasswordForUser(email, password);
+
+  String? getPasswordForUser(String email) =>
+      _usersRepository.getPasswordForUser(email);{{#enable_forgotten_password}}
+
+  bool isPasswordResetLockedForUser(String email) =>
+      _usersRepository.isPasswordResetLockedForUser(email);
+
+  int getPasswordResetTimeoutForUser(String email) =>
+      _usersRepository.getPasswordResetTimeoutForUser(email);
+
+  void lockPasswordResetForUser(String email) {
+    _usersRepository.lockPasswordResetForUser(email);
+    Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (timer.tick == kPasswordResetTimeoutInSeconds) {
+          _usersRepository.unlockPasswordResetForUser(email);
+          return timer.cancel();
+        }
+        _usersRepository.decrementPasswordResetTimeoutForUser(email);
+      },
+    );
+  }{{/enable_forgotten_password}}
 }

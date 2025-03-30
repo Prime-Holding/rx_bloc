@@ -108,7 +108,8 @@ r_flutter:
     - name: feature_deep_link
     - name: feature_enter_message{{/enable_feature_deeplinks}}{{#has_authentication}}
     - name: feature_login{{/has_authentication}}{{#enable_feature_onboarding}}
-    - name: feature_onboarding{{/enable_feature_onboarding}}
+    - name: feature_onboarding{{/enable_feature_onboarding}}{{#enable_forgotten_password}}
+    - name: feature_password_reset{{/enable_forgotten_password}}
     - name: feature_notifications{{#enable_feature_otp}}
     - name: feature_otp{{/enable_feature_otp}}{{#enable_feature_onboarding}}
     - name: feature_onboarding{{/enable_feature_onboarding}}{{#enable_profile}}

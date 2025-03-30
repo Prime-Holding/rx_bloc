@@ -12,6 +12,7 @@ function replace_file_contents() {
     "docs/patrol_integration_test.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md"
     "docs/feature_creation.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md"
     "docs/onboarding_api_contracts.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/onboarding_api_contracts.md"
+    "docs/forgotten_password_api_contracts.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/forgotten_password_api_contracts.md"
   )
 
   # Iterate over the to_replace array

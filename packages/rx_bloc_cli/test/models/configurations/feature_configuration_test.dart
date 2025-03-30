@@ -21,6 +21,7 @@ void main() {
         profileEnabled: false,
         remoteTranslationsEnabled: false,
         onboardingEnabled: false,
+        forgottenPassword: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -37,6 +38,7 @@ void main() {
         profileEnabled: false,
         remoteTranslationsEnabled: false,
         onboardingEnabled: false,
+        forgottenPassword: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -53,6 +55,7 @@ void main() {
         profileEnabled: false,
         remoteTranslationsEnabled: false,
         onboardingEnabled: false,
+        forgottenPassword: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -69,6 +72,7 @@ void main() {
         profileEnabled: false,
         remoteTranslationsEnabled: false,
         onboardingEnabled: false,
+        forgottenPassword: false,
       );
       expect(sut.usesFirebase, isFalse);
     });
