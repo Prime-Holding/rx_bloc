@@ -10,6 +10,7 @@ environment:
 dependencies: {{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
   alice_dio: ^1.0.6{{/enable_dev_menu}}
+  app_links: ^6.3.3
   collection: ^1.18.0
   copy_with_extension: ^6.0.0 {{#has_authentication}}
   crypto: ^3.0.6 {{/has_authentication}}
@@ -29,7 +30,7 @@ dependencies: {{#enable_dev_menu}}
   flutter_rx_bloc: ^7.0.0
   flutter_secure_storage: ^9.2.2{{#enable_social_logins}}
   flutter_svg: ^2.0.10{{/enable_social_logins}}
-  go_router: ^14.3.0{{#enable_social_logins}}
+  go_router: ^14.8.1{{#enable_social_logins}}
   google_sign_in: ^6.2.1{{/enable_social_logins}}
   http: ^1.2.2 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
@@ -65,7 +66,7 @@ dev_dependencies:
   flutter_lints: any
   flutter_test:
     sdk: flutter
-  go_router_builder: ^2.7.1
+  go_router_builder: ^2.8.2
   json_serializable: ^6.8.0
   mockito: ^5.4.4 {{#enable_patrol}}
   patrol: ^3.13.0-dev.3 {{/enable_patrol}}
@@ -82,8 +83,15 @@ patrol:
     package_name: {{domain_name}}.{{organization_name}}.{{project_name}}
   ios:
     bundle_id: {{domain_name}}.{{organization_name}}.{{project_name}}
-    app_name: {{project_name}} {{/enable_patrol}}
+    app_name: {{project_name}} {{/enable_patrol}} {{#enable_dev_menu}}
 
+dependency_overrides:
+  alice:
+    git:
+      url: https://github.com/kostadin-damyanov-prime/alice.git
+      ref: master
+      path: packages/alice 
+{{/enable_dev_menu}}
 flutter:
   uses-material-design: true
   assets:

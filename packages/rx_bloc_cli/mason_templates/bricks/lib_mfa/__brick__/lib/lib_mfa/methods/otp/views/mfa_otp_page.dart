@@ -8,7 +8,6 @@ import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
 import '../../../../app_extensions.dart';
 import '../../../../feature_otp/services/otp_text_field_validator.dart';
-import '../../../../lib_router/blocs/router_bloc.dart';
 import '../../../extensions/exception_extensions.dart';
 import '../../../models/mfa_response.dart';
 import '../services/mfa_otp_service.dart';
@@ -30,18 +29,12 @@ class MfaOtpPage extends StatelessWidget {
           child: SmsCodeProvider(
             onError: (context, error) {
               if (error != null && !error.isAuthMethodException) {
-                context
-                    .read<RouterBlocType>()
-                    .events
-                    .pop(Result<MfaResponse>.error(error));
+                GoRouter.of(context).pop(Result<MfaResponse>.error(error));
               }
             },
             onResult: (context, result) {
               if (result is MfaResponse) {
-                context
-                    .read<RouterBlocType>()
-                    .events
-                    .pop(Result<MfaResponse>.success(result));
+                GoRouter.of(context).pop(Result<MfaResponse>.success(result));
               }
             },
             sentNewCodeActivationTime: 2,

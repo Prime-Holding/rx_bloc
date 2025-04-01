@@ -9,10 +9,9 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
+import '../../base/models/user_model.dart';
+import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_mfa/models/mfa_action.dart';
-import '../../lib_pin_code/bloc/create_pin_bloc.dart';
-import '../../lib_pin_code/models/pin_code_arguments.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/mfa_edit_address_bloc.dart';
 import '../services/mfa_edit_address_service.dart';
@@ -47,29 +46,18 @@ class MfaPage extends StatelessWidget {
                         style: context.designSystem.typography.h2Med16,
                       ),
                       SizedBox(height: context.designSystem.spacing.m),
-                      RxBlocBuilder<CreatePinBlocType, bool>(
-                          state: (bloc) => bloc.states.isPinCreated,
-                          builder: (context, isPinCreated, bloc) {
-                            return EditAddressWidget<CountryModel>(
-                              translateError: (error) =>
-                                  ErrorModelFieldL10n.translateError<String>(
-                                      error, context),
-                              service: context.read<MfaEditAddressService>(),
-                              onSaved: (address) {
-                                if (isPinCreated.data != null && !isPinCreated.data!) {
-                                  return _handleUnlockAction(context);
-                                }
-                                context
-                                    .read<MfaEditAddressBlocType>()
-                                    .events
-                                    .saveAddress(
-                                      city: address.city,
-                                      streetAddress: address.streetAddress,
-                                      countryCode: address.country.countryCode,
-                                    );
-                              },
-                            );
-                          }),
+                      RxBlocBuilder<UserAccountBlocType, UserModel?>(
+                        state: (bloc) => bloc.states.currentUser,
+                        builder: (context, user, bloc) =>
+                            EditAddressWidget<CountryModel>(
+                          translateError: (error) =>
+                              ErrorModelFieldL10n.translateError<String>(
+                                  error, context),
+                          service: context.read<MfaEditAddressService>(),
+                          onSaved: (address) =>
+                              _handleAddressSave(context, address, user),
+                        ),
+                      ),
                       Text(
                         context.l10n.featureMfa.changeAddressActionDescription,
                         style: context.designSystem.typography.h3Med11,
@@ -89,23 +77,13 @@ class MfaPage extends StatelessWidget {
                         style: context.designSystem.typography.h2Med16,
                       ),
                       Center(
-                        child: RxBlocBuilder<CreatePinBlocType, bool>(
-                          state: (bloc) => bloc.states.isPinCreated,
-                          builder: (context, isPinCreated, bloc) {
-                            return PrimaryButton(
-                              child: Text(
-                                  context.l10n.featureMfa.unlockButtonText),
-                              onPressed: () {
-                                if (isPinCreated.data != null && !isPinCreated.data!) {
-                                  return _handleUnlockAction(context);
-                                }
-                                context
-                                    .read<MfaEditAddressBlocType>()
-                                    .events
-                                    .unlock();
-                              },
-                            );
-                          },
+                       child: RxBlocBuilder<UserAccountBlocType, UserModel?>(
+                          state: (bloc) => bloc.states.currentUser,
+                          builder: (context, user, bloc) => PrimaryButton(
+                            onPressed: () => _handleUnlockButton(context, user),
+                            child:
+                                Text(context.l10n.featureMfa.unlockButtonText),
+                          ),
                         ),
                       ),
                       SizedBox(height: context.designSystem.spacing.m),
@@ -132,12 +110,9 @@ class MfaPage extends StatelessWidget {
         retryButtonText: context.l10n.featureMfa.pinNotSetButtonText,
         retryCallback: (_) {
           context.pop();
-          context.read<RouterBlocType>().events.push(
-                const CreatePinRoute(),
-                extra: PinCodeArguments(
-                  title: context.l10n.libPinCode.createPin,
-                ),
-              );
+          GoRouter.of(context).push(
+            const SetPinRoute().routeLocation,
+          );
         },
       );
 
@@ -149,4 +124,26 @@ class MfaPage extends StatelessWidget {
           messageState: MessagePanelState.positive,
         ),
       );
+
+  void _handleAddressSave(BuildContext context, AddressModel address,
+      AsyncSnapshot<UserModel?> user) {
+    if (user.data != null && user.data!.hasPin) {
+      context.read<MfaEditAddressBlocType>().events.saveAddress(
+            city: address.city,
+            streetAddress: address.streetAddress,
+            countryCode: address.country.countryCode,
+          );
+    } else {
+      _handleUnlockAction(context);
+    }
+  }
+
+  void _handleUnlockButton(
+      BuildContext context, AsyncSnapshot<UserModel?> user) {
+    if (user.data != null && user.data!.hasPin) {
+      context.read<MfaEditAddressBlocType>().events.unlock();
+    } else {
+      _handleUnlockAction(context);
+    }
+  }
 }

@@ -8,17 +8,21 @@ import 'package:flutter/foundation.dart';{{/has_authentication}}
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
-import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 
-import '../../feature_splash/services/splash_service.dart';
-{{#analytics}}
+import '../../feature_pin_code/data_source/pin_biometrics_local_data_source.dart';
+import '../../feature_pin_code/data_source/pin_code_local_data_source.dart';
+import '../../feature_pin_code/data_source/remote/pin_code_data_source.dart';
+import '../../feature_pin_code/repository/pin_biometrics_repository.dart';
+import '../../feature_pin_code/repository/pin_code_repository.dart';
+import '../../feature_pin_code/services/verify_pin_code_service.dart'; {{/enable_pin_code}}
+import '../../feature_splash/services/splash_service.dart';{{#analytics}}
 import '../../lib_analytics/blocs/analytics_bloc.dart';
 import '../../lib_analytics/repositories/analytics_repository.dart';
-import '../../lib_analytics/services/analytics_service.dart';
-{{/analytics}}
-{{#has_authentication}}
+import '../../lib_analytics/services/analytics_service.dart';{{/analytics}}{{#has_authentication}}
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
 import '../../lib_auth/data_sources/local/auth_token_secure_data_source.dart';
@@ -38,27 +42,18 @@ import '../../lib_mfa/repositories/mfa_repository.dart';
 import '../../lib_mfa/services/mfa_service.dart';{{/enable_mfa}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
-import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
-import '../../lib_pin_code/bloc/create_pin_bloc.dart';
-import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
-import '../../lib_pin_code/data_source/pin_biometrics_local_data_source.dart';
-import '../../lib_pin_code/data_source/pin_code_local_data_source.dart';
-import '../../lib_pin_code/data_source/remote/pin_code_data_source.dart';
-import '../../lib_pin_code/repository/pin_biometrics_repository.dart';
-import '../../lib_pin_code/repository/pin_code_repository.dart';
-import '../../lib_pin_code/services/create_pin_code_service.dart';
-import '../../lib_pin_code/services/pin_biometrics_service.dart';
-import '../../lib_pin_code/services/verify_pin_code_service.dart';{{/enable_pin_code}}
-import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/router.dart';{{#has_authentication}}
 import '../../lib_router/services/router_service.dart';{{/has_authentication}}{{#enable_remote_translations}}
 import '../../lib_translations/di/translations_dependencies.dart';{{/enable_remote_translations}}
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
-import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
+import '../common_mappers/error_mappers/error_mapper.dart';
+import '../common_services/app_links_service.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
-import '../common_services/push_notifications_service.dart';{{#enable_feature_onboarding}}
+import '../common_services/push_notifications_service.dart';
+import '../data_sources/local/app_links_data_source.dart';{{#enable_feature_onboarding}}
 import '../common_services/onboarding_service.dart';{{/enable_feature_onboarding}}
 import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_onboarding}}
@@ -70,9 +65,11 @@ import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
 import '../data_sources/remote/register_remote_data_source.dart';
-import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
+import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}
+import '../repositories/app_links_repository.dart';{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
-import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
+import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}} {{#enable_feature_onboarding}}
+import '../repositories/open_mail_app_repository.dart'; {{/enable_feature_onboarding}}
 import '../repositories/push_notification_repository.dart';{{#enable_feature_onboarding}}
 import '../repositories/url_launcher_repository.dart';
 import '../repositories/register_repository.dart';
@@ -93,7 +90,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
     /// List of all providers used throughout the app
     providers: [
         ..._coordinator,
-        _appRouter,{{#analytics}}
+        _appRouter,
+        Provider<GoRouter>(
+            create: (context) => context.read<AppRouter>().router,
+          ),{{#analytics}}
         ..._analytics,{{/analytics}}
         ..._environment,
         ..._mappers,
@@ -347,6 +347,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
           ),
+        ),
+         Provider<OpenMailAppRepository>(
+          create: (context) => OpenMailAppRepository(
+            context.read(),
+          ),
         ),{{/enable_feature_onboarding}}
       ];
 
@@ -402,21 +407,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ), {{#enable_pin_code}}
-        Provider<CreatePinCodeService>(
-          create: (context) => CreatePinCodeService(
-            context.read<PinCodeRepository>(),
-          ),
-        ),
         Provider<VerifyPinCodeService>(
           create: (context) => VerifyPinCodeService(
             context.read<PinCodeRepository>(),
           ),
-        ),
-        Provider<PinBiometricsService>(
-          create: (context) => PinBiometricsService(
-            context.read<PinBiometricsRepository>(),
-          ),
-        ),{{/enable_pin_code}}{{#enable_mfa}}
+        ), {{/enable_pin_code}}{{#enable_mfa}}
          Provider<MfaService>(
           create: (context) => MfaService(
             context.read<MfaRepository>(),
@@ -437,16 +432,17 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
           ),
+        ),
+        Provider<AppLinksService>(
+          create: (context) => AppLinksService(
+            AppLinksRepository(
+              AppLinksDataSource(),
+            ),
+          ),
         ),{{/enable_feature_onboarding}}
       ];
 
-  List<SingleChildWidget> get _blocs => [
-        Provider<RouterBlocType>(
-          create: (context) => RouterBloc(
-            router: context.read<AppRouter>().router,
-            permissionsService: context.read(),
-          ),
-        ),{{#has_authentication}}
+  List<SingleChildWidget> get _blocs => [ {{#has_authentication}}
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
             context.read(),
@@ -464,27 +460,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PushNotificationsBloc(
             context.read(),
           ),
-        ), {{#enable_pin_code}}
-        RxBlocProvider<CreatePinBlocType>(
-          create: (context) => CreatePinBloc(
-            service: context.read<CreatePinCodeService>(),
-            coordinatorBloc: context.read<CoordinatorBlocType>(),
-          ),
-        ),
-        RxBlocProvider<UpdateAndVerifyPinBlocType>(
-          create: (context) => UpdateAndVerifyPinBloc(
-            service: context.read<VerifyPinCodeService>(),
-            pinBiometricsService: context.read<PinBiometricsService>(),
-            coordinatorBloc: context.read<CoordinatorBlocType>(),
-          ),
-        ),{{/enable_pin_code}}
-        {{#analytics}}
+        ), {{#analytics}}
         RxBlocProvider<AnalyticsBlocType>(
           create: (context) => AnalyticsBloc(
             context.read(),
             context.read(),
           ),
-        ),
-        {{/analytics}}
+        ), {{/analytics}}
       ];
 }

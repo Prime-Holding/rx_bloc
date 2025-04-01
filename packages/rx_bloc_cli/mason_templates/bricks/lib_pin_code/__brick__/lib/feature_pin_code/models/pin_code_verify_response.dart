@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -10,7 +11,7 @@ part 'pin_code_verify_response.g.dart';
 @CopyWith()
 class PinCodeVerifyResponse with EquatableMixin {
   PinCodeVerifyResponse({
-    this.token,
+    required this.token,
   });
 
   // The token used to update the PIN afterwards

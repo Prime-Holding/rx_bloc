@@ -1,9 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:{{project_name}}/lib_pin_code/repository/pin_code_repository.dart';
-import 'package:{{project_name}}/lib_pin_code/services/create_pin_code_service.dart';
-import 'package:{{project_name}}/lib_pin_code/services/verify_pin_code_service.dart';
+import 'package:{{project_name}}/base/models/user_model.dart';
+import 'package:{{project_name}}/feature_pin_code/models/create_pin_model.dart';
+import 'package:{{project_name}}/feature_pin_code/repository/pin_code_repository.dart';
+import 'package:{{project_name}}/feature_pin_code/services/create_pin_code_service.dart';
 
 import '../stubs.dart';
 import 'create_pin_code_service_test.mocks.dart';
@@ -11,11 +12,11 @@ import 'create_pin_code_service_test.mocks.dart';
 @GenerateMocks([PinCodeRepository])
 void main() {
   late MockPinCodeRepository repository;
-  late CreatePinCodeService permissionsService;
+  late CreatePinCodeService createPinService;
 
   setUp(() {
     repository = MockPinCodeRepository();
-    permissionsService = CreatePinCodeService(repository);
+    createPinService = CreatePinCodeService(repository, CreatePinSetModel());
   });
 
   tearDown(() {
@@ -23,80 +24,57 @@ void main() {
   });
 
   group('CreatePinCodeService', () {
-    test('deleteStoredPin should call repository.writePinToStorage with null',
+    test(
+        'verifyPinCode should return CreatePinConfirmModel when set model is provided',
         () async {
-      when(repository.getPinCode()).thenAnswer((_) async => null);
+      final result = await createPinService.verifyPinCode(Stubs.pin);
 
-      final result = await permissionsService.deleteStoredPin();
-
-      expect(result, true);
-      verify(repository.writePinToStorage(VerifyPinCodeService.storedPin, null))
-          .called(1);
-      verify(repository.getPinCode()).called(1);
+      expect(result, isA<CreatePinConfirmModel>());
+      expect((result as CreatePinConfirmModel).pinToConfirm, Stubs.pin);
     });
 
-    test('savePinCodeInSecureStorage should return true', () async {
-      const pinKey = VerifyPinCodeService.storedPin;
+    test('verifyPinCode should call repository.createPinCode when pin matches',
+        () async {
+      // First set up the model to have a pinToConfirm
+      final createPinService = CreatePinCodeService(
+          repository, CreatePinConfirmModel(pinToConfirm: Stubs.pin));
 
-      when(repository.writePinToStorage(pinKey, Stubs.pin))
-          .thenAnswer((_) async => Stubs.pin);
+      when(repository.createPinCode(Stubs.pin))
+          .thenAnswer((_) async => UserModel.tempUser());
 
+      final result = await createPinService.verifyPinCode(Stubs.pin);
+
+      expect(result, isA<CreatePinCompleteModel>());
+      verify(repository.createPinCode(Stubs.pin)).called(1);
+    });
+
+    test('getPinLength should return length from repository', () async {
+      const pinLength = Stubs.pin.length;
+
+      when(repository.getPinLength()).thenAnswer((_) async => pinLength);
+
+      final result = await createPinService.getPinLength();
+
+      expect(result, pinLength);
+    });
+
+    test('getPinCode should return null', () async {
+      final result = await createPinService.getPinCode();
+
+      expect(result, null);
+    });
+
+    test('savePinCodeInSecureStorage should return false', () async {
       final result =
-          await permissionsService.savePinCodeInSecureStorage(Stubs.pin);
-
-      expect(result, true);
-      verify(repository.writePinToStorage(pinKey, Stubs.pin)).called(1);
-    });
-
-    test('checkIsPinCreated should return false', () async {
-      when(repository.getPinCode()).thenAnswer((_) async => null);
-
-      final result = await permissionsService.checkIsPinCreated();
+          await createPinService.savePinCodeInSecureStorage(Stubs.pin);
 
       expect(result, false);
-      verify(repository.getPinCode()).called(1);
     });
 
-    test('checkIsPinCreated should return true', () async {
-      when(repository.getPinCode()).thenAnswer((_) async => Stubs.pin);
+    test('encryptPinCode should return the same pin code', () async {
+      final result = await createPinService.encryptPinCode(Stubs.pin);
 
-      final result = await permissionsService.checkIsPinCreated();
-
-      expect(result, true);
-      verify(repository.getPinCode()).called(1);
-    });
-
-    test('getPinLength should return length', () async {
-      const pinLength = Stubs.pin.length;
-
-      when(repository.getPinLength()).thenAnswer((_) async => pinLength);
-
-      final result = await permissionsService.getPinLength();
-
-      expect(result, pinLength);
-      verify(repository.getPinLength()).called(1);
-    });
-
-    test('getPinLength should return length', () async {
-      const pinLength = Stubs.pin.length;
-
-      when(repository.getPinLength()).thenAnswer((_) async => pinLength);
-
-      final result = await permissionsService.getPinLength();
-
-      expect(result, pinLength);
-      verify(repository.getPinLength()).called(1);
-    });
-
-    test('getPinCode should return pin', () async {
-      const pin = Stubs.pin;
-
-      when(repository.getPinCode()).thenAnswer((_) async => pin);
-
-      final result = await permissionsService.getPinCode();
-
-      expect(result, pin);
-      verify(repository.getPinCode()).called(1);
+      expect(result, Stubs.pin);
     });
   });
 }

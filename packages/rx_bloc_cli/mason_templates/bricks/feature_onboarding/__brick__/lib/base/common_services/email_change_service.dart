@@ -25,7 +25,7 @@ class EmailChangeService extends OnboardingService {
 
   /// Gets the existing user. Currently used to resume onboarding
   @override
-  Future<UserModel> getMyUser() => _usersRepository.getMyUser();
+  Future<UserModel> getUser() => _usersRepository.getUser();
 
   /// Resends the confirmation email to the user
   @override

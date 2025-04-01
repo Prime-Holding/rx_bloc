@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
@@ -13,7 +12,6 @@ import '../../base/common_ui_components/app_list_tile.dart';
 import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/models/deep_link_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/deep_link_list_bloc.dart';
 import '../ui_components/enter_message_button.dart';
@@ -64,10 +62,10 @@ class DeepLinkListPage extends StatelessWidget {
                   itemCount: items.length,
                   itemBuilder: (BuildContext context, int index) => AppListTile(
                     featureTitle: items[index].name,
-                    onTap: () => context.read<RouterBlocType>().events.push(
-                          DeepLinkDetailsRoute(items[index].id),
-                          extra: items[index],
-                        ),
+                    onTap: () => GoRouter.of(context).push(
+                      DeepLinkDetailsRoute(items[index].id).routeLocation,
+                      extra: items[index],
+                    ),
                   ),
                   separatorBuilder: (context, index) => AppDivider(),
                 ),

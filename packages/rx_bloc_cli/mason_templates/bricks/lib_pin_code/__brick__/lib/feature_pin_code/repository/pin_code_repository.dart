@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
+import '../../base/models/user_model.dart';
 import '../data_source/pin_code_local_data_source.dart';
 import '../data_source/remote/pin_code_data_source.dart';
 import '../models/pin_code_create_request.dart';
@@ -13,35 +14,27 @@ class PinCodeRepository {
     this._pinCodeLocalDataSource,
     this._pinCodeDataSource,
   );
-
   final ErrorMapper _errorMapper;
   final PinCodeLocalDataSource _pinCodeLocalDataSource;
   final PinCodeDataSource _pinCodeDataSource;
 
-  Future<void> writePinToStorage(
-    String key,
-    String? value,
-  ) =>
-      _errorMapper.execute(() =>
-          _pinCodeLocalDataSource.writePinToStorage(key: key, value: value));
+  /// Store the encrypted pin code in the secure storage
+  Future<void> storePin(String encryptedPin) => _errorMapper
+      .execute(() => _pinCodeLocalDataSource.storePin(encryptedPin));
 
-  Future<String?> readPinFromStorage({required String key}) => _errorMapper
-      .execute(() => _pinCodeLocalDataSource.readPinFromStorage(key: key));
-
-  Future<int> getPinLength() =>
-      _errorMapper.execute(() => _pinCodeLocalDataSource.getPinLength());
-
+  /// Get the locally stored encrypted pin code from the secure storage
   Future<String?> getPinCode() =>
-      _errorMapper.execute(() => _pinCodeLocalDataSource.getPinCode());
+      _errorMapper.execute(() => _pinCodeLocalDataSource.getPin());
 
   /// Create a new PIN code for the user on the Backend
-  Future<void> createPinCode(String pinCode) => _errorMapper.execute(
-        () => _pinCodeDataSource.createPinCode(
-          PinCodeCreateRequest(pinCode: pinCode),
-        ),
-      );
+  Future<UserModel> createPinCode(String pinCode) => _errorMapper.execute(() =>
+      _pinCodeDataSource.createPinCode(PinCodeCreateRequest(pinCode: pinCode)));
+
+  Future<int> getPinLength() async => 4;
 
   /// Verify the PIN code of the user on the Backend
+  ///
+  /// The response is the token needed for the next step of updating the PIN code.
   Future<String?> verifyPinCode(
     String pinCode, {
     requestUpdateToken = false,
@@ -62,10 +55,13 @@ class PinCodeRepository {
       );
 
   /// Update the PIN code of the user on the Backend
-  Future<void> updatePinCode(
-    String pinCode,
-    String token,
-  ) => _errorMapper.execute(
+  ///
+  /// The [token] is the one received from the [verifyPinCode] method.
+  Future<UserModel> updatePinCode(
+    String pinCode, {
+    required String token,
+  }) =>
+      _errorMapper.execute(
         () => _pinCodeDataSource.updatePinCode(
           PinCodeUpdateRequest(pinCode: pinCode, token: token),
         ),

@@ -18,6 +18,7 @@ class UserModel with EquatableMixin {
     required this.phoneNumber,
     required this.role,
     required this.confirmedCredentials,
+    required this.hasPin,
   });
 
   /// Unique identifier of the user
@@ -36,9 +37,25 @@ class UserModel with EquatableMixin {
   /// is updated to `User`.
   final UserRole role;
 
+  /// Flag indicating whether the user has set a PIN code
+  final bool hasPin;
+
   /// Information about the confirmed credentials of the user
   final ConfirmedCredentialsModel confirmedCredentials;
 
+
+  factory UserModel.tempUser() => UserModel(
+        id: '',
+        email: '',
+        phoneNumber: '',
+        role: UserRole.tempUser,
+        confirmedCredentials: ConfirmedCredentialsModel(
+          email: false,
+          phone: false,
+        ),
+        hasPin: false,
+      );
+      
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 

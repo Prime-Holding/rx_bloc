@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -8,7 +9,6 @@ import '../../base/common_services/onboarding_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 
 part 'onboarding_email_confirmed_bloc.rxb.g.dart';
@@ -47,7 +47,7 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
     this._verifyEmailToken,
     this._isOnboarding,
     this._onboardingService,
-    this._routerBloc,
+    this._router,
   ) {
     onRouting.connect().addTo(_compositeSubscription);
     data.connect().addTo(_compositeSubscription);
@@ -56,12 +56,12 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   final String _verifyEmailToken;
   final bool _isOnboarding;
   final OnboardingService _onboardingService;
-  final RouterBlocType _routerBloc;
+  final GoRouter _router;
 
   @override
   ConnectableStream<UserModel> _mapToDataState() => _$verifyEmailEvent
       .startWith(null)
-      .throttleTime(actionDebounceDuration)
+      .throttleTime(kBackpressureDuration)
       .switchMap((value) => _onboardingService
           .confirmEmail(token: _verifyEmailToken)
           .asResultStream())
@@ -80,17 +80,17 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
         _$goToNextPageEvent.doOnData(
           (_) {
             if (_isOnboarding) {
-              _routerBloc.events.pushReplace(const OnboardingPhoneRoute());
+              _router.pushReplacement(const OnboardingPhoneRoute().routeLocation);
             } else {
-              _routerBloc.events.go(const ProfileRoute());
+              _router.go(const LoginRoute().routeLocation);
             }
           },
         ),
         _$goToInitialPageEvent.doOnData((_) {
           if (_isOnboarding) {
-            _routerBloc.events.go(const LoginRoute());
+            _router.go(const LoginRoute().routeLocation);
           } else {
-            _routerBloc.events.go(const ProfileRoute());
+            _router.go(const ProfileRoute().routeLocation);
           }
         }),
       ]).publishReplay(maxSize: 1);

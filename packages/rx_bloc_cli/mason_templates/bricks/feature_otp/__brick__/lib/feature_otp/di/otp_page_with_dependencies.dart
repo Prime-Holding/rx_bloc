@@ -18,7 +18,7 @@ class OtpPageWithDependencies extends StatelessWidget {
 
   List<SingleChildWidget> get _services => [
         Provider<CustomSmsCodeService>(
-          create: (context) => CustomSmsCodeService(context.read()),
+          create: (context) => CustomSmsCodeService(),
         ),
       ];
 }

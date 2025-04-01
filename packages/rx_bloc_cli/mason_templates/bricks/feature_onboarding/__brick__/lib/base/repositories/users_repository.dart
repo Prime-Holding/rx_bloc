@@ -17,8 +17,8 @@ class UsersRepository {
   final UsersRemoteDataSource _usersRemoteDataSource;
 
   /// Gets the existing user. Currently used to resume onboarding
-  Future<UserModel> getMyUser() => _errorMapper.execute(
-        () => _usersRemoteDataSource.getMyUser(),
+ Future<UserModel> getUser() => _errorMapper.execute(
+        () => _usersRemoteDataSource.getUser(),
       );
 
   /// Sets the phone number for the user. At this point, the user has not yet

@@ -14,6 +14,7 @@ class Stubs {
     user: UserModel(
       id: 'id',
       email: email,
+      hasPin: false,
       phoneNumber: password,
       role: UserRole.user,
       confirmedCredentials:

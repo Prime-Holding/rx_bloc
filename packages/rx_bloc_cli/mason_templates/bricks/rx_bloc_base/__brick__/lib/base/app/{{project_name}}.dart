@@ -5,10 +5,11 @@ import 'dart:async'; {{/enable_change_language}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';{{#enable_pin_code}}
-import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';{{#enable_pin_code}}
 import 'package:local_session_timeout/local_session_timeout.dart';{{/enable_pin_code}}
-import 'package:provider/provider.dart'; {{#enable_change_language}}
+import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
 
 import '../../assets.dart';{{#enable_remote_translations}}
@@ -17,16 +18,13 @@ import '../../lib_analytics/blocs/analytics_bloc.dart';{{/analytics}}{{#has_auth
 import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}} {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
-import '../../lib_dev_menu/ui_components/app_dev_menu_gesture_detector_with_dependencies.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
-import '../../lib_pin_code/bloc/create_pin_bloc.dart';
-import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
-import '../../lib_pin_code/models/pin_code_arguments.dart';
-import '../../lib_router/blocs/router_bloc.dart';{{/enable_pin_code}}
+import '../../lib_dev_menu/ui_components/app_dev_menu_gesture_detector_with_dependencies.dart';{{/enable_dev_menu}}
 import '../../lib_router/router.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../di/{{project_name}}_with_dependencies.dart';
+import '../models/user_model.dart';
 import '../theme/design_system.dart';
 import '../theme/{{project_name}}_theme.dart';{{#enable_dev_menu}}
 import '../utils/dev_menu.dart';{{/enable_dev_menu}}
@@ -102,30 +100,39 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   {{#enable_pin_code}}
   void _createSessionConfig() {
-    context.read<UpdateAndVerifyPinBlocType>().events.deleteSavedData();
     _sessionConfig = SessionConfig(
         invalidateSessionForAppLostFocus: const Duration(seconds: 15),
         invalidateSessionForUserInactivity: const Duration(minutes: 5),
     );
-    context
-        .read<UpdateAndVerifyPinBlocType>()
-        .events
-        .setSessionState(SessionState.startListening);
     _userInactivityListeners();
   }
 
   void _userInactivityListeners() {
-    _sessionConfig.stream.listen((timeoutEvent) {
-      if (timeoutEvent == SessionTimeoutState.userInactivityTimeout ||
-          timeoutEvent == SessionTimeoutState.appFocusTimeout) {
-        if(mounted) {
-          context.read<RouterBlocType>().events.go(
-                const VerifyPinCodeRoute(),
-                extra: const PinCodeArguments(title: 'Enter Pin Code'),
-              );
+  _sessionConfig.stream
+        .withLatestFrom(context.read<UserAccountBlocType>().states.currentUser,
+            (timeout, user) => (user: user, timeout: timeout))
+        .listen((value) {
+      if (_shouldNavigateToVerifyPinCode(value) && mounted) {
+        final AppRouter appRouter = context.read<AppRouter>();
+        final GoRouter router = appRouter.router;
+        final String verifyPinRoute = const VerifyPinCodeRoute().routeLocation;
+
+        if (!router.routeInformationProvider.value.uri
+            .toString()
+            .contains(verifyPinRoute)) {
+          router.push(
+            verifyPinRoute,
+          );
         }
       }
     });
+  }
+  
+  bool _shouldNavigateToVerifyPinCode(
+      ({SessionTimeoutState timeout, UserModel? user}) value) {
+    return (value.timeout == SessionTimeoutState.userInactivityTimeout ||
+            value.timeout == SessionTimeoutState.appFocusTimeout) &&
+        value.user?.hasPin == true;
   }{{/enable_pin_code}}
 
   {{#enable_change_language}}
@@ -215,42 +222,10 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
       return materialApp;
   }
 {{#enable_pin_code}}
-  Widget _buildMaterialAppWithPinCode() =>
-      RxBlocBuilder<CreatePinBlocType, bool>(
-         state: (bloc) => bloc.states.isPinCreated,
-         builder: (context, isPinCreated, bloc) =>
-             RxBlocBuilder<UserAccountBlocType, bool>(
-           state: (bloc) => bloc.states.loggedIn,
-           builder: (context, loggedIn, bloc) {
-             if (loggedIn.hasData) {
-               if (!loggedIn.data!) {
-                 // If user logs out, set stopListening
-                 context.read<UpdateAndVerifyPinBlocType>()
-                        .events
-                        .setSessionState(SessionState.stopListening);
-                 return _buildMaterialApp(context);
-               }
-               if ((loggedIn.data!) &&
-                   (isPinCreated.hasData && isPinCreated.data!)) {
-                 context
-                     .read<UpdateAndVerifyPinBlocType>()
-                     .events
-                     .setSessionState(SessionState.startListening);
-
-                 return SessionTimeoutManager(
-                     userActivityDebounceDuration: const Duration(seconds: 2),
-                     sessionConfig: _sessionConfig,
-                     sessionStateStream: context
-                         .read<UpdateAndVerifyPinBlocType>()
-                         .states
-                         .sessionValue,
-                     child: _buildMaterialApp(context));
-               }
-             }
-             return _buildMaterialApp(context);
-           },
-         ),
-       );{{/enable_pin_code}}
+    Widget _buildMaterialAppWithPinCode() => SessionTimeoutManager(
+      userActivityDebounceDuration: const Duration(seconds: 2),
+      sessionConfig: _sessionConfig,
+      child: _buildMaterialApp(context));{{/enable_pin_code}}
 
 Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',

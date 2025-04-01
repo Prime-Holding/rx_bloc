@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../../base/models/user_model.dart';
 import '../../models/pin_code_create_request.dart';
 import '../../models/pin_code_update_request.dart';
 import '../../models/pin_code_verify_request.dart';
@@ -19,7 +20,7 @@ abstract class PinCodeDataSource {
   /// [PinCodeCreateRequest]:
   /// - [pinCode]: The PIN code to be created.
   @POST('/api/pin/create')
-  Future<void> createPinCode(
+  Future<UserModel> createPinCode(
     @Body() PinCodeCreateRequest pinCodeCreateRequest,
   );
 
@@ -42,7 +43,7 @@ abstract class PinCodeDataSource {
   /// - [pinCode]: The new PIN code to be set.
   /// - [token]: The token needed to update the PIN code.
   @PATCH('/api/pin/update')
-  Future<void> updatePinCode(
+  Future<UserModel> updatePinCode(
     @Body() PinCodeUpdateRequest pinCodeWithToken,
   );
 }

@@ -1,3 +1,6 @@
+{{> licence.dart }}
+
+import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -6,7 +9,6 @@ import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
 import '../../lib_permissions/services/permissions_service.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 
 part 'onboarding_phone_confirm_bloc.rxb.g.dart';
@@ -28,7 +30,7 @@ abstract class OnboardingPhoneConfirmBlocStates {
 class OnboardingPhoneConfirmBloc extends $OnboardingPhoneConfirmBloc {
   OnboardingPhoneConfirmBloc(
     this._isOnboarding,
-    this._routerBloc,
+    this._router,
     this._permissionsService,
     this._coordinatorBloc,
   ) {
@@ -38,8 +40,8 @@ class OnboardingPhoneConfirmBloc extends $OnboardingPhoneConfirmBloc {
   /// Indicates if the user is onboarding
   final bool _isOnboarding;
 
-  /// The routing bloc used to navigate the user
-  final RouterBlocType _routerBloc;
+  /// GoRouter instance used for navigation
+  final GoRouter _router;
 
   /// Service used to handle permissions
   final PermissionsService _permissionsService;
@@ -64,9 +66,9 @@ class OnboardingPhoneConfirmBloc extends $OnboardingPhoneConfirmBloc {
 
     if (!_isOnboarding) {
       _coordinatorBloc.events.updatePhoneNumber();
-      return _routerBloc.events.go(const ProfileRoute());
+      return _router.go(const ProfileRoute().location);
     }
 
-    return _routerBloc.events.go(const DashboardRoute());
+    return _router.go(const DashboardRoute().routeLocation);
   }
 }

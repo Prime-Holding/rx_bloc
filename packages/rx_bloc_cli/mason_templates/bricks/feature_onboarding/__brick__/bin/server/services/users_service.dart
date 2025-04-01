@@ -40,6 +40,7 @@ class UsersService {
     String? phoneNumber,
     UserRole? role,
     ConfirmedCredentialsModel? confirmedCredentials,
+    bool? hasPin,
   }) =>
       _usersRepository.updateUser(
         userId,
@@ -47,6 +48,7 @@ class UsersService {
         phoneNumber: phoneNumber,
         role: role,
         confirmedCredentials: confirmedCredentials,
+        hasPin: hasPin,
       );
 
   void deleteUser(String id, UserRole role) => _usersRepository.deleteUser(id, role);
@@ -58,11 +60,24 @@ class UsersService {
     }
     final newUser = UserModel(
       id: generateRandomString(),
+      hasPin: false,
       email: email,
       phoneNumber: null,
       role: UserRole.tempUser,
       confirmedCredentials:
           ConfirmedCredentialsModel(email: false, phone: false),
+    );
+    createUser(newUser);
+    return newUser;
+  }
+   UserModel createRandomUser(String email, String password) {
+    final newUser = UserModel(
+      id: generateRandomString(),
+      hasPin: false,
+      email: email,
+      phoneNumber: '0123456789',
+      role: UserRole.user,
+      confirmedCredentials: ConfirmedCredentialsModel(email: true, phone: true),
     );
     createUser(newUser);
     return newUser;

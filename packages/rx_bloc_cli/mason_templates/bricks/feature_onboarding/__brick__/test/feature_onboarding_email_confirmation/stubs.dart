@@ -17,6 +17,7 @@ class Stubs {
   static final user = UserModel(
     id: id,
     email: email,
+    hasPin:false,
     phoneNumber: phone,
     role: UserRole.user,
     confirmedCredentials: confirmedCredentialsModel,

@@ -44,7 +44,6 @@ class MfaEditAddressBloc extends $MfaEditAddressBloc {
   MfaEditAddressBloc(this._service) {
     onAddressSaved.connect().addTo(_compositeSubscription);
     onUnlocked.connect().addTo(_compositeSubscription);
-
     // Demonstrates that listeners can be added to the [mfaService]
     // for handling generic-purpose side-effects.
     _service.onResponse.listen((event) {

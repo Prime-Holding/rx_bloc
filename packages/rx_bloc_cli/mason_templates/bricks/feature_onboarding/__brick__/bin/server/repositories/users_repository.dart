@@ -51,6 +51,7 @@ final Map<String, String> _unconfirmedPhoneNumbers = {};
     String? phoneNumber,
     UserRole? role,
     ConfirmedCredentialsModel? confirmedCredentials,
+    bool? hasPin,
   }) {
     final userIndex =
         _registeredUsers.indexWhere((element) => element.id == userId);
@@ -60,6 +61,7 @@ final Map<String, String> _unconfirmedPhoneNumbers = {};
       phoneNumber: phoneNumber ?? user.phoneNumber,
       role: role ?? user.role,
       confirmedCredentials: confirmedCredentials ?? user.confirmedCredentials,
+      hasPin: hasPin ?? user.hasPin,
     );
     return _registeredUsers[userIndex];
   }

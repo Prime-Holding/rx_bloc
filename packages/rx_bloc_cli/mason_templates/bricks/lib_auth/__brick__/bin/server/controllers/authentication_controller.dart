@@ -1,17 +1,23 @@
 {{> licence.dart }}
 
 import 'package:shelf/shelf.dart';
+import 'package:{{project_name}}/base/models/user_with_auth_token_model.dart';
 
 import '../services/authentication_service.dart';
+import '../services/users_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
 
 // ignore_for_file: cascade_invocations
 
 class AuthenticationController extends ApiController {
-  AuthenticationController(this._authenticationService);
+  AuthenticationController(
+    this._authenticationService,
+    this._usersService,
+  );
 
   final AuthenticationService _authenticationService;
+  final UsersService _usersService;
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -58,9 +64,8 @@ class AuthenticationController extends ApiController {
     return responseBuilder.buildOK(data: token.toJson());
   }
 
-  Future<Response> _authenticationHandler(Request request) async {
+ Future<Response> _authenticationHandler(Request request) async {
     final params = await request.bodyFromFormData();
-
     throwIfEmpty(
       params['username'],
       BadRequestException('The username cannot be empty.'),
@@ -70,8 +75,23 @@ class AuthenticationController extends ApiController {
       BadRequestException('The password cannot be empty.'),
     );
 
-    final token = _authenticationService.issueNewToken(null);
-    return responseBuilder.buildOK(data: token.toJson());
+    final email = params['username'];
+    final password = params['password'];
+
+    /// If user exists, use it, otherwise create a new one
+    final user = _usersService.getUserByEmail(email) ??
+        _usersService.createRandomUser(email, password);
+
+    /// Issue a new token for the user
+    final token = _authenticationService.issueNewToken(null, userId: user.id);
+
+    /// Return the user with the token
+    return responseBuilder.buildOK(
+      data: UserWithAuthTokenModel(
+        user: user,
+        authToken: token.toAuthTokenModel,
+      ).toJson(),
+    );
   }
 {{#enable_social_logins}}
   Future<Response> _authenticateWithAppleHandler(Request request) async {

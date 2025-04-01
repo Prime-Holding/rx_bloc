@@ -26,6 +26,7 @@ class Stubs {
     id: id,
     email: email,
     phoneNumber: phone,
+    hasPin:false,
     role: UserRole.user,
     confirmedCredentials: confirmedCredentialsModel,
   );

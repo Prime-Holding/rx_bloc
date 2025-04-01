@@ -56,7 +56,7 @@ class ServerDependencies{
     {{#enable_feature_counter}}
     ..addController(CountController())
     {{/enable_feature_counter}}{{#has_authentication}}
-    ..addController(AuthenticationController(di.get())){{/has_authentication}}
+    ..addController(AuthenticationController(di.get(), di.get())){{/has_authentication}}
     ..addController(PushNotificationsController())
     ..addController(PermissionsController({{#has_authentication}}di.get(),{{#enable_feature_onboarding}} di.get(){{/enable_feature_onboarding}}{{/has_authentication}}))
     {{#enable_feature_deeplinks}}
@@ -64,7 +64,7 @@ class ServerDependencies{
     {{/enable_feature_deeplinks}}{{#enable_mfa}}
     ..addController(MfaController(di.get()))
     {{/enable_mfa}}{{#enable_pin_code}}
-    ..addController(PinCodeController(di.get()))
+    ..addController(PinCodeController(di.get(), di.get()))
     {{/enable_pin_code}}{{#enable_feature_onboarding}}
     ..addController(UsersController(di.get(), di.get()))
     ..addController(RegistrationController(di.get(), di.get()))
