@@ -1,4 +1,9 @@
-{{> licence.dart }}
+// Copyright (c) 2023, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
@@ -43,7 +48,6 @@ class UserModel with EquatableMixin {
   /// Information about the confirmed credentials of the user
   final ConfirmedCredentialsModel confirmedCredentials;
 
-
   factory UserModel.tempUser() => UserModel(
         id: '',
         email: '',
@@ -55,7 +59,7 @@ class UserModel with EquatableMixin {
         ),
         hasPin: false,
       );
-      
+
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 

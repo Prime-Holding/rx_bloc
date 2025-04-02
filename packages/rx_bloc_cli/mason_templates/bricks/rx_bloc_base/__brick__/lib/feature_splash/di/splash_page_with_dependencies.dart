@@ -14,8 +14,8 @@ const SplashPageWithDependencies({super.key});
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<SplashBlocType>(
           create: (context) => SplashBloc(
-            context.read<AppRouter>().router,
-            context.read(),{{#has_authentication}}
+            context.read<AppRouter>().router,{{#enable_feature_deeplinks}}
+            context.read(),{{/enable_feature_deeplinks}}{{#has_authentication}}
             context.read(),{{/has_authentication}}
             context.read(),{{#enable_feature_onboarding}}
             context.read(),{{/enable_feature_onboarding}}

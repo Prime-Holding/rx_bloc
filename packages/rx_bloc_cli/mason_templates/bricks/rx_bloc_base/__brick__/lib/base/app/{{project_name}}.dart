@@ -23,8 +23,8 @@ import '../../lib_router/router.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
-import '../di/{{project_name}}_with_dependencies.dart';
-import '../models/user_model.dart';
+import '../di/{{project_name}}_with_dependencies.dart';{{#has_authentication}}
+import '../models/user_model.dart';{{/has_authentication}}
 import '../theme/design_system.dart';
 import '../theme/{{project_name}}_theme.dart';{{#enable_dev_menu}}
 import '../utils/dev_menu.dart';{{/enable_dev_menu}}

@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../models/user_model.dart';
+import '../../base/models/user_model.dart';
 import '../repositories/register_repository.dart';
 import '../repositories/url_launcher_repository.dart';
 import '../repositories/users_repository.dart';

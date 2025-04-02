@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import 'dart:async';import 'dart:developer';
+import 'dart:async';
 
 import 'package:go_router/go_router.dart';
 

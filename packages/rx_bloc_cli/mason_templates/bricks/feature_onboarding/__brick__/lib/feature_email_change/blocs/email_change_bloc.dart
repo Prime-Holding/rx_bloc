@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -7,7 +8,6 @@ import '../../../../base/extensions/error_model_extensions.dart';
 import '../../../../base/models/errors/error_model.dart';
 import '../../base/common_services/validators/credentials_validator_service.dart';
 import '../../base/models/user_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../services/email_change_service.dart';
 
@@ -49,17 +49,17 @@ abstract class EmailChangeBlocStates {
 @RxBloc()
 class EmailChangeBloc extends $EmailChangeBloc {
   EmailChangeBloc(
-    this.emailChangeService,
+    this._emailChangeService,
     this._validatorService,
-    this._routerBloc,
+    this._goRouter,
   ) {
     emailChanged.connect().addTo(_compositeSubscription);
     onRouting.connect().addTo(_compositeSubscription);
   }
 
-  final EmailChangeService emailChangeService;
+  final EmailChangeService _emailChangeService;
   final CredentialsValidatorService _validatorService;
-  final RouterBlocType _routerBloc;
+  final GoRouter _goRouter;
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
@@ -79,7 +79,7 @@ class EmailChangeBloc extends $EmailChangeBloc {
           (_, emailResult) => _validateEmail(emailResult))
       .whereNotNull()
       .switchMap(
-          (email) => emailChangeService.changeEmail(email).asResultStream())
+          (email) => _emailChangeService.changeEmail(email).asResultStream())
       .setResultStateHandler(this)
       .whereSuccess()
       .doOnData((user) => navigateToNextStep(user))
@@ -99,8 +99,8 @@ class EmailChangeBloc extends $EmailChangeBloc {
       .publishReplay(maxSize: 1);
 
   Future<void> _navigateToNextStep(UserModel user) async {
-    _routerBloc.events.pop();
-    _routerBloc.events.push(ConfirmEmailRoute(user.email));
+    _goRouter.pop();
+    await _goRouter.push(ConfirmEmailRoute(user.email).location);
   }
 
   String? _validateEmail(Result<String> emailResult) {

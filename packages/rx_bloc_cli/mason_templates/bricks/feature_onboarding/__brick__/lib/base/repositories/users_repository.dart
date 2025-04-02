@@ -1,11 +1,11 @@
 {{> licence.dart }}
 
 import '../../base/models/request_models/phone_number_request_model.dart';
+import '../../base/models/user_model.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/remote/users_remote_data_source.dart';
 import '../models/request_models/change_email_request_model.dart';
 import '../models/request_models/confirm_email_model.dart';
-import '../models/user_model.dart';
 
 class UsersRepository {
   UsersRepository(

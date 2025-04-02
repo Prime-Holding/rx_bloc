@@ -11,14 +11,14 @@ import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/ena
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/app_divider.dart';
-import '../../base/common_ui_components/app_list_tile.dart';
-import '../../base/models/user_model.dart';  {{#enable_feature_onboarding}}
-import '../../feature_email_change/di/email_change_page_with_dependencies.dart'; {{/enable_feature_onboarding}}
-import '../../lib_auth/blocs/user_account_bloc.dart';{{#enable_change_language}}
+import '../../base/common_ui_components/app_list_tile.dart';{{#has_authentication}}
+import '../../base/models/user_model.dart';{{/has_authentication}}  {{#enable_feature_onboarding}}
+import '../../feature_email_change/di/email_change_page_with_dependencies.dart'; {{/enable_feature_onboarding}}{{#has_authentication}}
+import '../../lib_auth/blocs/user_account_bloc.dart';{{/has_authentication}}{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
-import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}
-import '../../lib_router/router.dart';
+import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#has_authentication}}
+import '../../lib_router/router.dart';{{/has_authentication}}
 import '../blocs/profile_bloc.dart';
 import '../extensions/push_notifications_extensions.dart';{{#has_authentication}}
 import '../ui_components/logout_action_button.dart';{{/has_authentication}}
@@ -222,7 +222,7 @@ class ProfilePage extends StatelessWidget {
         ),
       );
     }
-  }
+  } {{/enable_pin_code}}
 
   void _onNotificationStateChanged(BuildContext context, Result<bool> state) {
     if (state is ResultSuccess<bool>) {
@@ -235,5 +235,4 @@ class ProfilePage extends StatelessWidget {
       );
     }
   }
-  {{/enable_pin_code}}
 }

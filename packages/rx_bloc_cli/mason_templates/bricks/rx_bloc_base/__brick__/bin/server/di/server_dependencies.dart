@@ -15,12 +15,12 @@ import '../controllers/users_controller.dart';{{/enable_feature_onboarding}}{{#h
 import '../repositories/auth_token_repository.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
 import '../repositories/country_codes_repository.dart';{{/enable_feature_onboarding}}{{#enable_pin_code}}
 import '../repositories/pin_code_repository.dart';{{/enable_pin_code}}
-import '../repositories/translations_repository.dart';{{#enable_feature_onboarding}}
-import '../repositories/users_repository.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
+import '../repositories/translations_repository.dart';{{#has_authentication}}
+import '../repositories/users_repository.dart';{{/has_authentication}}{{#has_authentication}}
 import '../services/authentication_service.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
 import '../services/country_codes_service.dart';{{/enable_feature_onboarding}}{{#enable_pin_code}}
-import '../services/pin_code_service.dart';{{/enable_pin_code}}{{#enable_feature_onboarding}}
-import '../services/users_service.dart';{{/enable_feature_onboarding}}
+import '../services/pin_code_service.dart';{{/enable_pin_code}}{{#has_authentication}}
+import '../services/users_service.dart';{{/has_authentication}}
 import '../utils/api_controller.dart';
 import '../utils/dependency_injector.dart';
 
@@ -33,11 +33,9 @@ class ServerDependencies{
     di.register(AuthenticationService(di.get()));{{/has_authentication}}
     di.register(TranslationsRepository());{{#enable_pin_code}}
     di.register(PinCodeRepository());
-    di.register(PinCodeService(di.get()));
-    {{/enable_pin_code}}{{#enable_feature_onboarding}}
+    di.register(PinCodeService(di.get()));{{/enable_pin_code}}{{#has_authentication}}
     di.register(UsersRepository());
-    di.register(UsersService(di.get()));
-
+    di.register(UsersService(di.get()));{{/has_authentication}}{{#enable_feature_onboarding}}
     di.register(CountryCodesRepository());
     di.register(CountryCodesService(di.get()));
     {{/enable_feature_onboarding}}

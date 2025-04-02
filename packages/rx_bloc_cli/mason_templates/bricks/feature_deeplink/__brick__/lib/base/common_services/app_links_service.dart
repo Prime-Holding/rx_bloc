@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../repositories/app_links_repository.dart';
 
 class AppLinksService {

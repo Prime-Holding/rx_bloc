@@ -4,8 +4,8 @@ import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
 
+import '..//utils/utilities.dart';
 import '../repositories/users_repository.dart';
-import '../utils/utilities.dart';
 
 class UsersService {
   UsersService(this._usersRepository);

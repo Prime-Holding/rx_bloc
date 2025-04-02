@@ -49,11 +49,11 @@ import '../../lib_translations/di/translations_dependencies.dart';{{/enable_remo
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
-import '../common_mappers/error_mappers/error_mapper.dart';
-import '../common_services/app_links_service.dart';{{#enable_feature_deeplinks}}
+import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
+import '../common_services/app_links_service.dart';
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
-import '../common_services/push_notifications_service.dart';
-import '../data_sources/local/app_links_data_source.dart';{{#enable_feature_onboarding}}
+import '../common_services/push_notifications_service.dart';{{#enable_feature_deeplinks}}
+import '../data_sources/local/app_links_data_source.dart';{{/enable_feature_deeplinks}}{{#enable_feature_onboarding}}
 import '../common_services/onboarding_service.dart';{{/enable_feature_onboarding}}
 import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_onboarding}}
@@ -65,8 +65,8 @@ import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
 import '../data_sources/remote/register_remote_data_source.dart';
-import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}
-import '../repositories/app_links_repository.dart';{{#enable_feature_counter}}
+import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+import '../repositories/app_links_repository.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}} {{#enable_feature_onboarding}}
 import '../repositories/open_mail_app_repository.dart'; {{/enable_feature_onboarding}}
