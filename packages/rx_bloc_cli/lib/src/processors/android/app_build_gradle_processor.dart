@@ -103,39 +103,45 @@ class AppBuildGradleProcessor extends StringProcessor {
     final eIndex = buffer.nthIndexOf('}', n: 2, start: sIndex) + 1;
 
     const content = '''
-    signingConfigs {
-        if (System.getenv("ANDROID_KEYSTORE_PATH") != null) {
-            create("release") {
-                storeFile = file(System.getenv("ANDROID_KEYSTORE_PATH"))
-                keyAlias = System.getenv("ANDROID_KEYSTORE_ALIAS")
-                keyPassword = System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-                storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            }
-        } else {
-            getByName("release") {
-                keyAlias = keystoreProperties["keyAlias"] as String
-                keyPassword = keystoreProperties["keyPassword"] as String
-                storeFile = if (keystoreProperties["storeFile"] != null) {
-                    file(keystoreProperties["storeFile"] as String)
-                } else {
-                    null
-                }
-                storePassword = keystoreProperties["storePassword"] as String
-            }
+signingConfigs {
+  create("release") {
+    val keystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
+
+    if (keystorePath != null) {
+      storeFile = file(keystorePath)
+      keyAlias = System.getenv("ANDROID_KEYSTORE_ALIAS")
+      keyPassword = System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+      storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+    } else {
+      val keystorePropertiesFile = rootProject.file("keystore.properties")
+
+      if (keystorePropertiesFile.exists()) {
+        val keystoreProperties = Properties().apply {
+          keystorePropertiesFile.inputStream().use { load(it) }
         }
+
+        keyAlias = keystoreProperties["keyAlias"] as String?
+        keyPassword = keystoreProperties["keyPassword"] as String?
+        storeFile = keystoreProperties["storeFile"]?.let { file(it) }
+        storePassword = keystoreProperties["storePassword"] as String?
+      } else {
+        println("Warning: keystore.properties file not found. Release signingConfig may be incomplete.")
+      }
+    }
+  }
+}
+
+buildTypes {
+    getByName("release") {
+        signingConfig = signingConfigs.getByName("release")
+        isMinifyEnabled = true
+        proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
     
-    buildTypes {
-        getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-        }
-        
-        getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
-        }
+    getByName("debug") {
+        signingConfig = signingConfigs.getByName("debug")
     }
+}
     ''';
 
     buffer.replaceRange(sIndex, eIndex, content);
