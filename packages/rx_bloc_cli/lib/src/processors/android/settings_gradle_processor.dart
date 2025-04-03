@@ -15,16 +15,28 @@ class SettingsGradle extends StringProcessor {
 
     _modifyValues(buffer);
 
+    if (args.analyticsEnabled) {
+      _applyAnalyticsOptions(buffer);
+    }
+
     return buffer.toString();
   }
 
   /// region Private methods
 
+  void _applyAnalyticsOptions(StringBuffer buffer) {
+    final (start, end) = buffer.getGradleSectionLastLineRange('plugins');
+    final content = '''
+\n    id("com.google.gms.google-services") version "4.3.15" apply false
+\n    id("com.google.firebase.crashlytics") version "2.8.1" apply false
+    ''';
+    buffer.replaceRange(start, end, content);
+  }
+
   void _modifyValues(
     StringBuffer buffer, {
     String gradlePluginVersion = kGradlePluginVersion,
   }) {
-
     void _replaceQuotedVal(
       String content,
       String replacement, {
@@ -41,5 +53,6 @@ class SettingsGradle extends StringProcessor {
 
     _replaceQuotedVal('com.android.application', gradlePluginVersion);
   }
+
   /// endregion
 }
