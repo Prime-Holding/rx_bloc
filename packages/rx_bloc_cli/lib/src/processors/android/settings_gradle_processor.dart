@@ -27,8 +27,8 @@ class SettingsGradle extends StringProcessor {
   void _applyAnalyticsOptions(StringBuffer buffer) {
     final (start, end) = buffer.getGradleSectionLastLineRange('plugins');
     final content = '''
-\n    id("com.google.gms.google-services") version "4.3.15" apply false
-\n    id("com.google.firebase.crashlytics") version "2.8.1" apply false
+\n    $googleServicesVersion
+    $firebaseCrashlyticsVersion
     ''';
     buffer.replaceRange(start, end, content);
   }
