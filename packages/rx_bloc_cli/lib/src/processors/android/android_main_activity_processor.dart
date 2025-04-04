@@ -30,8 +30,8 @@ class AndroidMainActivityProcessor extends StringProcessor {
       buffer.replaceRange(startIndex, startIndex + oldImport.length, newImport);
     }
 
-    const oldClass = 'class MainActivity: FlutterActivity()';
-    const newClass = 'class MainActivity: FlutterFragmentActivity()';
+    const oldClass = 'class MainActivity : FlutterActivity()';
+    const newClass = 'class MainActivity : FlutterFragmentActivity()';
     final classStartIndex = buffer.toString().indexOf(oldClass);
     if (classStartIndex != -1) {
       buffer.replaceRange(

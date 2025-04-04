@@ -44,7 +44,7 @@ class InfoPlistProcessor extends StringProcessor {
 
   void _updateInfoPlistDeepLink(StringBuffer buffer) {
     final _urlSchemes = '''<key>FlutterDeepLinkingEnabled</key>
-    <true/>
+    <false/>
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
