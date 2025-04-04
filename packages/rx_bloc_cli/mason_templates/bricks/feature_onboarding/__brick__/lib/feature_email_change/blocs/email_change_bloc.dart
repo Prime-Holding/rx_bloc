@@ -100,7 +100,7 @@ class EmailChangeBloc extends $EmailChangeBloc {
 
   Future<void> _navigateToNextStep(UserModel user) async {
     _goRouter.pop();
-    await _goRouter.push(ConfirmEmailRoute(user.email).location);
+    await _goRouter.go(ConfirmEmailRoute(user.email).location);
   }
 
   String? _validateEmail(Result<String> emailResult) {

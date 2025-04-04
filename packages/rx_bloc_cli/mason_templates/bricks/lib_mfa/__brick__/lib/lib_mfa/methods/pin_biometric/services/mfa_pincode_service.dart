@@ -2,7 +2,7 @@
 
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
-import '../../../../feature_pin_code/repository/pin_code_repository.dart';
+import '../../../../base/repositories/pin_code_repository.dart';
 import '../../../models/mfa_method_request.dart';
 import '../../../models/mfa_response.dart';
 import '../../../repositories/mfa_repository.dart';

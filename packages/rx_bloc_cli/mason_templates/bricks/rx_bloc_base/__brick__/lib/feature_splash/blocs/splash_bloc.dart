@@ -89,16 +89,16 @@ Future<void> _initiateAndRedirect() async {
     final user = await _onboardingService.getUser();
 
     if (!user.confirmedCredentials.email) {
-      unawaited(_router.pushReplacement(
+      _router.go(
         OnboardingEmailConfirmationRoute(user.email).routeLocation,
-      ));
+      );
     }
 
     if (!user.confirmedCredentials.phone) {
-      unawaited(_router.pushReplacement(
+      _router.go(
         RoutesPath.onboardingPhone,
-      ));
-    } {{/enable_feature_onboarding}}
+      );
+    }{{/enable_feature_onboarding}}
 
     _router.go(const DashboardRoute().routeLocation);
   }

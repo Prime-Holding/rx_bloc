@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
-import '../../base/data_sources/local/shared_preferences_instance.dart';
+import 'shared_preferences_instance.dart';
 
 /// You have to implement and provide a [BiometricsLocalDataSource], you can
 /// store the value of [_areBiometricsEnabled], for example in [SharedPreferences]

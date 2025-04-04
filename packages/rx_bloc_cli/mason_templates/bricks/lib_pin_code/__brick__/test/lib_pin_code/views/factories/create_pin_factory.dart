@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:{{project_name}}/feature_pin_code/models/create_pin_model.dart';
+import 'package:{{project_name}}/base/models/pin_code/create_pin_model.dart';
 import 'package:{{project_name}}/feature_pin_code/services/create_pin_code_service.dart';
 import 'package:{{project_name}}/feature_pin_code/views/set_pin_page.dart';
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';

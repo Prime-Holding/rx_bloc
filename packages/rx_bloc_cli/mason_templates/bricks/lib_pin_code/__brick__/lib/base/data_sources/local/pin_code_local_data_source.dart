@@ -10,7 +10,7 @@ class PinCodeLocalDataSource {
   final FlutterSecureStorage _storage;
   static const _storedPin = 'storedPin';
 
-/// Store the encrypted pin code in the secure storage
+  /// Store the encrypted pin code in the secure storage
   Future<void> storePin(String encryptedPin) async =>
       await _storage.write(key: _storedPin, value: encryptedPin);
 

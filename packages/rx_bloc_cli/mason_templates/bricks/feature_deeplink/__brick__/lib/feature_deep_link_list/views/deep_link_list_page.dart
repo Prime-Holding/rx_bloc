@@ -62,7 +62,7 @@ class DeepLinkListPage extends StatelessWidget {
                   itemCount: items.length,
                   itemBuilder: (BuildContext context, int index) => AppListTile(
                     featureTitle: items[index].name,
-                    onTap: () => GoRouter.of(context).push(
+                    onTap: () => GoRouter.of(context).go(
                       DeepLinkDetailsRoute(items[index].id).routeLocation,
                       extra: items[index],
                     ),

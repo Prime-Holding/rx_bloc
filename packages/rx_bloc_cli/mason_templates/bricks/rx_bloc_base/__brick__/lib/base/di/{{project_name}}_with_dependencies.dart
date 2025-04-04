@@ -13,12 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 
-import '../../feature_pin_code/data_source/pin_biometrics_local_data_source.dart';
-import '../../feature_pin_code/data_source/pin_code_local_data_source.dart';
-import '../../feature_pin_code/data_source/remote/pin_code_data_source.dart';
 import '../../feature_pin_code/repository/pin_biometrics_repository.dart';
-import '../../feature_pin_code/repository/pin_code_repository.dart';
-import '../../feature_pin_code/services/verify_pin_code_service.dart'; {{/enable_pin_code}}
+import '../../feature_pin_code/services/verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../feature_splash/services/splash_service.dart';{{#analytics}}
 import '../../lib_analytics/blocs/analytics_bloc.dart';
 import '../../lib_analytics/repositories/analytics_repository.dart';
@@ -55,14 +51,17 @@ import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
 import '../common_services/push_notifications_service.dart';{{#enable_feature_deeplinks}}
 import '../data_sources/local/app_links_data_source.dart';{{/enable_feature_deeplinks}}{{#enable_feature_onboarding}}
 import '../common_services/onboarding_service.dart';{{/enable_feature_onboarding}}
-import '../data_sources/local/notifications_local_data_source.dart';
+import '../data_sources/local/notifications_local_data_source.dart';{{#enable_pin_code}}
+import '../data_sources/local/pin_biometrics_local_data_source.dart';
+import '../data_sources/local/pin_code_local_data_source.dart';{{/enable_pin_code}}
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_onboarding}}
 import '../data_sources/local/url_launcher_local_data_source.dart';
 import '../data_sources/remote/country_codes_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
-import '../data_sources/remote/http_clients/plain_http_client.dart';
+import '../data_sources/remote/http_clients/plain_http_client.dart';{{#enable_pin_code}}
+import '../data_sources/remote/pin_code_data_source.dart';{{/enable_pin_code}}
 import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
 import '../data_sources/remote/register_remote_data_source.dart';
 import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
@@ -70,7 +69,8 @@ import '../repositories/app_links_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}} {{#enable_feature_onboarding}}
 import '../repositories/open_mail_app_repository.dart'; {{/enable_feature_onboarding}}
-import '../repositories/push_notification_repository.dart';{{#enable_feature_onboarding}}
+import '../repositories/push_notification_repository.dart';{{#enable_pin_code}}
+import '../repositories/pin_code_repository.dart';{{/enable_pin_code}}{{#enable_feature_onboarding}}
 import '../repositories/url_launcher_repository.dart';
 import '../repositories/register_repository.dart';
 import '../repositories/users_repository.dart';{{/enable_feature_onboarding}}

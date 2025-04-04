@@ -3,11 +3,11 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../../base/models/user_model.dart';
-import '../../models/pin_code_create_request.dart';
-import '../../models/pin_code_update_request.dart';
-import '../../models/pin_code_verify_request.dart';
-import '../../models/pin_code_verify_response.dart';
+import '../../models/pin_code/pin_code_create_request.dart';
+import '../../models/pin_code/pin_code_update_request.dart';
+import '../../models/pin_code/pin_code_verify_request.dart';
+import '../../models/pin_code/pin_code_verify_response.dart';
+import '../../models/user_model.dart';
 
 part 'pin_code_data_source.g.dart';
 

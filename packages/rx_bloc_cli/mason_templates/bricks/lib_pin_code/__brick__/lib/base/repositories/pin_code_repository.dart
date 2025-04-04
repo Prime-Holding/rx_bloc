@@ -2,11 +2,11 @@
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../base/models/user_model.dart';
-import '../data_source/pin_code_local_data_source.dart';
-import '../data_source/remote/pin_code_data_source.dart';
-import '../models/pin_code_create_request.dart';
-import '../models/pin_code_update_request.dart';
-import '../models/pin_code_verify_request.dart';
+import '../data_sources/local/pin_code_local_data_source.dart';
+import '../data_sources/remote/pin_code_data_source.dart';
+import '../models/pin_code/pin_code_create_request.dart';
+import '../models/pin_code/pin_code_update_request.dart';
+import '../models/pin_code/pin_code_verify_request.dart';
 
 class PinCodeRepository {
   PinCodeRepository(

@@ -103,13 +103,13 @@ class LoginBloc extends $LoginBloc {
       .setResultStateHandler(this)
       .whereSuccess()
       .emitAuthenticatedToCoordinator(_coordinatorBloc)
-      .doOnData((_) => _router.go(RoutesPath.dashboard))
+      .doOnData((_) => _router.go(const DashboardRoute().routeLocation))
       .startWith(false)
       .publish();
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$goToRegistrationEvent{{#enable_feature_onboarding}}
-     .doOnData((_) => _router.push(const OnboardingRoute().routeLocation)){{/enable_feature_onboarding}}
+     .doOnData((_) => _router.go(const OnboardingRoute().routeLocation)){{/enable_feature_onboarding}}
     .publishReplay(maxSize: 1);
 
 

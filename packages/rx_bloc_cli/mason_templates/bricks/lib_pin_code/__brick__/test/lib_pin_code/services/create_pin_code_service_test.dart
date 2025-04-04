@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:{{project_name}}/base/models/pin_code/create_pin_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
-import 'package:{{project_name}}/feature_pin_code/models/create_pin_model.dart';
-import 'package:{{project_name}}/feature_pin_code/repository/pin_code_repository.dart';
+import 'package:{{project_name}}/base/repositories/pin_code_repository.dart';
 import 'package:{{project_name}}/feature_pin_code/services/create_pin_code_service.dart';
 
 import '../stubs.dart';

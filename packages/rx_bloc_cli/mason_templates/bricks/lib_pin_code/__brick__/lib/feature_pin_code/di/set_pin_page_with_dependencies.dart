@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../models/create_pin_model.dart';
-
+import '../../base/models/pin_code/create_pin_model.dart';
 import '../services/create_pin_code_service.dart';
 import '../views/set_pin_page.dart';
+
 
 class SetPinPageWithDependencies extends StatelessWidget {
   const SetPinPageWithDependencies({

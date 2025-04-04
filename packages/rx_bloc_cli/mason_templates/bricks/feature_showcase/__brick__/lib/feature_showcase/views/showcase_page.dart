@@ -40,7 +40,7 @@ class ShowcasePage extends StatelessWidget {
                     featureTitle: feature.title,
                     featureSubtitle: feature.subtitle,
                      onTap: () =>
-                        GoRouter.of(context).push(feature.route.routeLocation),
+                        GoRouter.of(context).go(feature.route.routeLocation),
                     icon: feature.icon,
                   );
                 },

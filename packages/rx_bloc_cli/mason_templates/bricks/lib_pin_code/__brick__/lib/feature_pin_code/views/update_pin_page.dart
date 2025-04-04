@@ -11,10 +11,10 @@ import '../../app_extensions.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/extensions/error_model_translations.dart';
 
+import '../../base/models/pin_code/update_pin_model.dart';
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_router/router.dart';
 
-import '../models/update_pin_model.dart';
 import '../services/update_pin_code_service.dart';
 
 class UpdatePinPage extends StatelessWidget {

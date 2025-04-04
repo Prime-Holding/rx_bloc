@@ -9,7 +9,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';{{#enable_feature_deeplinks}}
-import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}
+import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_pin_code}}
+import '../base/models/pin_code/create_pin_model.dart';
+import '../base/models/pin_code/update_pin_model.dart';{{/enable_pin_code}}{{#enable_feature_counter}}
 import '../feature_counter/di/counter_page_with_dependencies.dart';{{/enable_feature_counter}}
 import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
@@ -31,8 +33,6 @@ import '../feature_onboarding_phone_confirmation/di/onboarding_phone_page_with_d
 import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}{{#enable_pin_code}}
 import '../feature_pin_code/di/set_pin_page_with_dependencies.dart';
 import '../feature_pin_code/di/update_pin_page_with_dependencies.dart';
-import '../feature_pin_code/models/create_pin_model.dart';
-import '../feature_pin_code/models/update_pin_model.dart';
 import '../feature_pin_code/views/verify_pin_code_page.dart';{{/enable_pin_code}}{{#enable_profile}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
 import '../feature_qr_scanner/di/qr_scanner_page_with_dependencies.dart';{{/enable_feature_qr_scanner}}{{#has_showcase}}

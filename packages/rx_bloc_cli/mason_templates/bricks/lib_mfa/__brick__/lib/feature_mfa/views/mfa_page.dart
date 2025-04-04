@@ -110,7 +110,7 @@ class MfaPage extends StatelessWidget {
         retryButtonText: context.l10n.featureMfa.pinNotSetButtonText,
         retryCallback: (_) {
           context.pop();
-          GoRouter.of(context).push(
+          GoRouter.of(context).go(
             const SetPinRoute().routeLocation,
           );
         },
