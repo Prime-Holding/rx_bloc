@@ -255,7 +255,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
         Provider<UrlLauncherLocalDataSource>(
           create: (context) => UrlLauncherLocalDataSource(),
-        ),{{/enable_feature_onboarding}}
+        ),{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+        Provider<AppLinksDataSource>(
+          create: (context) => AppLinksDataSource(),
+        ),{{/enable_feature_deeplinks}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -352,7 +355,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => OpenMailAppRepository(
             context.read(),
           ),
-        ),{{/enable_feature_onboarding}}
+        ),{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+        Provider<AppLinksRepository>(
+          create: (context) => AppLinksRepository(
+            context.read(),
+          ),
+        ),{{/enable_feature_deeplinks}}
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -432,14 +440,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
           ),
-        ),
-        Provider<AppLinksService>(
+        ),{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+         Provider<AppLinksService>(
           create: (context) => AppLinksService(
-            AppLinksRepository(
-              AppLinksDataSource(),
-            ),
+            context.read(),
           ),
-        ),{{/enable_feature_onboarding}}
+          dispose: (context, value) => value.dispose(),
+        ),{{/enable_feature_deeplinks}}
       ];
 
   List<SingleChildWidget> get _blocs => [ {{#has_authentication}}

@@ -98,10 +98,9 @@ class EmailChangeBloc extends $EmailChangeBloc {
       .setResultStateHandler(this)
       .publishReplay(maxSize: 1);
 
-  Future<void> _navigateToNextStep(UserModel user) async {
-    _goRouter.pop();
-    await _goRouter.go(ConfirmEmailRoute(user.email).location);
-  }
+  Future<void> _navigateToNextStep(UserModel user) =>
+     _goRouter.push(ConfirmEmailRoute(user.email).location);
+  
 
   String? _validateEmail(Result<String> emailResult) {
     if (emailResult is ResultSuccess) {

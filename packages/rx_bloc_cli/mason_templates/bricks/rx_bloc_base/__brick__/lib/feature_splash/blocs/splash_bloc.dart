@@ -75,7 +75,7 @@ Future<void> _initiateAndRedirect() async {
     }
 
     /// Listen for deep links from the app links service and navigate to the path
-    _appLinksService.uriLinkStream.listen((uri) {
+    _appLinksService.subscribeToUriLinks((uri) {
       _router.go(uri.path);
       return;
     }); {{/enable_feature_deeplinks}}{{#has_authentication}}
