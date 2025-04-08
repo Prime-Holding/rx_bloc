@@ -55,7 +55,7 @@ class ServerDependencies{
     {{#enable_feature_counter}}
     ..addController(CountController())
     {{/enable_feature_counter}}{{#has_authentication}}
-    ..addController(AuthenticationController(di.get(), di.get())){{/has_authentication}}
+    ..addController(AuthenticationController(di.get(),{{#enable_feature_onboarding}} di.get(){{/enable_feature_onboarding}})){{/has_authentication}}
     ..addController(PushNotificationsController())
     ..addController(PermissionsController({{#has_authentication}}di.get(),{{#enable_feature_onboarding}} di.get(){{/enable_feature_onboarding}}{{/has_authentication}}))
     {{#enable_feature_deeplinks}}
