@@ -194,7 +194,8 @@ if (keystorePropertiesFile.exists()) {
 
     if (args.pushNotificationsEnabled) {
       content +=
-          '    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")\n';
+          '    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:'
+          '2.1.4")\n';
     }
     content += '}';
 
