@@ -140,5 +140,20 @@ void main() {
 
       verify(logger.warn(any)).called(3);
     });
+
+    test('should return updated values if forgotten pass is enabled', () {
+      configureArgumentValues(Stub.forgottenPassEnabled);
+
+      verifyNever(logger.warn(any));
+      final generatorArguments = sut.readGeneratorArguments();
+
+      expect(generatorArguments.profileEnabled, isTrue);
+      expect(generatorArguments.loginEnabled, isTrue);
+      expect(generatorArguments.deepLinkEnabled, isTrue);
+      expect(generatorArguments.onboardingEnabled, isTrue);
+      expect(generatorArguments.forgottenPassword, isTrue);
+
+      verify(logger.warn(any)).called(4);
+    });
   });
 }

@@ -1,10 +1,11 @@
 {{> licence.dart }}
 
+{{#enable_feature_onboarding}}import 'package:crypto/crypto.dart';{{/enable_feature_onboarding}}
 import 'package:shelf/shelf.dart';
 import 'package:{{project_name}}/base/models/user_with_auth_token_model.dart';
 
-import '../services/authentication_service.dart';
-import '../services/users_service.dart';
+import '../services/authentication_service.dart';{{#enable_feature_onboarding}}
+import '../services/users_service.dart';{{/enable_feature_onboarding}}
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
 
@@ -12,12 +13,12 @@ import '../utils/server_exceptions.dart';
 
 class AuthenticationController extends ApiController {
   AuthenticationController(
-    this._authenticationService,
-    this._usersService,
+    this._authenticationService,{{#enable_feature_onboarding}}
+    this._usersService,{{/enable_feature_onboarding}}
   );
 
-  final AuthenticationService _authenticationService;
-  final UsersService _usersService;
+  final AuthenticationService _authenticationService;{{#enable_feature_onboarding}}
+  final UsersService _usersService;{{/enable_feature_onboarding}}
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -75,23 +76,22 @@ class AuthenticationController extends ApiController {
       BadRequestException('The password cannot be empty.'),
     );
 
-    final email = params['username'];
-    final password = params['password'];
+    {{#enable_feature_onboarding}}
+    /// If user is registered, check if the password is correct.
+    /// Otherwise, log them in with a temp user
+    if (_usersService.isUserRegistered(params['username'])) {
+      if (_usersService.getPasswordForUser(params['username']) !=
+          sha256.convert(params['password']!.codeUnits).toString()) {
+        throw BadRequestException('Invalid password');
+      }
 
-    /// If user exists, use it, otherwise create a new one
-    final user = _usersService.getUserByEmail(email) ??
-        _usersService.createRandomUser(email, password);
+      final userId = _usersService.getUserByEmail(params['username'])!.id;
+      final token = _authenticationService.issueNewToken(null, userId: userId);
+      return responseBuilder.buildOK(data: token.toJson());
+    }
 
-    /// Issue a new token for the user
-    final token = _authenticationService.issueNewToken(null, userId: user.id);
-
-    /// Return the user with the token
-    return responseBuilder.buildOK(
-      data: UserWithAuthTokenModel(
-        user: user,
-        authToken: token.toAuthTokenModel,
-      ).toJson(),
-    );
+    {{/enable_feature_onboarding}}final token = _authenticationService.issueNewToken(null);
+    return responseBuilder.buildOK(data: token.toJson());
   }
 {{#enable_social_logins}}
   Future<Response> _authenticateWithAppleHandler(Request request) async {

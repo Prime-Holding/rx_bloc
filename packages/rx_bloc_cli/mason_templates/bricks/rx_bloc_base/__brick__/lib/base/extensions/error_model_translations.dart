@@ -40,6 +40,10 @@ extension ErrorModelL10n on ErrorModel {
       return (this as InvalidUrlErrorModel).translate(context);
     }{{/enable_feature_onboarding}}
 
+    if (this is ErrorTimeoutModel) {
+      return (this as ErrorTimeoutModel).translate(context);
+    }
+
     return context.l10n.error.unknown;
   }
 }
@@ -79,3 +83,8 @@ extension ErrorServerGenericModelL10n on ErrorServerGenericModel {
 {{#enable_feature_onboarding}}extension _InvalidUrlErrorModelL10n on InvalidUrlErrorModel {
   String translate(BuildContext context) => context.l10n.error.invalidUrl;
 }{{/enable_feature_onboarding}}
+
+extension _ErrorTimeoutModelL10n on ErrorTimeoutModel {
+  String translate(BuildContext context) =>
+      message ?? context.l10n.error.server;
+}

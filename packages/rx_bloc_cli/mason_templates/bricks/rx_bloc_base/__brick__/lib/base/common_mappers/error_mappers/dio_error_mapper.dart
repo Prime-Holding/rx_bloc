@@ -46,6 +46,13 @@ extension _DioErrorMapper on DioException {
           {{#analytics}}errorLogDetails: errorLogDetails,{{/analytics}}
         );
       }
+
+      if (response!.statusCode == 429) {
+        return ErrorTimeoutModel(
+          message: response!.mapToString(),
+          {{#analytics}}errorLogDetails: errorLogDetails,{{/analytics}}
+        );
+      }
     }
 
     if (type == DioExceptionType.unknown && error is SocketException) {

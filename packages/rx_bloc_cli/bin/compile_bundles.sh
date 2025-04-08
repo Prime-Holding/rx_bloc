@@ -40,3 +40,4 @@ create_mason_bundle feature_qr_scanner
 create_mason_bundle feature_profile
 create_mason_bundle feature_showcase
 create_mason_bundle feature_onboarding
+create_mason_bundle feature_password_reset

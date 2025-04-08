@@ -33,7 +33,10 @@ class GeneratorArgumentsProvider {
     final projectConfiguration = _readProjectConfiguration();
     final authConfiguration = _readAuthConfiguration();
     final featureConfiguration = _readFeatureConfiguration(authConfiguration);
-    final showcaseConfiguration = _readShowcaseConfiguration(authConfiguration);
+    final showcaseConfiguration = _readShowcaseConfiguration(
+      authConfiguration,
+      featureConfiguration,
+    );
     return GeneratorArguments(
       outputDirectory: _outputDirectory,
       projectConfiguration: projectConfiguration,
@@ -89,6 +92,10 @@ class GeneratorArgumentsProvider {
     final onboardingEnabled =
         _reader.read<bool>(CreateCommandArguments.onboarding);
 
+    // Forgotten Password
+    final forgottenPassword =
+        _reader.read<bool>(CreateCommandArguments.forgottenPassword);
+
     if (mfaEnabled && !otpEnabled) {
       _logger
           .warn('Otp enabled, due to Multi-Factor Authentication requirement');
@@ -98,11 +105,14 @@ class GeneratorArgumentsProvider {
       _logger.warn('Pin code enabled, due to MFA feature requirement');
       pinCodeEnabled = true;
     }
-    if ((otpEnabled || pinCodeEnabled || onboardingEnabled) &&
+    if ((otpEnabled ||
+            pinCodeEnabled ||
+            onboardingEnabled ||
+            forgottenPassword) &&
         !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
-      _logger
-          .warn('Login enabled, due to OTP/PIN/Onboarding feature requirement');
+      _logger.warn(
+          'Login enabled, due to OTP/PIN/Onboarding/Forgotten Password feature requirement');
       loginEnabled = true;
     }
 
@@ -157,8 +167,18 @@ class GeneratorArgumentsProvider {
     var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
 
     // Onboarding/Registration
-    final onboardingEnabled =
+    var onboardingEnabled =
         _reader.read<bool>(CreateCommandArguments.onboarding);
+
+    // Forgotten Password
+    final forgottenPassword =
+        _reader.read<bool>(CreateCommandArguments.forgottenPassword);
+
+    if (forgottenPassword && !onboardingEnabled) {
+      _logger.warn(
+          'Onboarding enabled, due to Forgotten Password feature requirement');
+      onboardingEnabled = true;
+    }
 
     // Authentication
     final authenticationEnabled = authConfiguration.authenticationEnabled;
@@ -174,18 +194,20 @@ class GeneratorArgumentsProvider {
     }
 
     return FeatureConfiguration(
-        changeLanguageEnabled: changeLanguageEnabled,
-        remoteTranslationsEnabled: remoteTranslationsEnabled,
-        analyticsEnabled: analyticsEnabled,
-        pushNotificationsEnabled: pushNotificationsEnabled,
-        realtimeCommunicationEnabled: realtimeCommunicationEnabled,
-        devMenuEnabled: devMenuEnabled,
-        patrolTestsEnabled: patrolTestsEnabled,
-        cicdEnabled: cicdEnabled,
-        cicdGithubEnabled: cicdGithubEnabled,
-        cicdCodemagicEnabled: cicdCodemagicEnabled,
-        profileEnabled: profileEnabled,
-        onboardingEnabled: onboardingEnabled);
+      changeLanguageEnabled: changeLanguageEnabled,
+      remoteTranslationsEnabled: remoteTranslationsEnabled,
+      analyticsEnabled: analyticsEnabled,
+      pushNotificationsEnabled: pushNotificationsEnabled,
+      realtimeCommunicationEnabled: realtimeCommunicationEnabled,
+      devMenuEnabled: devMenuEnabled,
+      patrolTestsEnabled: patrolTestsEnabled,
+      cicdEnabled: cicdEnabled,
+      cicdGithubEnabled: cicdGithubEnabled,
+      cicdCodemagicEnabled: cicdCodemagicEnabled,
+      profileEnabled: profileEnabled,
+      onboardingEnabled: onboardingEnabled,
+      forgottenPassword: forgottenPassword,
+    );
   }
 
   /// endregion
@@ -193,15 +215,16 @@ class GeneratorArgumentsProvider {
   /// region Showcase Configuration
 
   ShowcaseConfiguration _readShowcaseConfiguration(
-      AuthConfiguration authConfiguration) {
+    AuthConfiguration authConfiguration,
+    FeatureConfiguration featureConfiguration,
+  ) {
     // Counter
     final counterEnabled = _reader.read<bool>(CreateCommandArguments.counter);
 
     // Deep links
     var deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
     // Onboarding/Registration
-    final onboardingEnabled =
-        _reader.read<bool>(CreateCommandArguments.onboarding);
+    final onboardingEnabled = featureConfiguration.onboardingEnabled;
     if (onboardingEnabled && !deepLinkEnabled) {
       _logger.warn('Deep links enabled, due to Onboarding feature requirement');
       deepLinkEnabled = true;

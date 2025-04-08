@@ -2,13 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:flutter_rx_bloc/rx_form.dart';
+import 'package:flutter_rx_bloc/rx_form.dart';{{#enable_forgotten_password}}
+import 'package:provider/provider.dart';{{/enable_forgotten_password}}
 import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
-import '../../base/extensions/error_model_field_translations.dart';
+import '../../base/extensions/error_model_field_translations.dart';{{#enable_forgotten_password}}
+import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';{{/enable_forgotten_password}}
 import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {
@@ -72,13 +75,17 @@ class _LoginFormState extends State<LoginForm> {
           ),
           SizedBox(height: context.designSystem.spacing.xss1),
           TextButton(
-            onPressed: () => showBlurredBottomSheet(
-              context: context,
-              builder: (BuildContext context) => MessagePanelWidget(
-                message: context.l10n.featureLogin.notImplementedMessage,
-                messageState: MessagePanelState.lessImportant,
-              ),
-            ),
+            onPressed: () => {{#enable_forgotten_password}}context
+                .read<RouterBlocType>()
+                .events
+                .push(PasswordResetRequestRoute()),{{/enable_forgotten_password}}{{^enable_forgotten_password}}
+              showBlurredBottomSheet(
+                context: context,
+                builder: (BuildContext context) => MessagePanelWidget(
+                  message: context.l10n.featureLogin.notImplementedMessage,
+                  messageState: MessagePanelState.lessImportant,
+                ),
+              ),{{/enable_forgotten_password}}
             child: Text(context.l10n.featureLogin.forgottenPassword),
           ),
           SizedBox(height: context.designSystem.spacing.xs1),

@@ -43,6 +43,7 @@ void main() {
       cicdCodemagicEnabled: true,
       profileEnabled: true,
       onboardingEnabled: true,
+      forgottenPassword: true,
     );
     showcaseConfiguration = ShowcaseConfiguration(
       counterEnabled: true,

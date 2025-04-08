@@ -162,7 +162,8 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]enable-feature-counter`        |                   `false`                   |                                     Enables Counter feature for the project                                     |
 | `--[no-]enable-feature-deeplinks`      |                   `false`                   |                                Enables Deep Links showcase flow for the project                                 |
 | `--[no-]enable-feature-widget-toolkit` |                   `false`                   |                         Enables widget_toolkit package showcase feature for the project                         |
-| `--[no-]enable-feature-onboarding`     |                   `true`                    |                      Integrate Onboarding/Registration functionality into our application                       |
+| `--[no-]enable-feature-onboarding`     |                   `false`                   |                      Integrate Onboarding/Registration functionality into our application                       |
+| `--[no-]enable-forgotten-password`     |                   `false`                   |                         Integrate Forgotten Password functionality into our application                         |
 | `--[no-]enable-login`                  |                   `true`                    |                   Integrate login with email and password functionality into our application                    |
 | `--[no-]enable-social-logins`          |                   `false`                   |            Integrate social login with Apple, Google and Facebook functionality into our application            |
 | `--[no-]enable-change-language`        |                   `true`                    |                                Enables changing of the language for the project                                 |

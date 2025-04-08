@@ -51,7 +51,8 @@ if [ "$project_type" == "all_enabled" ]; then
   --enable-mfa \
   --enable-feature-qr-scanner \
   --enable-profile \
-  --enable-feature-onboarding
+  --enable-feature-onboarding \
+  --enable-forgotten-password
 fi 
 
 if [ "$project_type" == "all_disabled" ]; then
@@ -73,8 +74,9 @@ if [ "$project_type" == "all_disabled" ]; then
   --no-enable-mfa \
   --no-enable-feature-qr-scanner \
   --no-enable-profile \
-  --no-enable-feature-onboarding
-fi 
+  --no-enable-feature-onboarding \
+  --no-enable-forgotten-password
+fi
 
 if [ "$project_type" == "without_showcase_features" ]; then
   # Generated project uses all features enabled except for showcase features
@@ -95,5 +97,6 @@ if [ "$project_type" == "without_showcase_features" ]; then
     --no-enable-feature-widget-toolkit \
     --no-enable-feature-deeplinks \
     --no-enable-feature-qr-scanner \
-    --no-enable-feature-onboarding
+    --no-enable-feature-onboarding \
+    --no-enable-forgotten-password
 fi

@@ -34,6 +34,8 @@ class DesignSystemIcons {
 
   final dashboardOutlined = Icons.dashboard_outlined;
 
+  final key = Icons.key;
+
   final Icon calculateIcon = _getIcon(Icons.calculate);
 
   {{#enable_feature_widget_toolkit}}

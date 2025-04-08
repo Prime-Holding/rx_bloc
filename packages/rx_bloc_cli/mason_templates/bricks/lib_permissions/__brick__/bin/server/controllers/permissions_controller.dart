@@ -52,7 +52,10 @@ class PermissionsController extends ApiController {
         'DeepLinksRoute': false,
         'DeepLinkDetailsRoute': false,{{/enable_feature_deeplinks}}{{#enable_feature_qr_scanner}}
         'QrCodeRoute': false, {{/enable_feature_qr_scanner}}{{#enable_feature_otp}}
-        'OtpRoute': false, {{/enable_feature_otp}}
+        'OtpRoute': false, {{/enable_feature_otp}}{{#enable_forgotten_password}}
+        'PasswordResetRoute': true,
+        'PasswordResetConfirmationRoute': true,
+        'PasswordResetRequestRoute': true,{{/enable_forgotten_password}}
       });
     }
 
@@ -83,7 +86,10 @@ class PermissionsController extends ApiController {
       'DeepLinksRoute': true,
       'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}{{#enable_feature_qr_scanner}}
       'QrCodeRoute': true, {{/enable_feature_qr_scanner}}{{#enable_feature_otp}}
-      'OtpRoute': true, {{/enable_feature_otp}}
+      'OtpRoute': true, {{/enable_feature_otp}}{{#enable_forgotten_password}}
+      'PasswordResetRoute': true,
+      'PasswordResetConfirmationRoute': true,
+      'PasswordResetRequestRoute': true,{{/enable_forgotten_password}}
     });
   }
 }
