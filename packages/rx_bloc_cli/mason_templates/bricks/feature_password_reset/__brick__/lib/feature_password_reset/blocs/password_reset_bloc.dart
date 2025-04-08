@@ -5,10 +5,10 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../base/extensions/error_model_extensions.dart';
 import '../../../../base/models/errors/error_model.dart';
+import '../../app_extensions.dart';
 import '../../base/app/config/app_constants.dart';
 import '../../base/common_services/validators/credentials_validator_service.dart';
 import '../../feature_password_reset_request/services/password_reset_request_service.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../services/password_reset_service.dart';
 
@@ -60,7 +60,7 @@ class PasswordResetBloc extends $PasswordResetBloc {
     this._passwordResetRequestService,
     this._passwordResetService,
     this._validatorService,
-    this._routerBloc,
+    this._router,
     this._token,
     this._email,
   ) {
@@ -72,7 +72,7 @@ class PasswordResetBloc extends $PasswordResetBloc {
   final PasswordResetRequestService _passwordResetRequestService;
   final PasswordResetService _passwordResetService;
   final CredentialsValidatorService _validatorService;
-  final RouterBlocType _routerBloc;
+  final GoRouter _router;
 
   /// The token received from the Email link, to be checked by the backend
   final String _token;
@@ -87,7 +87,7 @@ class PasswordResetBloc extends $PasswordResetBloc {
 
   @override
   ConnectableStream<bool> _mapToIsResetSuccessfulState() => _$resetPasswordEvent
-      .throttleTime(actionDebounceDuration)
+      .throttleTime(kBackpressureDuration)
       .withLatestFrom<Result<String>, String?>(
           password.asResultStream(),
           (_, passwordResult) => _validateAndReturnPassword(
@@ -134,6 +134,6 @@ class PasswordResetBloc extends $PasswordResetBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$goToLoginEvent
-      .doOnData((_) => _routerBloc.events.go(const LoginRoute()))
+      .doOnData((_) => _router.go(const LoginRoute().location))
       .publishReplay(maxSize: 1);
 }
