@@ -4,8 +4,8 @@
 import 'package:shelf/shelf.dart';
 import 'package:{{project_name}}/base/models/user_with_auth_token_model.dart';
 
-import '../services/authentication_service.dart';{{#enable_feature_onboarding}}
-import '../services/users_service.dart';{{/enable_feature_onboarding}}
+import '../services/authentication_service.dart';
+import '../services/users_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
 
@@ -13,12 +13,12 @@ import '../utils/server_exceptions.dart';
 
 class AuthenticationController extends ApiController {
   AuthenticationController(
-    this._authenticationService,{{#enable_feature_onboarding}}
-    this._usersService,{{/enable_feature_onboarding}}
+    this._authenticationService,
+    this._usersService,
   );
 
-  final AuthenticationService _authenticationService;{{#enable_feature_onboarding}}
-  final UsersService _usersService;{{/enable_feature_onboarding}}
+  final AuthenticationService _authenticationService;
+  final UsersService _usersService;
 
   @override
   void registerRequests(WrappedRouter router) {
