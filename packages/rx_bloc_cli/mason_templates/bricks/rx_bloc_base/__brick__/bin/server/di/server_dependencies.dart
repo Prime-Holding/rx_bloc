@@ -70,7 +70,7 @@ class ServerDependencies{
     ..addController(CountryCodesController(di.get()))
     {{/enable_feature_onboarding}}{{#enable_forgotten_password}}
     ..addController(PasswordResetController(di.get()));{{/enable_forgotten_password}}
-    ;
+  ;
 
     /// TODO: Add your controllers here
 
