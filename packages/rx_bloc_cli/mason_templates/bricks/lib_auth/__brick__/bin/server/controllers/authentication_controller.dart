@@ -97,7 +97,6 @@ class AuthenticationController extends ApiController {
         ).toJson(),
       );
     }
-    }
 
     {{/enable_feature_onboarding}}
     
@@ -111,7 +110,6 @@ class AuthenticationController extends ApiController {
         authToken: token.toAuthTokenModel,
       ).toJson(),
     );
-    return responseBuilder.buildOK(data: token.toJson());
   }
 {{#enable_social_logins}}
   Future<Response> _authenticateWithAppleHandler(Request request) async {
