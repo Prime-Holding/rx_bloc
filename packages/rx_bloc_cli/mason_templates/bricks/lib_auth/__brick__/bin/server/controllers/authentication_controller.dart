@@ -85,12 +85,32 @@ class AuthenticationController extends ApiController {
         throw BadRequestException('Invalid password');
       }
 
-      final userId = _usersService.getUserByEmail(params['username'])!.id;
-      final token = _authenticationService.issueNewToken(null, userId: userId);
-      return responseBuilder.buildOK(data: token.toJson());
+      final user = _usersService.getUserByEmail(params['username']);
+      if (user == null) {
+        throw BadRequestException('User not found');
+      }
+      final token = _authenticationService.issueNewToken(null, userId: user.id);
+      return responseBuilder.buildOK(
+        data: UserWithAuthTokenModel(
+          user: user,
+          authToken: token.toAuthTokenModel,
+        ).toJson(),
+      );
+    }
     }
 
-    {{/enable_feature_onboarding}}final token = _authenticationService.issueNewToken(null);
+    {{/enable_feature_onboarding}}
+    
+    final token = _authenticationService.issueNewToken(null);
+
+    final user =
+        _usersService.createRandomUser(params['username'], params['password']);
+    return responseBuilder.buildOK(
+      data: UserWithAuthTokenModel(
+        user: user,
+        authToken: token.toAuthTokenModel,
+      ).toJson(),
+    );
     return responseBuilder.buildOK(data: token.toJson());
   }
 {{#enable_social_logins}}

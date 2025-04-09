@@ -75,8 +75,8 @@ class PasswordResetRequestBloc extends $PasswordResetRequestBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$navigateToNextStepEvent
-      .map((email) =>
-          _router.push(PasswordResetConfirmationRoute(email).location))
+      .doOnData(
+          (email) => _router.go(PasswordResetConfirmationRoute(email).location))
       .publishReplay(maxSize: 1);
 
   @override
