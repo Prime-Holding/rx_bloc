@@ -9,9 +9,7 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: SplashPageWithDependencies(
-          redirectToLocation: state.uri.queryParameters['from'],
-        ),
+        child: SplashPageWithDependencies(),
       );
 
   @override
@@ -65,6 +63,9 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
             TypedGoRoute<FeatureOtpRoute>(
               path: RoutesPath.showcaseOtp,
             ),{{/enable_feature_otp}}
+            TypedGoRoute<NotificationsRoute>(
+              path: RoutesPath.notifications,
+            ),
           ],
         ),
       ],
@@ -75,17 +76,6 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<ProfileRoute>(
           path: RoutesPath.profile,
-          routes: [
-            TypedGoRoute<NotificationsRoute>(
-              path: RoutesPath.notifications,
-            ),{{#enable_pin_code}}
-            TypedGoRoute<CreatePinRoute>(
-              path: RoutesPath.createPin,
-            ),
-            TypedGoRoute<UpdatePinRoute>(
-              path: RoutesPath.updatePin,
-            ),{{/enable_pin_code}}
-          ],
         ),
       ],
     ),{{/enable_profile}}

@@ -29,8 +29,10 @@ class PermissionsController extends ApiController {
     if (!headers.containsKey(AuthenticationService.authHeader) {{#enable_feature_onboarding}} || _usersService.isTempUser(_authenticationService.getUserIdFromAuthHeader(headers)) {{/enable_feature_onboarding}}) {
       return responseBuilder.buildOK(data: { {{#enable_mfa}}
         'MfaRoute': false,{{/enable_mfa}}{{#enable_pin_code}}
-        'CreatePinRoute': false,
-        'UpdatePinRoute': false,{{/enable_pin_code}}
+        'SetPinCodeRoute': false,
+        'ConfirmPinCodeRoute': false,
+        'UpdatePinCodeRoute': false,
+        'VerifyPinCodeRoute': false,{{/enable_pin_code}}
         'DashboardRoute': false,{{#enable_profile}}
         'ProfileRoute': false,{{/enable_profile}}
         'SplashRoute': true,{{#enable_feature_counter}}
@@ -48,7 +50,9 @@ class PermissionsController extends ApiController {
         'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
         'EnterMessageRoute': false,
         'DeepLinksRoute': false,
-        'DeepLinkDetailsRoute': false,{{/enable_feature_deeplinks}}{{#enable_forgotten_password}}
+        'DeepLinkDetailsRoute': false,{{/enable_feature_deeplinks}}{{#enable_feature_qr_scanner}}
+        'QrCodeRoute': false, {{/enable_feature_qr_scanner}}{{#enable_feature_otp}}
+        'OtpRoute': false, {{/enable_feature_otp}}{{#enable_forgotten_password}}
         'PasswordResetRoute': true,
         'PasswordResetConfirmationRoute': true,
         'PasswordResetRequestRoute': true,{{/enable_forgotten_password}}
@@ -59,8 +63,10 @@ class PermissionsController extends ApiController {
 
     return responseBuilder.buildOK(data: { {{#enable_mfa}}
       'MfaRoute': true,{{/enable_mfa}}{{#enable_pin_code}}
-      'CreatePinRoute': true,
-      'UpdatePinRoute': true,{{/enable_pin_code}}
+      'SetPinCodeRoute': true,
+      'ConfirmPinCodeRoute': true,
+      'UpdatePinCodeRoute': true,
+      'VerifyPinCodeRoute': true,{{/enable_pin_code}}
       'DashboardRoute': true,{{#enable_profile}}
       'ProfileRoute': true,{{/enable_profile}}
       'SplashRoute': true,{{#enable_feature_counter}}
@@ -78,7 +84,9 @@ class PermissionsController extends ApiController {
       'OnboardingPhoneConfirmRoute' : true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
-      'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}{{#enable_forgotten_password}}
+      'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}{{#enable_feature_qr_scanner}}
+      'QrCodeRoute': true, {{/enable_feature_qr_scanner}}{{#enable_feature_otp}}
+      'OtpRoute': true, {{/enable_feature_otp}}{{#enable_forgotten_password}}
       'PasswordResetRoute': true,
       'PasswordResetConfirmationRoute': true,
       'PasswordResetRequestRoute': true,{{/enable_forgotten_password}}

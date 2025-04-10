@@ -1,15 +1,17 @@
 {{> licence.dart }}
 
+import 'dart:async';
+
+import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-{{#enable_feature_onboarding}}
+import '../../base/app/config/app_constants.dart';{{#enable_feature_deeplinks}}
+import '../../base/common_services/app_links_service.dart';{{/enable_feature_deeplinks}}{{#enable_feature_onboarding}}
 import '../../base/common_services/onboarding_service.dart';{{/enable_feature_onboarding}}
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';{{#has_authentication}}
-import '../../lib_auth/services/auth_service.dart';{{/has_authentication}}{{#enable_pin_code}}
-import '../../lib_pin_code/models/pin_code_arguments.dart';
-import '../../lib_pin_code/services/create_pin_code_service.dart';{{/enable_pin_code}}
-import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_auth/services/auth_service.dart';
+import '../../lib_router/models/routes_path.dart';{{/has_authentication}}
 import '../../lib_router/router.dart';
 import '../services/splash_service.dart';
 
@@ -37,66 +39,68 @@ abstract class SplashBlocStates {
 @RxBloc()
 class SplashBloc extends $SplashBloc {
   SplashBloc(
-    RouterBlocType navigationBloc,
-    SplashService splashService,{{#has_authentication}}
-    AuthService authService,{{/has_authentication}}{{#enable_feature_onboarding}}
-    OnboardingService onboardingService,{{/enable_feature_onboarding}}{{#enable_pin_code}}
-    CreatePinCodeService pinCodeService,{{/enable_pin_code}} {
-    String? redirectLocation,
-  })  : _navigationBloc = navigationBloc,
-        _splashService = splashService,{{#has_authentication}}
-        _authService = authService,{{/has_authentication}}{{#enable_feature_onboarding}}
-        _onboardingService = onboardingService,{{/enable_feature_onboarding}}{{#enable_pin_code}}
-        _pinCodeService = pinCodeService,{{/enable_pin_code}}
-        _redirectLocation = redirectLocation {
+    this._router,
+    this._splashService,{{#has_authentication}}
+    this._authService,{{/has_authentication}}{{#enable_feature_onboarding}}
+    this._onboardingService,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+    this._appLinksService,{{/enable_feature_deeplinks}}
+  ) {
     errors.connect().addTo(_compositeSubscription);
+
     _$initializeAppEvent
-        .throttleTime(const Duration(seconds: 1))
+        .throttleTime(kBackpressureDuration)
         .startWith(null)
-        .switchMap((_) => initializeAppAndNavigate().asResultStream())
+        .switchMap((_) => _initiateAndRedirect().asResultStream())
         .setResultStateHandler(this)
         .publishReplay(maxSize: 1)
         .connect()
         .addTo(_compositeSubscription);
   }
 
-  final RouterBlocType _navigationBloc;
+  final GoRouter _router;
   final SplashService _splashService;{{#has_authentication}}
   final AuthService _authService;{{/has_authentication}}{{#enable_feature_onboarding}}
-  final OnboardingService _onboardingService;{{/enable_feature_onboarding}}
-  final String? _redirectLocation;{{#enable_pin_code}}
-  final CreatePinCodeService _pinCodeService; {{/enable_pin_code}}
+  final OnboardingService _onboardingService;{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
+  final AppLinksService _appLinksService;{{/enable_feature_deeplinks}}
 
-  Future<void> initializeAppAndNavigate() async {
-    await _splashService.initializeApp();
-
-    if (_redirectLocation != null) {
-      _navigationBloc.events.goToLocation(_redirectLocation!);
-    } else { {{^has_authentication}}
-      _navigationBloc.events.go(const DashboardRoute());{{/has_authentication}}{{#has_authentication}}
-
-      if (await _authService.isAuthenticated()) {
-        {{#enable_feature_onboarding}}final user = await _onboardingService.getMyUser();
-
-        if (!user.confirmedCredentials.email) {
-          return _navigationBloc.events
-              .pushReplace(OnboardingEmailConfirmationRoute(user.email));
-        }
-
-        if (!user.confirmedCredentials.phone) {
-          return _navigationBloc.events
-              .pushReplace(const OnboardingPhoneRoute());
-        }
-
-        {{/enable_feature_onboarding}}{{#enable_pin_code}}if(await _pinCodeService.getPinCode() != null) {
-          return _navigationBloc.events.go(const VerifyPinCodeRoute(),
-              extra: const PinCodeArguments(title: 'Enter Pin Code'));
-        }{{/enable_pin_code}}
-
-        return _navigationBloc.events.go(const DashboardRoute());
-      }
-      return _navigationBloc.events.go(const LoginRoute());{{/has_authentication}}
+Future<void> _initiateAndRedirect() async {
+    //1. Initialize the app before redirecting
+    await _splashService.initializeApp(); {{#enable_feature_deeplinks}}
+    //2. If the app is cold-started from a deeplink, we don't want to redirect
+    final initialLink = await _appLinksService.getInitialLink();
+    if (initialLink != null) {
+      // navigate to the path
+      _router.go(initialLink.path);
+      return;
     }
+
+    /// Listen for deep links from the app links service and navigate to the path
+    _appLinksService.subscribeToUriLinks((uri) {
+      _router.go(uri.path);
+      return;
+    }); {{/enable_feature_deeplinks}}{{#has_authentication}}
+
+    //3. Redirect the user to the appropriate screen
+    if (!await _authService.isAuthenticated()) {
+      _router.go(RoutesPath.login);
+      return;
+    } {{/has_authentication}}{{#enable_feature_onboarding}}
+
+    final user = await _onboardingService.getUser();
+
+    if (!user.confirmedCredentials.email) {
+      _router.go(
+        OnboardingEmailConfirmationRoute(user.email).routeLocation,
+      );
+    }
+
+    if (!user.confirmedCredentials.phone) {
+      _router.go(
+        RoutesPath.onboardingPhone,
+      );
+    }{{/enable_feature_onboarding}}
+
+    _router.go(const DashboardRoute().routeLocation);
   }
 
   @override

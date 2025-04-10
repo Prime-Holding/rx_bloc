@@ -22,6 +22,10 @@ class OpenMailAppRepository {
       return 'message://';
     }
 
+    if (Platform.isAndroid) {
+      return Uri(scheme: 'googlegmail').toString();
+    }
+
     return 'mailto:';
   }
 }

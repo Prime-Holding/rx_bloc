@@ -17,7 +17,7 @@ abstract class UsersRemoteDataSource {
 
   /// Gets the existing user. Currently used to resume onboarding
   @GET('/api/users/me')
-  Future<UserModel> getMyUser();
+  Future<UserModel> getUser();
 
   @PATCH('/api/users/me')
   Future<UserModel> submitPhoneNumber(

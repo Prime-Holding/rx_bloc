@@ -25,9 +25,7 @@ class FeatureMfaRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-@TypedGoRoute<MfaOtpRoute>(
-  path: RoutesPath.mfaOtp,
-)
+@TypedGoRoute<MfaOtpRoute>(path: RoutesPath.mfaOtp)
 class MfaOtpRoute extends GoRouteData
     with EquatableMixin
     implements RouteDataModel {
@@ -49,7 +47,7 @@ class MfaOtpRoute extends GoRouteData
       );
 
   @override
-  String get permissionName => RouteModel.mfa.permissionName;
+  String get permissionName => RouteModel.mfaOtp.permissionName;
 
   @override
   String get routeLocation => location;
@@ -58,15 +56,11 @@ class MfaOtpRoute extends GoRouteData
   List<Object?> get props => [transactionId, routeLocation];
 }
 
-@TypedGoRoute<MfaPinBiometricsRoute>(
-  path: RoutesPath.mfaPinBiometrics,
-)
+@TypedGoRoute<MfaPinBiometricsRoute>(path: RoutesPath.mfaPinBiometrics)
 class MfaPinBiometricsRoute extends GoRouteData
     with EquatableMixin
     implements RouteDataModel {
-  const MfaPinBiometricsRoute(
-    this.transactionId,
-  );
+  const MfaPinBiometricsRoute(this.transactionId);
 
   final String transactionId;
 
@@ -81,7 +75,7 @@ class MfaPinBiometricsRoute extends GoRouteData
       );
 
   @override
-  String get permissionName => RouteModel.mfa.permissionName;
+  String get permissionName => RouteModel.mfaPinBiometrics.permissionName;
 
   @override
   String get routeLocation => location;

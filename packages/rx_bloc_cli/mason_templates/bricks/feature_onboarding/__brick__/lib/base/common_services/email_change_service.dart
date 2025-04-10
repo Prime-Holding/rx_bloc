@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../models/user_model.dart';
+import '../../base/models/user_model.dart';
 import '../repositories/register_repository.dart';
 import '../repositories/url_launcher_repository.dart';
 import '../repositories/users_repository.dart';
@@ -25,7 +25,7 @@ class EmailChangeService extends OnboardingService {
 
   /// Gets the existing user. Currently used to resume onboarding
   @override
-  Future<UserModel> getMyUser() => _usersRepository.getMyUser();
+  Future<UserModel> getUser() => _usersRepository.getUser();
 
   /// Resends the confirmation email to the user
   @override

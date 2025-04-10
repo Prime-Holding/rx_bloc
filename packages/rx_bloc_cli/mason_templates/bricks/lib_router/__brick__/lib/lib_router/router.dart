@@ -9,7 +9,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';{{#enable_feature_deeplinks}}
-import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}
+import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_pin_code}}
+import '../base/models/pin_code/create_pin_model.dart';
+import '../base/models/pin_code/update_pin_model.dart';{{/enable_pin_code}}{{#enable_feature_counter}}
 import '../feature_counter/di/counter_page_with_dependencies.dart';{{/enable_feature_counter}}
 import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
@@ -31,7 +33,10 @@ import '../feature_onboarding_phone_confirmation/di/onboarding_phone_page_with_d
 import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}{{#enable_forgotten_password}}
 import '../feature_password_reset/di/password_reset_page_with_dependencies.dart';
 import '../feature_password_reset_confirmation/di/password_reset_confirmation_page_with_dependencies.dart';
-import '../feature_password_reset_request/di/password_reset_request_page_with_dependencies.dart';{{/enable_forgotten_password}}{{#enable_profile}}
+import '../feature_password_reset_request/di/password_reset_request_page_with_dependencies.dart';{{/enable_forgotten_password}}{{#enable_pin_code}}
+import '../feature_pin_code/di/set_pin_page_with_dependencies.dart';
+import '../feature_pin_code/di/update_pin_page_with_dependencies.dart';
+import '../feature_pin_code/views/verify_pin_code_page.dart';{{/enable_pin_code}}{{#enable_profile}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
 import '../feature_qr_scanner/di/qr_scanner_page_with_dependencies.dart';{{/enable_feature_qr_scanner}}{{#has_showcase}}
 import '../feature_showcase/views/showcase_page.dart';{{/has_showcase}}
@@ -41,17 +46,14 @@ import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/e
 import '../lib_mfa/methods/otp/di/mfa_otp_page_with_dependencies.dart';
 import '../lib_mfa/methods/pin_biometric/di/mfa_pin_biometrics_page_with_dependencies.dart';
 import '../lib_mfa/models/mfa_response.dart';{{/enable_mfa}}
-import '../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
-import '../lib_pin_code/di/update_pin_page_with_dependencies.dart';
-import '../lib_pin_code/models/pin_code_arguments.dart';
-import '../lib_pin_code/views/create_pin_page.dart';
-import '../lib_pin_code/views/verify_pin_code_page.dart'; {{/enable_pin_code}}
+import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
-part 'router.g.dart'; {{#enable_feature_onboarding}}
+part 'router.g.dart'; {{#enable_mfa}}
+part 'routes/mfa_routes.dart';{{/enable_mfa}}{{#enable_feature_onboarding}}
 part 'routes/change_email_routes.dart';
 part 'routes/change_phone_number_routes.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
 part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_forgotten_password}}
@@ -59,8 +61,7 @@ part 'routes/password_reset_routes.dart';{{/enable_forgotten_password}}{{#enable
 part 'routes/profile_routes.dart';{{/enable_profile}}{{#enable_feature_onboarding}}
 part 'routes/registration_routes.dart';{{/enable_feature_onboarding}}
 part 'routes/routes.dart';{{#has_showcase}}
-part 'routes/showcase_routes.dart';{{/has_showcase}}{{#enable_mfa}}
-part 'routes/mfa_routes.dart';{{/enable_mfa}}
+part 'routes/showcase_routes.dart';{{/has_showcase}}
 
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].
@@ -77,24 +78,13 @@ class AppRouter {
   static final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
 
-  late final _GoRouterRefreshStream _refreshListener =
-    _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
-  {{#enable_feature_otp}}coordinatorBloc.states.isOtpConfirmed,
-    {{/enable_feature_otp}}{{#enable_pin_code}}
-    coordinatorBloc.states.isPinCodeConfirmed, {{/enable_pin_code}}
-  );
-
-  {{#enable_pin_code}}
-  String? previousLocation; {{/enable_pin_code}}
-
   GoRouter get router => _goRouter;
 
   late final GoRouter _goRouter = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: const SplashRoute().location,
+    initialLocation: RoutesPath.splash,
     routes: $appRoutes,
     redirect: {{^analytics}}_pageRedirections{{/analytics}}{{#analytics}}_pageRedirectionsWithAnalytics{{/analytics}},
-    refreshListenable: _refreshListener,
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,
       child: ErrorPage(error: state.error),
@@ -115,125 +105,37 @@ class AppRouter {
   /// This method contains all redirection logic.
   FutureOr<String?> _pageRedirections(BuildContext context,
       GoRouterState state,) async {
-    {{#enable_pin_code}}
-    /// TODO Note that, the saved pin code is always deleted after a user
-    /// logs out.
-
-    if (state.matchedLocation == const VerifyPinCodeRoute().location &&
-        _refreshListener.isPinCodeConfirmed) {
-      if (previousLocation == null) {
-        return const DashboardRoute().location;
-      } else if (previousLocation == const UpdatePinRoute().location ||
-          previousLocation == const CreatePinRoute().location) {
-        return const ProfileRoute().location;
-      }
-      return previousLocation;
-    }
-
-    if ((state.matchedLocation != const LoginRoute().location) &&
-        (state.matchedLocation != const VerifyPinCodeRoute().location) &&
-        (state.matchedLocation != const CreatePinRoute().location) &&
-        (state.matchedLocation != const SplashRoute().location) &&
-        (!state.matchedLocation.contains('/mfa/'))) {
-      previousLocation = state.matchedLocation;
-    } {{/enable_pin_code}} {{#has_authentication}}
-    if (_refreshListener.isLoggedIn &&
-        state.uri.queryParameters['from'] != null) {
-      return state.uri.queryParameters['from'];
-    }
-
-    {{#enable_pin_code}}
-    if (_refreshListener.isLoggedIn &&
-        _refreshListener.isPinCodeConfirmed &&
-        state.matchedLocation == const VerifyPinCodeRoute().location) {
-      return const DashboardRoute().location;
-    } {{/enable_pin_code}}
-
-    {{^enable_feature_otp}}
-    if (_refreshListener.isLoggedIn &&
-        state.matchedLocation == const LoginRoute().location) {
-      return const DashboardRoute().location;
-    }{{/enable_feature_otp}}
-
-    {{#enable_feature_otp}}
-    if (_refreshListener.isLoggedIn &&
-        state.matchedLocation == const LoginRoute().location) {
-      return const OtpRoute().location;
-    }
-    if (_refreshListener.isLoggedIn &&
-        _refreshListener.isOtpConfirmed &&
-        state.matchedLocation == const OtpRoute().location) {
-      return const DashboardRoute().location;
-    }
-    {{/enable_feature_otp}}{{/has_authentication}}
-    if (state.matchedLocation == const SplashRoute().location) {
+    final permissionsService = context.read<PermissionsService>();
+    final splashService = context.read<SplashService>();
+    final messenger = ScaffoldMessenger.of(context);
+    // If route is splash there is no need to redirect so we return null
+    if (RoutesPath.splash == state.uri.path) {
       return null;
     }
-    if (!context.read<SplashService>().isAppInitialized) {
-      return '${const SplashRoute().location}?from=${state.uri.toString()}';
+    // Ensure the app is initialized before navigating to any page.
+    else if (RoutesPath.splash != state.uri.path) {
+      await splashService.appInitialized;
     }
 
-    final pathInfo =
-        router.routeInformationParser.configuration.findMatch(state.uri);
-
-    final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
-
-    final hasPermissions = routeName != null
-        ? await context
-            .read<PermissionsService>()
-            .hasPermission(routeName, graceful: true)
-        : true; {{#has_authentication}}
-
-    if (!_refreshListener.isLoggedIn && !hasPermissions) {
-      return '${const LoginRoute().location}?from=${state.uri.toString()}';
-    }{{/has_authentication}}
-
-    
-    if (!hasPermissions) {
-      return const DashboardRoute().location;
+    // Ensure the user has the required permissions before navigating to any page.
+    if (!await _hasPermissionForURI(state.uri, permissionsService)) {
+      messenger.showSnackBar(SnackBar(content: const Text('Access Denied')));
+      throw GoException('Access Denied');
     }
 
     return null;
   }
-}
-class _GoRouterRefreshStream extends ChangeNotifier {
-  _GoRouterRefreshStream(Stream<bool> stream,
-{{#enable_feature_otp}} Stream<bool> streamOTP, {{/enable_feature_otp}}
-{{#enable_pin_code}} Stream<bool> streamPinCode, {{/enable_pin_code}}
-      ) {
-    _subscription =
-      stream.listen(
-        (bool isLoggedIn) {
-          this.isLoggedIn = isLoggedIn;
-          notifyListeners();
-        },
-      );
-{{#enable_feature_otp}}
-    _subscriptionOtp = streamOTP.listen((bool isOtpConfirmed) {
-      this.isOtpConfirmed = isOtpConfirmed;
-      notifyListeners();
-    }); {{/enable_feature_otp}} {{#enable_pin_code}}
-    _subscriptionPinCode = streamPinCode.listen((bool isPinCodeConfirmed) {
-      this.isPinCodeConfirmed = isPinCodeConfirmed;
-      notifyListeners();
-      this.isPinCodeConfirmed = false;
-    }); {{/enable_pin_code}}
-  }
 
-  late final StreamSubscription<bool> _subscription;{{#enable_feature_otp}}
-  late final StreamSubscription<bool> _subscriptionOtp; {{/enable_feature_otp}}
-  {{#enable_pin_code}}
-  late final StreamSubscription<bool>_subscriptionPinCode; {{/enable_pin_code}}
+  Future<bool> _hasPermissionForURI(
+    Uri uri,
+    PermissionsService permissionsService,
+  ) async {
+    final pathInfo = router.routeInformationParser.configuration.findMatch(uri);
+    final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
+    if (routeName == null) {
+      return false;
+    }
 
-  late bool isLoggedIn = false; {{#enable_feature_otp}}
-  late bool isOtpConfirmed = false; {{/enable_feature_otp}}{{#enable_pin_code}}
-  late bool isPinCodeConfirmed = false; {{/enable_pin_code}}
-
-  @override
-  void dispose() {
-    _subscription.cancel(); {{#enable_feature_otp}}
-    _subscriptionOtp.cancel(); {{/enable_feature_otp}}{{#enable_pin_code}}
-    _subscriptionPinCode.cancel(); {{/enable_pin_code}}
-    super.dispose();
+    return await permissionsService.hasPermission(routeName, graceful: false);
   }
 }

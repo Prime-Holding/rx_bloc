@@ -1,11 +1,11 @@
 {{> licence.dart }}
 
 import '../../base/models/request_models/phone_number_request_model.dart';
+import '../../base/models/user_model.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/remote/users_remote_data_source.dart';
 import '../models/request_models/change_email_request_model.dart';
 import '../models/request_models/confirm_email_model.dart';
-import '../models/user_model.dart';
 
 class UsersRepository {
   UsersRepository(
@@ -17,8 +17,8 @@ class UsersRepository {
   final UsersRemoteDataSource _usersRemoteDataSource;
 
   /// Gets the existing user. Currently used to resume onboarding
-  Future<UserModel> getMyUser() => _errorMapper.execute(
-        () => _usersRemoteDataSource.getMyUser(),
+ Future<UserModel> getUser() => _errorMapper.execute(
+        () => _usersRemoteDataSource.getUser(),
       );
 
   /// Sets the phone number for the user. At this point, the user has not yet

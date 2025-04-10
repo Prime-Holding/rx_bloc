@@ -23,6 +23,7 @@ Future<Response> myUserHandler(
   if (user == null) {
     return responseBuilder.buildOK(
       data: UserModel(
+        hasPin: true,
         id: generateRandomString(),
         email: 'test@test.com',
         phoneNumber: null,

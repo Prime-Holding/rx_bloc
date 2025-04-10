@@ -5,9 +5,9 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../base/extensions/error_model_extensions.dart';
 import '../../../../base/models/errors/error_model.dart';
+import '../../app_extensions.dart';
 import '../../base/app/config/app_constants.dart';
 import '../../base/common_services/validators/credentials_validator_service.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../services/password_reset_request_service.dart';
 
@@ -51,7 +51,7 @@ class PasswordResetRequestBloc extends $PasswordResetRequestBloc {
   PasswordResetRequestBloc(
     this._passwordResetRequestService,
     this._validatorService,
-    this._routerBloc,
+    this._router,
   ) {
     requested.connect().addTo(_compositeSubscription);
     onRouting.connect().addTo(_compositeSubscription);
@@ -59,7 +59,7 @@ class PasswordResetRequestBloc extends $PasswordResetRequestBloc {
 
   final CredentialsValidatorService _validatorService;
   final PasswordResetRequestService _passwordResetRequestService;
-  final RouterBlocType _routerBloc;
+  final GoRouter _router;
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
@@ -75,13 +75,13 @@ class PasswordResetRequestBloc extends $PasswordResetRequestBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$navigateToNextStepEvent
-      .map((email) =>
-          _routerBloc.events.push(PasswordResetConfirmationRoute(email)))
+      .doOnData(
+          (email) => _router.go(PasswordResetConfirmationRoute(email).location))
       .publishReplay(maxSize: 1);
 
   @override
   ConnectableStream<void> _mapToRequestedState() => _$requestEvent
-      .throttleTime(actionDebounceDuration)
+      .throttleTime(kBackpressureDuration)
       .withLatestFrom<Result<String>, String?>(
           email.asResultStream(),
           (

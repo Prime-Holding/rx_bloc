@@ -9,8 +9,6 @@ import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 import '../../../../app_extensions.dart';
 import '../../../../base/extensions/error_model_extensions.dart';
 import '../../../../base/extensions/error_model_translations.dart';
-import '../../../../lib_pin_code/ui_components/pin_code_app_bar.dart';
-import '../../../../lib_router/blocs/router_bloc.dart';
 import '../../../extensions/exception_extensions.dart';
 import '../../../models/mfa_response.dart';
 import '../services/mfa_pincode_service.dart';
@@ -25,9 +23,9 @@ class MfaPinBiometricsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: pinCodeAppBar(
-          context,
-          title: context.l10n.featureMfa.pinBiometrics,
+        appBar: AppBar(
+          title: Text(context.l10n.featureMfa.pinBiometrics),
+          forceMaterialTransparency: true,
         ),
         extendBodyBehindAppBar: true,
         body: SizedBox(
@@ -38,18 +36,12 @@ class MfaPinBiometricsPage extends StatelessWidget {
                 child: PinCodeKeyboard(
                   onError: (error, _) {
                     if (error is Exception && !error.isAuthMethodException) {
-                      context
-                          .read<RouterBlocType>()
-                          .events
-                          .pop(Result<MfaResponse>.error(error));
+                        GoRouter.of(context).pop(Result<MfaResponse>.error(error));
                     }
                   },
                   onAuthenticated: (response) {
                     if (response is MfaResponse) {
-                      context
-                          .read<RouterBlocType>()
-                          .events
-                          .pop(Result<MfaResponse>.success(response));
+                       GoRouter.of(context).pop(Result<MfaResponse>.success(response));
                     }
                   }, // Handle error states
                   autoPromptBiometric: true,

@@ -66,7 +66,7 @@ class AndroidManifestProcessor extends StringProcessor {
   void _addDeepLinkingSupport(XmlDocument doc) {
     final deeplinkMetadataNode =
         '<meta-data android:name="flutter_deeplinking_enabled"'
-                ' android:value="true" />'
+                ' android:value="false" />'
             .toXmlNode();
     var deeplinkIntent = '''
 <intent-filter android:autoVerify="true">

@@ -78,21 +78,21 @@ void main() {
     });
 
     test('authenticate should return AuthTokenModel', () async {
-      final authTokenModel = Stubs.authTokenModel;
-      final refreshToken = authTokenModel.refreshToken;
+      final userWithAuthTokenModel = Stubs.userWithAuthTokenModel;
+      final refreshToken = userWithAuthTokenModel.authToken.refreshToken;
 
       when(mockRepository.authenticate(
               email: Stubs.email,
               password: Stubs.password,
               refreshToken: refreshToken))
-          .thenAnswer((_) async => authTokenModel);
+          .thenAnswer((_) async => Stubs.userWithAuthTokenModel);
 
       final result = await authService.authenticate(
           email: Stubs.email,
           password: Stubs.password,
           refreshToken: refreshToken);
 
-      expect(result, authTokenModel);
+      expect(result, userWithAuthTokenModel);
       verify(mockRepository.authenticate(
               email: Stubs.email,
               password: Stubs.password,

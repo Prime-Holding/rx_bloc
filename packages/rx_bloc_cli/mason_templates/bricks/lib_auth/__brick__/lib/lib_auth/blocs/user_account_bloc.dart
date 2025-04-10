@@ -2,14 +2,16 @@
 
 import 'dart:async';
 
+import 'package:go_router/go_router.dart';
+
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
-import '../../lib_router/router.dart';
+import '../../base/models/user_model.dart';
+import '../../lib_router/models/routes_path.dart';
 import '../services/auth_service.dart';
 import '../services/user_account_service.dart';
 
@@ -18,6 +20,9 @@ part 'user_account_bloc.rxb.g.dart';
 abstract class UserAccountBlocEvents {
   /// The event is called on user logout.
   void logout();
+
+  /// The event is called when the user authentication state is changed.
+  void setCurrentUser(UserModel? user);
 }
 
 abstract class UserAccountBlocStates {
@@ -29,6 +34,9 @@ abstract class UserAccountBlocStates {
 
   /// The error state
   Stream<ErrorModel> get errors;
+
+  /// The authenticated state
+  ConnectableStream<UserModel?> get currentUser;
 }
 
 @RxBloc()
@@ -37,9 +45,10 @@ class UserAccountBloc extends $UserAccountBloc {
     this._userAccountService,
     this._coordinatorBloc,
     this._authService,
-    this._routerBloc,
+    this._router,
   ) {
     loggedIn.connect().addTo(_compositeSubscription);
+    currentUser.connect().addTo(_compositeSubscription);
     isLoading.connect().addTo(_compositeSubscription);
 
     _$logoutEvent
@@ -49,11 +58,8 @@ class UserAccountBloc extends $UserAccountBloc {
         .setResultStateHandler(this)
         .whereSuccess()
         .mapTo(false)
-        .emitAuthenticatedToCoordinator(_coordinatorBloc){{#enable_feature_otp}}
-        .emitOtpConfirmedToCoordinator(_coordinatorBloc){{/enable_feature_otp}}{{#enable_pin_code}}
-        .emitLoggedOutToCoordinator(_coordinatorBloc)
-        .emitPinCodeConfirmedToCoordinator(_coordinatorBloc){{/enable_pin_code}}
-        .doOnData((_) => _routerBloc.events.go(const LoginRoute()))
+        .emitAuthenticatedToCoordinator(_coordinatorBloc)
+        .doOnData((_) => _router.go(RoutesPath.login))
         .listen(null)
         .addTo(_compositeSubscription);
   }
@@ -61,23 +67,28 @@ class UserAccountBloc extends $UserAccountBloc {
   final UserAccountService _userAccountService;
   final CoordinatorBlocType _coordinatorBloc;
   final AuthService _authService;
-  final RouterBlocType _routerBloc;
+  final GoRouter _router;
 
   @override
   ConnectableStream<bool> _mapToLoggedInState() => Rx.merge([
         _coordinatorBloc.states.isAuthenticated,
         _authService.isAuthenticated().asStream(),
-      ]){{#enable_pin_code}}
-      .doOnData((isUserLoggedIn) {
-        if(isUserLoggedIn){
-          _coordinatorBloc.events.checkUserLoggedIn();
-        }
-      }){{/enable_pin_code}}
-     .publishReplay(maxSize: 1);
+      ]).publishReplay(maxSize: 1);
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   @override
   ConnectableStream<bool> _mapToIsLoadingState() => loadingState.publish();
+
+  @override
+  ConnectableStream<UserModel?> _mapToCurrentUserState() => Rx.merge([
+        _authService
+            .isAuthenticated()
+            .asStream()
+            .where((value) => value)
+            .switchMap((value) => _authService.getCurrentUser().asStream()),
+        _$setCurrentUserEvent.map((value) => value),
+        _$logoutEvent.map((value) => null),
+      ]).publishReplay(maxSize: 1);
 }

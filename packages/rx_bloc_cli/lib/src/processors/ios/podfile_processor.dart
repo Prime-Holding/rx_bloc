@@ -23,9 +23,9 @@ class PodfileProcessor extends StringProcessor {
     if (input == null) return '';
     final buffer = StringBuffer(input!);
 
+    _addBuildConfigurations(buffer);
     _updateGlobalIOSPlatform(buffer);
     _updateProjectRunnerModes(buffer);
-    _addBuildConfigurations(buffer);
 
     return buffer.toString();
   }

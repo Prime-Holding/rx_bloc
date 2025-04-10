@@ -132,6 +132,12 @@ class UsersController extends ApiController {
     if (user == null) {
       throw NotFoundException('User not found.');
     }
+    final password = _usersService.getPasswordForUser(user.email);
+    if (password == null) {
+      throw NotFoundException('Password not found.');
+    }
+    _usersService.setPasswordForUser(email, password);
+
     
     _usersService.createUser(
       user.copyWith(email: email, role: UserRole.tempUser),

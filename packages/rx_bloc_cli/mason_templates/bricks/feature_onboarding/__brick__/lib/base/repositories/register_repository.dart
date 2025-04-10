@@ -1,12 +1,12 @@
 {{> licence.dart }}
 
 import '../../base/models/request_models/confirm_phone_number_request_model.dart';
+import '../../base/models/user_model.dart';
+import '../../base/models/user_with_auth_token_model.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/remote/register_remote_data_source.dart';
 import '../models/credentials_model.dart';
 import '../models/request_models/confirm_email_model.dart';
-import '../models/user_model.dart';
-import '../models/user_with_auth_token_model.dart';
 
 class RegisterRepository {
   RegisterRepository(

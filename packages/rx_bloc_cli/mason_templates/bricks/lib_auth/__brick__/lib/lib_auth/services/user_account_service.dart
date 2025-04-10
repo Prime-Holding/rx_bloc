@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import '../../assets.dart';
 import '../../base/models/errors/error_model.dart';
+import '../../base/models/user_model.dart';
 import '../../base/repositories/push_notification_repository.dart';
 {{#analytics}}
 import '../../lib_analytics/repositories/analytics_repository.dart';
@@ -33,7 +34,7 @@ class UserAccountService {
   ///
   /// After successful login saves the auth `token` and `refresh token` to
   /// persistent storage and loads the user permissions.
-  Future<void> login({
+  Future<UserModel> login({
     required String username,
     required String password,
   }) async {
@@ -41,13 +42,13 @@ class UserAccountService {
       throw GenericErrorModel(I18nErrorKeys.wrongEmailOrPassword);
     }
 
-    final authToken = await _authRepository.authenticate(
+    final userWithAuthToken = await _authRepository.authenticate(
       email: username,
       password: password,
     );
 
     /// Save response tokens
-    await saveTokens(authToken);
+    await saveTokens(userWithAuthToken.authToken);
 
     /// Subscribe user push token
     await subscribeForNotifications();
@@ -59,6 +60,8 @@ class UserAccountService {
     // Set user data
     await _analyticsRepository.setUserIdentifier('logged_in_user_id');
     {{/analytics}}
+
+    return userWithAuthToken.user;
   }
 
   /// After successful login saves the auth `token` and `refresh token` to
