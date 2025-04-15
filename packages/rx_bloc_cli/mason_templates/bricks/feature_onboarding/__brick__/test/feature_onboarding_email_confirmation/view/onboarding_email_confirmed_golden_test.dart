@@ -21,6 +21,8 @@ void main() {
       ),
     ),
     buildScenario(
+      customPumpBeforeTest: (widgetTester) =>
+          widgetTester.pump(const Duration(milliseconds: 350)),
       scenario: 'onboarding_email_confirmed_loading',
       widget: onboardingEmailConfirmedFactory(
         isLoading: true,
