@@ -30,17 +30,26 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
+    namespace = "com.primeholding.reminderspoc"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.primeholding.reminderspoc"
         minSdkVersion 23
-        targetSdkVersion 34
+        targetSdkVersion 35
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -112,7 +121,7 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation platform('com.google.firebase:firebase-bom:33.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     implementation 'com.android.support:multidex:1.0.3'

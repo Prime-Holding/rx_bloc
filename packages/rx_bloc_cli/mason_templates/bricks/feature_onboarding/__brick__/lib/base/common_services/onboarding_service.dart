@@ -35,7 +35,7 @@ class OnboardingService {
       _registerRepository.register(email: email, password: password);
 
   /// Gets the existing user. Currently used to resume onboarding
-  Future<UserModel> getMyUser() => _usersRepository.getMyUser();
+  Future<UserModel> getUser() => _usersRepository.getUser();
 
   /// Resends the confirmation email to the user
   Future<UserModel> resendConfirmationEmail() =>

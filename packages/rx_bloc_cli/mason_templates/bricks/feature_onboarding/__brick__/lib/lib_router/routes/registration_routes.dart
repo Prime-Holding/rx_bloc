@@ -58,6 +58,7 @@ class OnboardingEmailConfirmedRoute extends GoRouteData
         key: state.pageKey,
         child: OnboardingEmailConfirmedPageWithDependencies(
           verifyEmailToken: token,
+          isOnboarding: true,
         ),
       );
 
@@ -78,7 +79,7 @@ class OnboardingPhoneRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const OnboardingPhonePageWithDependencies(),
+        child: OnboardingPhonePageWithDependencies(isOnboarding: true),
       );
 
   @override
@@ -99,7 +100,7 @@ class OnboardingPhoneConfirmRoute extends GoRouteData
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const OnboardingPhoneConfirmPageWithDependencies(),
+        child: OnboardingPhoneConfirmPageWithDependencies(isOnboarding: true),
       );
 
   @override

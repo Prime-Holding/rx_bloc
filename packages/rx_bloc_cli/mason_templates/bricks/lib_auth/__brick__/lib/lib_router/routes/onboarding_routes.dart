@@ -51,9 +51,7 @@ class VerifyPinCodeRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: VerifyPinCodePage(
-          pinCodeArguments: state.extra as PinCodeArguments,
-        ),
+        child: VerifyPinCodePage(),
       );
 
   @override

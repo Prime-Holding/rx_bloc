@@ -66,7 +66,7 @@ class AndroidManifestProcessor extends StringProcessor {
   void _addDeepLinkingSupport(XmlDocument doc) {
     final deeplinkMetadataNode =
         '<meta-data android:name="flutter_deeplinking_enabled"'
-                ' android:value="true" />'
+                ' android:value="false" />'
             .toXmlNode();
     var deeplinkIntent = '''
 <intent-filter android:autoVerify="true">
@@ -81,13 +81,15 @@ class AndroidManifestProcessor extends StringProcessor {
     <data android:scheme="${args.projectName}"/>
     <data android:host="${args.projectName}"/>
     <data android:pathPattern="/onboarding/email-confirmed/.*" />
-</intent-filter>
-''';
-    } else {
-      deeplinkIntent += '''
-</intent-filter>
-''';
+    <data android:pathPattern="/change-email/email-confirmed/.*"/>''';
+      if (args.forgottenPassword) {
+        deeplinkIntent += '''
+    <data android:pathPattern="/password-reset.*"/>''';
+      }
     }
+    deeplinkIntent += '''
+</intent-filter>
+''';
 
     final mailtoIntent = '''<intent>
             <action android:name="android.intent.action.VIEW" />

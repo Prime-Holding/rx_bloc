@@ -36,7 +36,7 @@ Success (200): UserWithAuthTokenModel
 }
 ```
 
-Error (400):
+Bad Request (400):
 
 ```json
 {
@@ -68,7 +68,7 @@ Success (200): UserModel
 }
 ```
 
-Error (400):
+Bad Request (400):
 
 ```json
 {
@@ -108,7 +108,7 @@ Success (200): UserModel
 }
 ```
 
-Error (400):
+Bad Request (400):
 
 ```json
 {
@@ -133,7 +133,7 @@ Error (400):
 
 **Response**
 
-Success (200):
+Success (200): UserModel
 
 ```json
 {
@@ -148,7 +148,7 @@ Success (200):
 }
 ```
 
-Error (400):
+Bad Request (400):
 
 ```json
 {
@@ -173,7 +173,7 @@ Error (400):
 
 **Response**
 
-Success (200):
+Success (200): UserModel
 
 ```json
 {
@@ -188,7 +188,7 @@ Success (200):
 }
 ```
 
-Error (400):
+Bad Request (400):
 
 ```json
 {
@@ -233,17 +233,17 @@ Error (400):
 ## Resend SMS code
 **Endpoint**: `POST /api/register/phone/resend`  
 **Headers**: `Authorization: Bearer <token>`  
-**Description**: Resends a SMS code to the set user's phone number.
+**Description**: Resends a OTP code to the set user's phone number.
 
 **Response**
 
 Success (200)
 
-Error (400):
+Bad Request (400):
 
 ```json
 {
-  "error": "Unable to send SMS code."
+  "error": "Unable to send OTP code."
 }
 ```
 
@@ -255,7 +255,7 @@ Error (400):
 
 **Response**
 
-Success (200):
+Success (200): Map<String, List<CountryCodeModel>>
 
 ```json
 {
@@ -271,4 +271,193 @@ Success (200):
     }
   ]
 }
+```
+
+---
+
+## Initiate Email Change
+**Endpoint**: `PATCH /api/users/me/email`
+**Headers**: `Authorization: Bearer <token>` 
+**Description**: Sends the new email address to the backend to initiate the email change. Backend checks if the email is already in use, and if not sends a UserModel to the application. On the backend side a new temporary user is created with the new email and role of TempUser. The user is sent a confirmation link to their new email address.
+
+
+**Request**
+
+```json
+{
+  "email": "newuser@example.com"
+}
+```
+
+Success (200): UserModel
+```json
+{
+    "id": "12345",
+    "email": "user@example.com",
+    "phoneNumber": null,
+    "role": "User",
+    "confirmedCredentials": {
+        "email": true,
+        "phone": true
+    }
+}
+```
+
+Conflict (409):
+```json
+{
+  "error": "This email is already in use."
+}
+```
+
+Unprocessable Entity (422):
+```json
+{
+  "error": "Invalid email format."
+}
+```
+
+---
+
+## Verify New Email
+**Endpoint**: `POST /api/users/me/email/confirm`
+**Headers**: `Authorization: Bearer <token>` 
+**Description**: Verifies the token in the confirmation link when the user opens it in the mobile app.
+
+**Request**
+
+```json
+{
+  "token": "uniqueToken123" 
+}
+```
+
+Success (200): UserModel
+```json
+{
+    "id": "12345",
+    "email": "newuser@example.com",
+    "phoneNumber": null,
+    "role": "TempUser",
+    "confirmedCredentials": {
+        "email": true,
+        "phone": true
+    }
+}
+```
+
+Bad Request (400):
+```json
+{
+  "error": "Invalid or expired token."
+}
+```
+
+---
+
+## Resend Verification Email
+**Endpoint**: `POST /api/users/me/email/resend-confirmation`
+**Headers**: `Authorization: Bearer <token>` 
+**Description**: Resends the confirmation link to the user.  
+
+
+Success (200): UserModel
+```json
+{
+    "id": "12345",
+    "email": "user@example.com",
+    "phoneNumber": null,
+    "role": "User",
+    "confirmedCredentials": {
+        "email": true,
+        "phone": true
+    }
+}
+```
+
+Bad Request (400):
+```json
+{
+  "error": "Invalid or expired user."
+}
+```
+
+---
+
+## Initiate Phone Number Change/Resend Confirmation Code
+
+**Endpoint:** `PATCH /api/users/me`  
+**Headers**: `Authorization: Bearer <token>`  
+**Description**: Starts the process of changing the phone number by sending an SMS code to the new phone number. If the phone number is already in use, the endpoint returns a 409 Conflict response. If the phone number is invalid, the endpoint returns a 422 Unprocessable Entity response.
+
+**Request Body:**
+```json
+{
+  "phoneNumber": "+1234567890"
+}
+```
+
+**Response:**
+
+Success (200): UserModel
+```json
+  {
+      "id": "12345",
+      "email": "user@example.com",
+      "phoneNumber": "+359883125874",
+      "role": "User",
+      "confirmedCredentials": {
+          "email": true,
+          "phone": true
+      }
+  }
+```
+
+Conflict (409):
+```json
+  {
+    "error": "This phone number is already in use."
+  }
+```
+
+Unprocessable Entity (422):
+```json
+  {
+    "error": "Invalid phone number format."
+  }
+```
+
+## Verify New Phone Number
+**Endpoint:** `POST /api/users/me/phone/confirm`  
+**Headers**: `Authorization: Bearer <token>`  
+**Description**: Confirms the phone number change by validating the OTP code. Only after this step the new phone number is saved to the user's profile.
+
+**Request:**
+```json
+{
+  "code": "123456"
+}
+```
+
+**Response:**
+
+Success (200): UserModel
+```json
+  {
+      "id": "12345",
+      "email": "user@example.com",
+      "phoneNumber": "+1234567890",
+      "role": "User",
+      "confirmedCredentials": {
+          "email": true,
+          "phone": true
+      }
+  }
+```
+
+Bad Request (400):
+```json
+  {
+    "error": "Invalid or expired code."
+  }
 ```

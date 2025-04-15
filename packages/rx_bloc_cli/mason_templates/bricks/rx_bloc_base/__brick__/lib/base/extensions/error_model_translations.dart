@@ -20,6 +20,10 @@ extension ErrorModelL10n on ErrorModel {
       return (this as NotFoundErrorModel).translate(context);
     }
 
+    if (this is ConflictErrorModel) {
+      return (this as ConflictErrorModel).translate(context);
+    }
+
     if (this is FieldErrorModel) {
       return (this as FieldErrorModel).translate(context);
     }
@@ -36,6 +40,10 @@ extension ErrorModelL10n on ErrorModel {
       return (this as InvalidUrlErrorModel).translate(context);
     }{{/enable_feature_onboarding}}
 
+    if (this is ErrorTimeoutModel) {
+      return (this as ErrorTimeoutModel).translate(context);
+    }
+
     return context.l10n.error.unknown;
   }
 }
@@ -48,6 +56,11 @@ extension ErrorBadRequestModelL10n on BadRequestErrorModel {
 extension ErrorNotFoundL10n on NotFoundErrorModel {
   String translate(BuildContext context) =>
       message ?? context.l10n.error.notFound;
+}
+
+extension ConflictErrorModelL10n on ConflictErrorModel {
+  String translate(BuildContext context) =>
+      message ?? context.l10n.error.conflict;
 }
 
 extension ErrorFieldModelL10n on FieldErrorModel {
@@ -70,3 +83,8 @@ extension ErrorServerGenericModelL10n on ErrorServerGenericModel {
 {{#enable_feature_onboarding}}extension _InvalidUrlErrorModelL10n on InvalidUrlErrorModel {
   String translate(BuildContext context) => context.l10n.error.invalidUrl;
 }{{/enable_feature_onboarding}}
+
+extension _ErrorTimeoutModelL10n on ErrorTimeoutModel {
+  String translate(BuildContext context) =>
+      message ?? context.l10n.error.server;
+}

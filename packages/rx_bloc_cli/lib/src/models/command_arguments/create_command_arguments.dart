@@ -78,16 +78,25 @@ enum CreateCommandArguments {
     help: 'The deeplink showcase feature',
   ),
 
-  /// Profile feature
+  /// Onboarding
   onboarding(
     name: 'enable-feature-onboarding',
     type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
-    prompt: 'Enabled Onboarding feature:',
+    prompt: 'Enable Onboarding feature:',
     help:
         'Enables Onboarding feature capability for the project. The onboarding '
         'feature includes a registration flow with unified steps such as email'
         'and password authentication and email and phone verification',
+  ),
+
+  /// Forgotten pass
+  forgottenPassword(
+    name: 'enable-forgotten-password',
+    type: CreateCommandArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable Forgotten password feature:',
+    help: 'Enables the "Forgotten password" capability for the project',
   ),
 
   /// Dev menu

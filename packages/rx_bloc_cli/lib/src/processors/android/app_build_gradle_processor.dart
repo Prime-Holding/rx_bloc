@@ -15,8 +15,8 @@ class AppBuildGradleProcessor extends StringProcessor {
     if (input == null) return '';
     final buffer = StringBuffer(input!);
 
-    _modifyValues(buffer);
     _addKeyPropertiesConfig(buffer);
+    _modifyValues(buffer);
     _adjustBuildTypesAndSigningConfigs(buffer);
     _adjustCompileOptionsConfigs(buffer);
     _buildDependenciesList(buffer);
@@ -32,10 +32,32 @@ class AppBuildGradleProcessor extends StringProcessor {
       _applyTestOptions(buffer);
     }
 
+    if (args.analyticsEnabled) {
+      _applyAnalyticsOptions(buffer);
+    }
+
     return buffer.toString();
   }
 
   /// region Private methods
+  void _applyAnalyticsOptions(StringBuffer buffer) {
+    const pluginsSectionStart = 'plugins {';
+    const analyticsPlugins = '''
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+''';
+
+    // Find the start of the plugins section
+    final pluginsStartIndex = buffer.nthIndexOf(pluginsSectionStart);
+    if (pluginsStartIndex < 0) return;
+
+    // Find the opening brace of the plugins block
+    final blockStartIndex = buffer.nthIndexOf('{', start: pluginsStartIndex);
+    if (blockStartIndex < 0) return;
+
+    // Insert the analytics plugins right after the opening brace
+    buffer.insertAt(blockStartIndex + 1, '\n$analyticsPlugins');
+  }
 
   void _modifyValues(
     StringBuffer buffer, {
@@ -81,34 +103,45 @@ class AppBuildGradleProcessor extends StringProcessor {
     final eIndex = buffer.nthIndexOf('}', n: 2, start: sIndex) + 1;
 
     const content = '''
-    signingConfigs {
-        if (System.getenv("ANDROID_KEYSTORE_PATH")) {
-            release {
-                storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
-                keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
-                keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            }
-        } else {
-            release {
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-                storePassword keystoreProperties['storePassword']
-            }
+signingConfigs {
+  create("release") {
+    val keystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
+
+    if (keystorePath != null) {
+      storeFile = file(keystorePath)
+      keyAlias = System.getenv("ANDROID_KEYSTORE_ALIAS")
+      keyPassword = System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+      storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+    } else {
+      val keystorePropertiesFile = rootProject.file("keystore.properties")
+
+      if (keystorePropertiesFile.exists()) {
+        val keystoreProperties = Properties().apply {
+          keystorePropertiesFile.inputStream().use { load(it) }
         }
+
+        keyAlias = keystoreProperties["keyAlias"] as String?
+        keyPassword = keystoreProperties["keyPassword"] as String?
+        storeFile = keystoreProperties["storeFile"]?.let { file(it) }
+        storePassword = keystoreProperties["storePassword"] as String?
+      } else {
+        println("Warning: keystore.properties file not found. Release signingConfig may be incomplete.")
+      }
+    }
+  }
+}
+
+buildTypes {
+    getByName("release") {
+        signingConfig = signingConfigs.getByName("release")
+        isMinifyEnabled = true
+        proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
     
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            signingConfig signingConfigs.debug
-        }
+    getByName("debug") {
+        signingConfig = signingConfigs.getByName("debug")
     }
+}
     ''';
 
     buffer.replaceRange(sIndex, eIndex, content);
@@ -119,44 +152,36 @@ class AppBuildGradleProcessor extends StringProcessor {
     if (sIndex < 0) return;
     final startIndex = buffer.nthIndexOf('}', n: 1, start: sIndex);
 
-
     var content = '';
 
     if (args.pushNotificationsEnabled) {
       //this can be removed if we stop using local_notifications
       content = '''
-
-        coreLibraryDesugaringEnabled true
+      isCoreLibraryDesugaringEnabled = true
     }
     ''';
     }
 
-    if(content.isEmpty) return;
+    if (content.isEmpty) return;
 
-    buffer.replaceRange(startIndex, startIndex + 1 , content);
+    buffer.replaceRange(startIndex, startIndex + 1, content);
   }
 
   void _addKeyPropertiesConfig(StringBuffer buffer) {
-    const beforePattern = 'def localProperties = new Properties()';
-
     const content = '''
-    
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
+import java.util.Properties
+import java.io.FileInputStream
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
 ''';
 
-    if (!buffer.toString().contains(beforePattern)) {
-      buffer.insertBefore(
-        'namespace =',
-        content.replaceAll('\n', '\n$_tabSpace'),
-      );
-    } else {
-      buffer.insertBefore(beforePattern, content);
-    }
+    // Insert the content at the beginning of the file
+    buffer.insertAt(0, content);
   }
 
   void _buildDependenciesList(StringBuffer buffer) {
@@ -164,12 +189,13 @@ if (keystorePropertiesFile.exists()) {
     var content = 'dependencies {\n';
     if (args.patrolTestsEnabled) {
       content +=
-      '${_tabSpace}androidTestUtil "androidx.test:orchestrator:1.4.2"\n';
+          '${_tabSpace}androidTestUtil("androidx.test:orchestrator:1.5.1")\n';
     }
 
     if (args.pushNotificationsEnabled) {
       content +=
-      '    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.2.2"\n';
+          '    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:'
+          '2.1.4")\n';
     }
     content += '}';
 
@@ -187,8 +213,8 @@ if (keystorePropertiesFile.exists()) {
         buffer.getGradleSectionLastLineRange('defaultConfig');
     if (sIndex < 0) return;
     final content = '''
-    \n$_tabSpace${_tabSpace}testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
-    ${_tabSpace}testInstrumentationRunnerArguments clearPackageData: "true"
+    \n$_tabSpace${_tabSpace}testInstrumentationRunner = "pl.leancode.patrol.PatrolJUnitRunner"
+    ${_tabSpace}testInstrumentationRunnerArguments["clearPackageData"] = "true" 
     ''';
     buffer.insertAt(sIndex, content);
 
@@ -200,7 +226,7 @@ if (keystorePropertiesFile.exists()) {
   void _applyTestOptions(StringBuffer buffer) {
     final content = '''
     testOptions {
-      execution "ANDROIDX_TEST_ORCHESTRATOR"
+      execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }\n
     ''';
 

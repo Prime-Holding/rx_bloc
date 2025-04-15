@@ -18,16 +18,14 @@ abstract class RxDependenciesGeneratorBase(
     private val TEMPLATE_FEATURE_SNAKE_CASE = "feature_snake_case"
 
     private val templateString: String
-    protected val routingIntegrationFlag: RoutingIntegration
-    private val includeLocalServiceFlag: Boolean
+    protected val routingIntegrationFlag: RoutingIntegration = routingIntegration
+    private val includeLocalServiceFlag: Boolean = includeLocalService
     private val templateValues: MutableMap<String, String> = mutableMapOf(
         TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
         TEMPLATE_FEATURE_SNAKE_CASE to snakeCase()
     )
 
     init {
-        this.routingIntegrationFlag = routingIntegration
-        this.includeLocalServiceFlag = includeLocalService
 
         try {
             var prefix = ""

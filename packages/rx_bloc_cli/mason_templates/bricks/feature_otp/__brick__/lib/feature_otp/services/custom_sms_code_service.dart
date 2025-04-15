@@ -4,14 +4,12 @@ import '../../base/common_blocs/coordinator_bloc.dart';
 
 /// Service used to implement SMS code logic
 class CustomSmsCodeService implements SmsCodeService {
-  CustomSmsCodeService(this._coordinatorBloc);
-  final CoordinatorBlocType _coordinatorBloc;
+  const CustomSmsCodeService();
 
   /// Confirm if the entered code is equal to the last send code
   @override
   Future<dynamic> confirmPhoneCode(String code) async {
     if (code == '0000') {
-      _coordinatorBloc.events.otpConfirmed(isOtpConfirmed: true);
       return true;
     }
     throw Exception();

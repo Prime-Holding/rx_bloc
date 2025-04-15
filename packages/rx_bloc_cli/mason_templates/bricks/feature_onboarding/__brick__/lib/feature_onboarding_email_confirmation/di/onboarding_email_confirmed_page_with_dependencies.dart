@@ -10,10 +10,13 @@ import '../views/onboarding_email_confirmed_page.dart';
 class OnboardingEmailConfirmedPageWithDependencies extends StatelessWidget {
   const OnboardingEmailConfirmedPageWithDependencies({
     required String verifyEmailToken,
+    required bool isOnboarding,
     super.key,
-  }) : _verifyEmailToken = verifyEmailToken;
+  })  : _verifyEmailToken = verifyEmailToken,
+        _isOnboarding = isOnboarding;
 
   final String _verifyEmailToken;
+  final bool _isOnboarding;
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -27,6 +30,7 @@ class OnboardingEmailConfirmedPageWithDependencies extends StatelessWidget {
         RxBlocProvider<OnboardingEmailConfirmedBlocType>(
           create: (context) => OnboardingEmailConfirmedBloc(
             _verifyEmailToken,
+            _isOnboarding,
             context.read(),
             context.read(),
           ),

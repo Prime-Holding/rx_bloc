@@ -13,6 +13,8 @@ export 'is_in_test_mode_io_not_available.dart' if (dart.library.io) 'is_in_test_
 /// https://github.com/FirebaseExtended/flutterfire/blob/4c9b5d28de9eeb5ce76c856fbd0c7b3ec8615e45/docs/messaging/usage.mdx#web-tokens
 const String webVapidKey = '';
 
-/// The duration to debounce actions to prevent multiple actions from being
+/// The duration to debounce/throttle actions to prevent multiple actions from being
 /// triggered in a short period of time.
-const actionDebounceDuration = Duration(milliseconds: 500);
+const kBackpressureDuration = Duration(milliseconds: 500);
+
+const String firebaseProjectUrl = 'https://console.firebase.google.com/';

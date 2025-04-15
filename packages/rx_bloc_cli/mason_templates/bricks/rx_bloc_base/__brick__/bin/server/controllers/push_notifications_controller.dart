@@ -1,13 +1,7 @@
 {{> licence.dart }}
 
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:googleapis_auth/auth_io.dart';
-import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart';
 
-import '../config.dart';
 import '../repositories/push_token_repository.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
@@ -29,11 +23,6 @@ class PushNotificationsController extends ApiController {
       RequestType.DELETE,
       '/api/user/push-notification-subscriptions',
       _unregisterPushHandler,
-    );
-    router.addRequest(
-      RequestType.POST,
-      '/api/send-push-message',
-      _broadcastPushHandler,
     );
   }
 
@@ -63,100 +52,5 @@ class PushNotificationsController extends ApiController {
     _pushTokens.removePushToken(pushToken);
 
     return responseBuilder.buildOK();
-  }
-
-  Future<Response> _broadcastPushHandler(Request request) async {
-    final params = await request.bodyFromFormData();
-    final title = params['title'];
-    final message = params['message'];
-    final data = params['data'];
-    final pushToken = params['pushToken'];
-
-    final delayParam = params['delay'];
-    final delay = delayParam != null && (delayParam is int)
-        ? delayParam
-        : int.parse(delayParam ?? '0');
-
-    throwIfEmpty(
-      message,
-      BadRequestException('Push message can not be empty.'),
-    );
-    if (!(_pushTokens.tokens.any((element) => element.token == pushToken))) {
-      throw NotFoundException('Notifications disabled by the user');
-    }
-    final accessToken = await _getAccessToken();
-    for (var token in _pushTokens.tokens) {
-      Future.delayed(
-        Duration(seconds: delay),
-        () async => _sendMessage(
-          accessToken: accessToken,
-          title: title,
-          message: message,
-          data: data,
-          pushToken: token.token,
-        ),
-      );
-    }
-
-    return responseBuilder.buildOK();
-  }
-
-  Future<void> _sendMessage({
-    required String accessToken,
-    String? title,
-    String message = '',
-    Map<String, Object?>? data,
-    bool logMessage = true,
-    String? pushToken,
-  }) async {
-    try {
-      final res = await http.post(
-        Uri.parse(
-            'https://fcm.googleapis.com/v1/projects/$projectId/messages:send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken',
-        },
-        body: jsonEncode({
-          'message': {
-            'token': pushToken,
-            // "topic": topic, // Use this for a topic
-            'notification': {
-              'title': title ?? 'Hello world!',
-              'body': message,
-            },
-            'data': data ?? {},
-          },
-        }),
-      );
-      if (logMessage) {
-        print(
-            'Notification sent: StatusCode: ${res.statusCode}  ResponseBody: ${res.body}');
-      }
-    } catch (e) {
-      throw ServerException('Error sending push notification');
-    }
-  }
-
-  Future<String> _getAccessToken() async {
-    try {
-      //the scope url for the firebase messaging
-      String firebaseMessagingScope =
-          'https://www.googleapis.com/auth/firebase.messaging';
-
-      //get the service account from the json file 
-      final serviceAccount =
-          json.decode(await File(serviceAccountKeyPath).readAsString());
-      final client = await clientViaServiceAccount(
-          ServiceAccountCredentials.fromJson(serviceAccount),
-          [firebaseMessagingScope]);
-
-      final accessToken = client.credentials.accessToken.data;
-      client.close();
-      return accessToken;
-    } catch (_) {
-      //handle your error here
-      throw Exception('Error getting access token');
-    }
   }
 }

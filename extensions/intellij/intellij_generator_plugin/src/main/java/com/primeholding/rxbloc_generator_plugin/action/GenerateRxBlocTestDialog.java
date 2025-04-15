@@ -1,5 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.action;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +13,7 @@ public class GenerateRxBlocTestDialog extends DialogWrapper {
     private JComboBox<String> testLibrarySelection;
 
     public GenerateRxBlocTestDialog(final Listener listener) {
-        super(null);
+        super((Project) null);
         this.listener = listener;
         init();
     }

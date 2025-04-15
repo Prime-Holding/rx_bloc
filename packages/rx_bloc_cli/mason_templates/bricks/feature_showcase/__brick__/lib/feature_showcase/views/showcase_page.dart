@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_divider.dart';
 import '../../base/common_ui_components/app_list_tile.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/router.dart';
 
@@ -40,10 +39,8 @@ class ShowcasePage extends StatelessWidget {
                   return AppListTile(
                     featureTitle: feature.title,
                     featureSubtitle: feature.subtitle,
-                    onTap: () => context
-                        .read<RouterBlocType>()
-                        .events
-                        .push(feature.route),
+                     onTap: () =>
+                        GoRouter.of(context).go(feature.route.routeLocation),
                     icon: feature.icon,
                   );
                 },
@@ -58,13 +55,12 @@ class ShowcasePage extends StatelessWidget {
 extension on BuildContext {
   List<({String title, String subtitle, RouteDataModel route, Icon icon})>
       get features => [
-            // TODO: Removed until: rx_bloc#929 or rx_bloc#941 is resolved
-            // (
-            //   title: l10n.featureNotifications.notificationPageTitle,
-            //   subtitle: l10n.featureNotifications.notificationPageSubtitle,
-            //   route: const NotificationsRoute(),
-            //   icon: designSystem.icons.notifications,
-            // ),
+            (
+              title: l10n.featureNotifications.notificationPageTitle,
+              subtitle: l10n.featureNotifications.notificationPageSubtitle,
+              route: const NotificationsRoute(),
+              icon: designSystem.icons.notifications,
+            ),
             {{#enable_feature_counter}}(
               title: l10n.featureShowcase.counterShowcase,
               subtitle: l10n.featureShowcase.counterShowcaseDescription,

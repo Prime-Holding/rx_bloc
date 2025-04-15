@@ -2,13 +2,8 @@
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
-import '../../base/extensions/error_model_translations.dart';
-import '../../base/models/errors/error_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/models/routes_path.dart';
 import '../../lib_router/router.dart';
@@ -29,13 +24,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final list = navItemsList(context);
     return Scaffold(
-      body: RxBlocListener<RouterBlocType, ErrorModel>(
-        state: (bloc) => bloc.states.errors,
-        listener: (context, state) => _onError(context, state),
-        child: BranchContainer(
-          currentIndex: currentIndex,
-          children: branchNavigators,
-        ),
+       body: BranchContainer(
+        currentIndex: currentIndex,
+        children: branchNavigators,
       ),
       bottomNavigationBar: list.length == 1
           ? null
@@ -89,15 +80,6 @@ class HomePage extends StatelessWidget {
         ),{{/enable_profile}}
       ];
 
-  void _onError(BuildContext context, ErrorModel errorModel) =>
-      showBlurredBottomSheet(
-        context: AppRouter.rootNavigatorKey.currentContext ??
-            context,
-        builder: (BuildContext context) => MessagePanelWidget(
-          message: errorModel.translate(context),
-          messageState: MessagePanelState.neutral,
-        ),
-      );
 }
 
 class NavMenuItem {

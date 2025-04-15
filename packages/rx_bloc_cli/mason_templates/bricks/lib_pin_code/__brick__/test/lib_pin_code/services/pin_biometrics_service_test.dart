@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:{{project_name}}/lib_pin_code/repository/pin_biometrics_repository.dart';
-import 'package:{{project_name}}/lib_pin_code/services/pin_biometrics_service.dart';
+import 'package:{{project_name}}/feature_pin_code/repository/pin_biometrics_repository.dart';
+import 'package:{{project_name}}/feature_pin_code/services/pin_biometrics_service.dart';
 
 import 'pin_biometrics_service_test.mocks.dart';
 

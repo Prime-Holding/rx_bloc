@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -8,7 +9,6 @@ import '../../base/common_services/onboarding_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 
 part 'onboarding_email_confirmed_bloc.rxb.g.dart';
@@ -18,11 +18,12 @@ abstract class OnboardingEmailConfirmedBlocEvents {
   /// Verify the user's email with the provided token
   void verifyEmail();
 
-  /// Redirect back to the login page in case of error
-  void goToLogin();
+  /// Redirect back to the initial page of the process
+  void goToInitialPage();
 
-  /// Redirect to the phone entry page to continue onboarding
-  void goToPhonePage();
+  /// Redirect to the phone page to continue onboarding
+  /// or profile page if the user is changing the email
+  void goToNextPage();
 }
 
 /// A contract class containing all states of the OnboardingEmailConfirmedBloC.
@@ -44,21 +45,23 @@ abstract class OnboardingEmailConfirmedBlocStates {
 class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   OnboardingEmailConfirmedBloc(
     this._verifyEmailToken,
+    this._isOnboarding,
     this._onboardingService,
-    this._routerBloc,
+    this._router,
   ) {
     onRouting.connect().addTo(_compositeSubscription);
     data.connect().addTo(_compositeSubscription);
   }
 
   final String _verifyEmailToken;
+  final bool _isOnboarding;
   final OnboardingService _onboardingService;
-  final RouterBlocType _routerBloc;
+  final GoRouter _router;
 
   @override
   ConnectableStream<UserModel> _mapToDataState() => _$verifyEmailEvent
       .startWith(null)
-      .throttleTime(actionDebounceDuration)
+      .throttleTime(kBackpressureDuration)
       .switchMap((value) => _onboardingService
           .confirmEmail(token: _verifyEmailToken)
           .asResultStream())
@@ -74,9 +77,21 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => Rx.merge([
-        _$goToPhonePageEvent.doOnData((_) =>
-            _routerBloc.events.pushReplace(const OnboardingPhoneRoute())),
-        _$goToLoginEvent
-            .doOnData((_) => _routerBloc.events.go(const LoginRoute())),
+        _$goToNextPageEvent.doOnData(
+          (_) {
+            if (_isOnboarding) {
+              _router.go(const OnboardingPhoneRoute().routeLocation);
+            } else {
+              _router.go(const LoginRoute().routeLocation);
+            }
+          },
+        ),
+        _$goToInitialPageEvent.doOnData((_) {
+          if (_isOnboarding) {
+            _router.go(const LoginRoute().routeLocation);
+          } else {
+            _router.go(const ProfileRoute().routeLocation);
+          }
+        }),
       ]).publishReplay(maxSize: 1);
 }

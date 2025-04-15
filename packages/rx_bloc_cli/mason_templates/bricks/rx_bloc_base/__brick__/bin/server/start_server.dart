@@ -68,8 +68,7 @@ List<String> securedRoutes = [
   'api/count',
   'api/count/increment',
   'api/count/decrement',
-  'api/user/push-notification-subscriptions',
-  'api/send-push-message',{{#enable_mfa}}
+  'api/user/push-notification-subscriptions',{{#enable_mfa}}
   'api/mfa/actions/<action>',
   'api/mfa/<transactionId>'{{/enable_mfa}}
 ];

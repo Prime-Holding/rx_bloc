@@ -22,9 +22,10 @@
 18. [CI/CD](#cicd)
 19. [Feature Pin Code](#feature-pin-code)
 20. [Multi-Factor Authentication](#multi-factor-authentication)
-22. [Feature QR Code](#feature-qr-code)
+21. [Feature QR Code](#feature-qr-code)
 22. [Feature onboarding](#feature-onboarding)
-23. [Next Steps](#next-steps)
+23. [Forgotten Password](#forgotten-password)
+24. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -555,6 +556,16 @@ For details on the API contracts used in the onboarding feature, please refer to
 
 
 
+
+## Forgotten Password
+
+The Forgotten password feature lets a registered user reset their password and set a new one.
+The flow includes screens which allow the user to provide their email and continue with a link to reset.
+When that link is opened, the user can set their new password.
+
+For details on the API contracts used in the Forgotten password feature, please refer to the [API contracts][feature_forgotten_password_api].
+
+
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.
@@ -603,3 +614,4 @@ For details on the API contracts used in the onboarding feature, please refer to
 [rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
 [feature_creation]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md
 [feature_onboarding_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/onboarding_api_contracts.md
+[feature_forgotten_password_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/forgotten_password_api_contracts.md

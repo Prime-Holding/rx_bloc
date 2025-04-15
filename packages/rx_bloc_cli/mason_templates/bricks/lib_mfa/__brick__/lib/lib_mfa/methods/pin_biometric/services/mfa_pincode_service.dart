@@ -1,11 +1,8 @@
 {{> licence.dart }}
 
-import 'dart:convert';
-
-import 'package:crypto/crypto.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
-import '../../../../lib_pin_code/repository/pin_code_repository.dart';
+import '../../../../base/repositories/pin_code_repository.dart';
 import '../../../models/mfa_method_request.dart';
 import '../../../models/mfa_response.dart';
 import '../../../repositories/mfa_repository.dart';
@@ -35,9 +32,9 @@ class MfaPinCodeService extends PinCodeService {
   @override
   Future<bool> savePinCodeInSecureStorage(String pinCode) async => false;
 
+  ///TODO: Implement encryption
   @override
-  Future<String> encryptPinCode(String pinCode) async =>
-      md5.convert(utf8.encode(pinCode)).toString();
+  Future<String> encryptPinCode(String pinCode) async => pinCode;
 
   @override
   Future<dynamic> verifyPinCode(String pinCode) => _mfaRepository.authenticate(

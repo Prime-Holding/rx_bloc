@@ -2,7 +2,7 @@ package com.primeholding.rxbloc_generator_plugin.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -31,7 +31,7 @@ public class GenerateRxBlocFeatureActionTest {
         when(anActionEventMock.getProject()).thenReturn(projectMock);
         when(anActionEventMock.getDataContext()).thenReturn(dataContextMock);
 
-        when(dataContextMock.getData(DataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{folderMock});
+        when(dataContextMock.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{folderMock});
 
         when(folderMock.isDirectory()).thenReturn(true);
 
@@ -69,7 +69,6 @@ public class GenerateRxBlocFeatureActionTest {
         String outputText = String.join("\n", Files.readAllLines(file.toPath())).trim();
 
         assertEquals(outputText, output);
-
     }
 
     @Test
@@ -98,7 +97,6 @@ public class GenerateRxBlocFeatureActionTest {
         String outputText = String.join("\n", Files.readAllLines(file.toPath())).trim();
 
         assertEquals(outputText, output);
-
     }
 
     @Test

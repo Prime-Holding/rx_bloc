@@ -17,15 +17,6 @@ part 'coordinator_bloc_extensions.dart';
 abstract class CoordinatorEvents {
   void authenticated({required bool isAuthenticated});
 
-{{#enable_feature_otp}}
-  void otpConfirmed({required bool isOtpConfirmed});{{/enable_feature_otp}}{{#enable_pin_code}}
-
-  void pinCodeConfirmed({required bool isPinCodeConfirmed});
-
-  void userLoggedOut();
-
-  void checkUserLoggedIn();{{/enable_pin_code}}
-
   void errorLogged({
     required ErrorModel error,
     String? stackTrace,
@@ -33,31 +24,25 @@ abstract class CoordinatorEvents {
 
   {{#analytics}}
   void navigationChanged(String location);
-  {{/analytics}}
+  {{/analytics}}{{#enable_feature_onboarding}}
+
+  /// Event that signals that the phone number was updated
+  void updatePhoneNumber();{{/enable_feature_onboarding}}
 }
 
 abstract class CoordinatorStates {
   @RxBlocIgnoreState()
   Stream<bool> get isAuthenticated;
-
-{{#enable_feature_otp}}
-  @RxBlocIgnoreState()
-  Stream<bool> get isOtpConfirmed;{{/enable_feature_otp}} {{#enable_pin_code}}
-
-  @RxBlocIgnoreState()
-  Stream<bool> get isPinCodeConfirmed;
-
-  Stream<void> get userLogOut;
-
-  @RxBlocIgnoreState()
-  Stream<void> get userLoggedIn;{{/enable_pin_code}}
-
   {{#analytics}}
   @RxBlocIgnoreState()
   Stream<String> get navigationChange;
 
   Stream<LogEventModel> get errorLogEvent;
-  {{/analytics}}
+  {{/analytics}}{{#enable_feature_onboarding}}
+
+  /// State indicating that the phone number was updated
+  @RxBlocIgnoreState()
+  Stream<void> get phoneNumberUpdated;{{/enable_feature_onboarding}}
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -67,21 +52,10 @@ abstract class CoordinatorStates {
 @RxBloc()
 class CoordinatorBloc extends $CoordinatorBloc {
   @override
-  Stream<bool> get isAuthenticated => _$authenticatedEvent;
-
-{{#enable_feature_otp}}
-  @override
-  Stream<bool> get isOtpConfirmed => _$otpConfirmedEvent;{{/enable_feature_otp}} {{#enable_pin_code}}
+  Stream<bool> get isAuthenticated => _$authenticatedEvent;{{#enable_feature_onboarding}}
 
   @override
-  Stream<bool> get isPinCodeConfirmed =>
-  _$pinCodeConfirmedEvent.startWith(false);
-
-  @override
-  Stream<void> _mapToUserLogOutState() => _$userLoggedOutEvent;
-
-  @override
-  Stream<void> get userLoggedIn => _$checkUserLoggedInEvent; {{/enable_pin_code}}
+  Stream<void> get phoneNumberUpdated => _$updatePhoneNumberEvent;{{/enable_feature_onboarding}}
 
   {{#analytics}}
   @override
