@@ -20,7 +20,7 @@ class FlavorGenerator {
 
     await Process.run(
       'flutter',
-      ['pub', 'run', 'flutter_flavorizr'],
+      ['pub', 'run', 'flutter_flavorizr', '-f'],
       workingDirectory: args.outputDirectory.path,
     );
 
