@@ -1,3 +1,6 @@
+## [5.5.1]
+* Fix issue with the generated project not properly building
+
 ## [5.5.0]
 * Added change email feature in the generated project
 * Added change phone number feature in the generated project
