@@ -29,12 +29,20 @@ extension _SpecExtensions on Spec {
       ).toString();
 }
 
+/// TODO: Remove _StateFieldElement extensions after code migration
 extension _StateFieldElement on FieldElement {
   String get stateFieldName => '_${name}State';
 
   String get stateMethodName => '_mapTo${name.capitalize()}State';
 }
 
+extension _StateFieldElement2 on FieldElement2 {
+  String get stateFieldName => '_${name3 ?? ''}State';
+
+  String get stateMethodName => '_mapTo${(name3 ?? '').capitalize()}State';
+}
+
+/// TODO: Remove _EventMethodElement extensions after code migration
 extension _EventMethodElement on MethodElement {
   /// The event field name in the generated file
   String get eventFieldName => '_\$${name}Event';
@@ -161,6 +169,134 @@ extension _EventMethodElement on MethodElement {
       refer('$eventFieldName.add').call([argument]).code;
 }
 
+extension _EventMethodElement2 on MethodElement2 {
+  /// The event field name in the generated file
+  String get eventFieldName => '_\$${name3 ?? ''}Event';
+
+  /// Is the the [RxBlocEvent.seed] annotation is provided
+  bool get hasSeedAnnotation => RegExp(r'(?<=seed: ).*(?=\)|,)')
+      .hasMatch(_rxBlocEventAnnotation?.toSource() ?? '');
+
+  /// Provides the stream generic type
+  ///
+  /// Example:
+  /// if `fetchNews(int param)` then -> PublishSubject`<int>`
+  /// if `fetchNews(String param)` then -> PublishSubject`<String>`
+  /// if `fetchNews(int p1, int p2)` then -> PublishSubject<_FetchNewsEventArgs>
+  List<Reference> get streamTypeArguments => [refer(publishSubjectGenericType)];
+
+  /// Provides the BehaviorSubject.seeded arguments as [List] of [Expression]
+  /// Throws an [_RxBlocGeneratorException] if a seed is provided but
+  /// the stream is not  [RxBlocEventType.behaviour]
+  List<Expression> get seedPositionalArguments {
+    if (hasSeedAnnotation && !isBehavior) {
+      throw _RxBlocGeneratorException(
+          'Event `${name3 ?? ''}` with type `PublishSubject`'
+          ' can not have a `seed` parameter.');
+    }
+
+    return [_seededArgument];
+  }
+
+  /// Provides the BehaviorSubject.seeded arguments as an [Expression]
+  Expression get _seededArgument {
+    var seedArgumentsMatch = RegExp(r'(?<=seed: ).*(?=\)|,)')
+        .allMatches(_rxBlocEventAnnotation?.toSource() ?? '')
+        .map<String>((m) => m.group(0) ?? '');
+
+    if (seedArgumentsMatch.isEmpty) {
+      throw _RxBlocGeneratorException(
+          'Event `${name3 ?? ''}` seed value is missing or is null.');
+    }
+
+    var seedArguments = seedArgumentsMatch.toString();
+    return refer(
+      // ignore: lines_longer_than_80_chars
+      '${isUsingRecord && !seedArguments.contains('(const') ? 'const ' : ''}'
+      '${seedArguments.substring(1, seedArguments.length - 1)}',
+    );
+  }
+
+  /// Provides the stream type based on the [RxBlocEventType] annotation
+  String get eventStreamType => isBehavior
+      ? _BlocEventStreamTypes.behavior +
+          (hasSeedAnnotation ? '<$publishSubjectGenericType>' : '')
+      : _BlocEventStreamTypes.publish;
+
+  /// Provides the first annotation as [ElementAnnotation] if exists
+  ElementAnnotation? get _eventAnnotation => metadata2.annotations.firstOrNull;
+
+  /// Provides the [RxBlocEvent] annotation as [DartObject] if exists
+  DartObject? get _computedRxBlocEventAnnotation =>
+      _rxBlocEventAnnotation?.computeConstantValue();
+
+  /// Provides the [RxBlocEvent] annotation as [ElementAnnotation] if exists
+  ElementAnnotation? get _rxBlocEventAnnotation => _eventAnnotation
+              ?.computeConstantValue()
+              ?.type
+              //ignore: deprecated_member_use
+              ?.getDisplayString(withNullability: true) ==
+          (RxBlocEvent).toString()
+      ? _eventAnnotation
+      : null;
+
+  /// Is the event stream type a BehaviorSubject
+  bool get isBehavior =>
+      _computedRxBlocEventAnnotation.toString().contains('behaviour');
+
+  /// Provides the stream type based on the number of the parameters
+  /// Example:
+  /// if `fetchNews(int param)` then -> int
+  /// if `fetchNews(String param)` then -> String
+  /// if `fetchNews(int param1, int param2)` -> _FetchNewsEventArgs
+  String get publishSubjectGenericType {
+    if (isUsingRecord) {
+      return argsRecord.recordType().toRawDartCodeString();
+    }
+    return formalParameters.isNotEmpty
+        // The only parameter's type
+        //ignore: deprecated_member_use
+        ? formalParameters.first.type.getDisplayString(withNullability: true)
+        // Default type
+        : 'void';
+  }
+
+  /// Builds the stream body
+  /// Example 1:
+  /// _${EventMethodName}EventName.add(param)
+  ///
+  /// Example 2:
+  /// _${EventMethodName}EventName.add((param1: param1, param2: param2))
+  ///
+  Code buildBody() {
+    var requiredParams = formalParameters.whereRequired().clone();
+    var optionalParams = formalParameters.whereOptional().clone();
+
+    if (requiredParams.isEmpty && optionalParams.isEmpty) {
+      // Provide null if we don't have any parameters
+      return _callStreamAddMethod(literalNull);
+    }
+
+    // Provide the first if it's just one required parameter
+    if (optionalParams.isEmpty && requiredParams.length == 1) {
+      return _callStreamAddMethod(refer(requiredParams.first.name));
+    }
+
+    // Provide the first if it's just one optional parameter
+    if (requiredParams.isEmpty && optionalParams.length == 1) {
+      return _callStreamAddMethod(refer(optionalParams.first.name));
+    }
+
+    return _callStreamAddMethod(argsRecord.newInstanceWithParameters());
+  }
+
+  /// Example:
+  /// _${methodName}Event.add()
+  Code _callStreamAddMethod(Expression argument) =>
+      refer('$eventFieldName.add').call([argument]).code;
+}
+
+/// TODO: Remove _EventMethodNamedRecordArgument extensions after code migration
 extension _EventMethodNamedRecordArgument on MethodElement {
   /// Indicates if a named record wrapper is generated for the parameters
   bool get isUsingRecord => parameters.length > 1;
@@ -172,6 +308,18 @@ extension _EventMethodNamedRecordArgument on MethodElement {
   }
 }
 
+extension _EventMethodNamedRecordArgument2 on MethodElement2 {
+  /// Indicates if a named record wrapper is generated for the parameters
+  bool get isUsingRecord => formalParameters.length > 1;
+
+  /// A named record wrapper for the method's parameters
+  _EventArgsRecord2 get argsRecord {
+    assert(isUsingRecord);
+    return _EventArgsRecord2(this);
+  }
+}
+
+/// TODO: Remove _ListParameterElementWhere extensions after code migration
 extension _ListParameterElementWhere on List<ParameterElement> {
   Iterable<ParameterElement> whereRequired() => where(
       (parameter) => !parameter.isNamed && !parameter.isOptionalPositional);
@@ -180,6 +328,15 @@ extension _ListParameterElementWhere on List<ParameterElement> {
       where((parameter) => parameter.isOptionalPositional || parameter.isNamed);
 }
 
+extension _ListParameterElementWhere2 on List<FormalParameterElement> {
+  Iterable<FormalParameterElement> whereRequired() => where(
+      (parameter) => !parameter.isNamed && !parameter.isOptionalPositional);
+
+  Iterable<FormalParameterElement> whereOptional() =>
+      where((parameter) => parameter.isOptionalPositional || parameter.isNamed);
+}
+
+/// TODO: Remove _ListParameterElementClone extensions after code migration
 extension _ListParameterElementClone on Iterable<ParameterElement> {
   List<Parameter> clone({bool toThis = false}) => map(
         (ParameterElement parameter) => Parameter(
@@ -198,7 +355,31 @@ extension _ListParameterElementClone on Iterable<ParameterElement> {
       ).toList();
 }
 
+extension _ListParameterElementClone2 on Iterable<FormalParameterElement> {
+  List<Parameter> clone({bool toThis = false}) => map(
+        (FormalParameterElement parameter) => Parameter(
+          (b) => b
+            ..toThis = toThis
+            ..required = parameter.isRequiredNamed
+            ..defaultTo = parameter.defaultValueCode != null
+                ? Code(parameter.defaultValueCode ?? '')
+                : null
+            ..named = parameter.isNamed
+            ..name = parameter.name3 ?? ''
+            ..type = toThis
+                ? null // We don't need the type in the constructor
+                : refer(parameter.getTypeDisplayName()),
+        ),
+      ).toList();
+}
+
+/// TODO: Remove _ParameterElementToString extensions after code migration
 extension _ParameterElementToString on ParameterElement {
+  //ignore: deprecated_member_use
+  String getTypeDisplayName() => type.getDisplayString(withNullability: true);
+}
+
+extension _ParameterElementToString2 on FormalParameterElement {
   //ignore: deprecated_member_use
   String getTypeDisplayName() => type.getDisplayString(withNullability: true);
 }
