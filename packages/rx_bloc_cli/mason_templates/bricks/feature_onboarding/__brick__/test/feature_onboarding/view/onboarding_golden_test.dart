@@ -1,4 +1,6 @@
-import 'package:testapp/base/models/errors/error_model.dart';
+{{> licence.dart }}
+
+import 'package:{{project_name}}/base/models/errors/error_model.dart';
 
 import '../../helpers/golden_helper.dart';
 import '../factory/onboarding_factory.dart';

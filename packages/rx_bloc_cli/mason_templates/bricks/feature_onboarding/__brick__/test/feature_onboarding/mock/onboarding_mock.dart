@@ -1,9 +1,11 @@
+{{> licence.dart }}
+
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:testapp/base/models/errors/error_model.dart';
-import 'package:testapp/base/models/user_with_auth_token_model.dart';
-import 'package:testapp/feature_onboarding/blocs/onboarding_bloc.dart';
+import 'package:{{project_name}}/base/models/errors/error_model.dart';
+import 'package:{{project_name}}/base/models/user_with_auth_token_model.dart';
+import 'package:{{project_name}}/feature_onboarding/blocs/onboarding_bloc.dart';
 
 import 'onboarding_mock.mocks.dart';
 
