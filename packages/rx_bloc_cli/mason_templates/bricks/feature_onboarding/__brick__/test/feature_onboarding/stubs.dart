@@ -1,8 +1,10 @@
-import 'package:testapp/base/models/confirmed_credentials_model.dart';
-import 'package:testapp/base/models/user_model.dart';
-import 'package:testapp/base/models/user_role.dart';
-import 'package:testapp/base/models/user_with_auth_token_model.dart';
-import 'package:testapp/lib_auth/models/auth_token_model.dart';
+{{> licence.dart }}
+
+import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
+import 'package:{{project_name}}/base/models/user_model.dart';
+import 'package:{{project_name}}/base/models/user_role.dart';
+import 'package:{{project_name}}/base/models/user_with_auth_token_model.dart';
+import 'package:{{project_name}}/lib_auth/models/auth_token_model.dart';
 
 class Stubs {
   static const email = 'example@example.com';

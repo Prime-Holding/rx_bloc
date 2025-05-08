@@ -1,3 +1,6 @@
+## [5.5.2]
+* Update generated project `go_router` dependency to `^15.1.0`
+
 ## [5.5.1]
 * Fix issue with the generated project not properly building
 
