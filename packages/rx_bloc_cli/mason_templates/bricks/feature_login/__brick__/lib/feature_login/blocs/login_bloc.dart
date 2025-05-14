@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -9,7 +10,7 @@ import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/credentials_model.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../lib_auth/services/user_account_service.dart';
-import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/models/routes_path.dart';
 import '../../lib_router/router.dart';
 
 part 'login_bloc.rxb.g.dart';
@@ -58,7 +59,7 @@ class LoginBloc extends $LoginBloc {
     this._coordinatorBloc,
     this._userAccountService,
     this._validatorService,
-    this._routerBloc,
+    this._router,
   ) {
     loggedIn.connect().addTo(_compositeSubscription);
     onRouting.connect().addTo(_compositeSubscription);
@@ -68,7 +69,7 @@ class LoginBloc extends $LoginBloc {
   final UserAccountService _userAccountService;
   final CredentialsValidatorService _validatorService;
   {{^enable_feature_onboarding}}// ignore: unused_field{{/enable_feature_onboarding}}
-  final RouterBlocType _routerBloc;
+  final GoRouter _router;
 
   @override
   Stream<String> _mapToEmailState() => _$setEmailEvent
@@ -102,12 +103,13 @@ class LoginBloc extends $LoginBloc {
       .setResultStateHandler(this)
       .whereSuccess()
       .emitAuthenticatedToCoordinator(_coordinatorBloc)
+      .doOnData((_) => _router.go(const DashboardRoute().routeLocation))
       .startWith(false)
       .publish();
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$goToRegistrationEvent{{#enable_feature_onboarding}}
-      .doOnData((_) => _routerBloc.events.push(const OnboardingRoute())){{/enable_feature_onboarding}}
+     .doOnData((_) => _router.go(const OnboardingRoute().routeLocation)){{/enable_feature_onboarding}}
     .publishReplay(maxSize: 1);
 
 

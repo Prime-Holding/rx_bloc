@@ -1,3 +1,6 @@
+{{> licence.dart }}
+
+import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -7,7 +10,6 @@ import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/country_code_model.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../services/phone_number_validator_service.dart';
 
@@ -51,12 +53,16 @@ abstract class OnboardingPhoneBlocStates {
 @RxBloc()
 class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   OnboardingPhoneBloc(
+    this._isOnboarding,
     this._onboardingService,
     this._numberValidatorService,
-    this._navigationBloc,
+    this._router,
   ) {
     phoneSubmitted.connect().addTo(_compositeSubscription);
   }
+
+  /// Indicates if the user is onboarding
+  final bool _isOnboarding;
 
   /// Service used to validate user provided phone number
   final PhoneNumberValidatorService _numberValidatorService;
@@ -64,8 +70,8 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   /// The onboarding service used to communicate the user phone number
   final OnboardingService _onboardingService;
 
-  /// The navigation bloc used to navigate the user
-  final RouterBlocType _navigationBloc;
+  /// GoRouter used for navigating between pages
+  final GoRouter _router;
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
@@ -116,7 +122,7 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   @override
   ConnectableStream<UserModel> _mapToPhoneSubmittedState() =>
       _$submitPhoneNumberEvent
-          .throttleTime(actionDebounceDuration)
+          .throttleTime(kBackpressureDuration)
           .withLatestFrom2(
               countryCode.asResultStream(),
               phoneNumber.asResultStream(),
@@ -129,6 +135,10 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
           .setResultStateHandler(this)
           .whereSuccess()
           .doOnData((_) {
-        _navigationBloc.events.push(const OnboardingPhoneConfirmRoute());
+        if (_isOnboarding) {
+          _router.go(const OnboardingPhoneConfirmRoute().routeLocation);
+        } else {
+          _router.go(const PhoneChangeConfirmRoute().routeLocation);
+        }
       }).publish();
 }

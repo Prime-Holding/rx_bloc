@@ -8,10 +8,10 @@ import 'package:widget_toolkit/widget_toolkit.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
+import '../../base/common_ui_components/show_mock_deep_link_sheet.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../blocs/onboarding_email_confirmation_bloc.dart';
-import '../ui_components/show_mock_deep_link_sheet.dart';
 
 class OnboardingEmailConfirmationPage extends StatelessWidget {
   const OnboardingEmailConfirmationPage({

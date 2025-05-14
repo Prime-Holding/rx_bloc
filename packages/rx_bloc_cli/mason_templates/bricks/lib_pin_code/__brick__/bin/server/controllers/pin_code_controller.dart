@@ -1,16 +1,19 @@
 {{> licence.dart }}
 
 import 'package:shelf/shelf.dart';
+import 'package:{{project_name}}/base/models/user_model.dart';
 
 import '../services/pin_code_service.dart';
+import '../services/users_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
 import '../utils/utilities.dart';
 
 class PinCodeController extends ApiController {
-  PinCodeController(this._pinCodeService);
+  PinCodeController(this._pinCodeService, this._usersService);
 
   final PinCodeService _pinCodeService;
+  final UsersService _usersService;
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -42,7 +45,17 @@ class PinCodeController extends ApiController {
 
     _pinCodeService.savePinCode(userId, pinCode);
 
-    return responseBuilder.buildOK();
+        final user = _usersService.getUserById(userId);
+
+    if (user == null) {
+      throw NotFoundException('User not found');
+    }
+
+    /// Update the user to have a pin code
+    _usersService.updateUser(userId, hasPin: true);
+
+    /// Return the user with the pin code
+    return responseBuilder.buildOK(data: user.copyWith(hasPin: true).toJson());
   }
 
   Future<Response> _verifyPinCode(Request request) async {
@@ -65,7 +78,9 @@ class PinCodeController extends ApiController {
         'token': token,
       });
     }
-    return responseBuilder.buildOK();
+    return responseBuilder.buildOK(
+      data: {'token': null},
+    );
   }
 
   Future<Response> _updatePinCode(Request request) async {
@@ -90,6 +105,11 @@ class PinCodeController extends ApiController {
     _pinCodeService
       ..savePinCode(userId, newPinCode)
       ..removeToken(userId);
-    return responseBuilder.buildOK();
+    final user = _usersService.getUserById(userId);
+    if (user == null) {
+      throw NotFoundException('User not found');
+    }
+
+    return responseBuilder.buildOK(data: user.toJson());
   }
 }

@@ -1,10 +1,10 @@
 name: rx_bloc_cli
 description: "rx_bloc_cli that enables quick project setup including: flavors, localization [intl], state management [rx_bloc], routing [go_router], design system, analytics [firebase], tests"
-version: 5.3.2
+version: 5.5.2
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_cli
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://www.primeholding.com
-topics: [cli, template, codegen]
+topics: [cli, template, codegen, testing, boilerplate]
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
@@ -32,15 +32,15 @@ executables:
   rx_bloc_cli:
 
 screenshots:
-  - description: "Sign In"
+  - description: "Sign In Pages"
     path: doc/assets/images/sign_in.png
-  - description: "Sign Up"
+  - description: "Sign Up Pages"
     path: doc/assets/images/sign_up.png
-  - description: "Profile"
+  - description: "Profile Pages"
     path: doc/assets/images/profile.png
-  - description: "Widget Toolkit"
+  - description: "Widget Toolkit Pages"
     path: doc/assets/images/toolkit.png
-  - description: "Showcases"
+  - description: "Showcases Page"
     path: doc/assets/images/showcases.png
-  - description: "QR Scanner"
+  - description: "QR Scanner Page"
     path: doc/assets/images/qr_scanner.png

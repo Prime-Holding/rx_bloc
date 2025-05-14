@@ -34,8 +34,8 @@ class ProfilePage extends StatelessWidget implements AutoRouteWrapper {
 
   Widget _buildDataContainer() => RxResultBuilder<ProfileBlocType, String>(
         state: (bloc) => bloc.states.data,
-        buildLoading: (ctx, bloc) => const CircularProgressIndicator(),
-        buildError: (ctx, error, bloc) => Text(error.toString()),
-        buildSuccess: (ctx, state, bloc) => Text(state),
+        buildLoading: (context, bloc) => const CircularProgressIndicator(),
+        buildError: (context, error, bloc) => Text(error.toString()),
+        buildSuccess: (context, state, bloc) => Text(state),
       );
 }

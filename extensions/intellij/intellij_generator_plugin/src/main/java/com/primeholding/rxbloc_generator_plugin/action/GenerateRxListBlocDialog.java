@@ -1,5 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.action;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +16,7 @@ public class GenerateRxListBlocDialog extends DialogWrapper {
     private JPanel contentPanel;
 
     public GenerateRxListBlocDialog(final Listener listener) {
-        super(null);
+        super((Project) null);
         this.listener = listener;
         init();
         setTitle("Create RxBloc List");

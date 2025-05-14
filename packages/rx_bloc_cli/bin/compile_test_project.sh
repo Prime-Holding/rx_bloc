@@ -11,6 +11,8 @@ function replace_file_contents() {
     "docs/mfa.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md"
     "docs/patrol_integration_test.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md"
     "docs/feature_creation.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md"
+    "docs/onboarding_api_contracts.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/onboarding_api_contracts.md"
+    "docs/forgotten_password_api_contracts.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/forgotten_password_api_contracts.md"
   )
 
   # Iterate over the to_replace array
@@ -40,11 +42,16 @@ function prepare_example_directory() {
 
 ##### Main
 
-. $(dirname "$0")/compile_bundles.sh
+project_type=$1
+if [ -z "$project_type" ]; then
+  project_type="all_enabled"
+fi
+
+. "$(dirname "$0")"/compile_bundles.sh
 
 rm -rf example/testapp
 mkdir example/testapp
 
-$(dirname "$0")/generate_test_project.sh all_enabled
+"$(dirname "$0")"/generate_test_project.sh "$project_type"
 
 prepare_example_directory

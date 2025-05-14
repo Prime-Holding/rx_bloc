@@ -10,6 +10,8 @@ dependency_overrides:
       url: https://github.com/DDavidPrime/alice.git
       ref: rxdart-upgrade
       path: packages/alice_dio
+  ## TODO: Temporary fix until [this issue](https://github.com/realm/realm-dart/issues/1811) is closed
+  source_span: 1.10.0
   #rx_bloc_test:
   #  path: ../../packages/rx_bloc_test
   #rx_bloc:

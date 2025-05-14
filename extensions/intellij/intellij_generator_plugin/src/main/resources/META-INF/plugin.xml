@@ -3,6 +3,9 @@
     <name>RxBloc</name>
     <vendor>Prime Holding JSC</vendor>
 
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+
     <description>
         <![CDATA[
         This plugin helps you create new Features,  <a href="https://pub.dev/packages/rx_bloc_list" target="_blank">Rx BloC List</a>,
@@ -31,14 +34,6 @@
    </li>
    </ul>]]>
     </description>
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="145.0"/>
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-    <depends>com.intellij.modules.lang</depends>
-    <depends>com.intellij.modules.java</depends>
 
     <actions>
         <action

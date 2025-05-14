@@ -22,9 +22,10 @@
 18. [CI/CD](#cicd)
 19. [Feature Pin Code](#feature-pin-code)
 20. [Multi-Factor Authentication](#multi-factor-authentication)
-22. [Feature QR Code](#feature-qr-code)
+21. [Feature QR Code](#feature-qr-code)
 22. [Feature onboarding](#feature-onboarding)
-23. [Next Steps](#next-steps)
+23. [Forgotten Password](#forgotten-password)
+24. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -555,6 +556,16 @@ For details on the API contracts used in the onboarding feature, please refer to
 
 
 
+
+## Forgotten Password
+
+The Forgotten password feature lets a registered user reset their password and set a new one.
+The flow includes screens which allow the user to provide their email and continue with a link to reset.
+When that link is opened, the user can set their new password.
+
+For details on the API contracts used in the Forgotten password feature, please refer to the [API contracts][feature_forgotten_password_api].
+
+
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.
@@ -597,9 +608,10 @@ For details on the API contracts used in the onboarding feature, please refer to
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
-[patrol_integration_test_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md
-[rx_bloc_cli_cd_setup_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md
-[golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
-[rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
-[feature_creation]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/feature_creation.md
-[feature_onboarding_api]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/mason_templates/bricks/feature_onboarding/API_CONTRACTS.md
+[patrol_integration_test_lnk]: docs/patrol_integration_test.md
+[rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
+[golden_tests_with_smart_widgets_lnk]: docs/golden_tests.md
+[rx_bloc_cli_mfa_lnk]: docs/mfa.md
+[feature_creation]: docs/feature_creation.md
+[feature_onboarding_api]: docs/onboarding_api_contracts.md
+[feature_forgotten_password_api]: docs/forgotten_password_api_contracts.md

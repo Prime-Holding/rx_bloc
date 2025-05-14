@@ -10,4 +10,4 @@ This feature includes basic input validation and authentication infrastructure r
 
 ## API Contracts
 
-For detailed API contracts and to better understand the flow, please refer to the [API Contracts](API_CONTRACTS.md) document.
+For detailed API contracts and to better understand the flow, please refer to the [API Contracts](__brick__/docs/onboarding_api_contracts.md) document.

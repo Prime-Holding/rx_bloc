@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "Make sure you add your own Firebase development config.",
         "android_client_info": {
-          "package_name": "{{domain_name}}.{{organization_name}}.{{project_name}}.dev"
+          "package_name": "{{domain_name}}.{{organization_name}}.{{project_name}}.development"
         }
       },
       "oauth_client": [

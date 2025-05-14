@@ -204,8 +204,8 @@ Future<void> pumpScenarioBuilderWithMaterialApp(
       NavigatorObserver? navigatorObserver,
       Iterable<Locale>? localeOverrides,
       ThemeData? theme,
-    }) async {
-  await onlyPumpWidget(
+    }) async { 
+      await onlyPumpWidget(
       tester,
       _buildMaterialAppWrapper(
         child: widget,
@@ -214,7 +214,8 @@ Future<void> pumpScenarioBuilderWithMaterialApp(
         navigatorObserver: navigatorObserver,
         localeOverrides: localeOverrides,
         theme: theme,
-      ));
+    ),
+  );
 }
 
 /// Wraps the provided [child] with a [MaterialApp] to ensure that the golden

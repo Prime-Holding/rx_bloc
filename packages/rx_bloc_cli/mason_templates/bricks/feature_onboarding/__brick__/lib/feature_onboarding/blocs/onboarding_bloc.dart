@@ -1,5 +1,8 @@
 {{> licence.dart }}
 
+import 'dart:async';
+
+import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,7 +17,6 @@ import '../../base/models/user_with_auth_token_model.dart';
 import '../../lib_auth/models/auth_token_model.dart';
 import '../../lib_auth/services/auth_service.dart';
 import '../../lib_permissions/services/permissions_service.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 
 part 'onboarding_bloc.rxb.g.dart';
@@ -72,7 +74,7 @@ class OnboardingBloc extends $OnboardingBloc {
     this._permissionsService,
     this._onboardingService,
     this._validatorService,
-    this._routerBloc,
+    this._router,
   ) {
     registered.connect().addTo(_compositeSubscription);
     onRouting.connect().addTo(_compositeSubscription);
@@ -90,7 +92,7 @@ class OnboardingBloc extends $OnboardingBloc {
   final PermissionsService _permissionsService;
   final OnboardingService _onboardingService;
   final CredentialsValidatorService _validatorService;
-  final RouterBlocType _routerBloc;
+  final GoRouter _router;
 
   @override
   Stream<String> _mapToEmailState() => _$setEmailEvent
@@ -106,7 +108,7 @@ class OnboardingBloc extends $OnboardingBloc {
 
   @override
   ConnectableStream<UserWithAuthTokenModel> _mapToRegisteredState() => _$registerEvent
-      .throttleTime(actionDebounceDuration)
+      .throttleTime(kBackpressureDuration)
       .withLatestFrom2<Result<String>, Result<String>, CredentialsModel?>(
           email.asResultStream(),
           password.asResultStream(),
@@ -145,13 +147,14 @@ class OnboardingBloc extends $OnboardingBloc {
     if (user.confirmedCredentials.email) {
       if (user.confirmedCredentials.phone) {
         await _permissionsService.load();
-        return _routerBloc.events.go(const DashboardRoute());
+        return _router.go(const DashboardRoute().routeLocation);
       }
 
-      return _routerBloc.events.pushReplace(const OnboardingPhoneRoute());
+      _router.go(OnboardingPhoneRoute().routeLocation);
     }
-    return _routerBloc.events
-        .pushReplace(OnboardingEmailConfirmationRoute(user.email));
+    _router.go(
+      OnboardingEmailConfirmationRoute(user.email).routeLocation,
+    );
   }
 
   @override
@@ -179,7 +182,7 @@ class OnboardingBloc extends $OnboardingBloc {
           .mapToErrorModel();
 
   Future<void> _getUserAndResumeOnboarding() async {
-    final user = await _onboardingService.getMyUser();
+    final user = await _onboardingService.getUser();
     await _navigateToNextStep(user);
   }
 

@@ -13,6 +13,7 @@ on:
         - reminders
         - rx_bloc_cli_all_enabled
         - rx_bloc_cli_default
+        - rx_bloc_cli_without_showcase_features
 
 jobs:
   example_project:

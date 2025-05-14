@@ -5,22 +5,20 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:widget_toolkit/models.dart';
-import 'package:widget_toolkit/ui_components.dart';{{#enable_pin_code}}
+import 'package:widget_toolkit/widget_toolkit.dart';{{#enable_pin_code}}
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/app_divider.dart';
 import '../../base/common_ui_components/app_list_tile.dart';{{#has_authentication}}
- import '../../lib_auth/blocs/user_account_bloc.dart';{{/has_authentication}}{{#enable_change_language}}
+import '../../base/models/user_model.dart';{{/has_authentication}}  {{#enable_feature_onboarding}}
+import '../../feature_email_change/di/email_change_page_with_dependencies.dart'; {{/enable_feature_onboarding}}{{#has_authentication}}
+import '../../lib_auth/blocs/user_account_bloc.dart';{{/has_authentication}}{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
-import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#enable_pin_code}}
-import '../../lib_pin_code/bloc/create_pin_bloc.dart';
-import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
-import '../../lib_pin_code/models/pin_code_arguments.dart'; {{/enable_pin_code}}
-import '../../lib_router/blocs/router_bloc.dart';
-import '../../lib_router/router.dart';
+import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#has_authentication}}
+import '../../lib_router/router.dart';{{/has_authentication}}
 import '../blocs/profile_bloc.dart';
 import '../extensions/push_notifications_extensions.dart';{{#has_authentication}}
 import '../ui_components/logout_action_button.dart';{{/has_authentication}}
@@ -73,39 +71,40 @@ class ProfilePage extends StatelessWidget {
               {{/has_authentication}}
             ),
             SliverList(
-              delegate: SliverChildListDelegate([
+              delegate: SliverChildListDelegate([ {{#enable_feature_onboarding}}
+                 AppListTile(
+                  featureTitle: context.l10n.featureOnboarding.changeEmail,
+                  featureSubtitle: context.l10n.featureOnboarding.manageEmail,
+                  icon: context.designSystem.icons.accountIcon,
+                  onTap: () => showBlurredBottomSheet(
+                    context: context,
+                    configuration: ModalConfiguration(
+                      safeAreaBottom: false,
+                      haveOnlyOneSheet: false,
+                    ),
+                    builder: (BuildContext context) =>
+                        const EmailChangePageWithDependencies(),
+                  ),
+                ),
+                const AppDivider(),
+                AppListTile(
+                  featureTitle:
+                      context.l10n.featureOnboarding.changePhoneNumber,
+                  featureSubtitle:
+                      context.l10n.featureOnboarding.managePhoneNumber,
+                  icon: context.designSystem.icons.phoneIcon,
+                  onTap: () => GoRouter.of(context)
+                      .push(const PhoneChangeRoute().location),
+                ),
+                const AppDivider(),{{/enable_feature_onboarding}}
                 {{#enable_pin_code}}
-                RxBlocBuilder<CreatePinBlocType, bool>(
-                  state: (bloc) => bloc.states.isPinCreated,
-                  builder: (context, isPinCreated, bloc) => AppListTile(
-                    featureTitle: _buildPinButtonText(isPinCreated, context),
+                RxBlocBuilder<UserAccountBlocType, UserModel?>(
+                  state: (bloc) => bloc.states.currentUser,
+                  builder: (context, user, bloc) => AppListTile(
+                    featureTitle: _buildPinButtonText(user, context),
                     icon: context.designSystem.icons.pin,
                     featureSubtitle: context.l10n.libPinCode.pinCodeSubtitle,
-                    onTap: () {
-                      if (isPinCreated.hasData && isPinCreated.data!) {
-                        context
-                            .read<UpdateAndVerifyPinBlocType>()
-                            .events
-                            .deleteSavedData();
-                        context.read<RouterBlocType>().events.push(
-                              const UpdatePinRoute(),
-                              extra: PinCodeArguments(
-                                  title:
-                                      context.l10n.libPinCode.enterCurrentPin),
-                            );
-                      } else {
-                        context
-                            .read<CreatePinBlocType>()
-                            .events
-                            .deleteSavedData();
-                        context.read<RouterBlocType>().events.push(
-                              const CreatePinRoute(),
-                              extra: PinCodeArguments(
-                                title: context.l10n.libPinCode.createPin,
-                              ),
-                            );
-                      }
-                    },
+                    onTap: () => _onPinTileTap(context, user),
                   ),
                 ),
                 const AppDivider(),
@@ -170,53 +169,25 @@ class ProfilePage extends StatelessWidget {
                   state: (bloc) => bloc.states.areNotificationsEnabled.skip(1),
                   condition: (previousState, currentState) =>
                       previousState is Result<bool>,
-                  listener: (context, state) {
-                    if (state is ResultSuccess<bool>) {
-                      showBlurredBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) => MessagePanelWidget(
-                          message: state.data.translate(context),
-                          messageState: MessagePanelState.positiveCheck,
-                        ),
-                      );
-                    }
-                  },
-                ),
+                 listener: _onNotificationStateChanged,
+                ),{{#enable_feature_onboarding}}
+                RxBlocListener<ProfileBlocType, void>(
+                  state: (bloc) => bloc.states.phoneNumberUpdated,
+                  listener: (context, _) => showBlurredBottomSheet(
+                    context: context,
+                    builder: (context) => MessagePanelWidget(
+                      isLoading: false,
+                      message:
+                          context.l10n.featureOnboarding.phoneNumberUpdated,
+                      messageState: MessagePanelState.positive,
+                    ),
+                  ),
+                ),{{/enable_feature_onboarding}}
                 {{#enable_pin_code}}
-                RxBlocListener<CreatePinBlocType, bool>(
-                  state: (bloc) => bloc.states.isPinCreated,
-                  condition: (previous, current) =>
-                      previous != current &&
-                      current == true &&
-                      previous != null,
-                  listener: (context, isCreated) async {
-                    if (isCreated) {
-                      await showBlurredBottomSheet(
-                        context: context,
-                        configuration:
-                            const ModalConfiguration(safeAreaBottom: false),
-                        builder: (context) => MessagePanelWidget(
-                          message: context.l10n.libPinCode.pinCreatedMessage,
-                          messageState: MessagePanelState.positiveCheck,
-                        ),
-                      );
-                    }
-                  },
-                ),
-                RxBlocListener<UpdateAndVerifyPinBlocType, void>(
-                  state: (bloc) => bloc.states.isPinUpdated,
-                  listener: (context, isCreated) async {
-                    await showBlurredBottomSheet(
-                      context: context,
-                      configuration:
-                          const ModalConfiguration(safeAreaBottom: false),
-                      builder: (context) => MessagePanelWidget(
-                        message: context.l10n.libPinCode.pinUpdatedMessage,
-                        messageState: MessagePanelState.positiveCheck,
-                      ),
-                    );
-                  },
-                ),
+                 RxBlocListener<UserAccountBlocType, UserModel?>(
+                  state: (bloc) => bloc.states.currentUser.skip(1),
+                  listener: _onUserAccountChanged,
+                 ),
               {{/enable_pin_code}}
               ]),
             ),
@@ -225,14 +196,46 @@ class ProfilePage extends StatelessWidget {
       );
  {{#enable_pin_code}}
   String _buildPinButtonText(
-      AsyncSnapshot<bool> isPinCreated, BuildContext context) {
-    if (isPinCreated.hasData) {
-      if (isPinCreated.data!) {
-        return context.l10n.libPinCode.changePin;
-      }
-      return context.l10n.libPinCode.createPin;
+      AsyncSnapshot<UserModel?> user, BuildContext context) =>
+      user.data?.hasPin == true
+          ? context.l10n.libPinCode.changePin
+          : context.l10n.libPinCode.createPin;
+
+  void _onPinTileTap(BuildContext context, AsyncSnapshot<UserModel?> user) {
+    if (user.data != null && user.data!.hasPin) {
+      GoRouter.of(context).push(
+        const UpdatePinRoute().routeLocation,
+      );
+      return;
     }
-    return context.l10n.libPinCode.createPin;
+    GoRouter.of(context).push(
+      const SetPinRoute().routeLocation,
+    );
   }
-  {{/enable_pin_code}}
+
+  Future<void> _onUserAccountChanged(
+      BuildContext context, UserModel? user) async {
+    if (user != null && user.hasPin) {
+      await showBlurredBottomSheet(
+        context: context,
+        configuration: const ModalConfiguration(safeAreaBottom: false),
+        builder: (context) => MessagePanelWidget(
+          message: context.l10n.libPinCode.pinUpdatedMessage,
+          messageState: MessagePanelState.positiveCheck,
+        ),
+      );
+    }
+  } {{/enable_pin_code}}
+
+  void _onNotificationStateChanged(BuildContext context, Result<bool> state) {
+    if (state is ResultSuccess<bool>) {
+      showBlurredBottomSheet(
+        context: context,
+        builder: (BuildContext context) => MessagePanelWidget(
+          message: state.data.translate(context),
+          messageState: MessagePanelState.positiveCheck,
+        ),
+      );
+    }
+  }
 }

@@ -1,5 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.action
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -26,13 +27,15 @@ class BootstrapTestsAction : AnAction(), GenerateRxBlocTestDialog.Listener {
         dialog.show()
     }
 
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
+
     override fun onGenerateBlocTestClicked(selectedTestLibrary: TestLibrary) {
         generate(selectedTestLibrary)
     }
 
-    override fun update(e: AnActionEvent?) {
+    override fun update(e: AnActionEvent) {
         super.update(e)
-        val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         var isVisible = false
 
         val numberFiles = (files?.size ?: 0)
@@ -51,7 +54,7 @@ class BootstrapTestsAction : AnAction(), GenerateRxBlocTestDialog.Listener {
                 }
             }
         }
-        e?.presentation?.isVisible = isVisible
+        e.presentation.isVisible = isVisible
     }
 
     private fun isBlocFolder(file: VirtualFile): Boolean {

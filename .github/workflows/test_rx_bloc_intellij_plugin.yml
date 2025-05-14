@@ -23,16 +23,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 8
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '8'
+        java-version: '17'
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@v4
       with:
-        build-root-directory: extensions/intellij/intellij_generator_plugin
-        arguments: test
+        gradle-version: '8.10.2'
+
+    - name: Build with Gradle
+      run: |
+        cd extensions/intellij/intellij_generator_plugin
+        ./gradlew test

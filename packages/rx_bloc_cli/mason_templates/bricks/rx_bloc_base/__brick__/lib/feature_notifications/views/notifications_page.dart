@@ -2,16 +2,19 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_toolkit/ui_components.dart';
+import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
+import '../../base/app/config/app_constants.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/app_list_tile.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
-import '../../base/models/notification_model.dart';
 import '../../lib_router/router.dart';
 import '../blocs/notifications_bloc.dart';
+import '../ui_components/push_token_widget.dart';
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
@@ -28,6 +31,15 @@ class NotificationsPage extends StatelessWidget {
                 builder: (BuildContext context) => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                  AppErrorModalWidget<NotificationsBlocType>(
+                    errorState: (bloc) => bloc.states.errors,
+                    onRetry: (_, __) => context
+                        .read<NotificationsBlocType>()
+                        .events
+                        .fetchPushToken(),
+                    onCancel: () =>
+                        Navigator.of(context).pop(),
+                    ),
                     Text(
                       context.l10n.featureNotifications
                           .notificationsPageDescription,
@@ -59,87 +71,49 @@ class NotificationsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppListTile(
-                  featureTitle: context.l10n.featureNotifications
-                      .notificationPermissionRequestText,
-                  trailing: const SizedBox(),
-                  icon: const Icon(Icons.notification_add_outlined),
-                  onTap: () => context
-                      .read<NotificationsBlocType>()
-                      .events
-                      .requestNotificationPermissions(),
+                SizedBox(
+                  height: context.designSystem.spacing.m,
                 ),
-                AppListTile(
-                  featureTitle:
-                      context.l10n.featureNotifications.notificationShowText,
-                  trailing: const SizedBox(),
-                  icon: const Icon(Icons.notifications_active_outlined),
-                  onTap: () => context
-                      .read<NotificationsBlocType>()
-                      .events
-                      .sendMessage(context
-                          .l10n.featureNotifications.notificationsMessage),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: context.designSystem.spacing.l,
+                  right: context.designSystem.spacing.l,
                 ),
-                AppListTile(
-                  featureTitle: context
-                      .l10n.featureNotifications.notificationShowDelayedText,
-                  trailing: const SizedBox(),
-                  icon: const Icon(Icons.notifications_paused_outlined),
-                  onTap: () => context
-                      .read<NotificationsBlocType>()
-                      .events
-                      .sendMessage(
-                        context.l10n.featureNotifications.notificationsDelayed,
-                        delay: 5,
-                      ),
+                child: PushTokenWidget(
+                    label: context
+                        .l10n.featureNotifications.notificationConsoleLabel,
+                    value: firebaseProjectUrl),
+              ),
+              SizedBox(
+                height: context.designSystem.spacing.l,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: context.designSystem.spacing.l,
+                  right: context.designSystem.spacing.l,
                 ),
-                AppListTile(
-                  featureTitle: context.l10n.featureNotifications
-                      .notificationShowRedirectingText,
-                  trailing: const SizedBox(),
-                  icon: const Icon(Icons.circle_notifications_outlined),
-                  onTap: () => context
-                      .read<NotificationsBlocType>()
-                      .events
-                      .sendMessage(
-                          context
-                              .l10n.featureNotifications.notificationRedirecing,
-                          delay: 5,
-                          data: NotificationModel(
-                            type: NotificationModelType.dashboard,
-                            id: '1',
-                          ).toJson()),
+                child: RxResultBuilder<NotificationsBlocType, String>(
+                  state: (bloc) => bloc.states.pushToken,
+                  buildSuccess: (context, pushToken, bloc) => PushTokenWidget(
+                    label: context
+                        .l10n.featureNotifications.notificationTokenLabel,
+                    value: pushToken,
+                    key: const Key('pushTokenSuccessWidget'),
+                  ),
+                  buildError: (context, error, bloc) => PushTokenWidget(
+                    label: context
+                        .l10n.featureNotifications.notificationTokenLabel,
+                    error: context.l10n.error.notImplemented,
+                    key: const Key('pushTokenErrorWidget'),
+                  ),
+                  buildLoading: (context, bloc) => PushTokenWidget(
+                    label: context
+                        .l10n.featureNotifications.notificationTokenLabel,
+                    value: null,
+                    key: const Key('pushTokenLoadingWidget'),
+                  ),
                 ),
-                RxBlocListener<NotificationsBlocType, bool>(
-                  state: (bloc) => bloc.states.permissionsAuthorized,
-                  listener: (ctx, authorized) async {
-                    if (authorized) return;
-
-                    // If not authorized, show a dialog popup
-                    await showAdaptiveDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        content: Text(
-                          context.l10n.featureNotifications
-                              .notificationsPermissionsDenied,
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: <Widget>[
-                          Center(
-                            child: TextButton(
-                              onPressed: () => context.pop(),
-                              child: Text(
-                                context.l10n.ok,
-                                style: context
-                                    .designSystem.typography.fadedButtonText,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+              ),
               ],
             ),
           ),

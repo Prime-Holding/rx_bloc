@@ -2,6 +2,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
+import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/lib_auth/blocs/user_account_bloc.dart';
 
 import 'user_account_bloc_mock.mocks.dart';
@@ -15,6 +16,7 @@ UserAccountBlocType userAccountBlocMockFactory({
   required bool loggedIn,
   ErrorModel? error,
   bool? isLoading,
+  UserModel? user,
 }) {
   final userAccountBloc = MockUserAccountBlocType();
   final eventsMock = MockUserAccountBlocEvents();
@@ -35,6 +37,10 @@ UserAccountBlocType userAccountBlocMockFactory({
   when(statesMock.loggedIn).thenAnswer((_) => loggedInState);
 
   when(statesMock.isLoading).thenAnswer((_) => loadingState);
+
+  when(statesMock.currentUser).thenAnswer(
+    (_) => Stream.value(user).publishReplay(maxSize: 1),
+  );
 
   when(statesMock.errors).thenAnswer(
     (_) => error != null ? Stream.value(error) : const Stream.empty(),

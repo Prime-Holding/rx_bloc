@@ -1,3 +1,17 @@
+## [5.5.2]
+* Update generated project `go_router` dependency to `^15.1.0`
+
+## [5.5.1]
+* Fix issue with the generated project not properly building
+
+## [5.5.0]
+* Added change email feature in the generated project
+* Added change phone number feature in the generated project
+* Added Forgotten password feature in the generated project
+
+## [5.4.1]
+* Fix static analysis issue with multiline if statement brackets after linter update
+
 ## [5.4.0]
 * Added `--enable-feature-onboarding` flag to configure an Onboarding/Registration flow for the project, including resuming Onboarding from a different device
 * Fix issue where camera permission was not available on iOS devices for the QR scanner feature

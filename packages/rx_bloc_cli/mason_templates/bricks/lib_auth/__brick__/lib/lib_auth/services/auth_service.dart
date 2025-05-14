@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import '../../base/models/user_model.dart';
+import '../../base/models/user_with_auth_token_model.dart';
 import '../models/auth_token_model.dart';
 import '../repositories/auth_repository.dart';
 
@@ -52,7 +54,7 @@ class AuthService {
 
   /// Checks the user credentials passed in [email], [password] and returns
   /// auth token.
-  Future<AuthTokenModel> authenticate(
+  Future<UserWithAuthTokenModel> authenticate(
           {String? email, String? password, String? refreshToken}) =>
       _authRepository.authenticate(
         email: email,
@@ -62,4 +64,7 @@ class AuthService {
 
   /// Logs out the user
   Future<void> logout() => _authRepository.logout();
+
+  /// Returns the current user
+  Future<UserModel> getCurrentUser() => _authRepository.getCurrentUser();
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
@@ -9,7 +10,6 @@ import 'package:{{project_name}}/feature_login/blocs/login_bloc.dart';
 import 'package:{{project_name}}/lib_auth/services/user_account_service.dart';
 
 import '../../base/common_blocs/coordinator_bloc_mock.dart';
-import '../../base/common_blocs/router_bloc_mock.dart';
 import '../stubs.dart';
 import 'login_test.mocks.dart';
 
@@ -17,11 +17,13 @@ import 'login_test.mocks.dart';
   CoordinatorBlocType,
   UserAccountService,
   CredentialsValidatorService,
+  GoRouter,
 ])
 void main() {
   late CoordinatorBlocType coordinatorBloc;
   late UserAccountService userAccountService;
   late CredentialsValidatorService validatorService;
+  late GoRouter goRouter;
 
   void defineWhen({String? username, String? password, ErrorModel? error}) {
     when(userAccountService.loadPermissions())
@@ -52,7 +54,7 @@ void main() {
 
     if (username != null && password != null) {
       when(userAccountService.login(username: username, password: password))
-          .thenAnswer((_) => Future.value());
+          .thenAnswer((_) => Future.value(Stubs.userModel));
     }
 
     when(userAccountService.subscribeForNotifications())
@@ -63,12 +65,13 @@ void main() {
         coordinatorBloc,
         userAccountService,
         validatorService,
-        routerBlocMockFactory(),
+        goRouter,
       );
   setUp(() {
     coordinatorBloc = coordinatorBlocMockFactory();
     userAccountService = MockUserAccountService();
     validatorService = MockCredentialsValidatorService();
+    goRouter = MockGoRouter();
   });
 
   group('test login_bloc_dart', () {
@@ -101,8 +104,6 @@ void main() {
           return loginBloc();
         },
         act: (bloc, fakeAsync) async {
-          fakeAsync.elapse(const Duration(seconds: 1));
-          bloc.events.login();
           fakeAsync.elapse(const Duration(seconds: 1));
           bloc.events.setPassword(Stubs.password);
           bloc.events.setEmail(Stubs.email);

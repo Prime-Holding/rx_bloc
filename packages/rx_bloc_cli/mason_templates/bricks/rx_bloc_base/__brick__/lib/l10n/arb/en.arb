@@ -9,6 +9,7 @@
     "resetPassword" : "Reset password",
     "pageWithResult" : "Enter message",
     "tryAgain" : "Try again",
+    "retry" : "Retry",
     "confirm" : "Confirm",
     "submit" : "Submit",
     "continueText": "Continue",
@@ -16,5 +17,6 @@
     "english" : "English",
     "bulgarian" : "Bulgarian",
     "changeLanguage" : "Change Language",
-    "navShowcase":"Showcase"
+    "navShowcase":"Showcase",
+    "copiedToYourKeyboard":"Copied to your clipboard !"
 }

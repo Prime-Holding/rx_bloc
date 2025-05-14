@@ -49,9 +49,10 @@ void main() {
       const email = Stubs.email;
       const password = Stubs.password;
       final authTokenModel = Stubs.authTokenModel;
+      final userWithAuthTokenModel = Stubs.userWithAuthTokenModel;
 
       when(authRepository.authenticate(email: email, password: password))
-          .thenAnswer((_) async => authTokenModel);
+          .thenAnswer((_) async => userWithAuthTokenModel);
 
       await userAccountService.login(username: email, password: password);
 

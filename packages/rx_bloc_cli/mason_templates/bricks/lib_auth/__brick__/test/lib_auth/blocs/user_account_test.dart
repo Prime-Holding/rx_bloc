@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:{{project_name}}/base/common_blocs/coordinator_bloc.dart';
@@ -8,8 +9,9 @@ import 'package:{{project_name}}/lib_auth/services/auth_service.dart';
 import 'package:{{project_name}}/lib_auth/services/user_account_service.dart';
 
 import '../../base/common_blocs/coordinator_bloc_mock.dart';
-import '../../base/common_blocs/router_bloc_mock.dart';
+
 import '../mock/auth_service_mock.dart';
+import '../mock/go_router_mock.dart';
 import '../mock/user_account_service_mock.dart';
 import '../stubs.dart';
 
@@ -18,6 +20,7 @@ void main() {
   late CoordinatorBlocType coordinatorBloc;
   late AuthService authService;
   late CoordinatorStates coordinatorStates;
+  late GoRouter router;
 
   void defineWhen(
       {String? username,
@@ -31,7 +34,7 @@ void main() {
 
     if (username != null && password != null) {
       when(userAccountService.login(username: username, password: password))
-          .thenAnswer((_) => Future.value());
+          .thenAnswer((_) => Future.value(Stubs.userModel));
     }
 
     if (authToken != null) {
@@ -65,7 +68,10 @@ void main() {
         .thenAnswer((_) => Future.value());
 
     when(authService.authenticate(email: username, password: password))
-        .thenAnswer((_) => Future.value(Stubs.authTokenModel));
+        .thenAnswer((_) => Future.value(Stubs.userWithAuthTokenModel));
+
+    when(authService.getCurrentUser())
+        .thenAnswer((_) => Future.value(Stubs.userModel));
 
     when(coordinatorStates.isAuthenticated)
         .thenAnswer((_) => Stream.value(isAuthenticated));
@@ -75,7 +81,7 @@ void main() {
         userAccountService,
         coordinatorBloc,
         authService,
-        routerBlocMockFactory(),
+        router,
       );
 
   setUp(() {
@@ -84,6 +90,7 @@ void main() {
     userAccountService = userAccountServiceMockFactory();
     authService = authServiceMockFactory();
     coordinatorBloc = coordinatorBlocMockFactory(states: coordinatorStates);
+    router = goRouterMockFactory();
   });
 
   rxBlocTest<UserAccountBlocType, bool>(
