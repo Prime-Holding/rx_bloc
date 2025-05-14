@@ -138,7 +138,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const AppDivider(),
                 {{/enable_pin_code}}
-               RxBlocBuilder<ProfileBlocType, Result<bool>>(
+                RxBlocBuilder<ProfileBlocType, Result<bool>>(
                   state: (bloc) => bloc.states.areNotificationsEnabled,
                   builder: (context, areNotificationsEnabled, bloc) =>
                       AppListTile(
@@ -161,8 +161,11 @@ class ProfilePage extends StatelessWidget {
                 ),
                 AppErrorModalWidget<ProfileBlocType>(
                   errorState: (bloc) => bloc.states.errors,
-                ),
-                  RxBlocListener<ProfileBlocType, Result<bool>>(
+                ),{{#has_authentication}}
+                AppErrorModalWidget<UserAccountBlocType>(
+                  errorState: (bloc) => bloc.states.errors,
+                ),{{/has_authentication}}
+                RxBlocListener<ProfileBlocType, Result<bool>>(
                   state: (bloc) => bloc.states.areNotificationsEnabled.skip(1),
                   condition: (previousState, currentState) =>
                       previousState is Result<bool>,
