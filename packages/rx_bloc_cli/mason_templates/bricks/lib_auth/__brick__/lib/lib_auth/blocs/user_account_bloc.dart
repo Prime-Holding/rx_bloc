@@ -53,8 +53,7 @@ class UserAccountBloc extends $UserAccountBloc {
 
     _$logoutEvent
         .throttleTime(const Duration(seconds: 1))
-        .exhaustMap((value) =>
-            _userAccountService.logout().asResultStream())
+        .exhaustMap((value) => _userAccountService.logout().asResultStream())
         .setResultStateHandler(this)
         .whereSuccess()
         .mapTo(false)

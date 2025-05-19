@@ -31,9 +31,12 @@ UserAccountBlocType userAccountBlocMockFactory({
       .publishReplay(maxSize: 1)
     ..connect();
 
-  when(statesMock.loggedIn).thenAnswer(
-    (_) => Stream.value(loggedIn).publishReplay(maxSize: 1),
-  );
+  final loggedInState = Stream.value(loggedIn).publishReplay(maxSize: 1)
+    ..connect();
+
+  when(statesMock.loggedIn).thenAnswer((_) => loggedInState);
+
+  when(statesMock.isLoading).thenAnswer((_) => loadingState);
 
   when(statesMock.currentUser).thenAnswer(
     (_) => Stream.value(user).publishReplay(maxSize: 1),
@@ -42,8 +45,6 @@ UserAccountBlocType userAccountBlocMockFactory({
   when(statesMock.errors).thenAnswer(
     (_) => error != null ? Stream.value(error) : const Stream.empty(),
   );
-
-  when(statesMock.isLoading).thenAnswer((_) => loadingState);
 
   return userAccountBloc;
 }
