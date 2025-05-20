@@ -70,6 +70,8 @@ String _projectGitIgnore = '''
 # Generated code
 lib/generated_plugin_registrant.dart
 lib/assets.dart
+*.g.dart
+*.mocks.dart
 
 # Devops files and directories
 devops/artifacts/**
