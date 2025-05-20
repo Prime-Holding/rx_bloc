@@ -12,27 +12,8 @@ import '../../base/extensions/error_model_translations.dart';
 import '../../base/models/errors/error_model.dart';
 import '../blocs/email_change_bloc.dart';
 
-class EmailChangePage extends StatefulWidget {
+class EmailChangePage extends StatelessWidget {
   const EmailChangePage({super.key});
-
-  @override
-  State<EmailChangePage> createState() => _EmailChangePageState();
-}
-
-class _EmailChangePageState extends State<EmailChangePage> {
-  final _emailFocusNode = FocusNode(debugLabel: 'emailFocus');
-
-  @override
-  void initState() {
-    super.initState();
-    _emailFocusNode.requestFocus();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _emailFocusNode.dispose();
-  }
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
@@ -77,9 +58,9 @@ class _EmailChangePageState extends State<EmailChangePage> {
     BuildContext context,
   ) =>
       TextFormField(
+        autofocus: true,
         controller: fieldState.controller,
         textInputAction: TextInputAction.next,
-        focusNode: _emailFocusNode,
         decoration: fieldState.decoration.copyWith(
           labelText: context.l10n.field.email,
         ),
