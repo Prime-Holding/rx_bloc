@@ -136,9 +136,9 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
           .whereSuccess()
           .doOnData((_) {
         if (_isOnboarding) {
-          _router.go(const OnboardingPhoneConfirmRoute().routeLocation);
+          _router.push(const OnboardingPhoneConfirmRoute().routeLocation);
         } else {
-          _router.go(const PhoneChangeConfirmRoute().routeLocation);
+          _router.push(const PhoneChangeConfirmRoute().routeLocation);
         }
       }).publish();
 }

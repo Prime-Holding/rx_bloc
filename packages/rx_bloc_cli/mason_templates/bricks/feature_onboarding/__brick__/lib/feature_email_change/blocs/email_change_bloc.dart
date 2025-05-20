@@ -94,7 +94,7 @@ class EmailChangeBloc extends $EmailChangeBloc {
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$navigateToNextStepEvent
     .withLatestFrom(email, (user, email) => user.copyWith(email: email))
-    .doOnData((user) => _goRouter.go(ConfirmEmailRoute(user.email).location))
+    .doOnData((user) => _goRouter.push(ConfirmEmailRoute(user.email).location))
     .publishReplay(maxSize: 1);
 
   String? _validateEmail(Result<String> emailResult) {

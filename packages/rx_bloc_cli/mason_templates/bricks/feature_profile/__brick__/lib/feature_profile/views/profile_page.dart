@@ -214,13 +214,18 @@ class ProfilePage extends StatelessWidget {
   }
 
   Future<void> _onUserAccountChanged(
-      BuildContext context, UserModel? user) async {
-    if (user != null && user.hasPin) {
+    BuildContext context,
+    UserModel? user,
+  ) async {
+    if (user != null && user.lastPinAction != LastPinAction.none) {
+     final message = user.lastPinAction == LastPinAction.update
+         ? context.l10n.libPinCode.pinUpdatedMessage
+         : context.l10n.libPinCode.pinCreatedMessage;
       await showBlurredBottomSheet(
         context: context,
         configuration: const ModalConfiguration(safeAreaBottom: false),
         builder: (context) => MessagePanelWidget(
-          message: context.l10n.libPinCode.pinUpdatedMessage,
+          message: message,
           messageState: MessagePanelState.positiveCheck,
         ),
       );

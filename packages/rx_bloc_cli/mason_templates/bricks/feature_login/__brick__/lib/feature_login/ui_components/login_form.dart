@@ -71,20 +71,13 @@ class _LoginFormState extends State<LoginForm> {
             state: (bloc) => bloc.states.isLoading,
             builder: _buildLoginButton,
           ),
-          SizedBox(height: context.designSystem.spacing.xss1),
+          SizedBox(height: context.designSystem.spacing.xss1),{{#enable_forgotten_password}}
           TextButton(
-            onPressed: () => {{#enable_forgotten_password}}
-            GoRouter.of(context).push(PasswordResetRequestRoute().location),{{/enable_forgotten_password}}{{^enable_forgotten_password}}
-              showBlurredBottomSheet(
-                context: context,
-                builder: (BuildContext context) => MessagePanelWidget(
-                  message: context.l10n.featureLogin.notImplementedMessage,
-                  messageState: MessagePanelState.lessImportant,
-                ),
-              ),{{/enable_forgotten_password}}
+            onPressed: () =>
+              GoRouter.of(context).push(PasswordResetRequestRoute().location),
             child: Text(context.l10n.featureLogin.forgottenPassword),
           ),
-          SizedBox(height: context.designSystem.spacing.xs1),
+          SizedBox(height: context.designSystem.spacing.xs1),{{/enable_forgotten_password}}
           AppErrorModalWidget<LoginBlocType>(
             errorState: (bloc) => bloc.states.errors,
           ),

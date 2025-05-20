@@ -6,6 +6,7 @@ import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../blocs/onboarding_phone_bloc.dart';
 import '../ui_components/phone_number_form.dart';
 
@@ -17,6 +18,7 @@ class OnboardingPhonePage extends StatelessWidget {
   Widget build(BuildContext context) => RxForceUnfocuser(
         child: RxUnfocuser(
           child: Scaffold(
+            appBar: customAppBar(context),
             body: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: context.designSystem.spacing.xs1,

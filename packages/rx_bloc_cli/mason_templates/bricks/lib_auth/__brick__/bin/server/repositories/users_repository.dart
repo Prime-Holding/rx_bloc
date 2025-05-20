@@ -58,9 +58,11 @@ class UsersRepository {
     UserRole? role,
     ConfirmedCredentialsModel? confirmedCredentials,
     bool? hasPin,
+    LastPinAction? lastPinAction,
   }) {
     final userIndex =
         _registeredUsers.indexWhere((element) => element.id == userId);
+    if (userIndex < 0) return null;
     final user = _registeredUsers[userIndex];
     _registeredUsers[userIndex] = user.copyWith(
       email: email ?? user.email,
@@ -68,6 +70,7 @@ class UsersRepository {
       role: role ?? user.role,
       confirmedCredentials: confirmedCredentials ?? user.confirmedCredentials,
       hasPin: hasPin ?? user.hasPin,
+      lastPinAction: lastPinAction ?? user.lastPinAction,
     );
     return _registeredUsers[userIndex];
   }

@@ -123,7 +123,7 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
           ),
           child: MessagePanelWidget(
             message: context.l10n.featureOnboarding.thereAreNoResults,
-            messageState: MessagePanelState.neutral,
+            messageState: MessagePanelState.lessImportant,
           ),
         ),
         modalConfiguration: const SearchPickerModalConfiguration(
