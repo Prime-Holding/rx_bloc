@@ -1,6 +1,5 @@
 part of '../router.dart';
 
-@TypedGoRoute<OnboardingRoute>(path: RoutesPath.onboarding)
 @immutable
 class OnboardingRoute extends GoRouteData implements RouteDataModel {
   const OnboardingRoute();
@@ -19,8 +18,6 @@ class OnboardingRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-@TypedGoRoute<OnboardingEmailConfirmationRoute>(
-    path: RoutesPath.onboardingEmailConfirmation)
 @immutable
 class OnboardingEmailConfirmationRoute extends GoRouteData
     implements RouteDataModel {
@@ -70,7 +67,13 @@ class OnboardingEmailConfirmedRoute extends GoRouteData
   String get routeLocation => location;
 }
 
-@TypedGoRoute<OnboardingPhoneRoute>(path: RoutesPath.onboardingPhone)
+@TypedGoRoute<OnboardingPhoneRoute>(
+  path: RoutesPath.onboardingPhone,
+  routes: [
+    TypedGoRoute<OnboardingPhoneConfirmRoute>(
+        path: RoutesPath.onboardingPhoneConfirm)
+  ],
+)
 @immutable
 class OnboardingPhoneRoute extends GoRouteData implements RouteDataModel {
   const OnboardingPhoneRoute();
@@ -89,8 +92,6 @@ class OnboardingPhoneRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-@TypedGoRoute<OnboardingPhoneConfirmRoute>(
-    path: RoutesPath.onboardingPhoneConfirm)
 @immutable
 class OnboardingPhoneConfirmRoute extends GoRouteData
     implements RouteDataModel {

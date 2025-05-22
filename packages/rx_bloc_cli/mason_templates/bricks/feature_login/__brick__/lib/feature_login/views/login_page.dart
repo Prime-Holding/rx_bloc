@@ -81,7 +81,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                ),{{#enable_feature_onboarding}}
                 RxBlocBuilder<LoginBlocType, bool>(
                   state: (bloc) => bloc.states.isLoading,
                   builder: (context, isLoading, bloc) => SignUpButton(
@@ -89,7 +89,7 @@ class LoginPage extends StatelessWidget {
                     onPressed: bloc.events.goToRegistration,
                   ),
                 ),
-                SizedBox(height: context.designSystem.spacing.xl),{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
+                SizedBox(height: context.designSystem.spacing.xl),{{/enable_feature_onboarding}}{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
                 Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
               ],
             ),

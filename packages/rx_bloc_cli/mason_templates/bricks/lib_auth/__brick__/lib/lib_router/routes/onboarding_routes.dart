@@ -1,7 +1,18 @@
 part of '../router.dart';
 
 {{#has_authentication}}
-@TypedGoRoute<LoginRoute>(path: RoutesPath.login)
+@TypedGoRoute<LoginRoute>(
+  path: RoutesPath.login, {{#enable_feature_onboarding}}
+  routes: [
+    TypedGoRoute<OnboardingRoute>(
+      path: RoutesPath.onboarding,
+      routes: [
+        TypedGoRoute<OnboardingEmailConfirmationRoute>(
+            path: RoutesPath.onboardingEmailConfirmation)
+      ],
+    ),
+  ],{{/enable_feature_onboarding}}
+)
 @immutable
 class LoginRoute extends GoRouteData implements RouteDataModel {
   const LoginRoute();
