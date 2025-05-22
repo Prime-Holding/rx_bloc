@@ -104,12 +104,12 @@ enum RouteModel { {{#enable_feature_onboarding}}
   ),{{/has_authentication}}{{#enable_feature_onboarding}}
   onboarding(
     pathName: RoutesPath.onboarding,
-    fullPath: '/onboarding',
+    fullPath: '/login/onboarding',
     permissionName: RoutePermissions.onboarding,
   ),
   onboardingEmailConfirmation(
     pathName: RoutesPath.onboardingEmailConfirmation,
-    fullPath: '/onboarding/email-confirmation',
+    fullPath: '/login/onboarding/email-confirmation',
     permissionName: RoutePermissions.onboardingEmailConfirmation,
   ),
   onboardingEmailConfirmed(
@@ -160,12 +160,12 @@ enum RouteModel { {{#enable_feature_onboarding}}
   ){{/enable_feature_onboarding}}{{#enable_forgotten_password}},
   passwordResetRequest(
     pathName: RoutesPath.passwordResetRequest,
-    fullPath: '/password-reset/request',
+    fullPath: '/request-password-reset',
     permissionName: RoutePermissions.passwordResetRequest,
   ),
   passwordResetConfirmation(
     pathName: RoutesPath.passwordResetConfirmation,
-    fullPath: '/password-reset/confirmation',
+    fullPath: '/request-password-reset/confirm',
     permissionName: RoutePermissions.passwordResetConfirmation,
   ),
   passwordReset(

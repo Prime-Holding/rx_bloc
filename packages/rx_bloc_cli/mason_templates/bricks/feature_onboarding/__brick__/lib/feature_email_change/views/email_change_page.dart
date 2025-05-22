@@ -16,29 +16,32 @@ class EmailChangePage extends StatelessWidget {
   const EmailChangePage({super.key});
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: Column(
-          children: [
-            RxBlocListener<EmailChangeBlocType, ErrorModel>(
-              state: (bloc) => bloc.states.errors,
-              listener: (context, error) {
-                showErrorBlurredBottomSheet(
-                  context: context,
-                  error: error.translate(context),
-                  configuration: const ModalConfiguration(
-                    showCloseButton: true,
-                    isDismissible: false,
-                  ),
-                );
-              },
-            ),
-            _buildEmailForm(context),
-            SizedBox(height: context.designSystem.spacing.l),
-            RxBlocBuilder<EmailChangeBlocType, bool>(
-              state: (bloc) => bloc.states.isLoading,
-              builder: _buildRegisterButton,
-            ),
-          ],
+  Widget build(BuildContext context) => Material(
+        color: context.designSystem.colors.backgroundColor,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              RxBlocListener<EmailChangeBlocType, ErrorModel>(
+                state: (bloc) => bloc.states.errors,
+                listener: (context, error) {
+                  showErrorBlurredBottomSheet(
+                    context: context,
+                    error: error.translate(context),
+                    configuration: const ModalConfiguration(
+                      showCloseButton: true,
+                      isDismissible: false,
+                    ),
+                  );
+                },
+              ),
+              _buildEmailForm(context),
+              SizedBox(height: context.designSystem.spacing.l),
+              RxBlocBuilder<EmailChangeBlocType, bool>(
+                state: (bloc) => bloc.states.isLoading,
+                builder: _buildRegisterButton,
+              ),
+            ],
+          ),
         ),
       );
 
