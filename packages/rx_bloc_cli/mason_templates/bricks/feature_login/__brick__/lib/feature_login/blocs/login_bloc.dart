@@ -109,7 +109,7 @@ class LoginBloc extends $LoginBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$goToRegistrationEvent{{#enable_feature_onboarding}}
-     .doOnData((_) => _router.push(const OnboardingRoute().routeLocation)){{/enable_feature_onboarding}}
+     .doOnData((_) => _router.go(const OnboardingRoute().routeLocation)){{/enable_feature_onboarding}}
     .publishReplay(maxSize: 1);
 
 
