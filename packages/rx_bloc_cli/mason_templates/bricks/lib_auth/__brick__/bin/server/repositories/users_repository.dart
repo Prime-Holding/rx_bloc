@@ -30,6 +30,7 @@ class UsersRepository {
       _registeredUsers.any((user) => user.email == email);
 
   bool isPhoneInUse(String phoneNumber) =>
+      !_unconfirmedPhoneNumbers.containsValue(phoneNumber) &&
       _registeredUsers.any((user) => user.phoneNumber == phoneNumber);
 
   void addUnconfirmedPhoneNumber(String userId, String phoneNumber) {

@@ -1,4 +1,5 @@
 ## [5.5.3]
+* Support `flutter 3.32`
 * Bug fixes and stability improvements
 
 ## [5.5.2]
