@@ -38,7 +38,7 @@ class EmailChangePage extends StatelessWidget {
               SizedBox(height: context.designSystem.spacing.l),
               RxBlocBuilder<EmailChangeBlocType, bool>(
                 state: (bloc) => bloc.states.isLoading,
-                builder: _buildRegisterButton,
+                builder: _buildChangeEmailButton,
               ),
             ],
           ),
@@ -69,7 +69,7 @@ class EmailChangePage extends StatelessWidget {
         ),
       );
 
-  GradientFillButton _buildRegisterButton(
+  GradientFillButton _buildChangeEmailButton(
     BuildContext context,
     AsyncSnapshot<bool> loadingState,
     EmailChangeBlocType bloc,
