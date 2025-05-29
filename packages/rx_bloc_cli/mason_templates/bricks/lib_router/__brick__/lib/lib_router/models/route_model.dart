@@ -36,12 +36,12 @@ enum RouteModel {
 
   onboardingPhone(
     pathName: RoutesPath.onboardingPhone,
-    fullPath: '/onboarding/phone',
+    fullPath: '/login/onboarding/phone',
     permissionName: RoutePermissions.onboardingPhone,
   ),
   onboardingPhoneConfirm(
     pathName: RoutesPath.onboardingPhoneConfirm,
-    fullPath: '/onboarding/phone/confirm',
+    fullPath: '/login/onboarding/phone/confirm',
     permissionName: RoutePermissions.onboardingPhoneConfirm,
   ),
 

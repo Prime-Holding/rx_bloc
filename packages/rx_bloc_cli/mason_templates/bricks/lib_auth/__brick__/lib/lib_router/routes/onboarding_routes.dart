@@ -9,6 +9,13 @@ part of '../router.dart';
       routes: [
         TypedGoRoute<OnboardingEmailConfirmationRoute>(
             path: RoutesPath.onboardingEmailConfirmation)
+        TypedGoRoute<OnboardingPhoneRoute>(
+          path: RoutesPath.onboardingPhone,
+          routes: [
+            TypedGoRoute<OnboardingPhoneConfirmRoute>(
+                path: RoutesPath.onboardingPhoneConfirm)
+          ],
+        )
       ],
     ),
   ],{{/enable_feature_onboarding}}

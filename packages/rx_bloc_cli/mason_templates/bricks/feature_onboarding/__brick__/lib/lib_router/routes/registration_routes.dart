@@ -67,13 +67,6 @@ class OnboardingEmailConfirmedRoute extends GoRouteData
   String get routeLocation => location;
 }
 
-@TypedGoRoute<OnboardingPhoneRoute>(
-  path: RoutesPath.onboardingPhone,
-  routes: [
-    TypedGoRoute<OnboardingPhoneConfirmRoute>(
-        path: RoutesPath.onboardingPhoneConfirm)
-  ],
-)
 @immutable
 class OnboardingPhoneRoute extends GoRouteData implements RouteDataModel {
   const OnboardingPhoneRoute();

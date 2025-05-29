@@ -10,7 +10,7 @@ class RoutesPath {
   static const onboardingEmailConfirmation = 'email-confirmation';
   static const onboardingEmailConfirmed = '/onboarding/email-confirmed/:token';
 
-  static const onboardingPhone = '/onboarding/phone';
+  static const onboardingPhone = 'phone';
   static const onboardingPhoneConfirm = 'confirm';
 
   static const phoneChange = '/change-phone';
