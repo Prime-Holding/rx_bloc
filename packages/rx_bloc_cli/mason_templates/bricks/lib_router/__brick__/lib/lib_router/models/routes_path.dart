@@ -19,9 +19,9 @@ class RoutesPath {
 
   {{#enable_forgotten_password}}
   /// Password Reset
-  static const passwordResetRequest = '/request-password-reset';
+  static const passwordResetRequest = 'request-password-reset';
   static const passwordResetConfirmation = 'confirm';
-  static const passwordReset = '/password-reset';
+  static const passwordReset = 'password-reset';
   {{/enable_forgotten_password}}
 
   /// Dashboard

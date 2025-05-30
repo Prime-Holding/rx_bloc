@@ -17,7 +17,15 @@ part of '../router.dart';
           ],
         ),
       ],
+    ),{{#enable_forgotten_password}}
+    TypedGoRoute<PasswordResetRequestRoute>(
+      path: RoutesPath.passwordResetRequest,
+      routes: [
+        TypedGoRoute<PasswordResetConfirmationRoute>(
+            path: RoutesPath.passwordResetConfirmation),
+      ],
     ),
+    TypedGoRoute<PasswordResetRoute>(path: RoutesPath.passwordReset),{{/enable_forgotten_password}}
   ],{{/enable_feature_onboarding}}
 )
 @immutable

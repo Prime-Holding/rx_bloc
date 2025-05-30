@@ -74,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: context.designSystem.spacing.xss1),{{#enable_forgotten_password}}
           TextButton(
             onPressed: () =>
-              GoRouter.of(context).push(PasswordResetRequestRoute().routeLocation),
+              GoRouter.of(context).go(PasswordResetRequestRoute().routeLocation),
             child: Text(context.l10n.featureLogin.forgottenPassword),
           ),
           SizedBox(height: context.designSystem.spacing.xs1),{{/enable_forgotten_password}}

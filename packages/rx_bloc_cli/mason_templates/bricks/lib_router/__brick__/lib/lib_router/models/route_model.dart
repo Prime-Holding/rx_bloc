@@ -60,17 +60,17 @@ enum RouteModel {
   /// Password Reset
   passwordResetRequest(
     pathName: RoutesPath.passwordResetRequest,
-    fullPath: '/request-password-reset',
+    fullPath: '/login/request-password-reset',
     permissionName: RoutePermissions.passwordResetRequest,
   ),
   passwordResetConfirmation(
     pathName: RoutesPath.passwordResetConfirmation,
-    fullPath: '/request-password-reset/confirm',
+    fullPath: '/login/request-password-reset/confirm',
     permissionName: RoutePermissions.passwordResetConfirmation,
   ),
   passwordReset(
     pathName: RoutesPath.passwordReset,
-    fullPath: '/password-reset',
+    fullPath: '/login/password-reset',
     permissionName: RoutePermissions.passwordReset,
   ),{{/enable_forgotten_password}}
 
