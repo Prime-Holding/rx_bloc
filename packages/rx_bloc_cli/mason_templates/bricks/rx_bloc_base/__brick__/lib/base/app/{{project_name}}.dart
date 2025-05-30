@@ -120,7 +120,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         if (!router.routeInformationProvider.value.uri
             .toString()
             .contains(verifyPinRoute)) {
-          router.go(
+          router.push(
             verifyPinRoute,
           );
         }

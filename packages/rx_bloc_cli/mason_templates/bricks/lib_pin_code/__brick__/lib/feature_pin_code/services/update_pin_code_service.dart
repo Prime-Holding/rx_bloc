@@ -37,7 +37,7 @@ class UpdatePinCodeService implements PinCodeService {
           token: String token,
         )) {
       if (pinCode != pinToConfirm) {
-        throw GenericErrorModel(I18nErrorKeys.wrongPin);
+        throw GenericErrorModel(I18nErrorKeys.pinCodeMismatch);
       }
 
       // If the pin code is the same we save it

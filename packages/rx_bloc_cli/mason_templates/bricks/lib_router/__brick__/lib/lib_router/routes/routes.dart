@@ -75,7 +75,10 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
     TypedStatefulShellBranch<ProfileBranchData>(
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<ProfileRoute>(
-          path: RoutesPath.profile,
+          path: RoutesPath.profile,{{#enable_feature_onboarding}}
+          routes: [
+            TypedGoRoute<ConfirmChangeEmailRoute>(path: RoutesPath.emailChange)
+          ],{{/enable_feature_onboarding}}
         ),
       ],
     ),{{/enable_profile}}

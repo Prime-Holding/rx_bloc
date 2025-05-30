@@ -76,7 +76,8 @@ Future<void> _initiateAndRedirect() async {
 
     /// Listen for deep links from the app links service and navigate to the path
     _appLinksService.subscribeToUriLinks((uri) {
-      _router.go(uri.path);
+      final destination = '${uri.path}${uri.hasQuery ? '?${uri.query}' : ''}';
+      _router.go(destination);
       return;
     }); {{/enable_feature_deeplinks}}{{#has_authentication}}
 
@@ -92,12 +93,14 @@ Future<void> _initiateAndRedirect() async {
       _router.go(
         OnboardingEmailConfirmationRoute(user.email).routeLocation,
       );
+      return;
     }
 
     if (!user.confirmedCredentials.phone) {
       _router.go(
         RoutesPath.onboardingPhone,
       );
+      return;
     }{{/enable_feature_onboarding}}
 
     _router.go(const DashboardRoute().routeLocation);
