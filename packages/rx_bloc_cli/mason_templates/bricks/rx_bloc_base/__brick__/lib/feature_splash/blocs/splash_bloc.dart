@@ -97,9 +97,7 @@ Future<void> _initiateAndRedirect() async {
     }
 
     if (!user.confirmedCredentials.phone) {
-      _router.go(
-        RoutesPath.onboardingPhone,
-      );
+      _router.go(OnboardingPhoneRoute().routeLocation);
       return;
     }{{/enable_feature_onboarding}}
 
