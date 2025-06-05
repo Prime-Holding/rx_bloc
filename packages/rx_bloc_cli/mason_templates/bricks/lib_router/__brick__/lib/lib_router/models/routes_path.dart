@@ -62,7 +62,8 @@ class RoutesPath {
 
   {{#enable_feature_onboarding}}
   /// Change email
-  static const emailChange = 'change-email';
+  static const emailChange = 'email-change';
+  static const emailChangeVerify = 'verify';
   static const emailChangeConfirm = '/change-email/email-confirmation';
   static const emailChangeConfirmed = '/change-email/email-confirmed/:token';{{/enable_feature_onboarding}}
 

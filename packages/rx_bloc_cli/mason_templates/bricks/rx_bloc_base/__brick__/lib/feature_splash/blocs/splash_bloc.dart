@@ -69,21 +69,19 @@ Future<void> _initiateAndRedirect() async {
     //2. If the app is cold-started from a deeplink, we don't want to redirect
     final initialLink = await _appLinksService.getInitialLink();
     if (initialLink != null) {
-      // navigate to the path
-      _router.go(initialLink.path);
+      _navigateToUri(initialLink);
       return;
     }
 
     /// Listen for deep links from the app links service and navigate to the path
     _appLinksService.subscribeToUriLinks((uri) {
-      final destination = '${uri.path}${uri.hasQuery ? '?${uri.query}' : ''}';
-      _router.go(destination);
+      _navigateToUri(uri);
       return;
     }); {{/enable_feature_deeplinks}}{{#has_authentication}}
 
     //3. Redirect the user to the appropriate screen
     if (!await _authService.isAuthenticated()) {
-      _router.go(RoutesPath.login);
+      _router.go(LoginRoute().routeLocation);
       return;
     } {{/has_authentication}}{{#enable_feature_onboarding}}
 
@@ -101,8 +99,22 @@ Future<void> _initiateAndRedirect() async {
       return;
     }{{/enable_feature_onboarding}}
 
+    {{#enable_pin_code}}
+    // If the user has a pin code set, go through the pin verification flow
+    // before navigating to the dashboard.
+    if (user.hasPin) {
+      await _router.push(VerifyPinCodeRoute().routeLocation);
+    }{{/enable_pin_code}}
+
     _router.go(const DashboardRoute().routeLocation);
   }
+
+{{#enable_feature_deeplinks}}
+  /// Navigates to the specified [uri] using the router.
+  void _navigateToUri(Uri uri) {
+    final destination = '${uri.path}${uri.hasQuery ? '?${uri.query}' : ''}';
+    _router.go(destination);
+  }{{/enable_feature_deeplinks}}
 
   @override
   ConnectableStream<ErrorModel?> _mapToErrorsState() => Rx.merge([

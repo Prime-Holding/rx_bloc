@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
@@ -19,6 +21,7 @@ class OnboardingPhonePage extends StatelessWidget {
         child: RxUnfocuser(
           child: Scaffold(
             appBar: customAppBar(context),
+            resizeToAvoidBottomInset: true,
             body: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: context.designSystem.spacing.xs1,
@@ -26,6 +29,8 @@ class OnboardingPhonePage extends StatelessWidget {
               ),
               child: Center(
                 child: SingleChildScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -53,35 +58,32 @@ class OnboardingPhonePage extends StatelessWidget {
                         ],
                       ),
                       const PhoneNumberForm(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: context.designSystem.spacing.xxl,
+                      AppErrorModalWidget<OnboardingPhoneBlocType>(
+                        errorState: (bloc) => bloc.states.errors,
+                      ),
+                      AnimatedPadding(
+                        duration: Duration(milliseconds: 300),
+                        padding: EdgeInsets.only(
+                          top: context.designSystem.spacing.xxl,
+                          bottom: context.designSystem.spacing.xxl,
                         ),
-                        child: Column(
-                          children: [
-                            RxBlocBuilder<OnboardingPhoneBlocType, bool>(
-                              state: (bloc) => bloc.states.isLoading,
-                              builder: (context, loadingSnapshot, bloc) {
-                                final loading = loadingSnapshot.data ?? false;
-                                return GradientFillButton(
-                                  text: context
-                                      .l10n.featureOnboarding.continueText,
-                                  state: loading
-                                      ? ButtonStateModel.loading
-                                      : ButtonStateModel.enabled,
-                                  onPressed: !loading
-                                      ? () => context
-                                          .read<OnboardingPhoneBlocType>()
-                                          .events
-                                          .submitPhoneNumber()
-                                      : null,
-                                );
-                              },
-                            ),
-                            AppErrorModalWidget<OnboardingPhoneBlocType>(
-                              errorState: (bloc) => bloc.states.errors,
-                            ),
-                          ],
+                        child: RxBlocBuilder<OnboardingPhoneBlocType, bool>(
+                          state: (bloc) => bloc.states.isLoading,
+                          builder: (context, loadingSnapshot, bloc) {
+                            final loading = loadingSnapshot.data ?? false;
+                            return GradientFillButton(
+                              text: context.l10n.featureOnboarding.continueText,
+                              state: loading
+                                  ? ButtonStateModel.loading
+                                  : ButtonStateModel.enabled,
+                              onPressed: !loading
+                                  ? () => context
+                                      .read<OnboardingPhoneBlocType>()
+                                      .events
+                                      .submitPhoneNumber()
+                                  : null,
+                            );
+                          },
                         ),
                       ),
                     ],

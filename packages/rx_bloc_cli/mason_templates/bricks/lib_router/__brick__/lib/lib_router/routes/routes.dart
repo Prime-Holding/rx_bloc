@@ -77,7 +77,12 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
         TypedGoRoute<ProfileRoute>(
           path: RoutesPath.profile,{{#enable_feature_onboarding}}
           routes: [
-            TypedGoRoute<ConfirmChangeEmailRoute>(path: RoutesPath.emailChange)
+            TypedGoRoute<ChangeEmailRoute>(
+                path: RoutesPath.emailChange,
+                routes: [
+                  TypedGoRoute<VerifyChangeEmailRoute>(
+                      path: RoutesPath.emailChangeVerify),
+                ]),
           ],{{/enable_feature_onboarding}}
         ),
       ],

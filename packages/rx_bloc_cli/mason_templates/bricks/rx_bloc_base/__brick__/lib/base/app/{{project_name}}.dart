@@ -5,6 +5,7 @@ import 'dart:async'; {{/enable_change_language}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';{{#enable_pin_code}}
 import 'package:local_session_timeout/local_session_timeout.dart';{{/enable_pin_code}}
@@ -207,6 +208,11 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     final materialApp =
     {{^enable_pin_code}} _buildMaterialApp(context);{{/enable_pin_code}}
     {{#enable_pin_code}} _buildMaterialAppWithPinCode(); {{/enable_pin_code}}

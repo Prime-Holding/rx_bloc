@@ -76,15 +76,8 @@ class ProfilePage extends StatelessWidget {
                   featureTitle: context.l10n.featureOnboarding.changeEmail,
                   featureSubtitle: context.l10n.featureOnboarding.manageEmail,
                   icon: context.designSystem.icons.accountIcon,
-                  onTap: () => showBlurredBottomSheet(
-                    context: context,
-                    configuration: ModalConfiguration(
-                      safeAreaBottom: false,
-                      haveOnlyOneSheet: false,
-                    ),
-                    builder: (BuildContext context) =>
-                        const EmailChangePageWithDependencies(),
-                  ),
+                  onTap: () =>
+                      GoRouter.of(context).go(ChangeEmailRoute().routeLocation),
                 ),
                 const AppDivider(),
                 AppListTile(

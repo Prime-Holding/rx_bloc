@@ -183,8 +183,13 @@ enum RouteModel {
   /// Change email
   emailChange(
     pathName: RoutesPath.emailChange,
-    fullPath: '/profile/change-email',
+    fullPath: '/profile/email-change',
     permissionName: RoutePermissions.emailChange,
+  ),
+  emailChangeVerify(
+    pathName: RoutesPath.emailChangeVerify,
+    fullPath: '/profile/email-change/verify',
+    permissionName: RoutePermissions.emailChangeVerify,
   ),
   emailChangeConfirm(
     pathName: RoutesPath.emailChangeConfirm,

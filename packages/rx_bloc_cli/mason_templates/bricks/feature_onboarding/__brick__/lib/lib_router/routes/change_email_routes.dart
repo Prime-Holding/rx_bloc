@@ -48,8 +48,29 @@ class ConfirmedEmailRoute extends GoRouteData implements RouteDataModel {
 }
 
 @immutable
-class ConfirmChangeEmailRoute extends GoRouteData implements RouteDataModel {
-  const ConfirmChangeEmailRoute(this._email);
+class ChangeEmailRoute extends GoRouteData implements RouteDataModel {
+  const ChangeEmailRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: EmailChangePageWithDependencies(),
+      );
+
+  @override
+  String get permissionName => RouteModel.emailChange.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+
+@immutable
+class VerifyChangeEmailRoute extends GoRouteData implements RouteDataModel {
+  const VerifyChangeEmailRoute(this._email);
   final String _email;
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
@@ -63,7 +84,7 @@ class ConfirmChangeEmailRoute extends GoRouteData implements RouteDataModel {
       );
 
   @override
-  String get permissionName => RouteModel.emailChange.permissionName;
+  String get permissionName => RouteModel.emailChangeVerify.permissionName;
 
   @override
   String get routeLocation => location;

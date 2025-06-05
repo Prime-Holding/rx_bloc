@@ -60,5 +60,5 @@ class UpdatePinCodeService implements PinCodeService {
   Future<int> getPinLength() async => 4;
 
   @override
-  Future<String?> getPinCode() async => null;
+  Future<String?> getPinCode() async => _pinCodeRepository.getPinCode();
 }
