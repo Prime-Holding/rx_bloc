@@ -150,9 +150,10 @@ class OnboardingBloc extends $OnboardingBloc {
         return _router.go(const DashboardRoute().routeLocation);
       }
 
-      _router.go(OnboardingPhoneRoute().routeLocation);
+      return _router.go(OnboardingPhoneRoute().routeLocation);
     }
-    _router.go(
+
+    return _router.go(
       OnboardingEmailConfirmationRoute(user.email).routeLocation,
     );
   }

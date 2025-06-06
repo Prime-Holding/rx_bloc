@@ -37,7 +37,7 @@ class UpdatePinCodeService implements PinCodeService {
           token: String token,
         )) {
       if (pinCode != pinToConfirm) {
-        throw GenericErrorModel(I18nErrorKeys.wrongPin);
+        throw GenericErrorModel(I18nErrorKeys.pinCodeMismatch);
       }
 
       // If the pin code is the same we save it
@@ -60,5 +60,5 @@ class UpdatePinCodeService implements PinCodeService {
   Future<int> getPinLength() async => 4;
 
   @override
-  Future<String?> getPinCode() async => null;
+  Future<String?> getPinCode() async => _pinCodeRepository.getPinCode();
 }

@@ -42,7 +42,7 @@ dependencies:
   widget_toolkit: ^0.2.0
 
 dev_dependencies:
-  alchemist: ^0.11.0
+  alchemist: ^0.12.0
   analyzer: 6.9.0
   build_runner: ^2.4.13
   clean_coverage: ^0.0.3

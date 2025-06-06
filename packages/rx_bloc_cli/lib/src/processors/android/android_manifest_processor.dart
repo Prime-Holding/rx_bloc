@@ -84,7 +84,7 @@ class AndroidManifestProcessor extends StringProcessor {
     <data android:pathPattern="/change-email/email-confirmed/.*"/>''';
       if (args.forgottenPassword) {
         deeplinkIntent += '''
-    <data android:pathPattern="/password-reset.*"/>''';
+    <data android:pathPattern="/login/password-reset.*"/>''';
       }
     }
     deeplinkIntent += '''

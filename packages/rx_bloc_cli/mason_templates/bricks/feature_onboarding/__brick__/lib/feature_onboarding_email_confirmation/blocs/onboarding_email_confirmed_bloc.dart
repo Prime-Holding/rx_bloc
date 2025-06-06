@@ -82,7 +82,7 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
             if (_isOnboarding) {
               _router.go(const OnboardingPhoneRoute().routeLocation);
             } else {
-              _router.go(const LoginRoute().routeLocation);
+              _router.go(const ProfileRoute().routeLocation);
             }
           },
         ),

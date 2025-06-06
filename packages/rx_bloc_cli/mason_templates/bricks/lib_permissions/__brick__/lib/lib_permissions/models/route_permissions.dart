@@ -18,7 +18,8 @@ class RoutePermissions { {{#has_showcase}}
   static const updatePinCode = 'UpdatePinCodeRoute';{{/enable_pin_code}} {{#enable_feature_otp}}
   static const showcaseOtp = 'OtpRoute';  {{/enable_feature_otp}}
   static const login = 'LoginRoute';{{#enable_feature_onboarding}}
-  static const emailChange = 'EmailChangeRoute';
+  static const emailChange = 'ChangeEmailRoute';
+  static const emailChangeVerify = 'EmailChangeVerifyRoute';
   static const emailChangeConfirmation = 'EmailChangeConfirmationRoute';
   static const emailChangeConfirmed = 'EmailChangeConfirmedRoute';
   static const onboarding = 'OnboardingRoute';
