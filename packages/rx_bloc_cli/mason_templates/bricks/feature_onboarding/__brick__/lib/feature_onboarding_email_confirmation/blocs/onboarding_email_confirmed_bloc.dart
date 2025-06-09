@@ -77,17 +77,32 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => Rx.merge([
-        _$goToNextPageEvent.doOnData(
-          (_) {
-            if (_isOnboarding) {
+        _$goToNextPageEvent
+            .throttleTime(kBackpressureDuration)
+            .switchMap((_) => _onboardingService.getUser().asResultStream())
+            .setResultStateHandler(this)
+            .whereSuccess()
+            .doOnData(
+          (user) {
+            final phoneConfirmed =
+                user.phoneNumber != null && user.confirmedCredentials.phone;
+            if (_isOnboarding || !phoneConfirmed) {
               _router.go(const OnboardingPhoneRoute().routeLocation);
             } else {
               _router.go(const ProfileRoute().routeLocation);
             }
           },
         ),
-        _$goToInitialPageEvent.doOnData((_) {
-          if (_isOnboarding) {
+        _$goToInitialPageEvent
+            .throttleTime(kBackpressureDuration)
+            .switchMap((_) => _onboardingService.getUser().asResultStream())
+            .setResultStateHandler(this)
+            .whereSuccess()
+            .doOnData((user) {
+          final userConfirmed = user.phoneNumber != null &&
+              user.confirmedCredentials.phone &&
+              user.confirmedCredentials.email;
+          if (_isOnboarding || !userConfirmed) {
             _router.go(const LoginRoute().routeLocation);
           } else {
             _router.go(const ProfileRoute().routeLocation);
