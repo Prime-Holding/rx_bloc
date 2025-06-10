@@ -13,12 +13,7 @@ import '../../base/extensions/async_snapshot_extensions.dart';
 import '../blocs/onboarding_email_confirmed_bloc.dart';
 
 class OnboardingEmailConfirmedPage extends StatelessWidget {
-  final String? verifyEmail;
-
-  const OnboardingEmailConfirmedPage({
-    this.verifyEmail,
-    super.key,
-  });
+  const OnboardingEmailConfirmedPage({super.key});
 
   @override
   Widget build(BuildContext context) => PopScope(

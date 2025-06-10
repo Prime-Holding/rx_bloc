@@ -10,6 +10,7 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/extensions/error_model_field_translations.dart';
+import '../../base/extensions/utility_extensions.dart';
 import '../blocs/onboarding_bloc.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -42,8 +43,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   void initState() {
-    _emailFocusNode.requestFocus();
     super.initState();
+
+    _emailFocusNode.requestFocusSafely(context);
   }
 
   @override

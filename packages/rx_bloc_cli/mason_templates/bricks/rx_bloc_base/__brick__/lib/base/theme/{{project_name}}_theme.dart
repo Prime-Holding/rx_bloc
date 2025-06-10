@@ -43,7 +43,7 @@ class {{project_name.pascalCase()}}Theme {
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: designSystemColor.backgroundColor,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: designSystemColor.backgroundColor,
         surfaceTintColor: designSystem.colors.tintColor,
       ),

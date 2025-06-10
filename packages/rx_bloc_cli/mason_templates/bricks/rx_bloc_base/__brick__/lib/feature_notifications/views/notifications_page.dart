@@ -31,15 +31,6 @@ class NotificationsPage extends StatelessWidget {
                 builder: (BuildContext context) => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                  AppErrorModalWidget<NotificationsBlocType>(
-                    errorState: (bloc) => bloc.states.errors,
-                    onRetry: (_, __) => context
-                        .read<NotificationsBlocType>()
-                        .events
-                        .fetchPushToken(),
-                    onCancel: () =>
-                        Navigator.of(context).pop(),
-                    ),
                     Text(
                       context.l10n.featureNotifications
                           .notificationsPageDescription,
@@ -114,6 +105,15 @@ class NotificationsPage extends StatelessWidget {
                   ),
                 ),
               ),
+              AppErrorModalWidget<NotificationsBlocType>(
+                errorState: (bloc) => bloc.states.errors,
+                onRetry: (_, __) => context
+                    .read<NotificationsBlocType>()
+                    .events
+                    .fetchPushToken(),
+                onCancel: () =>
+                    Navigator.of(context).pop(),
+                ),
               ],
             ),
           ),

@@ -24,6 +24,8 @@ class DesignSystemIcons {
 
   final phone = Icons.phone_outlined;
 
+  final email = Icons.email_outlined;
+
   final phoneConfirm = Icons.sms_outlined;
 
   final send = Icons.send;
