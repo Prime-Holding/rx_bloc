@@ -110,14 +110,14 @@ Future<void> _initiateAndRedirect() async {
     if (!user.confirmedCredentials.phone) {
       _router.go(OnboardingPhoneRoute().routeLocation);
       return;
-    }{{/enable_feature_onboarding}}
+    }
 
     {{#enable_pin_code}}
     // If the user has a pin code set, go through the pin verification flow
     // before navigating to the dashboard.
     if (user.hasPin) {
       await _router.push(VerifyPinCodeRoute().routeLocation);
-    }{{/enable_pin_code}}
+    }{{/enable_pin_code}}{{/enable_feature_onboarding}}
 
     _router.go(const DashboardRoute().routeLocation);
     {{#enable_feature_onboarding}}
