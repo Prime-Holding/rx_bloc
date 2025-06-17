@@ -1,7 +1,8 @@
 {{> licence.dart }}
 
 import 'dart:async';
-
+{{#enable_feature_deeplinks}}
+import 'package:flutter/foundation.dart';{{/enable_feature_deeplinks}}
 import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -64,27 +65,38 @@ class SplashBloc extends $SplashBloc {
   final AppLinksService _appLinksService;{{/enable_feature_deeplinks}}
 
 Future<void> _initiateAndRedirect() async {
-    //1. Initialize the app before redirecting
-    await _splashService.initializeApp(); {{#enable_feature_deeplinks}}
-    //2. If the app is cold-started from a deeplink, we don't want to redirect
+    // Initialize the app before redirecting
+    await _splashService.initializeApp();
+
+    {{#enable_feature_deeplinks}}
+    /// region Deep linking
+
+    // Listen for deep links from the app links service and navigate to the path
+    _appLinksService.subscribeToUriLinks((uri) {
+      _navigateToUri(uri);
+      return;
+    });
+
+    // if the app was cold-started through a deep link, the user will be
+    // navigated to a page, so return the execution
     final initialLink = await _appLinksService.getInitialLink();
-    if (initialLink != null) {
-      // navigate to the path
-      _router.go(initialLink.path);
+    if (initialLink != null && kReleaseMode) return;
+
+    /// endregion
+{{/enable_feature_deeplinks}}{{#has_authentication}}
+
+    /// region Unauthenticated user
+
+    // Redirect the user to the appropriate screen
+    if (!await _authService.isAuthenticated()) {
+      _router.go(LoginRoute().routeLocation);
       return;
     }
 
-    /// Listen for deep links from the app links service and navigate to the path
-    _appLinksService.subscribeToUriLinks((uri) {
-      _router.go(uri.path);
-      return;
-    }); {{/enable_feature_deeplinks}}{{#has_authentication}}
+    /// endregion
+    {{/has_authentication}}{{#enable_feature_onboarding}}
 
-    //3. Redirect the user to the appropriate screen
-    if (!await _authService.isAuthenticated()) {
-      _router.go(RoutesPath.login);
-      return;
-    } {{/has_authentication}}{{#enable_feature_onboarding}}
+    /// region Authenticated user
 
     final user = await _onboardingService.getUser();
 
@@ -92,16 +104,32 @@ Future<void> _initiateAndRedirect() async {
       _router.go(
         OnboardingEmailConfirmationRoute(user.email).routeLocation,
       );
+      return;
     }
 
     if (!user.confirmedCredentials.phone) {
-      _router.go(
-        RoutesPath.onboardingPhone,
-      );
+      _router.go(OnboardingPhoneRoute().routeLocation);
+      return;
     }{{/enable_feature_onboarding}}
 
+    {{#enable_pin_code}}
+    // If the user has a pin code set, go through the pin verification flow
+    // before navigating to the dashboard.
+    if (user.hasPin) {
+      await _router.push(VerifyPinCodeRoute().routeLocation);
+    }{{/enable_pin_code}}
+
     _router.go(const DashboardRoute().routeLocation);
+    {{#enable_feature_onboarding}}
+    /// endregion {{/enable_feature_onboarding}}
   }
+
+{{#enable_feature_deeplinks}}
+  /// Navigates to the specified [uri] using the router.
+  void _navigateToUri(Uri uri) {
+    final destination = '${uri.path}${uri.hasQuery ? '?${uri.query}' : ''}';
+    _router.go(destination);
+  }{{/enable_feature_deeplinks}}
 
   @override
   ConnectableStream<ErrorModel?> _mapToErrorsState() => Rx.merge([

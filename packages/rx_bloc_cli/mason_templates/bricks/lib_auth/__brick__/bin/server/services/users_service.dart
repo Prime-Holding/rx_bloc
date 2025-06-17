@@ -39,13 +39,14 @@ class UsersService {
   bool confirmPhoneNumber(String userId) =>
       _usersRepository.confirmPhoneNumber(userId);
 
-  void updateUser(
+  UserModel? updateUser(
     String userId, {
     String? email,
     String? phoneNumber,
     UserRole? role,
     ConfirmedCredentialsModel? confirmedCredentials,
     bool? hasPin,
+    LastPinAction? lastPinAction,
   }) =>
       _usersRepository.updateUser(
         userId,
@@ -54,6 +55,7 @@ class UsersService {
         role: role,
         confirmedCredentials: confirmedCredentials,
         hasPin: hasPin,
+        lastPinAction: lastPinAction,
       );
 
   void deleteUser(String id, UserRole role) => _usersRepository.deleteUser(id, role);

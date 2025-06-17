@@ -1,3 +1,7 @@
+## [5.5.3]
+* Support `flutter 3.32`
+* Bug fixes and stability improvements
+
 ## [5.5.2]
 * Update generated project `go_router` dependency to `^15.1.0`
 

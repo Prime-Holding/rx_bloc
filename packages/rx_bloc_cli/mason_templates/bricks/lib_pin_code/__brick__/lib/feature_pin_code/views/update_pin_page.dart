@@ -45,6 +45,7 @@ class UpdatePinPage extends StatelessWidget {
                   mapBiometricMessageToString: (message) =>
                       _exampleMapMessageToString(message, context),
                   pinCodeService: context.read<UpdatePinCodeService>(),
+                  autoPromptBiometric: true,
                   biometricsLocalDataSource: pinModel is UpdatePinVerifyModel
                       ? context.read<BiometricsLocalDataSource>()
                       : null,

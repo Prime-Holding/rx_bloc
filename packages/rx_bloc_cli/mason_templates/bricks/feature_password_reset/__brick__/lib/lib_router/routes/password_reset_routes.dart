@@ -1,6 +1,5 @@
 part of '../router.dart';
 
-@TypedGoRoute<PasswordResetRequestRoute>(path: RoutesPath.passwordResetRequest)
 @immutable
 class PasswordResetRequestRoute extends GoRouteData implements RouteDataModel {
   const PasswordResetRequestRoute();
@@ -19,8 +18,6 @@ class PasswordResetRequestRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-@TypedGoRoute<PasswordResetConfirmationRoute>(
-    path: RoutesPath.passwordResetConfirmation)
 @immutable
 class PasswordResetConfirmationRoute extends GoRouteData
     implements RouteDataModel {
@@ -43,7 +40,6 @@ class PasswordResetConfirmationRoute extends GoRouteData
   String get routeLocation => location;
 }
 
-@TypedGoRoute<PasswordResetRoute>(path: RoutesPath.passwordReset)
 @immutable
 class PasswordResetRoute extends GoRouteData implements RouteDataModel {
   const PasswordResetRoute(this.token, this.email);

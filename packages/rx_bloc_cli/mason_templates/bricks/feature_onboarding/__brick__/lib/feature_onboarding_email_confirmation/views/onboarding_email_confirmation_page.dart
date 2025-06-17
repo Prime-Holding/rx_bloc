@@ -158,18 +158,20 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
       RxBlocMultiBuilder2<OnboardingEmailConfirmationBlocType, bool, bool>(
         state1: (bloc) => bloc.states.isSendNewLinkActive,
         state2: (bloc) => bloc.states.isLoading,
-        builder: (context, isSendNewLinkActivated, loading, bloc) =>
-            IconTextButton(
-          text: context.l10n.featureOnboarding.sendNewLink.toUpperCase(),
-          state: loading.isLoading
-              ? ButtonStateModel.loading
-              : isSendNewLinkActivated.isLoading
-                  ? ButtonStateModel.disabled
-                  : ButtonStateModel.enabled,
-          icon: Container(),
-          onPressed: isSendNewLinkActivated.isLoading || loading.isLoading
-              ? null
-              : () => bloc.events.sendNewLink(),
+        builder: (context, isSendNewLinkActivated, loading, bloc) => Visibility(
+          visible: !loading.isLoading && !isSendNewLinkActivated.isLoading,
+          child: IconTextButton(
+            text: context.l10n.featureOnboarding.sendNewLink.toUpperCase(),
+            state: loading.isLoading
+                ? ButtonStateModel.loading
+                : isSendNewLinkActivated.isLoading
+                    ? ButtonStateModel.disabled
+                    : ButtonStateModel.enabled,
+            icon: Container(),
+            onPressed: isSendNewLinkActivated.isLoading || loading.isLoading
+                ? null
+                : () => bloc.events.sendNewLink(),
+          ),
         ),
       );
 }

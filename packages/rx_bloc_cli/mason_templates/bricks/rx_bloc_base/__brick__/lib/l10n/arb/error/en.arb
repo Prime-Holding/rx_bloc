@@ -14,6 +14,7 @@
   "passwordLength": "Password should be at least 6 characters long",
   "wrongEmailOrPassword": "Wrong email or password",
   "wrongPin": "Wrong pin",
+  "pinCodeMismatch": "Pin codes do not match. Please try again.",
   "invalidMessage": "The entered message should be at least 2 characters long.",
   "tooLong": "The entered text is too long",{{#enable_social_logins}}
   "googleAuthError":"Google authorization failed",{{/enable_social_logins}}
