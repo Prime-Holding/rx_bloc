@@ -29,7 +29,7 @@ part of '../router.dart';
   ],{{/enable_feature_onboarding}}
 )
 @immutable
-class LoginRoute extends GoRouteData implements RouteDataModel {
+class LoginRoute extends GoRouteData with _$LoginRoute implements RouteDataModel {
   const LoginRoute();
 
   @override
@@ -48,7 +48,7 @@ class LoginRoute extends GoRouteData implements RouteDataModel {
 
 @TypedGoRoute<OtpRoute>(path: RoutesPath.otpRoute)
 @immutable
-class OtpRoute extends GoRouteData implements RouteDataModel {
+class OtpRoute extends GoRouteData with _$OtpRoute implements RouteDataModel {
   const OtpRoute();
 
   @override
@@ -67,7 +67,7 @@ class OtpRoute extends GoRouteData implements RouteDataModel {
 {{/enable_feature_otp}}{{#enable_pin_code}}
 @TypedGoRoute<VerifyPinCodeRoute>(path: RoutesPath.verifyPinCode)
 @immutable
-class VerifyPinCodeRoute extends GoRouteData implements RouteDataModel {
+class VerifyPinCodeRoute extends GoRouteData with _$VerifyPinCodeRoute implements RouteDataModel {
   const VerifyPinCodeRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =

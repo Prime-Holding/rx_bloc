@@ -1,7 +1,9 @@
 part of '../router.dart';
 
 @immutable
-class OnboardingRoute extends GoRouteData implements RouteDataModel {
+class OnboardingRoute extends GoRouteData
+    with _$OnboardingRoute
+    implements RouteDataModel {
   const OnboardingRoute();
 
   @override
@@ -20,6 +22,7 @@ class OnboardingRoute extends GoRouteData implements RouteDataModel {
 
 @immutable
 class OnboardingEmailConfirmationRoute extends GoRouteData
+    with _$OnboardingEmailConfirmationRoute
     implements RouteDataModel {
   const OnboardingEmailConfirmationRoute(this._email);
 
@@ -44,6 +47,7 @@ class OnboardingEmailConfirmationRoute extends GoRouteData
     path: RoutesPath.onboardingEmailConfirmed)
 @immutable
 class OnboardingEmailConfirmedRoute extends GoRouteData
+    with _$OnboardingEmailConfirmedRoute
     implements RouteDataModel {
   const OnboardingEmailConfirmedRoute(this.token);
 
@@ -68,7 +72,9 @@ class OnboardingEmailConfirmedRoute extends GoRouteData
 }
 
 @immutable
-class OnboardingPhoneRoute extends GoRouteData implements RouteDataModel {
+class OnboardingPhoneRoute extends GoRouteData
+    with _$OnboardingPhoneRoute
+    implements RouteDataModel {
   const OnboardingPhoneRoute();
 
   @override
@@ -87,6 +93,7 @@ class OnboardingPhoneRoute extends GoRouteData implements RouteDataModel {
 
 @immutable
 class OnboardingPhoneConfirmRoute extends GoRouteData
+    with _$OnboardingPhoneConfirmRoute
     implements RouteDataModel {
   const OnboardingPhoneConfirmRoute();
 

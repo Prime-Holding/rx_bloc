@@ -2,7 +2,9 @@ part of '../router.dart';
 
 @TypedGoRoute<ConfirmEmailRoute>(path: RoutesPath.emailChangeConfirm)
 @immutable
-class ConfirmEmailRoute extends GoRouteData implements RouteDataModel {
+class ConfirmEmailRoute extends GoRouteData
+    with _$ConfirmEmailRoute
+    implements RouteDataModel {
   const ConfirmEmailRoute(this._email);
   final String _email;
 
@@ -25,7 +27,9 @@ class ConfirmEmailRoute extends GoRouteData implements RouteDataModel {
 
 @TypedGoRoute<ConfirmedEmailRoute>(path: RoutesPath.emailChangeConfirmed)
 @immutable
-class ConfirmedEmailRoute extends GoRouteData implements RouteDataModel {
+class ConfirmedEmailRoute extends GoRouteData
+    with _$ConfirmedEmailRoute
+    implements RouteDataModel {
   const ConfirmedEmailRoute(this.token);
 
   final String token;
@@ -48,7 +52,9 @@ class ConfirmedEmailRoute extends GoRouteData implements RouteDataModel {
 }
 
 @immutable
-class ChangeEmailRoute extends GoRouteData implements RouteDataModel {
+class ChangeEmailRoute extends GoRouteData
+    with _$ChangeEmailRoute
+    implements RouteDataModel {
   const ChangeEmailRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
@@ -69,7 +75,9 @@ class ChangeEmailRoute extends GoRouteData implements RouteDataModel {
 }
 
 @immutable
-class VerifyChangeEmailRoute extends GoRouteData implements RouteDataModel {
+class VerifyChangeEmailRoute extends GoRouteData
+    with _$VerifyChangeEmailRoute
+    implements RouteDataModel {
   const VerifyChangeEmailRoute(this._email);
   final String _email;
 

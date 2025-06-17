@@ -1,7 +1,9 @@
 part of '../router.dart';
 
 @immutable
-class PasswordResetRequestRoute extends GoRouteData implements RouteDataModel {
+class PasswordResetRequestRoute extends GoRouteData
+    with _$PasswordResetRequestRoute
+    implements RouteDataModel {
   const PasswordResetRequestRoute();
 
   @override
@@ -20,6 +22,7 @@ class PasswordResetRequestRoute extends GoRouteData implements RouteDataModel {
 
 @immutable
 class PasswordResetConfirmationRoute extends GoRouteData
+    with _$PasswordResetConfirmationRoute
     implements RouteDataModel {
   const PasswordResetConfirmationRoute(this._email);
 
@@ -41,7 +44,9 @@ class PasswordResetConfirmationRoute extends GoRouteData
 }
 
 @immutable
-class PasswordResetRoute extends GoRouteData implements RouteDataModel {
+class PasswordResetRoute extends GoRouteData
+    with _$PasswordResetRoute
+    implements RouteDataModel {
   const PasswordResetRoute(this.token, this.email);
 
   final String token;

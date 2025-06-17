@@ -7,7 +7,9 @@ part of '../router.dart';
   ],
 )
 @immutable
-class PhoneChangeRoute extends GoRouteData implements RouteDataModel {
+class PhoneChangeRoute extends GoRouteData
+    with _$PhoneChangeRoute
+    implements RouteDataModel {
   const PhoneChangeRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
@@ -28,7 +30,9 @@ class PhoneChangeRoute extends GoRouteData implements RouteDataModel {
 }
 
 @immutable
-class PhoneChangeConfirmRoute extends GoRouteData implements RouteDataModel {
+class PhoneChangeConfirmRoute extends GoRouteData
+    with _$PhoneChangeConfirmRoute
+    implements RouteDataModel {
   const PhoneChangeConfirmRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =

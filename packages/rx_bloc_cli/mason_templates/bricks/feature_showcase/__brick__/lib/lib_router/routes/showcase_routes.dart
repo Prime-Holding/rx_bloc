@@ -6,7 +6,7 @@ class ShowcaseBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class ShowcaseRoute extends GoRouteData implements RouteDataModel {
+class ShowcaseRoute extends GoRouteData with _$ShowcaseRoute implements RouteDataModel {
   const ShowcaseRoute();
 
   @override
@@ -29,7 +29,7 @@ class CounterBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class CounterRoute extends GoRouteData implements RouteDataModel {
+class CounterRoute extends GoRouteData with _$CounterRoute implements RouteDataModel {
   const CounterRoute();
 
   @override
@@ -53,7 +53,7 @@ class WidgetToolkitBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class WidgetToolkitRoute extends GoRouteData implements RouteDataModel {
+class WidgetToolkitRoute extends GoRouteData with _$WidgetToolkitRoute implements RouteDataModel {
   const WidgetToolkitRoute();
 
   @override
@@ -77,7 +77,7 @@ class DeepLinkBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class DeepLinksRoute extends GoRouteData implements RouteDataModel {
+class DeepLinksRoute extends GoRouteData with _$DeepLinksRoute implements RouteDataModel {
   const DeepLinksRoute();
 
   @override
@@ -95,7 +95,7 @@ class DeepLinksRoute extends GoRouteData implements RouteDataModel {
 } 
 
 @immutable
-class DeepLinkDetailsRoute extends GoRouteData implements RouteDataModel {
+class DeepLinkDetailsRoute extends GoRouteData with _$DeepLinkDetailsRoute implements RouteDataModel {
   const DeepLinkDetailsRoute(this.id);
 
   final String id;
@@ -118,7 +118,7 @@ class DeepLinkDetailsRoute extends GoRouteData implements RouteDataModel {
 }
 
 @immutable
-class EnterMessageRoute extends GoRouteData implements RouteDataModel {
+class EnterMessageRoute extends GoRouteData with _$EnterMessageRoute implements RouteDataModel {
   const EnterMessageRoute();
 
   @override
@@ -140,7 +140,7 @@ class QrCodeBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class QrCodeRoute extends GoRouteData implements RouteDataModel {
+class QrCodeRoute extends GoRouteData with _$QrCodeRoute implements RouteDataModel {
   const QrCodeRoute();
 
   @override
@@ -162,7 +162,7 @@ class OtpBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class FeatureOtpRoute extends GoRouteData implements RouteDataModel {
+class FeatureOtpRoute extends GoRouteData with _$FeatureOtpRoute implements RouteDataModel {
   const FeatureOtpRoute();
 
   @override
@@ -180,7 +180,7 @@ class FeatureOtpRoute extends GoRouteData implements RouteDataModel {
 } {{/enable_feature_otp}}
 
 @immutable
-class NotificationsRoute extends GoRouteData implements RouteDataModel {
+class NotificationsRoute extends GoRouteData with _$NotificationsRoute implements RouteDataModel {
   const NotificationsRoute();
 
   @override
