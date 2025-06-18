@@ -116,6 +116,57 @@ jobs:
           [
             "packages/rx_bloc",
             "packages/rx_bloc_test",
+          ]
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - run: dart --version
+      - run: flutter --version
+      - run: dart pub global activate pana
+      - name: Install Dependencies
+        working-directory: ${{ matrix.folder }}
+        run: |
+          dart pub get
+      - name: Analyze
+        working-directory: ${{ matrix.folder }}
+        run: flutter analyze lib
+      - name: Verify package for publishing
+        working-directory: ${{ matrix.folder }}
+        run: |
+          dart pub global run pana .
+          dart pub publish --dry-run
+      - name: Run tests
+        working-directory: ${{ matrix.folder }}
+        run: |
+          if [ -d "test" ]; then
+            dart test --coverage=coverage --exclude-tags=not-tests
+          fi
+      - name: Format coverage
+        working-directory: ${{ matrix.folder }}
+        run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+      - name: Remove unnecessary files
+        working-directory: ${{ matrix.folder }}
+        run: dart run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+      - name: Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v3
+        with:
+          path: "${{ matrix.folder }}/coverage/lcov.info"
+          min_coverage: 67
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
+  generator_packages:
+    strategy:
+      matrix:
+        folder:
+          [
             "packages/rx_bloc_generator",
           ]
       fail-fast: false
@@ -125,6 +176,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+          flutter-version: 3.27.4
       - run: dart --version
       - run: flutter --version
       - run: dart pub global activate pana
