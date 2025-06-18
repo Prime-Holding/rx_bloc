@@ -9,5 +9,5 @@ extension CoordinatorBinderExtensions on Stream<bool> {
         (isAuthenticated) => coordinator.events.authenticated(
           isAuthenticated: isAuthenticated,
         ),
-      ); 
+      );
 }

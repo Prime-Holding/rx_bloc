@@ -32,7 +32,7 @@ class CreatePinCodeService implements PinCodeService {
 
   Future<CreatePinModel> _createPinCode(String pinCode, String pinToConfirm) {
     if (pinCode != pinToConfirm) {
-      throw GenericErrorModel(I18nErrorKeys.wrongPin);
+      throw GenericErrorModel(I18nErrorKeys.pinCodeMismatch);
     }
 
     // If the pin code is the same we save it

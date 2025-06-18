@@ -29,7 +29,7 @@ dependencies:
   rxdart: ^0.28.0
 
 dev_dependencies:
-  alchemist: ^0.11.0
+  alchemist: ^0.12.0
   build_runner: ^2.4.14
   clean_coverage: ^0.0.3
   flutter_lints: any

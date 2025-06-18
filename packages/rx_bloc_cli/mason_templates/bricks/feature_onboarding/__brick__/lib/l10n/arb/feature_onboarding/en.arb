@@ -36,7 +36,11 @@
 
   "confirmPhoneFieldHint" : "Use code 1234 to simulate an error.\nAny other code will result in a successful submission.",
 
+  "changeEmailTitle": "What's your email address?",
+  "changeEmailDescription": "Enter your new email address below. A confirmation link will be sent to the email for verification.",
+  "changeEmailHint": "New email address",
   "changeEmail":"Change Email",
+
   "manageEmail":"Manage email address of your account",
   "changePhoneNumber":"Change Phone Number",
   "managePhoneNumber":"Manage phone number of your account",

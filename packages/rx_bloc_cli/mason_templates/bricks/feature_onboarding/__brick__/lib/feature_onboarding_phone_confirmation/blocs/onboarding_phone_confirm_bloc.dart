@@ -69,6 +69,7 @@ class OnboardingPhoneConfirmBloc extends $OnboardingPhoneConfirmBloc {
       return _router.go(const ProfileRoute().location);
     }
 
+    _coordinatorBloc.events.authenticated(isAuthenticated: true);
     return _router.go(const DashboardRoute().routeLocation);
   }
 }

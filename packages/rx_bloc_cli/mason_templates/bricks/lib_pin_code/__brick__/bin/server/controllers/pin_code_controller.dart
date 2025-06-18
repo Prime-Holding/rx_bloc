@@ -52,10 +52,20 @@ class PinCodeController extends ApiController {
     }
 
     /// Update the user to have a pin code
-    _usersService.updateUser(userId, hasPin: true);
+    _usersService.updateUser(
+      userId,
+      hasPin: true,
+      lastPinAction: LastPinAction.create,
+    );
 
     /// Return the user with the pin code
-    return responseBuilder.buildOK(data: user.copyWith(hasPin: true).toJson());
+      return responseBuilder.buildOK(
+        data: user
+            .copyWith(
+              hasPin: true,
+              lastPinAction: LastPinAction.create,
+            )
+            .toJson());
   }
 
   Future<Response> _verifyPinCode(Request request) async {
@@ -105,7 +115,10 @@ class PinCodeController extends ApiController {
     _pinCodeService
       ..savePinCode(userId, newPinCode)
       ..removeToken(userId);
-    final user = _usersService.getUserById(userId);
+    final user = _usersService.updateUser(
+      userId,
+      lastPinAction: LastPinAction.update,
+    );
     if (user == null) {
       throw NotFoundException('User not found');
     }
