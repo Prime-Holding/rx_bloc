@@ -133,6 +133,7 @@ jobs:
         run: |
           dart pub get
           flutter pub cache repair
+          dart pub get
       - name: Analyze
         working-directory: ${{ matrix.folder }}
         run: flutter analyze lib
