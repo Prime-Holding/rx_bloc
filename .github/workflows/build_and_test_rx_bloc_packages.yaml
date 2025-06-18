@@ -130,7 +130,9 @@ jobs:
       - run: dart pub global activate pana
       - name: Install Dependencies
         working-directory: ${{ matrix.folder }}
-        run: dart pub get
+        run: |
+          dart pub get
+          flutter pub cache repair
       - name: Analyze
         working-directory: ${{ matrix.folder }}
         run: flutter analyze lib
