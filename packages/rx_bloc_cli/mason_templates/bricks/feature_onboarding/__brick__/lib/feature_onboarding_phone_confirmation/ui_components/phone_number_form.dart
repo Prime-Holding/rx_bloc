@@ -10,28 +10,8 @@ import '../../base/models/country_code_model.dart';
 import '../blocs/onboarding_phone_bloc.dart';
 import '../services/search_country_code_service.dart';
 
-class PhoneNumberForm extends StatefulWidget {
+class PhoneNumberForm extends StatelessWidget {
   const PhoneNumberForm({super.key});
-
-  @override
-  State<PhoneNumberForm> createState() => _PhoneNumberFormState();
-}
-
-class _PhoneNumberFormState extends State<PhoneNumberForm> {
-  final _phoneNumberFocusNode = FocusNode(debugLabel: 'phoneNumberFocus');
-
-  @override
-  void initState() {
-    super.initState();
-    _phoneNumberFocusNode.requestFocus();
-  }
-
-  @override
-  void dispose() {
-    FocusManager.instance.primaryFocus?.unfocus();
-    _phoneNumberFocusNode.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) =>
@@ -40,7 +20,7 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
         onChanged: (bloc, value) => bloc.events.setPhoneNumber(value),
         showErrorState: (bloc) => bloc.states.showErrors,
         builder: (fieldState) => TextFormField(
-          focusNode: _phoneNumberFocusNode,
+          autofocus: true,
           keyboardType: TextInputType.phone,
           controller: fieldState.controller,
           onEditingComplete: () =>
@@ -123,7 +103,7 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
           ),
           child: MessagePanelWidget(
             message: context.l10n.featureOnboarding.thereAreNoResults,
-            messageState: MessagePanelState.neutral,
+            messageState: MessagePanelState.lessImportant,
           ),
         ),
         modalConfiguration: const SearchPickerModalConfiguration(

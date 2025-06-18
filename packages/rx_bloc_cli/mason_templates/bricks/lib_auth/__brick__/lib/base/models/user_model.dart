@@ -19,6 +19,7 @@ class UserModel with EquatableMixin {
     required this.role,
     required this.confirmedCredentials,
     required this.hasPin,
+    this.lastPinAction = LastPinAction.none,
   });
 
   /// Unique identifier of the user
@@ -40,6 +41,9 @@ class UserModel with EquatableMixin {
   /// Flag indicating whether the user has set a PIN code
   final bool hasPin;
 
+  /// The last action performed on the PIN code (if applicable).
+  final LastPinAction lastPinAction;
+
   /// Information about the confirmed credentials of the user
   final ConfirmedCredentialsModel confirmedCredentials;
 
@@ -53,6 +57,7 @@ class UserModel with EquatableMixin {
           phone: false,
         ),
         hasPin: false,
+        lastPinAction: LastPinAction.none,
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -71,4 +76,11 @@ class UserModel with EquatableMixin {
 
   @override
   String toString() => toJson().toString();
+}
+
+/// Enum representing the last action performed on the PIN code.
+enum LastPinAction {
+  none,
+  create,
+  update;
 }

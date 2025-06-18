@@ -1,3 +1,28 @@
+## [5.5.3]
+* Support `flutter 3.32`
+* Bug fixes and stability improvements:
+  - App: Screen rotation affects app (Landscape mode not prevented)
+  - Forgotten password: navigation and mock deep links not working in some cases
+  - Onboarding: No back button on Onboarding page
+  - Onboarding: No back button on Confirm Phone Number screen
+  - Onboarding: Info box on country search modal sheet when no results as present displayed as error instead of info
+  - Onboarding: focus field on change email
+  - Onboarding: change email screen is now a standalone page rather than a modal sheet
+  - Onboarding: send new link on email verify page now hides when disabled
+  - Onboarding: restarting the app during an unfinished onboarding flow performs a user login
+  - Onboarding: back buttons displayed inconsistently between pages
+  - Onboarding: Returning back from the verify phone screen and then visiting the screen again with same unconfirmed number results in `Phone number already in use` error
+  - Onboarding: Continue button obstructed by keyboard on smaller screens
+  - Profile screen: change email doesn't properly change email address
+  - Showcase: Shimmer wrapper in demo not working
+  - Showcase: MFA demo bottom button should ONLY display pin feature when pressed
+  - Showcase: Canceling biometrics quits MFA instead of allowing user to enter pin code
+  - Pin: Message after creating a pin informs the user that the pin has been updated instead of created
+  - Pin: When on the Confirm Pin screen, typing a wrong pin displays a vague `Wrong pin` message
+  - Pin: Pin code screen not working after idling for a minute (foreground or background)
+  - Pin: Biometrics button not present on verify pin code screen when changing pin
+  - Pin: Pin code screen not shown during cold start for an account with an already configured pin
+
 ## [5.5.2]
 * Update generated project `go_router` dependency to `^15.1.0`
 

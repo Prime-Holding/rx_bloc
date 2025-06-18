@@ -1,8 +1,15 @@
 part of '../router.dart';
 
-@TypedGoRoute<PhoneChangeRoute>(path: RoutesPath.phoneChange)
+@TypedGoRoute<PhoneChangeRoute>(
+  path: RoutesPath.phoneChange,
+  routes: [
+    TypedGoRoute<PhoneChangeConfirmRoute>(path: RoutesPath.phoneChangeConfirm)
+  ],
+)
 @immutable
-class PhoneChangeRoute extends GoRouteData implements RouteDataModel {
+class PhoneChangeRoute extends GoRouteData
+    with _$PhoneChangeRoute
+    implements RouteDataModel {
   const PhoneChangeRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
@@ -22,9 +29,10 @@ class PhoneChangeRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-@TypedGoRoute<PhoneChangeConfirmRoute>(path: RoutesPath.phoneChangeConfirm)
 @immutable
-class PhoneChangeConfirmRoute extends GoRouteData implements RouteDataModel {
+class PhoneChangeConfirmRoute extends GoRouteData
+    with _$PhoneChangeConfirmRoute
+    implements RouteDataModel {
   const PhoneChangeConfirmRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =

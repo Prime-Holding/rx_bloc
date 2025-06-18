@@ -8,7 +8,7 @@ class MfaBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class FeatureMfaRoute extends GoRouteData implements RouteDataModel {
+class FeatureMfaRoute extends GoRouteData with _$FeatureMfaRoute implements RouteDataModel {
   const FeatureMfaRoute();
 
   @override
@@ -27,7 +27,7 @@ class FeatureMfaRoute extends GoRouteData implements RouteDataModel {
 
 @TypedGoRoute<MfaOtpRoute>(path: RoutesPath.mfaOtp)
 class MfaOtpRoute extends GoRouteData
-    with EquatableMixin
+    with EquatableMixin, _$MfaOtpRoute
     implements RouteDataModel {
   const MfaOtpRoute(
     this.transactionId,
@@ -58,7 +58,7 @@ class MfaOtpRoute extends GoRouteData
 
 @TypedGoRoute<MfaPinBiometricsRoute>(path: RoutesPath.mfaPinBiometrics)
 class MfaPinBiometricsRoute extends GoRouteData
-    with EquatableMixin
+    with EquatableMixin, _$MfaPinBiometricsRoute
     implements RouteDataModel {
   const MfaPinBiometricsRoute(this.transactionId);
 

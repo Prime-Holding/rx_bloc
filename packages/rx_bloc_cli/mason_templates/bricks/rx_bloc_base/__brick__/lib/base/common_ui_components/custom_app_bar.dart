@@ -12,4 +12,5 @@ AppBar customAppBar(
       title: title != null ? Text(title) : null,
       actions: actions,
       centerTitle: centerTitle,
+      forceMaterialTransparency: true,
     );

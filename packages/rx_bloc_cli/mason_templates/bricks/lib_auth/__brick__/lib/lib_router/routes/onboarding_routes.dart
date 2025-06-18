@@ -1,9 +1,35 @@
 part of '../router.dart';
 
 {{#has_authentication}}
-@TypedGoRoute<LoginRoute>(path: RoutesPath.login)
+@TypedGoRoute<LoginRoute>(
+  path: RoutesPath.login, {{#enable_feature_onboarding}}
+  routes: [
+    TypedGoRoute<OnboardingRoute>(
+      path: RoutesPath.onboarding,
+      routes: [
+        TypedGoRoute<OnboardingEmailConfirmationRoute>(
+            path: RoutesPath.onboardingEmailConfirmation),
+        TypedGoRoute<OnboardingPhoneRoute>(
+          path: RoutesPath.onboardingPhone,
+          routes: [
+            TypedGoRoute<OnboardingPhoneConfirmRoute>(
+                path: RoutesPath.onboardingPhoneConfirm),
+          ],
+        ),
+      ],
+    ),{{#enable_forgotten_password}}
+    TypedGoRoute<PasswordResetRequestRoute>(
+      path: RoutesPath.passwordResetRequest,
+      routes: [
+        TypedGoRoute<PasswordResetConfirmationRoute>(
+            path: RoutesPath.passwordResetConfirmation),
+      ],
+    ),
+    TypedGoRoute<PasswordResetRoute>(path: RoutesPath.passwordReset),{{/enable_forgotten_password}}
+  ],{{/enable_feature_onboarding}}
+)
 @immutable
-class LoginRoute extends GoRouteData implements RouteDataModel {
+class LoginRoute extends GoRouteData with _$LoginRoute implements RouteDataModel {
   const LoginRoute();
 
   @override
@@ -22,7 +48,7 @@ class LoginRoute extends GoRouteData implements RouteDataModel {
 
 @TypedGoRoute<OtpRoute>(path: RoutesPath.otpRoute)
 @immutable
-class OtpRoute extends GoRouteData implements RouteDataModel {
+class OtpRoute extends GoRouteData with _$OtpRoute implements RouteDataModel {
   const OtpRoute();
 
   @override
@@ -41,7 +67,7 @@ class OtpRoute extends GoRouteData implements RouteDataModel {
 {{/enable_feature_otp}}{{#enable_pin_code}}
 @TypedGoRoute<VerifyPinCodeRoute>(path: RoutesPath.verifyPinCode)
 @immutable
-class VerifyPinCodeRoute extends GoRouteData implements RouteDataModel {
+class VerifyPinCodeRoute extends GoRouteData with _$VerifyPinCodeRoute implements RouteDataModel {
   const VerifyPinCodeRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =

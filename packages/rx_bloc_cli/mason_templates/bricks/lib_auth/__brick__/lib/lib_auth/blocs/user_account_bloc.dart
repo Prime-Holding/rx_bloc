@@ -12,6 +12,7 @@ import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
 import '../../lib_router/models/routes_path.dart';
+import '../../lib_router/router.dart';
 import '../services/auth_service.dart';
 import '../services/user_account_service.dart';
 
@@ -53,13 +54,12 @@ class UserAccountBloc extends $UserAccountBloc {
 
     _$logoutEvent
         .throttleTime(const Duration(seconds: 1))
-        .exhaustMap((value) =>
-            _userAccountService.logout().asResultStream())
+        .exhaustMap((value) => _userAccountService.logout().asResultStream())
         .setResultStateHandler(this)
         .whereSuccess()
         .mapTo(false)
         .emitAuthenticatedToCoordinator(_coordinatorBloc)
-        .doOnData((_) => _router.go(RoutesPath.login))
+        .doOnData((_) => _router.go(LoginRoute().routeLocation))
         .listen(null)
         .addTo(_compositeSubscription);
   }

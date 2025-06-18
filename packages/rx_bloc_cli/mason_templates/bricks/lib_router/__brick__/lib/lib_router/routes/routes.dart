@@ -2,7 +2,7 @@ part of '../router.dart';
 
 @TypedGoRoute<SplashRoute>(path: RoutesPath.splash)
 @immutable
-class SplashRoute extends GoRouteData implements RouteDataModel {
+class SplashRoute extends GoRouteData with _$SplashRoute implements RouteDataModel {
   const SplashRoute();
 
   @override
@@ -75,7 +75,15 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
     TypedStatefulShellBranch<ProfileBranchData>(
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<ProfileRoute>(
-          path: RoutesPath.profile,
+          path: RoutesPath.profile,{{#enable_feature_onboarding}}
+          routes: [
+            TypedGoRoute<ChangeEmailRoute>(
+                path: RoutesPath.emailChange,
+                routes: [
+                  TypedGoRoute<VerifyChangeEmailRoute>(
+                      path: RoutesPath.emailChangeVerify),
+                ]),
+          ],{{/enable_feature_onboarding}}
         ),
       ],
     ),{{/enable_profile}}
@@ -111,7 +119,7 @@ class DashboardBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class DashboardRoute extends GoRouteData implements RouteDataModel {
+class DashboardRoute extends GoRouteData with _$DashboardRoute implements RouteDataModel {
   const DashboardRoute();
 
   @override
@@ -131,7 +139,7 @@ class DashboardRoute extends GoRouteData implements RouteDataModel {
 {{^enable_profile}}
 @immutable
 @TypedGoRoute<NotificationsRoute>(path: RoutesPath.notifications)
-class NotificationsRoute extends GoRouteData implements RouteDataModel {
+class NotificationsRoute extends GoRouteData with _$NotificationsRoute implements RouteDataModel {
   const NotificationsRoute();
 
   @override

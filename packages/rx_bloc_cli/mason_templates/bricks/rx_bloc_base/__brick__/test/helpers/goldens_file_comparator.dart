@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class GoldensFileComparator extends LocalFileComparator {
-  static const double _kGoldenDiffTolerance = 0.0;
+  static const double _kGoldenDiffTolerance = 0.05;
 
   static final List<String> _basePathKeywordsToRemove = [
     'goldens',

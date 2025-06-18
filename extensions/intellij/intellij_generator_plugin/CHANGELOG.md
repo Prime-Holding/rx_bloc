@@ -2,7 +2,13 @@
 
 # RxBloc IntelliJ Plugin Changelog
 
-## [4.0.0] - Unreleased
+## [4.0.1] - 2025-05-19
+
+### Changed
+
+- Updated the changelog
+
+## [4.0.0] - 2025-05-19
 
 ### Changed
 

@@ -9,6 +9,7 @@
 name: Build Rx BloC IntelliJ Plugin
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "extensions/intellij/intellij_generator_plugin/**"
