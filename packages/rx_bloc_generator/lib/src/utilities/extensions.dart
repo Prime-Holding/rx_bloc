@@ -1,5 +1,8 @@
 part of '../../rx_bloc_generator.dart';
 
+// ignore_for_file: deprecated_member_use
+// TODO: Remove the ignore once a new version of `source_gen` is released
+
 /// Supported types of streams
 class _BlocEventStreamTypes {
   /// Constants feel more comfortable than strings
@@ -99,7 +102,6 @@ extension _EventMethodElement on MethodElement {
   ElementAnnotation? get _rxBlocEventAnnotation => _eventAnnotation
               ?.computeConstantValue()
               ?.type
-              //ignore: deprecated_member_use
               ?.getDisplayString(withNullability: true) ==
           (RxBlocEvent).toString()
       ? _eventAnnotation
@@ -120,7 +122,6 @@ extension _EventMethodElement on MethodElement {
     }
     return parameters.isNotEmpty
         // The only parameter's type
-        //ignore: deprecated_member_use
         ? parameters.first.type.getDisplayString(withNullability: true)
         // Default type
         : 'void';
@@ -199,6 +200,5 @@ extension _ListParameterElementClone on Iterable<ParameterElement> {
 }
 
 extension _ParameterElementToString on ParameterElement {
-  //ignore: deprecated_member_use
   String getTypeDisplayName() => type.getDisplayString(withNullability: true);
 }
