@@ -176,7 +176,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          flutter-version: 3.32.4
+          flutter-version: 3.27.4
       - run: dart --version
       - run: flutter --version
       - run: dart pub global activate pana
