@@ -1,12 +1,9 @@
 part of '../../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 class _EventArgsRecord {
   const _EventArgsRecord(this.method);
 
-  final MethodElement method;
+  final MethodElement2 method;
 
   /// The type of record used to wrap the method's parameters
   ///
@@ -48,15 +45,16 @@ class _EventArgsRecord {
           ..definition = recordType(),
       );
 
-  String get _name => '_${method.name.capitalize()}EventArgs';
+  String get _name => '_${method.name3?.capitalize()}EventArgs';
 
   Map<String, Reference> _namedArguments({bool invocation = false}) {
-    var params = method.parameters;
+    var params = method.formalParameters;
 
     var namedArguments = <String, Reference>{};
     for (var param in params) {
-      namedArguments[param.name] =
-          invocation ? refer(param.name) : refer(param.getTypeDisplayName());
+      namedArguments[param.name3 ?? ''] = invocation
+          ? refer(param.name3 ?? '')
+          : refer(param.getTypeDisplayName());
     }
 
     return namedArguments;

@@ -1,23 +1,20 @@
 part of '../../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
-/// A mapper that converts a [MethodElement] into an event [Field]
+/// A mapper that converts a [MethodElement2] into an event [Field]
 class _EventField implements _BuilderContract {
   const _EventField(this.method);
 
-  final MethodElement method;
+  final MethodElement2 method;
 
   @override
   Field build() => Field(
         (b) => b
           ..docs.addAll(<String>[
-            if (method.name.length <= 26)
-              '/// Тhe [Subject] where events sink to by calling [${method.name}]',
-            if (method.name.length > 26) ...<String>[
+            if ((method.name3?.length ?? 0) <= 26)
+              '/// Тhe [Subject] where events sink to by calling [${method.name3}]',
+            if ((method.name3?.length ?? 0) > 26) ...<String>[
               '/// Тhe [Subject] where events sink to by calling ',
-              '/// [${method.name}]'
+              '/// [${method.name3}]'
             ],
           ])
           ..modifier = FieldModifier.final$

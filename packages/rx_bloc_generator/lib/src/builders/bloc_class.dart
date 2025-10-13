@@ -1,8 +1,5 @@
 part of '../../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 /// Generates the content of the blocClass
 ///
 /// Example:
@@ -38,9 +35,9 @@ class _BlocClass implements _BuilderContract {
 
   final String stateClassName;
 
-  final List<MethodElement> eventsMethods;
+  final List<MethodElement2> eventsMethods;
 
-  final List<FieldElement> statesFields;
+  final List<FieldElement2> statesFields;
 
   @override
   Class build() => Class(
@@ -65,30 +62,30 @@ class _BlocClass implements _BuilderContract {
             // Example:
             // final _${eventName}Event = PublishSubject<void>();
             ...eventsMethods
-                .map((MethodElement method) => _EventField(method).build()),
+                .map((MethodElement2 method) => _EventField(method).build()),
 
             // Example:
             // Stream<int> _{stateName}State;
             ...statesFields
-                .map((FieldElement field) => _StateField(field).build()),
+                .map((FieldElement2 field) => _StateField(field).build()),
           ])
           ..methods.addAll(
             <Method>[
               // Example:
               // void {eventName}() => _${eventName}Event.add(null);
               ...eventsMethods
-                  .map((MethodElement method) => _EventMethod(method).build()),
+                  .map((MethodElement2 method) => _EventMethod(method).build()),
 
               // Example:
               // Stream<int> get {stateName} =>
               //      _{stateName}State ??= _mapTo{StateName}State();
               ...statesFields.map(
-                  (FieldElement field) => _StateGetterMethod(field).build()),
+                  (FieldElement2 field) => _StateGetterMethod(field).build()),
 
               // Example:
               // Stream<int> _mapTo{StateName}State();
               ...statesFields
-                  .map((FieldElement field) => _StateMethod(field).build()),
+                  .map((FieldElement2 field) => _StateMethod(field).build()),
 
               // Example:
               // {BlocName}BlocEvents get events => this;

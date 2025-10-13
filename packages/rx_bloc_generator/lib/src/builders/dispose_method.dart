@@ -1,8 +1,5 @@
 part of '../../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 /// Builds the dispose method
 /// Example:
 ///
@@ -15,7 +12,7 @@ part of '../../rx_bloc_generator.dart';
 class _DisposeMethod implements _BuilderContract {
   const _DisposeMethod(this.eventMethods);
 
-  final List<MethodElement> eventMethods;
+  final List<MethodElement2> eventMethods;
 
   @override
   Method build() => Method.returnsVoid(
@@ -26,7 +23,7 @@ class _DisposeMethod implements _BuilderContract {
           ..body = CodeExpression(
             Block.of([
               ...eventMethods.map(
-                (MethodElement method) =>
+                (MethodElement2 method) =>
                     refer('${method.eventFieldName}.close').call([]).statement,
               ),
               refer('_compositeSubscription.dispose').call([]).statement,

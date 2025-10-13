@@ -1,8 +1,5 @@
 part of '../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 /// The generator.
 class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// Allows creating via `const` as well as enforces immutability here.
@@ -12,13 +9,13 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// If either the states or events class is missing the file is not generated.
   @override
   Future<String> generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final classElement = element as ClassElement;
+    final classElement = element as ClassElement2;
 
-    final libraryReader = LibraryReader(classElement.library);
+    final libraryReader = LibraryReader(classElement.library2);
 
     try {
       return _BuildController(
@@ -30,7 +27,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         //   void fetch();
         // }
         eventClass: libraryReader.classes.firstWhereOrNull(
-          (ClassElement classElement) => classElement.displayName
+          (ClassElement2 classElement) => classElement.displayName
               .contains(annotation.read('eventsClassName').stringValue),
         ),
 
@@ -53,14 +50,20 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       // Format error
       _reportIssue(
         'FormatterException \n $message',
-        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
+        libraryReader
+                .allElements.first.library2?.firstFragment.source.contents.data
+                .toString() ??
+            '',
       );
       return '/**\n${e.message}\n*/';
     } on Exception catch (e) {
       // System error
       _reportIssue(
         e.toString(),
-        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
+        libraryReader
+                .allElements.first.library2?.firstFragment.source.contents.data
+                .toString() ??
+            '',
       );
       return '/**\n$e\n*/';
     }
