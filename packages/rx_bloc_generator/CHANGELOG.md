@@ -1,3 +1,6 @@
+## [8.0.2]
+* Update dependencies to the latest versions
+
 ## [8.0.1]
 * Update dependencies to the latest versions
 
