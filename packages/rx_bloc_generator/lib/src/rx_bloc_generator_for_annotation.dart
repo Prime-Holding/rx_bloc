@@ -9,13 +9,13 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// If either the states or events class is missing the file is not generated.
   @override
   Future<String> generateForAnnotatedElement(
-    Element2 element,
+    Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final classElement = element as ClassElement2;
+    final classElement = element as ClassElement;
 
-    final libraryReader = LibraryReader(classElement.library2);
+    final libraryReader = LibraryReader(classElement.library);
 
     try {
       return _BuildController(
@@ -27,8 +27,9 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         //   void fetch();
         // }
         eventClass: libraryReader.classes.firstWhereOrNull(
-          (ClassElement2 classElement) => classElement.displayName
-              .contains(annotation.read('eventsClassName').stringValue),
+          (ClassElement classElement) => classElement.displayName.contains(
+            annotation.read('eventsClassName').stringValue,
+          ),
         ),
 
         /// Provides the states class as [ClassElement]
@@ -37,8 +38,9 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         //   void fetch();
         // }
         stateClass: libraryReader.classes.firstWhereOrNull(
-          (classElement) => classElement.displayName
-              .contains(annotation.read('statesClassName').stringValue),
+          (classElement) => classElement.displayName.contains(
+            annotation.read('statesClassName').stringValue,
+          ),
         ),
       ).generate();
     } on _RxBlocGeneratorException catch (e) {
@@ -46,12 +48,18 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       _logError(e.message);
       return '/**\n${e.message}\n*/';
     } on FormatterException catch (e) {
-      var message = e.errors.map((AnalysisError e) => e.message).join('\n');
+      var message = e.errors.map((e) => e.message).join('\n');
       // Format error
       _reportIssue(
         'FormatterException \n $message',
         libraryReader
-                .allElements.first.library2?.firstFragment.source.contents.data
+                .allElements
+                .first
+                .library
+                ?.firstFragment
+                .source
+                .contents
+                .data
                 .toString() ??
             '',
       );
@@ -61,7 +69,13 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       _reportIssue(
         e.toString(),
         libraryReader
-                .allElements.first.library2?.firstFragment.source.contents.data
+                .allElements
+                .first
+                .library
+                ?.firstFragment
+                .source
+                .contents
+                .data
                 .toString() ??
             '',
       );

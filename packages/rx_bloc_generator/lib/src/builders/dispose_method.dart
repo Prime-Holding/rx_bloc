@@ -12,23 +12,23 @@ part of '../../rx_bloc_generator.dart';
 class _DisposeMethod implements _BuilderContract {
   const _DisposeMethod(this.eventMethods);
 
-  final List<MethodElement2> eventMethods;
+  final List<MethodElement> eventMethods;
 
   @override
   Method build() => Method.returnsVoid(
-        (b) => b
-          ..docs.addAll(['']) // A new line
-          ..annotations.add(refer('override'))
-          ..name = 'dispose'
-          ..body = CodeExpression(
-            Block.of([
-              ...eventMethods.map(
-                (MethodElement2 method) =>
-                    refer('${method.eventFieldName}.close').call([]).statement,
-              ),
-              refer('_compositeSubscription.dispose').call([]).statement,
-              refer('super.dispose').call([]).statement,
-            ]),
-          ).code,
-      );
+    (b) => b
+      ..docs.addAll(['']) // A new line
+      ..annotations.add(refer('override'))
+      ..name = 'dispose'
+      ..body = CodeExpression(
+        Block.of([
+          ...eventMethods.map(
+            (MethodElement method) =>
+                refer('${method.eventFieldName}.close').call([]).statement,
+          ),
+          refer('_compositeSubscription.dispose').call([]).statement,
+          refer('super.dispose').call([]).statement,
+        ]),
+      ).code,
+  );
 }

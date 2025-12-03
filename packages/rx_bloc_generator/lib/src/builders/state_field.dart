@@ -1,26 +1,24 @@
 part of '../../rx_bloc_generator.dart';
 
-/// A mapper that converts a [FieldElement2] into an event [Field]
+/// A mapper that converts a [FieldElement] into an event [Field]
 class _StateField implements _BuilderContract {
   const _StateField(this.field);
 
-  final FieldElement2 field;
+  final FieldElement field;
 
   @override
   Field build() => Field(
-        (b) => b
-          ..docs.addAll(<String>[
-            if ((field.name3?.length ?? 0) <= 15)
-              '/// The state of [${field.name3}] implemented in [${field.stateMethodName}]',
-            if ((field.name3?.length ?? 0) > 15) ...<String>[
-              '/// The state of [${field.name3}] implemented in ',
-              '/// [${field.stateMethodName}]'
-            ]
-          ])
-          ..type = refer(
-            'late final ${field.type.getDisplayString()}',
-          )
-          ..assignment = refer(field.stateMethodName).newInstance([]).code
-          ..name = field.stateFieldName,
-      );
+    (b) => b
+      ..docs.addAll(<String>[
+        if ((field.name?.length ?? 0) <= 15)
+          '/// The state of [${field.name}] implemented in [${field.stateMethodName}]',
+        if ((field.name?.length ?? 0) > 15) ...<String>[
+          '/// The state of [${field.name}] implemented in ',
+          '/// [${field.stateMethodName}]',
+        ],
+      ])
+      ..type = refer('late final ${field.type.getDisplayString()}')
+      ..assignment = refer(field.stateMethodName).newInstance([]).code
+      ..name = field.stateFieldName,
+  );
 }
