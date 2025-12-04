@@ -3,7 +3,7 @@ part of '../../rx_bloc_generator.dart';
 class _EventArgsRecord {
   const _EventArgsRecord(this.method);
 
-  final MethodElement2 method;
+  final MethodElement method;
 
   /// The type of record used to wrap the method's parameters
   ///
@@ -27,10 +27,8 @@ class _EventArgsRecord {
   ///    ));
   /// }
   /// ```
-  Expression newInstanceWithParameters() => refer('').newInstance(
-        [],
-        _namedArguments(invocation: true),
-      );
+  Expression newInstanceWithParameters() =>
+      refer('').newInstance([], _namedArguments(invocation: true));
 
   /// Typedef for the record
   ///
@@ -39,21 +37,21 @@ class _EventArgsRecord {
   /// typedef _MultiplyNumbersEventArgs = ({int x, int y});
   /// ```
   Spec typeDef() => TypeDef(
-        (b) => b
-          ..docs.add('// ignore: unused_element')
-          ..name = _name
-          ..definition = recordType(),
-      );
+    (b) => b
+      ..docs.add('// ignore: unused_element')
+      ..name = _name
+      ..definition = recordType(),
+  );
 
-  String get _name => '_${method.name3?.capitalize()}EventArgs';
+  String get _name => '_${method.name?.capitalize()}EventArgs';
 
   Map<String, Reference> _namedArguments({bool invocation = false}) {
     var params = method.formalParameters;
 
     var namedArguments = <String, Reference>{};
     for (var param in params) {
-      namedArguments[param.name3 ?? ''] = invocation
-          ? refer(param.name3 ?? '')
+      namedArguments[param.name ?? ''] = invocation
+          ? refer(param.name ?? '')
           : refer(param.getTypeDisplayName());
     }
 
