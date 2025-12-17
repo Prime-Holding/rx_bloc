@@ -9,7 +9,9 @@ part of '../router.dart';
   ],
 )
 @immutable
-class HomeRoutes extends GoRouteData implements RouteDataModel {
+class HomeRoutes extends GoRouteData
+    with $HomeRoutes
+    implements RouteDataModel {
   const HomeRoutes(this.type);
 
   final NavigationItemType type;
@@ -28,7 +30,9 @@ class HomeRoutes extends GoRouteData implements RouteDataModel {
 }
 
 @immutable
-class HotelDetailsRoutes extends GoRouteData implements RouteDataModel {
+class HotelDetailsRoutes extends GoRouteData
+    with $HotelDetailsRoutes
+    implements RouteDataModel {
   const HotelDetailsRoutes(
     this.type,
     this.id,

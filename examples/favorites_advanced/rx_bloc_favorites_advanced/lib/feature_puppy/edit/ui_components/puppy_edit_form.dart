@@ -15,7 +15,7 @@ class PuppyEditForm extends StatelessWidget {
   const PuppyEditForm({
     Puppy? puppy,
     super.key,
-  })  : _puppy = puppy;
+  }) : _puppy = puppy;
 
   final Puppy? _puppy;
 
@@ -164,40 +164,39 @@ class PuppyEditForm extends StatelessWidget {
         showErrorState: (bloc) => bloc.states.showErrors,
         builder: (fieldState) => Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  children: [
-                    const Text(
-                      'Male',
-                      style: TextStyles.editableTextStyle,
-                    ),
-                    Radio<Gender>(
-                      key: const ValueKey('PuppyGenderMaleRadio'),
-                      value: Gender.Male,
-                      groupValue: fieldState.value,
-                      onChanged: (gender) => fieldState.bloc.events
-                          .setGender(gender ?? Gender.None),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Text(
-                      'Female',
-                      style: TextStyles.editableTextStyle,
-                    ),
-                    Radio<Gender>(
-                      key: const ValueKey('PuppyGenderFemaleRadio'),
-                      value: Gender.Female,
-                      groupValue: fieldState.value,
-                      onChanged: (gender) => fieldState.bloc.events
-                          .setGender(gender ?? Gender.None),
-                    ),
-                  ],
-                ),
-              ],
+            RadioGroup<Gender>(
+              groupValue: fieldState.value,
+              onChanged: (gender) =>
+                  fieldState.bloc.events.setGender(gender ?? Gender.None),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Male',
+                        style: TextStyles.editableTextStyle,
+                      ),
+                      Radio<Gender>(
+                        key: ValueKey('PuppyGenderMaleRadio'),
+                        value: Gender.Male,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Female',
+                        style: TextStyles.editableTextStyle,
+                      ),
+                      Radio<Gender>(
+                        key: ValueKey('PuppyGenderFemaleRadio'),
+                        value: Gender.Female,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             if (fieldState.showError)
               Row(
