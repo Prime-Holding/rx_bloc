@@ -52,6 +52,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         id: check_for_coverage_file
         run: |
+          echo "Passing"
           if [ -s "/coverage/lcov.info" ]; then 
             echo "has_coverage=true" >> $GITHUB_OUTPUT
           else 
