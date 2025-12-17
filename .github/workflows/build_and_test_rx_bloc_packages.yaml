@@ -64,6 +64,7 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 50
       - name: Upload coverage to Codecov
+        if: steps.check_for_coverage_file.outputs.has_coverage == 'true'
         uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
