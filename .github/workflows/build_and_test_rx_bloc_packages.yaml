@@ -12,12 +12,12 @@ jobs:
     strategy:
       matrix:
         folder:
-          [
-            "examples/booking_app",
-            "examples/counter",
-            "examples/division",
-            "examples/favorites_advanced/rx_bloc_favorites_advanced",
-            "examples/todoapp",
+          [ 
+            "examples/booking_app", 
+            "examples/counter", 
+            "examples/division", 
+            "examples/favorites_advanced/rx_bloc_favorites_advanced", 
+            "examples/todoapp" 
           ]
       fail-fast: false
     runs-on: ubuntu-latest
@@ -52,7 +52,6 @@ jobs:
         working-directory: ${{ matrix.folder }}
         id: check_for_coverage_file
         run: |
-          echo "Passing"
           if [ -s "/coverage/lcov.info" ]; then 
             echo "has_coverage=true" >> $GITHUB_OUTPUT
           else 
@@ -163,12 +162,23 @@ jobs:
       - name: Remove unnecessary files
         working-directory: ${{ matrix.folder }}
         run: dart run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+      - name: Check for existing and non-empty coverage file
+        working-directory: ${{ matrix.folder }}
+        id: check_for_coverage_file
+        run: |
+          if [ -s "/coverage/lcov.info" ]; then 
+            echo "has_coverage=true" >> $GITHUB_OUTPUT
+          else 
+            echo "has_coverage=false" >> $GITHUB_OUTPUT
+          fi
       - name: Check Code Coverage
+        if: steps.check_for_coverage_file.outputs.has_coverage == 'true'
         uses: VeryGoodOpenSource/very_good_coverage@v3
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 67
       - name: Upload coverage to Codecov
+        if: steps.check_for_coverage_file.outputs.has_coverage == 'true'
         uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
