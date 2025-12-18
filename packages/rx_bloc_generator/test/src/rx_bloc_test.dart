@@ -350,8 +350,11 @@ typedef _WithPositionalAnd2OptionalEventArgs = ({int pp, int? op1, int? op2});
 typedef _WithPositionalAnd2NamedEventArgs = ({int pp, int? np1, int? np2});
 
 // ignore: unused_element
-typedef _WithPositionalAnd1Named1RequiredEventArgs =
-    ({int pp, int? np1, int np2});
+typedef _WithPositionalAnd1Named1RequiredEventArgs = ({
+  int pp,
+  int? np1,
+  int np2,
+});
 
 // ignore: unused_element
 typedef _WithTwoNamedRequiredEventArgs = ({int nr, bool nr2});
@@ -363,8 +366,10 @@ typedef _WithAnnotationAnd2PositionalEventArgs = ({int pp1, int pp2});
 typedef _WithSeededPositionalAndOptionalEventArgs = ({int pp, int? op});
 
 // ignore: unused_element
-typedef _WithSeededTwoPositionalOptionalDefaultNullEventArgs =
-    ({int? p1, int? p2});
+typedef _WithSeededTwoPositionalOptionalDefaultNullEventArgs = ({
+  int? p1,
+  int? p2,
+});
 
 // ignore: unused_element
 typedef _WithSeededTwoPositionalOptionalEventArgs = ({int? p1, int? p2});

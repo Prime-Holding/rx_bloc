@@ -1,8 +1,5 @@
 part of '../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 /// Validates the main bloc file and provides the generator the needed data
 class _BuildController {
   _BuildController({
@@ -20,8 +17,9 @@ class _BuildController {
     _validate();
 
     final blocTypeClassName = '${rxBlocClass.displayName}Type';
-    final blocClassGenericTypes =
-        rxBlocClass.typeParameters.map((final t) => t.displayName);
+    final blocClassGenericTypes = rxBlocClass.typeParameters.map(
+      (final t) => t.displayName,
+    );
     final blocClassGenericTypesString = blocClassGenericTypes.isNotEmpty
         ? '<${blocClassGenericTypes.join(', ')}>'
         : '';
@@ -29,11 +27,14 @@ class _BuildController {
         '\$${rxBlocClass.displayName}$blocClassGenericTypesString';
     final eventClassName = eventClass!.displayName;
     final stateClassName = stateClass!.displayName;
-    final blocFilePath = rxBlocClass.location?.components.first ?? '';
+    final blocFilePath =
+        rxBlocClass.firstFragment.libraryFragment.source.uri.path;
     final mainBlocFileName =
-        Uri.tryParse(blocFilePath, (blocFilePath.lastIndexOf('/') + 1))
-                ?.toString() ??
-            '';
+        Uri.tryParse(
+          blocFilePath,
+          (blocFilePath.lastIndexOf('/') + 1),
+        )?.toString() ??
+        '';
 
     /// The output buffer containing all the generated code
     final output = StringBuffer();
@@ -58,12 +59,15 @@ class _BuildController {
         eventClass!.methods,
         stateClass!.fields
             // Skip @RxBlocIgnoreState() ignored states
-            .where((FieldElement field) =>
-                field.getter is PropertyAccessorElement &&
-                field.getter != null &&
-                (field.getter!.metadata.isEmpty ||
-                    !const TypeChecker.fromRuntime(RxBlocIgnoreState)
-                        .hasAnnotationOf(field.getter!)))
+            .where(
+              (FieldElement field) =>
+                  field.getter is PropertyAccessorElement &&
+                  field.getter != null &&
+                  (field.getter!.metadata.annotations.isEmpty ||
+                      !const TypeChecker.typeNamed(
+                        RxBlocIgnoreState,
+                      ).hasAnnotationOf(field.getter!)),
+            )
             .toList(),
       ).build().toDartCodeString(),
 
@@ -71,8 +75,8 @@ class _BuildController {
       ...eventClass!.methods
           .where((MethodElement method) => method.isUsingRecord)
           .map((MethodElement method) {
-        return method.argsRecord.typeDef().toDartCodeString();
-      })
+            return method.argsRecord.typeDef().toDartCodeString();
+          }),
     ].forEach(output.writeln);
 
     return output.toString();
@@ -90,7 +94,7 @@ class _BuildController {
       throw _RxBlocGeneratorException(
         _generateMissingClassError(
           eventClass?.displayName ?? '',
-          rxBlocClass.name,
+          rxBlocClass.name ?? '',
         ),
       );
     }
@@ -98,8 +102,9 @@ class _BuildController {
     // Methods only - No fields should exist
     for (var field in eventClass!.fields) {
       throw _RxBlocGeneratorException(
-          '${eventClass!.name} should contain methods only,'
-          ' while ${field.name} seems to be a field.');
+        '${eventClass!.name} should contain methods only,'
+        ' while ${field.name} seems to be a field.',
+      );
     }
   }
 
@@ -109,7 +114,7 @@ class _BuildController {
       throw _RxBlocGeneratorException(
         _generateMissingClassError(
           eventClass?.displayName ?? '',
-          rxBlocClass.name,
+          rxBlocClass.name ?? '',
         ),
       );
     }
@@ -117,14 +122,16 @@ class _BuildController {
     // Fields only - No methods should exist
     for (var method in stateClass!.methods) {
       throw _RxBlocGeneratorException(
-          'State ${method.name} should be defined using the get keyword.');
+        'State ${method.name} should be defined using the get keyword.',
+      );
     }
 
-    for (var fieldElement in stateClass!.accessors) {
-      if (!fieldElement.isAbstract) {
-        final name = fieldElement.name.replaceAll('=', '');
+    for (var fieldElement in stateClass!.fields) {
+      if (!(fieldElement.getter?.isAbstract ?? false)) {
+        final name = fieldElement.name?.replaceAll('=', '');
         throw _RxBlocGeneratorException(
-            'State $name should not contain a body definition.');
+          'State $name should not contain a body definition.',
+        );
       }
     }
   }
@@ -136,11 +143,10 @@ class _BuildController {
   /// the user-defined or the default value for the events/states class that
   /// is vital for proper bloc generation.
   String _generateMissingClassError(String className, String blocName) =>
-      (StringBuffer()
-            ..writeAll(<String>[
-              '$blocName$className class missing.',
-              'Please make sure you have properly named and specified',
-              'your class in the same file where the $blocName resides.'
-            ], '\n\t'))
+      (StringBuffer()..writeAll(<String>[
+            '$blocName$className class missing.',
+            'Please make sure you have properly named and specified',
+            'your class in the same file where the $blocName resides.',
+          ], '\n\t'))
           .toString();
 }

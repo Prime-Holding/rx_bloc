@@ -1,8 +1,5 @@
 part of '../../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 /// Builds the dispose method
 /// Example:
 ///
@@ -19,19 +16,19 @@ class _DisposeMethod implements _BuilderContract {
 
   @override
   Method build() => Method.returnsVoid(
-        (b) => b
-          ..docs.addAll(['']) // A new line
-          ..annotations.add(refer('override'))
-          ..name = 'dispose'
-          ..body = CodeExpression(
-            Block.of([
-              ...eventMethods.map(
-                (MethodElement method) =>
-                    refer('${method.eventFieldName}.close').call([]).statement,
-              ),
-              refer('_compositeSubscription.dispose').call([]).statement,
-              refer('super.dispose').call([]).statement,
-            ]),
-          ).code,
-      );
+    (b) => b
+      ..docs.addAll(['']) // A new line
+      ..annotations.add(refer('override'))
+      ..name = 'dispose'
+      ..body = CodeExpression(
+        Block.of([
+          ...eventMethods.map(
+            (MethodElement method) =>
+                refer('${method.eventFieldName}.close').call([]).statement,
+          ),
+          refer('_compositeSubscription.dispose').call([]).statement,
+          refer('super.dispose').call([]).statement,
+        ]),
+      ).code,
+  );
 }

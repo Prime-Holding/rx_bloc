@@ -1,8 +1,5 @@
 part of '../../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 /// Supported types of streams
 class _BlocEventStreamTypes {
   /// Constants feel more comfortable than strings
@@ -22,20 +19,18 @@ extension _StringExtensions on String {
 /// It is the main [DartFormatter]
 extension _SpecExtensions on Spec {
   String toDartCodeString() => DartFormatter(
-        languageVersion: DartFormatter.latestLanguageVersion,
-      ).format(
-        toRawDartCodeString(),
-      );
+    languageVersion: DartFormatter.latestLanguageVersion,
+  ).format(toRawDartCodeString());
 
   String toRawDartCodeString() => accept(
-        DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true),
-      ).toString();
+    DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true),
+  ).toString();
 }
 
 extension _StateFieldElement on FieldElement {
   String get stateFieldName => '_${name}State';
 
-  String get stateMethodName => '_mapTo${name.capitalize()}State';
+  String get stateMethodName => '_mapTo${name?.capitalize()}State';
 }
 
 extension _EventMethodElement on MethodElement {
@@ -43,8 +38,9 @@ extension _EventMethodElement on MethodElement {
   String get eventFieldName => '_\$${name}Event';
 
   /// Is the the [RxBlocEvent.seed] annotation is provided
-  bool get hasSeedAnnotation => RegExp(r'(?<=seed: ).*(?=\)|,)')
-      .hasMatch(_rxBlocEventAnnotation?.toSource() ?? '');
+  bool get hasSeedAnnotation => RegExp(
+    r'(?<=seed: ).*(?=\)|,)',
+  ).hasMatch(_rxBlocEventAnnotation?.toSource() ?? '');
 
   /// Provides the stream generic type
   ///
@@ -59,8 +55,10 @@ extension _EventMethodElement on MethodElement {
   /// the stream is not  [RxBlocEventType.behaviour]
   List<Expression> get seedPositionalArguments {
     if (hasSeedAnnotation && !isBehavior) {
-      throw _RxBlocGeneratorException('Event `$name` with type `PublishSubject`'
-          ' can not have a `seed` parameter.');
+      throw _RxBlocGeneratorException(
+        'Event `$name` with type `PublishSubject`'
+        ' can not have a `seed` parameter.',
+      );
     }
 
     return [_seededArgument];
@@ -74,7 +72,8 @@ extension _EventMethodElement on MethodElement {
 
     if (seedArgumentsMatch.isEmpty) {
       throw _RxBlocGeneratorException(
-          'Event `$name` seed value is missing or is null.');
+        'Event `$name` seed value is missing or is null.',
+      );
     }
 
     var seedArguments = seedArgumentsMatch.toString();
@@ -88,21 +87,19 @@ extension _EventMethodElement on MethodElement {
   /// Provides the stream type based on the [RxBlocEventType] annotation
   String get eventStreamType => isBehavior
       ? _BlocEventStreamTypes.behavior +
-          (hasSeedAnnotation ? '<$publishSubjectGenericType>' : '')
+            (hasSeedAnnotation ? '<$publishSubjectGenericType>' : '')
       : _BlocEventStreamTypes.publish;
 
   /// Provides the first annotation as [ElementAnnotation] if exists
-  ElementAnnotation? get _eventAnnotation => metadata.firstOrNull;
+  ElementAnnotation? get _eventAnnotation => metadata.annotations.firstOrNull;
 
   /// Provides the [RxBlocEvent] annotation as [DartObject] if exists
   DartObject? get _computedRxBlocEventAnnotation =>
       _rxBlocEventAnnotation?.computeConstantValue();
 
   /// Provides the [RxBlocEvent] annotation as [ElementAnnotation] if exists
-  ElementAnnotation? get _rxBlocEventAnnotation => _eventAnnotation
-              ?.computeConstantValue()
-              ?.type
-              ?.getDisplayString(withNullability: true) ==
+  ElementAnnotation? get _rxBlocEventAnnotation =>
+      _eventAnnotation?.computeConstantValue()?.type?.getDisplayString() ==
           (RxBlocEvent).toString()
       ? _eventAnnotation
       : null;
@@ -120,9 +117,9 @@ extension _EventMethodElement on MethodElement {
     if (isUsingRecord) {
       return argsRecord.recordType().toRawDartCodeString();
     }
-    return parameters.isNotEmpty
+    return formalParameters.isNotEmpty
         // The only parameter's type
-        ? parameters.first.type.getDisplayString(withNullability: true)
+        ? formalParameters.first.type.getDisplayString()
         // Default type
         : 'void';
   }
@@ -135,8 +132,8 @@ extension _EventMethodElement on MethodElement {
   /// _${EventMethodName}EventName.add((param1: param1, param2: param2))
   ///
   Code buildBody() {
-    var requiredParams = parameters.whereRequired().clone();
-    var optionalParams = parameters.whereOptional().clone();
+    var requiredParams = formalParameters.whereRequired().clone();
+    var optionalParams = formalParameters.whereOptional().clone();
 
     if (requiredParams.isEmpty && optionalParams.isEmpty) {
       // Provide null if we don't have any parameters
@@ -164,7 +161,7 @@ extension _EventMethodElement on MethodElement {
 
 extension _EventMethodNamedRecordArgument on MethodElement {
   /// Indicates if a named record wrapper is generated for the parameters
-  bool get isUsingRecord => parameters.length > 1;
+  bool get isUsingRecord => formalParameters.length > 1;
 
   /// A named record wrapper for the method's parameters
   _EventArgsRecord get argsRecord {
@@ -173,32 +170,33 @@ extension _EventMethodNamedRecordArgument on MethodElement {
   }
 }
 
-extension _ListParameterElementWhere on List<ParameterElement> {
-  Iterable<ParameterElement> whereRequired() => where(
-      (parameter) => !parameter.isNamed && !parameter.isOptionalPositional);
+extension _ListParameterElementWhere on List<FormalParameterElement> {
+  Iterable<FormalParameterElement> whereRequired() => where(
+    (parameter) => !parameter.isNamed && !parameter.isOptionalPositional,
+  );
 
-  Iterable<ParameterElement> whereOptional() =>
+  Iterable<FormalParameterElement> whereOptional() =>
       where((parameter) => parameter.isOptionalPositional || parameter.isNamed);
 }
 
-extension _ListParameterElementClone on Iterable<ParameterElement> {
+extension _ListParameterElementClone on Iterable<FormalParameterElement> {
   List<Parameter> clone({bool toThis = false}) => map(
-        (ParameterElement parameter) => Parameter(
-          (b) => b
-            ..toThis = toThis
-            ..required = parameter.isRequiredNamed
-            ..defaultTo = parameter.defaultValueCode != null
-                ? Code(parameter.defaultValueCode ?? '')
-                : null
-            ..named = parameter.isNamed
-            ..name = parameter.name
-            ..type = toThis
-                ? null // We don't need the type in the constructor
-                : refer(parameter.getTypeDisplayName()),
-        ),
-      ).toList();
+    (FormalParameterElement parameter) => Parameter(
+      (b) => b
+        ..toThis = toThis
+        ..required = parameter.isRequiredNamed
+        ..defaultTo = parameter.defaultValueCode != null
+            ? Code(parameter.defaultValueCode ?? '')
+            : null
+        ..named = parameter.isNamed
+        ..name = parameter.name ?? ''
+        ..type = toThis
+            ? null // We don't need the type in the constructor
+            : refer(parameter.getTypeDisplayName()),
+    ),
+  ).toList();
 }
 
-extension _ParameterElementToString on ParameterElement {
-  String getTypeDisplayName() => type.getDisplayString(withNullability: true);
+extension _ParameterElementToString on FormalParameterElement {
+  String getTypeDisplayName() => type.getDisplayString();
 }

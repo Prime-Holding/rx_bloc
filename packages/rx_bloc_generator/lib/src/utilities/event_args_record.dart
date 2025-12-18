@@ -1,8 +1,5 @@
 part of '../../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 class _EventArgsRecord {
   const _EventArgsRecord(this.method);
 
@@ -30,10 +27,8 @@ class _EventArgsRecord {
   ///    ));
   /// }
   /// ```
-  Expression newInstanceWithParameters() => refer('').newInstance(
-        [],
-        _namedArguments(invocation: true),
-      );
+  Expression newInstanceWithParameters() =>
+      refer('').newInstance([], _namedArguments(invocation: true));
 
   /// Typedef for the record
   ///
@@ -42,21 +37,22 @@ class _EventArgsRecord {
   /// typedef _MultiplyNumbersEventArgs = ({int x, int y});
   /// ```
   Spec typeDef() => TypeDef(
-        (b) => b
-          ..docs.add('// ignore: unused_element')
-          ..name = _name
-          ..definition = recordType(),
-      );
+    (b) => b
+      ..docs.add('// ignore: unused_element')
+      ..name = _name
+      ..definition = recordType(),
+  );
 
-  String get _name => '_${method.name.capitalize()}EventArgs';
+  String get _name => '_${method.name?.capitalize()}EventArgs';
 
   Map<String, Reference> _namedArguments({bool invocation = false}) {
-    var params = method.parameters;
+    var params = method.formalParameters;
 
     var namedArguments = <String, Reference>{};
     for (var param in params) {
-      namedArguments[param.name] =
-          invocation ? refer(param.name) : refer(param.getTypeDisplayName());
+      namedArguments[param.name ?? ''] = invocation
+          ? refer(param.name ?? '')
+          : refer(param.getTypeDisplayName());
     }
 
     return namedArguments;

@@ -1,8 +1,5 @@
 part of '../rx_bloc_generator.dart';
 
-// ignore_for_file: deprecated_member_use
-// TODO: Remove the ignore once a new version of `source_gen` is released
-
 /// The generator.
 class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// Allows creating via `const` as well as enforces immutability here.
@@ -30,8 +27,9 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         //   void fetch();
         // }
         eventClass: libraryReader.classes.firstWhereOrNull(
-          (ClassElement classElement) => classElement.displayName
-              .contains(annotation.read('eventsClassName').stringValue),
+          (ClassElement classElement) => classElement.displayName.contains(
+            annotation.read('eventsClassName').stringValue,
+          ),
         ),
 
         /// Provides the states class as [ClassElement]
@@ -40,8 +38,9 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         //   void fetch();
         // }
         stateClass: libraryReader.classes.firstWhereOrNull(
-          (classElement) => classElement.displayName
-              .contains(annotation.read('statesClassName').stringValue),
+          (classElement) => classElement.displayName.contains(
+            annotation.read('statesClassName').stringValue,
+          ),
         ),
       ).generate();
     } on _RxBlocGeneratorException catch (e) {
@@ -49,18 +48,36 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       _logError(e.message);
       return '/**\n${e.message}\n*/';
     } on FormatterException catch (e) {
-      var message = e.errors.map((AnalysisError e) => e.message).join('\n');
+      var message = e.errors.map((e) => e.message).join('\n');
       // Format error
       _reportIssue(
         'FormatterException \n $message',
-        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
+        libraryReader
+                .allElements
+                .first
+                .library
+                ?.firstFragment
+                .source
+                .contents
+                .data
+                .toString() ??
+            '',
       );
       return '/**\n${e.message}\n*/';
     } on Exception catch (e) {
       // System error
       _reportIssue(
         e.toString(),
-        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
+        libraryReader
+                .allElements
+                .first
+                .library
+                ?.firstFragment
+                .source
+                .contents
+                .data
+                .toString() ??
+            '',
       );
       return '/**\n$e\n*/';
     }
