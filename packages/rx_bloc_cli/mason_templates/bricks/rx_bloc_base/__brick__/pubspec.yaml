@@ -4,7 +4,7 @@ homepage: https://{{organization_name}}.{{domain_name}}
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.10.1
+  sdk: ">=3.10.1 <4.0.0"
 
 dependencies: {{#enable_dev_menu}}
   alice: 
