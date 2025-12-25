@@ -69,7 +69,7 @@ dev_dependencies:
   json_serializable: ^6.8.0
   mockito: ^5.4.4 {{#enable_patrol}}
   patrol: ^3.13.0-dev.3 {{/enable_patrol}}
-  r_flutter: 0.9.0
+  r_flutter: 
   retrofit_generator: 10.2.0
   rx_bloc_generator: ^9.0.0
   rx_bloc_test: ^5.0.0
