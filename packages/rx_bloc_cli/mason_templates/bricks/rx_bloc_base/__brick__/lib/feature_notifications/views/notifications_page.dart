@@ -107,7 +107,7 @@ class NotificationsPage extends StatelessWidget {
               ),
               AppErrorModalWidget<NotificationsBlocType>(
                 errorState: (bloc) => bloc.states.errors,
-                onRetry: (_, __) => context
+                onRetry: (_, _) => context
                     .read<NotificationsBlocType>()
                     .events
                     .fetchPushToken(),
