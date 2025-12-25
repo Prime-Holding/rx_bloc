@@ -1,3 +1,6 @@
+## [5.5.4]
+* Fix generated project not properly compiling due to old dependencies
+
 ## [5.5.3]
 * Support `flutter 3.32`
 * Bug fixes and stability improvements:

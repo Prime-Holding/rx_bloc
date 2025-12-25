@@ -5,12 +5,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../models/cancelled_error_model.dart';
 
 class GoogleCredentialDataSource {
-  Future<GoogleSignInAccount> getUsersGoogleCredential() async {
-    final googleUser = await GoogleSignIn().signIn();
+  Future<GoogleSignInAccount> getUsersGoogleCredential() =>
+      GoogleSignIn.instance.authenticate();
 
-    if (googleUser == null) {
-      throw CancelledErrorModel();
-    }
-    return googleUser;
-  }
+  Future<GoogleSignInServerAuthorization?> getAuthServerCode(
+    List<String> scopes,
+  ) => GoogleSignIn.instance.authorizationClient.authorizeServer(scopes);
 }
+

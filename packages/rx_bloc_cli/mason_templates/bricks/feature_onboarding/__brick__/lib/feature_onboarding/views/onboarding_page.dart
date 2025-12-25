@@ -32,7 +32,7 @@ class OnboardingPage extends StatelessWidget {
                     ),
                     AppErrorModalWidget<OnboardingBlocType>(
                       errorState: (bloc) => bloc.states.resumeOnboardingErrors,
-                      onRetry: (_, __) => context
+                      onRetry: (_, _) => context
                           .read<OnboardingBlocType>()
                           .events
                           .resumeOnboarding(),

@@ -6,7 +6,7 @@ class ProfileBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class ProfileRoute extends GoRouteData with _$ProfileRoute implements RouteDataModel {
+class ProfileRoute extends GoRouteData with $ProfileRoute implements RouteDataModel {
   const ProfileRoute();
 
   @override
@@ -25,7 +25,7 @@ class ProfileRoute extends GoRouteData with _$ProfileRoute implements RouteDataM
 
 @TypedGoRoute<SetPinRoute>(path: RoutesPath.setPinCode)
 @immutable
-class SetPinRoute extends GoRouteData with _$SetPinRoute implements RouteDataModel {
+class SetPinRoute extends GoRouteData with $SetPinRoute implements RouteDataModel {
   const SetPinRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
@@ -51,7 +51,7 @@ class SetPinRoute extends GoRouteData with _$SetPinRoute implements RouteDataMod
 
 @TypedGoRoute<ConfirmPinRoute>(path: RoutesPath.confirmPinCode)
 @immutable
-class ConfirmPinRoute extends GoRouteData with _$ConfirmPinRoute implements RouteDataModel {
+class ConfirmPinRoute extends GoRouteData with $ConfirmPinRoute implements RouteDataModel {
   const ConfirmPinRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
@@ -77,7 +77,7 @@ class ConfirmPinRoute extends GoRouteData with _$ConfirmPinRoute implements Rout
 
 @TypedGoRoute<UpdatePinRoute>(path: RoutesPath.updatePinCode)
 @immutable
-class UpdatePinRoute extends GoRouteData with _$UpdatePinRoute implements RouteDataModel {
+class UpdatePinRoute extends GoRouteData with $UpdatePinRoute implements RouteDataModel {
   const UpdatePinRoute();
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey =

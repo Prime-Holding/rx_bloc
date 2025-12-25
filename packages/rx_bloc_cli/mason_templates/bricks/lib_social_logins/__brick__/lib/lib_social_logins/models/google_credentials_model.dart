@@ -19,14 +19,15 @@ class GoogleCredentialsModel extends Equatable {
   });
 
   factory GoogleCredentialsModel.fromGoogleCredentials(
-          GoogleSignInAccount credential) =>
-      GoogleCredentialsModel(
-        displayName: credential.displayName,
-        email: credential.email,
-        id: credential.id,
-        photoUrl: credential.photoUrl,
-        serverAuthCode: credential.serverAuthCode,
-      );
+    GoogleSignInAccount credential,
+    String? serverAuthCode,
+  ) => GoogleCredentialsModel(
+    displayName: credential.displayName,
+    email: credential.email,
+    id: credential.id,
+    photoUrl: credential.photoUrl,
+    serverAuthCode: serverAuthCode,
+  );
 
   @override
   List<Object?> get props => [displayName, email, id, photoUrl, serverAuthCode];

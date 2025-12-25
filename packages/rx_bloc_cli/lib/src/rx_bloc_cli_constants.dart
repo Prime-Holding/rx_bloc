@@ -1,21 +1,21 @@
 /// Indicates the version of the package
-const rxBlocCliPackageVersion = '5.5.3';
+const rxBlocCliPackageVersion = '5.5.4';
 
 /// Generated project's Android Compile SDK version
-const kAndroidCompileSDKVersion = 35;
+const kAndroidCompileSDKVersion = 36;
 
 /// Generated project's Android Target SDK version
-const kAndroidTargetSDKVersion = 35;
+const kAndroidTargetSDKVersion = 36;
 
 /// Generated project's Android Min SDK version
 const kAndroidMinSDKVersion = 22;
 
 /// Generated project's Android Min SDK version
-const kGradlePluginVersion = '8.3.2';
+const kGradlePluginVersion = '8.9.1';
 
 /// Generated project's Android Min SDK version
 const kGradleWrapperUrl =
-    'https\\://services.gradle.org/distributions/gradle-8.10.2-all.zip';
+    'https\\://services.gradle.org/distributions/gradle-8.11.1-all.zip';
 
 /// Generated project's google-services version
 const googleServicesVersion =

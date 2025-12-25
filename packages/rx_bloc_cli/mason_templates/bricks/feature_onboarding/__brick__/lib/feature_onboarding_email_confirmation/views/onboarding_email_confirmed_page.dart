@@ -36,7 +36,7 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                   children: [
                     AppErrorModalWidget<OnboardingEmailConfirmedBlocType>(
                       errorState: (bloc) => bloc.states.errors,
-                      onRetry: (_, __) => bloc.events.verifyEmail(),
+                      onRetry: (_, _) => bloc.events.verifyEmail(),
                       onCancel: () => bloc.events.goToInitialPage(),
                     ),
                     Expanded(

@@ -39,7 +39,7 @@ class PasswordResetPage extends StatelessWidget {
                           children: [
                             RxBlocListener<PasswordResetBlocType, bool>(
                               state: (bloc) => bloc.states.isTokenResent,
-                              listener: (_, __) =>
+                              listener: (_, _) =>
                                   _showTokenResentSheet(context),
                             ),
                             AppErrorModalWidget<PasswordResetBlocType>(

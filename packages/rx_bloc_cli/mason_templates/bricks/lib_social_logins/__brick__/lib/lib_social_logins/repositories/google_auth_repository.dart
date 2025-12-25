@@ -14,20 +14,30 @@ class GoogleAuthRepository {
   final ErrorMapper _errorMapper;
   final GoogleCredentialDataSource _googleCredentialDataSource;
 
-  Future<AuthTokenModel> googleAuth({
+ Future<AuthTokenModel> googleAuth({
     required GoogleCredentialsModel googleAuthRequestModel,
-  }) =>
-      _errorMapper.execute(
-        () => _googleAuthDataSource.googleAuth(
-            GoogleAuthRequestModel.fromGoogleCredentials(
-                googleAuthRequestModel)),
-      );
+  }) => _errorMapper.execute(
+    () => _googleAuthDataSource.googleAuth(
+      GoogleAuthRequestModel.fromGoogleCredentials(googleAuthRequestModel),
+    ),
+  );
 
   Future<GoogleCredentialsModel> getUsersGoogleCredential() =>
       _errorMapper.execute(() async {
-        final credentials =
-            await _googleCredentialDataSource.getUsersGoogleCredential();
+        final credentials = await _googleCredentialDataSource
+            .getUsersGoogleCredential();
+        final serverAuthCode = await _getAuthServerCode([]);
 
-        return GoogleCredentialsModel.fromGoogleCredentials(credentials);
+        return GoogleCredentialsModel.fromGoogleCredentials(
+          credentials,
+          serverAuthCode,
+        );
+      });
+
+  Future<String?> _getAuthServerCode(List<String> scopes) =>
+      _errorMapper.execute(() async {
+        final serverAuthorization = await _googleCredentialDataSource
+            .getAuthServerCode(scopes);
+        return serverAuthorization?.serverAuthCode;
       });
 }
