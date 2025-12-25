@@ -75,16 +75,6 @@ dev_dependencies:
   rx_bloc_test: ^5.0.0
   test: any {{#enable_patrol}}
 
-dependency_overrides:
-  alice:
-    git:
-      url: https://github.com/Prime-Holding/alice.git
-      ref: feature/fix-alice
-      path: packages/alice
-  r_flutter:
-    git:
-      url: https://github.com/DavidDWiser/r_flutter.git
-      ref: master
 
 patrol:
   app_name: {{project_name}}
@@ -93,9 +83,20 @@ patrol:
     package_name: {{domain_name}}.{{organization_name}}.{{project_name}}
   ios:
     bundle_id: {{domain_name}}.{{organization_name}}.{{project_name}}
-    app_name: {{project_name}} {{/enable_patrol}} {{#enable_dev_menu}}
+    app_name: {{project_name}} {{/enable_patrol}} 
 
-{{/enable_dev_menu}}
+dependency_overrides: {{#enable_dev_menu}}
+  alice:
+    git:
+      url: https://github.com/Prime-Holding/alice.git
+      ref: feature/fix-alice
+      path: packages/alice 
+      {{/enable_dev_menu}}
+  r_flutter:
+    git:
+      url: https://github.com/DavidDWiser/r_flutter.git
+      ref: master
+
 flutter:
   uses-material-design: true
   assets:
