@@ -8,7 +8,7 @@ part of '../router.dart';
 )
 @immutable
 class PhoneChangeRoute extends GoRouteData
-    with _$PhoneChangeRoute
+    with $PhoneChangeRoute
     implements RouteDataModel {
   const PhoneChangeRoute();
 
@@ -31,7 +31,7 @@ class PhoneChangeRoute extends GoRouteData
 
 @immutable
 class PhoneChangeConfirmRoute extends GoRouteData
-    with _$PhoneChangeConfirmRoute
+    with $PhoneChangeConfirmRoute
     implements RouteDataModel {
   const PhoneChangeConfirmRoute();
 

@@ -29,7 +29,10 @@ class GeneratedFilesProcessor {
   List<(String, StringProcessor)> get _processors => [
         ('android/app/build.gradle.kts', AppBuildGradleProcessor(args)),
         ('android/build.gradle', AndroidBuildGradleProcessor(args)),
-        ('android/gradle/wrapper/gradle-wrapper.properties', GradleWrapperPropertiesProcessor(args)),
+        (
+          'android/gradle/wrapper/gradle-wrapper.properties',
+          GradleWrapperPropertiesProcessor(args)
+        ),
         ('android/settings.gradle.kts', SettingsGradle(args)),
         (
           'android/app/src/main/AndroidManifest.xml',

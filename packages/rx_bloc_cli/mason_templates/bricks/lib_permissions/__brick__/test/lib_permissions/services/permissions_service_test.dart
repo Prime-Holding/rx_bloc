@@ -23,7 +23,8 @@ void main() {
 
   group('PermissionsService', () {
     test('checkPermission should call hasPermission', () async {
-      when(repository.getPermissions()).thenAnswer((_) async => Stubs.grantedPermissionPair);
+      when(repository.getPermissions())
+          .thenAnswer((_) async => Stubs.grantedPermissionPair);
 
       await permissionsService.getPermissions();
 

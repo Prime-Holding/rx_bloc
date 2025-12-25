@@ -2,7 +2,7 @@ part of '../router.dart';
 
 @immutable
 class PasswordResetRequestRoute extends GoRouteData
-    with _$PasswordResetRequestRoute
+    with $PasswordResetRequestRoute
     implements RouteDataModel {
   const PasswordResetRequestRoute();
 
@@ -22,7 +22,7 @@ class PasswordResetRequestRoute extends GoRouteData
 
 @immutable
 class PasswordResetConfirmationRoute extends GoRouteData
-    with _$PasswordResetConfirmationRoute
+    with $PasswordResetConfirmationRoute
     implements RouteDataModel {
   const PasswordResetConfirmationRoute(this._email);
 
@@ -45,7 +45,7 @@ class PasswordResetConfirmationRoute extends GoRouteData
 
 @immutable
 class PasswordResetRoute extends GoRouteData
-    with _$PasswordResetRoute
+    with $PasswordResetRoute
     implements RouteDataModel {
   const PasswordResetRoute(this.token, this.email);
 

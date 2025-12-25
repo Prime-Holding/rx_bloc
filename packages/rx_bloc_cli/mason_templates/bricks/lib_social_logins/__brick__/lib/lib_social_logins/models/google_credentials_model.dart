@@ -25,7 +25,7 @@ class GoogleCredentialsModel extends Equatable {
         email: credential.email,
         id: credential.id,
         photoUrl: credential.photoUrl,
-        serverAuthCode: credential.serverAuthCode,
+        serverAuthCode: credential.authentication.idToken,
       );
 
   @override
