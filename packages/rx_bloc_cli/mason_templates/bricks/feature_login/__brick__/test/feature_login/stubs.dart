@@ -2,7 +2,6 @@
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
-import 'package:{{project_name}}/l10n/generated/l10n.dart';
 {{/enable_login}}
 class Stubs {
   static const email = 'something@test.com';
@@ -10,7 +9,7 @@ class Stubs {
   static const password = 'password';{{#enable_login}}
 
   static final error = FieldErrorModel(
-    errorValue: S.current.invalidEmail,
+    errorValue: 'Invalid email',
     fieldValue: email,
   );
   static final userModel = UserModel(
