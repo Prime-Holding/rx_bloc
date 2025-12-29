@@ -1,3 +1,10 @@
+## [6.0.0]
+Contains breaking changes
+* Removed the `--enable-remote-translations` flag from the CLI
+* Remote translation functionality is now removed from the generated project
+* `r_flutter` dependency is removed from the generated project as it is no longer maintained
+* Update generated project's dependencies to the latest versions
+
 ## [5.5.4]
 * Fix generated project not properly compiling due to old dependencies
 
