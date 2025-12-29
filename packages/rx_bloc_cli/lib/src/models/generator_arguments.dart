@@ -90,11 +90,6 @@ class GeneratorArguments
   @override
   bool get changeLanguageEnabled => _featureConfiguration.changeLanguageEnabled;
 
-  /// Remote translations
-  @override
-  bool get remoteTranslationsEnabled =>
-      _featureConfiguration.remoteTranslationsEnabled;
-
   /// Push notifications
   @override
   bool get pushNotificationsEnabled =>

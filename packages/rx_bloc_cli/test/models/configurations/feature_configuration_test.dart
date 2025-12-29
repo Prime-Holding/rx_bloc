@@ -19,7 +19,6 @@ void main() {
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
         profileEnabled: false,
-        remoteTranslationsEnabled: false,
         onboardingEnabled: false,
         forgottenPassword: false,
       );
@@ -36,7 +35,6 @@ void main() {
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
         profileEnabled: false,
-        remoteTranslationsEnabled: false,
         onboardingEnabled: false,
         forgottenPassword: false,
       );
@@ -53,7 +51,6 @@ void main() {
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
         profileEnabled: false,
-        remoteTranslationsEnabled: false,
         onboardingEnabled: false,
         forgottenPassword: false,
       );
@@ -70,7 +67,6 @@ void main() {
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
         profileEnabled: false,
-        remoteTranslationsEnabled: false,
         onboardingEnabled: false,
         forgottenPassword: false,
       );

@@ -106,7 +106,6 @@ final class Stub {
       analyticsEnabled: true,
       pushNotificationsEnabled: true,
       changeLanguageEnabled: true,
-      remoteTranslationsEnabled: true,
       patrolTestsEnabled: true,
       devMenuEnabled: true,
       realtimeCommunicationEnabled: true,
@@ -145,8 +144,6 @@ final class Stub {
       pushNotificationsEnabled: true,
       changeLanguageEnabled:
           CreateCommandArguments.changeLanguage.defaultValue(),
-      remoteTranslationsEnabled:
-          CreateCommandArguments.remoteTranslations.defaultValue(),
       patrolTestsEnabled: CreateCommandArguments.patrol.defaultValue(),
       devMenuEnabled: CreateCommandArguments.devMenu.defaultValue(),
       realtimeCommunicationEnabled:

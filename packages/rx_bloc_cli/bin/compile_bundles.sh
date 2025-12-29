@@ -21,7 +21,6 @@ create_mason_bundle rx_bloc_distribution_repository
 create_mason_bundle feature_counter
 create_mason_bundle feature_deeplink
 create_mason_bundle lib_change_language
-create_mason_bundle lib_translations
 create_mason_bundle lib_pin_code
 create_mason_bundle feature_widget_toolkit
 create_mason_bundle lib_router

@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
 
-import '../../assets.dart';{{#enable_remote_translations}}
-import '../../l10n/{{project_name}}_app_i18n.dart';{{/enable_remote_translations}}{{#analytics}}
+import '../../assets.dart';
+import '../../l10n/{{project_name}}_app_i18n.dart';{{#analytics}}
 import '../../lib_analytics/blocs/analytics_bloc.dart';{{/analytics}}{{#has_authentication}}{{#enable_pin_code}}
 import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}} {{#enable_change_language}}
