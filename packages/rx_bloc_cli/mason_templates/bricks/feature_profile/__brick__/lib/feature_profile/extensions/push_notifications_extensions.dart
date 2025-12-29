@@ -18,6 +18,6 @@ extension NotificationsAsyncSnapshotResultValue on AsyncSnapshot<Result<bool>> {
 
 extension NotificationMessageExtension on bool {
   String translate(BuildContext context) => this
-      ? context.l10n.featureProfile.notificationsTurnedOn
-      : context.l10n.featureProfile.notificationsTurnedOff;
+      ? context.l10n.notificationsTurnedOn
+      : context.l10n.notificationsTurnedOff;
 }

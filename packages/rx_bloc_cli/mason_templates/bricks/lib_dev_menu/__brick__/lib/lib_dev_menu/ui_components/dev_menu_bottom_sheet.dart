@@ -55,16 +55,16 @@ class _DevMenuState extends State<_DevMenuWidget> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(context.l10n.libDevMenu.token),
+                          Text(context.l10n.token),
                           SelectableText(snapshot.data!),
                           SizedBox(height: context.designSystem.spacing.m),
                         ],
                       )
                     : const SizedBox(),
               ),
-              Text(context.l10n.libDevMenu.enterIPAddress),
+              Text(context.l10n.enterIPAddress),
               SizedBox(height: context.designSystem.spacing.m),
-              Text(context.l10n.libDevMenu.restartApp),
+              Text(context.l10n.restartApp),
               SizedBox(height: context.designSystem.spacing.m),
               RxBlocBuilder<DevMenuBlocType, String?>(
                 state: (bloc) => bloc.states.getProxy,
@@ -95,7 +95,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
                           padding: EdgeInsets.symmetric(
                               vertical: context.designSystem.spacing.m),
                           child: Text(
-                            context.l10n.libDevMenu.save,
+                            context.l10n.save,
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -114,7 +114,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
                         padding: EdgeInsets.symmetric(
                             vertical: context.designSystem.spacing.m),
                         child: Text(
-                          context.l10n.libDevMenu.runInterceptor,
+                          context.l10n.runInterceptor,
                           textAlign: TextAlign.center,
                         ),
                       ),

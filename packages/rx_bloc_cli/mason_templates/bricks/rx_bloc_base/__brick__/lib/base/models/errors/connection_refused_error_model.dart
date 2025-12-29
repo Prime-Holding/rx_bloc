@@ -5,7 +5,7 @@ class ConnectionRefusedErrorModel extends ErrorModel
   ConnectionRefusedErrorModel([super.errorLogDetails]);
 
   @override
-  String get l10nErrorKey => I18nErrorKeys.connectionRefused;
+  String get l10nErrorKey => S.current.connectionRefused;
 
   @override
   String toString() => 'ConnectionRefusedError.';

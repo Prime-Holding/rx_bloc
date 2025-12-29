@@ -27,7 +27,7 @@ class PhoneNumberForm extends StatelessWidget {
               FocusManager.instance.primaryFocus?.unfocus(),
           decoration: fieldState.decoration.copyWith(
             prefixIcon: _buildSelectCountry(context),
-            hintText: context.l10n.featureOnboarding.phoneNumberHint,
+            hintText: context.l10n.phoneNumberHint,
             errorMaxLines: 2,
           ),
         ),
@@ -87,9 +87,9 @@ class PhoneNumberForm extends StatelessWidget {
   ) =>
       showSearchPickerBottomSheet<CountryCodeModel>(
         context: context,
-        title: context.l10n.featureOnboarding.selectCountry,
-        hintText: context.l10n.featureOnboarding.typeSubstring,
-        retryText: context.l10n.featureOnboarding.retry,
+        title: context.l10n.selectCountry,
+        hintText: context.l10n.typeSubstring,
+        retryText: context.l10n.retry,
         selectedItem: selectedCountryCode,
         onItemTap: (item) {
           if (item == null) return;
@@ -102,7 +102,7 @@ class PhoneNumberForm extends StatelessWidget {
             horizontal: context.designSystem.spacing.xs1,
           ),
           child: MessagePanelWidget(
-            message: context.l10n.featureOnboarding.thereAreNoResults,
+            message: context.l10n.thereAreNoResults,
             messageState: MessagePanelState.lessImportant,
           ),
         ),

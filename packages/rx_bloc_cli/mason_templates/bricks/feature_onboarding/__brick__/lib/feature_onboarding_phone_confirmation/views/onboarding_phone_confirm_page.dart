@@ -33,7 +33,7 @@ class _OnboardingPhoneConfirmPageState
               onPressed: () => showBlurredBottomSheet(
                 context: context,
                 builder: (context) => Text(
-                  context.l10n.featureOnboarding.confirmPhoneFieldHint,
+                  context.l10n.confirmPhoneFieldHint,
                   style: context.designSystem.typography.h2Reg16.copyWith(
                     color: context.designSystem.colors.tintColor,
                   ),
@@ -71,15 +71,13 @@ class _OnboardingPhoneConfirmPageState
                             ),
                             SizedBox(height: context.designSystem.spacing.s),
                             Text(
-                              context.l10n.featureOnboarding
-                                  .phoneNumberConfirmTitle,
+                              context.l10n.phoneNumberConfirmTitle,
                               style: context.designSystem.typography.h1Med32,
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: context.designSystem.spacing.xs),
                             Text(
-                              context.l10n.featureOnboarding
-                                  .phoneNumberConfirmDescription,
+                              context.l10n.phoneNumberConfirmDescription,
                               style: context.designSystem.typography.h2Reg16,
                               textAlign: TextAlign.center,
                             ),

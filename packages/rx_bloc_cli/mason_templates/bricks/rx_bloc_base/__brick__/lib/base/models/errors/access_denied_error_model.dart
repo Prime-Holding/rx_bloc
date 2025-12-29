@@ -5,7 +5,7 @@ class AccessDeniedErrorModel extends ErrorModel
   AccessDeniedErrorModel([super.errorLogDetails]);
 
   @override
-  String get l10nErrorKey => I18nErrorKeys.accessDenied;
+  String get l10nErrorKey => S.current.accessDenied;
 
   @override
   String toString() => 'AccessDeniedError.';

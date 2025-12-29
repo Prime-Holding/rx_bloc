@@ -2,7 +2,7 @@
 
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/pin_code/update_pin_model.dart';
 import '../../base/repositories/pin_code_repository.dart';
@@ -37,7 +37,7 @@ class UpdatePinCodeService implements PinCodeService {
           token: String token,
         )) {
       if (pinCode != pinToConfirm) {
-        throw GenericErrorModel(I18nErrorKeys.pinCodeMismatch);
+        throw GenericErrorModel(S.current.pinCodeMismatch);
       }
 
       // If the pin code is the same we save it

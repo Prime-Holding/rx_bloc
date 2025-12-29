@@ -2,7 +2,7 @@
 
 import 'package:widget_toolkit/edit_address.dart';
 
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../repositories/search_repository.dart';
 
@@ -30,7 +30,7 @@ class CustomEditAddressService<T> extends EditAddressService<T> {
   Future<String> validateCityOnSubmit(String text) async {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -41,7 +41,7 @@ class CustomEditAddressService<T> extends EditAddressService<T> {
   Future<String> validateStreetOnSubmit(String text) async {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -52,7 +52,7 @@ class CustomEditAddressService<T> extends EditAddressService<T> {
   void validateCityOnType(String text) {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -62,7 +62,7 @@ class CustomEditAddressService<T> extends EditAddressService<T> {
   void validateStreetOnType(String text) {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: text,
       );
     }

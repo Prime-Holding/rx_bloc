@@ -83,25 +83,25 @@ class UpdatePinPage extends StatelessWidget {
       BiometricsMessage message, BuildContext context) {
     switch (message) {
       case BiometricsMessage.notSetup:
-        return context.l10n.libPinCode.biometricsNotSetup;
+        return context.l10n.biometricsNotSetup;
 
       case BiometricsMessage.notSupported:
-        return context.l10n.libPinCode.biometricsNotSupported;
+        return context.l10n.biometricsNotSupported;
 
       case BiometricsMessage.enabled:
-        return context.l10n.libPinCode.biometricsEnabled;
+        return context.l10n.biometricsEnabled;
 
       case BiometricsMessage.disabled:
-        return context.l10n.libPinCode.biometricsDisabled;
+        return context.l10n.biometricsDisabled;
     }
   }
 }
 
 extension on UpdatePinModel {
   String asTitle(BuildContext context) => switch (this) {
-        UpdatePinVerifyModel() => context.l10n.libPinCode.verifyPinCodePage,
-        UpdatePinSetModel() => context.l10n.libPinCode.enterNewPin,
-        UpdatePinConfirmModel() => context.l10n.libPinCode.confirmPin,
+        UpdatePinVerifyModel() => context.l10n.verifyPinCodePage,
+        UpdatePinSetModel() => context.l10n.enterNewPin,
+        UpdatePinConfirmModel() => context.l10n.confirmPin,
         UpdatePinCompleteModel() => '',
       };
 }

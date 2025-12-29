@@ -8,8 +8,7 @@ extension ErrorModelL10n on ErrorModel {
   /// based on the error type.
   String translate(BuildContext context) {
     if (this is L10nErrorKeyProvider) {
-      return context.l10n.error
-          .getString((this as L10nErrorKeyProvider).l10nErrorKey)!;
+      return context.l10n.getString((this as L10nErrorKeyProvider).l10nErrorKey)!;
     }
 
     if (this is BadRequestErrorModel) {
@@ -44,47 +43,47 @@ extension ErrorModelL10n on ErrorModel {
       return (this as ErrorTimeoutModel).translate(context);
     }
 
-    return context.l10n.error.unknown;
+    return context.l10n.unknown;
   }
 }
 
 extension ErrorBadRequestModelL10n on BadRequestErrorModel {
   String translate(BuildContext context) =>
-      message ?? context.l10n.error.badRequest;
+      message ?? context.l10n.badRequest;
 }
 
 extension ErrorNotFoundL10n on NotFoundErrorModel {
   String translate(BuildContext context) =>
-      message ?? context.l10n.error.notFound;
+      message ?? context.l10n.notFound;
 }
 
 extension ConflictErrorModelL10n on ConflictErrorModel {
   String translate(BuildContext context) =>
-      message ?? context.l10n.error.conflict;
+      message ?? context.l10n.conflict;
 }
 
 extension ErrorFieldModelL10n on FieldErrorModel {
   String translate(BuildContext context) {
-    return context.l10n.error.getString(errorKey) ?? 'error';
+    return context.l10n.getString(errorKey) ?? 'error';
   }
 }
 
 extension ErrorFieldRequiredModelL10n on FieldRequiredErrorModel {
-  String translate(BuildContext context) => context.l10n.error.requiredField(
+  String translate(BuildContext context) => context.l10n.requiredField(
         context.l10n.field.getString(fieldKey)!,
       );
 }
 
 extension ErrorServerGenericModelL10n on ErrorServerGenericModel {
   String translate(BuildContext context) =>
-      message ?? context.l10n.error.server;
+      message ?? context.l10n.server;
 }
 
 {{#enable_feature_onboarding}}extension _InvalidUrlErrorModelL10n on InvalidUrlErrorModel {
-  String translate(BuildContext context) => context.l10n.error.invalidUrl;
+  String translate(BuildContext context) => context.l10n.invalidUrl;
 }{{/enable_feature_onboarding}}
 
 extension _ErrorTimeoutModelL10n on ErrorTimeoutModel {
   String translate(BuildContext context) =>
-      message ?? context.l10n.error.server;
+      message ?? context.l10n.server;
 }

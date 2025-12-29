@@ -7,61 +7,51 @@ class EditAddressCustomLocalisations extends EditAddressLocalizedStrings {
 
   @override
   String get countrySearchPickerTitle =>
-      context.l10n.featureWidgetToolkit.editAddressCountrySearchPickerTitle;
+      context.l10n.editAddressCountrySearchPickerTitle;
 
   @override
   String get countrySearchPickerHintText =>
-      context.l10n.featureWidgetToolkit.editAddressCountrySearchPickerHintText;
+      context.l10n.editAddressCountrySearchPickerHintText;
 
   @override
   String get countrySearchPickerRetryText =>
-      context.l10n.featureWidgetToolkit.editAddressCountrySearchPickerRetryText;
+      context.l10n.editAddressCountrySearchPickerRetryText;
 
   @override
-  String get countryLabelText =>
-      context.l10n.featureWidgetToolkit.editAddressCountryLabelText;
+  String get countryLabelText => context.l10n.editAddressCountryLabelText;
 
   @override
-  String get cityButtonText =>
-      context.l10n.featureWidgetToolkit.editAddressCityButtonText;
+  String get cityButtonText => context.l10n.editAddressCityButtonText;
 
   @override
-  String get cityLabelText =>
-      context.l10n.featureWidgetToolkit.editAddressCityLabelText;
+  String get cityLabelText => context.l10n.editAddressCityLabelText;
 
   @override
-  String get cityEmptyLabel =>
-      context.l10n.featureWidgetToolkit.editAddressCityEmptyLabel;
+  String get cityEmptyLabel => context.l10n.editAddressCityEmptyLabel;
 
   @override
-  String get addressButtonText =>
-      context.l10n.featureWidgetToolkit.editAddressAddressButtonText;
+  String get addressButtonText => context.l10n.editAddressAddressButtonText;
 
   @override
-  String get addressLabelText =>
-      context.l10n.featureWidgetToolkit.editAddressAddressLabelText;
+  String get addressLabelText => context.l10n.editAddressAddressLabelText;
 
   @override
-  String get addressEmptyLabel =>
-      context.l10n.featureWidgetToolkit.editAddressAddressEmptyLabel;
+  String get addressEmptyLabel => context.l10n.editAddressAddressEmptyLabel;
 
   @override
   String get addressChangedMessage =>
-      context.l10n.featureWidgetToolkit.editAddressAddressChangedMessage;
+      context.l10n.editAddressAddressChangedMessage;
 
   @override
-  String get cardFieldLabel =>
-      context.l10n.featureWidgetToolkit.editAddressCardFieldLabel;
+  String get cardFieldLabel => context.l10n.editAddressCardFieldLabel;
 
   @override
-  String get saveButtonText =>
-      context.l10n.featureWidgetToolkit.editAddressSaveButtonText;
+  String get saveButtonText => context.l10n.editAddressSaveButtonText;
 
   @override
-  String get headerTitle =>
-      context.l10n.featureWidgetToolkit.editAddressHeaderTitle;
+  String get headerTitle => context.l10n.editAddressHeaderTitle;
 
   @override
-  String get permanentAddressContentMessage => context
-      .l10n.featureWidgetToolkit.editAddressPermanentAddressContentMessage;
+  String get permanentAddressContentMessage =>
+      context.l10n.editAddressPermanentAddressContentMessage;
 }

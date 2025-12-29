@@ -241,7 +241,7 @@ Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
          I18n.delegate,
          ...GlobalMaterialLocalizations.delegates,
        ],
-       supportedLocales: I18n.supportedLocales,
+       supportedLocales: AppI18n.delegate.supportedLocales,
        locale: _locale,
        routerConfig: context.read<AppRouter>().router,
        debugShowCheckedModeBanner: false,

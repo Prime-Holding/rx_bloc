@@ -43,14 +43,14 @@ class OnboardingPhonePage extends StatelessWidget {
                           ),
                           SizedBox(height: context.designSystem.spacing.s),
                           Text(
-                            context.l10n.featureOnboarding.phoneNumberTitle,
+                            context.l10n.phoneNumberTitle,
                             textAlign: TextAlign.center,
                             style: context.designSystem.typography.h1Med32,
                           ),
                           SizedBox(height: context.designSystem.spacing.xs),
                           Text(
                             context
-                                .l10n.featureOnboarding.phoneNumberDescription,
+                                .l10n.phoneNumberDescription,
                             textAlign: TextAlign.center,
                             style: context.designSystem.typography.h2Reg16,
                           ),
@@ -72,7 +72,7 @@ class OnboardingPhonePage extends StatelessWidget {
                           builder: (context, loadingSnapshot, bloc) {
                             final loading = loadingSnapshot.data ?? false;
                             return GradientFillButton(
-                              text: context.l10n.featureOnboarding.continueText,
+                              text: context.l10n.continueText,
                               state: loading
                                   ? ButtonStateModel.loading
                                   : ButtonStateModel.enabled,

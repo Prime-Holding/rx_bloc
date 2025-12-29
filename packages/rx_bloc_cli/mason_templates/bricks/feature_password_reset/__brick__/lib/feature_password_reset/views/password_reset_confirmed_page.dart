@@ -36,13 +36,13 @@ class PasswordResetConfirmedPage extends StatelessWidget {
                         ),
                         SizedBox(height: context.designSystem.spacing.l),
                         Text(
-                          context.l10n.featurePasswordReset.passwordReset,
+                          context.l10n.passwordReset,
                           style: context.designSystem.typography.h1Med32,
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: context.designSystem.spacing.xs),
                         Text(
-                          context.l10n.featurePasswordReset.resetSuccess,
+                          context.l10n.resetSuccess,
                           textAlign: TextAlign.center,
                           style: context.designSystem.typography.h2Reg16,
                         ),

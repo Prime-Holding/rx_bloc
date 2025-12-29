@@ -24,7 +24,7 @@ class MfaPinBiometricsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(context.l10n.featureMfa.pinBiometrics),
+          title: Text(context.l10n.pinBiometrics),
           forceMaterialTransparency: true,
         ),
         extendBodyBehindAppBar: true,

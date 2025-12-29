@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../../../assets.dart';
+import '../../../app_extensions.dart';
 import '../../models/errors/error_model.dart';
 
 class CredentialsValidatorService {
@@ -12,13 +12,13 @@ class CredentialsValidatorService {
   String validateEmail(String email) {
     if (email.isEmpty) {
       throw FieldRequiredErrorModel(
-        fieldKey: I18nFieldKeys.email,
+        fieldKey: S.current.email,
         fieldValue: email,
       );
     }
     if (!_emailRexExp.hasMatch(email)) {
       throw FieldErrorModel(
-        errorKey: I18nErrorKeys.invalidEmail,
+        errorKey: S.current.invalidEmail,
         fieldValue: email,
       );
     }
@@ -28,13 +28,13 @@ class CredentialsValidatorService {
   String validatePassword(String password) {
     if (password.isEmpty) {
       throw FieldRequiredErrorModel(
-        fieldKey: I18nFieldKeys.password,
+        fieldKey: S.current.password,
         fieldValue: password,
       );
     }
     if (password.length < 6 || password.length > 64) {
       throw FieldErrorModel(
-        errorKey: I18nErrorKeys.passwordLength,
+        errorKey: S.current.passwordLength,
         fieldValue: password,
       );
     }

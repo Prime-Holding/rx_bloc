@@ -30,7 +30,7 @@ class LanguagePickerButton extends StatelessWidget {
   Widget build(BuildContext context) => AppListTile(
         featureTitle: buttonText ?? _buttonText,
         icon: context.designSystem.icons.language,
-        featureSubtitle: context.l10n.libChangeLanguage.changeLanguageSubtitle,
+        featureSubtitle: context.l10n.changeLanguageSubtitle,
         onTap: () => showChangeLanguageBottomSheet(
           context: context,
           service: service ?? context.read<AppLanguageService>(),

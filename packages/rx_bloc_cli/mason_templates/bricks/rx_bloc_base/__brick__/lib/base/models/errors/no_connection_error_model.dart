@@ -5,7 +5,7 @@ class NoConnectionErrorModel extends ErrorModel
   NoConnectionErrorModel([super.errorLogDetails]);
 
   @override
-  String get l10nErrorKey => I18nErrorKeys.noConnection;
+  String get l10nErrorKey => S.current.noConnection;
 
   @override
   String toString() => 'NoConnectionError.';

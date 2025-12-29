@@ -71,8 +71,7 @@ class PasswordResetConfirmationPage extends StatelessWidget {
                           ),
                           SizedBox(height: context.designSystem.spacing.l),
                           Text(
-                            context.l10n.featurePasswordReset
-                                .titleEmailConfirmation,
+                            context.l10n.titleEmailConfirmation,
                             style: context.designSystem.typography.h1Med32,
                             textAlign: TextAlign.center,
                           ),
@@ -85,8 +84,7 @@ class PasswordResetConfirmationPage extends StatelessWidget {
                                 ShimmerText(
                                   loading.isLoading
                                       ? null
-                                      : context.l10n.featurePasswordReset
-                                          .emailConfirmationSent(
+                                      : context.l10n.emailConfirmationSent(
                                               email.data ?? ''),
                                   textAlign: TextAlign.center,
                                   alignment: Alignment.center,
@@ -129,7 +127,7 @@ class PasswordResetConfirmationPage extends StatelessWidget {
                                             ),
                                     child: MessagePanelWidget(
                                       isLoading: loading.isLoading,
-                                      message: context.l10n.featurePasswordReset
+                                      message: context.l10n
                                           .pleaseOpenEmail,
                                       messageState: MessagePanelState.positive,
                                     ),
@@ -152,9 +150,9 @@ class PasswordResetConfirmationPage extends StatelessWidget {
                                     .read<PasswordResetConfirmationBlocType>()
                                     .events
                                     .openMailClient(context.l10n
-                                        .featurePasswordReset.selectMailApp),
+                                        .selectMailApp),
                             text: context
-                                .l10n.featurePasswordReset.openMailClient,
+                                .l10n.openMailClient,
                           ),
                           SizedBox(
                             height: context.designSystem.spacing.s,
@@ -177,7 +175,7 @@ class PasswordResetConfirmationPage extends StatelessWidget {
         state2: (bloc) => bloc.states.isLoading,
         builder: (context, isSendNewLinkActivated, loading, bloc) =>
             IconTextButton(
-          text: context.l10n.featurePasswordReset.sendNewLink.toUpperCase(),
+          text: context.l10n.sendNewLink.toUpperCase(),
           state: loading.isLoading
               ? ButtonStateModel.loading
               : isSendNewLinkActivated.isLoading

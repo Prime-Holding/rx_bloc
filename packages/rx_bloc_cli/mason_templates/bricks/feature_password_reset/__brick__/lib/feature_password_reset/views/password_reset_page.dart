@@ -50,7 +50,7 @@ class PasswordResetPage extends StatelessWidget {
                                       .events
                                       .sendNewLink(),
                               retryButtonText:
-                                  context.l10n.featurePasswordReset.sendNewLink,
+                                  context.l10n.sendNewLink,
                             ),
                             SizedBox(height: context.designSystem.spacing.xxl),
                             Icon(
@@ -59,12 +59,12 @@ class PasswordResetPage extends StatelessWidget {
                             ),
                             SizedBox(height: context.designSystem.spacing.s),
                             Text(
-                              context.l10n.featurePasswordReset.passwordReset,
+                              context.l10n.passwordReset,
                               style: context.designSystem.typography.h1Med32,
                             ),
                             SizedBox(height: context.designSystem.spacing.xs),
                             Text(
-                              context.l10n.featurePasswordReset.resetPageHeader,
+                              context.l10n.resetPageHeader,
                               style: context.designSystem.typography.h2Reg16,
                               textAlign: TextAlign.center,
                             ),
@@ -110,7 +110,7 @@ class PasswordResetPage extends StatelessWidget {
       showBlurredBottomSheet(
         context: context,
         builder: (BuildContext context) => MessagePanelWidget(
-          message: context.l10n.featurePasswordReset.tokenResent,
+          message: context.l10n.tokenResent,
           messageState: MessagePanelState.informative,
         ),
       );
@@ -145,6 +145,6 @@ class PasswordResetPage extends StatelessWidget {
             ? ButtonStateModel.loading
             : ButtonStateModel.enabled,
         onPressed: bloc.events.resetPassword,
-        text: context.l10n.featurePasswordReset.reset,
+        text: context.l10n.reset,
       );
 }

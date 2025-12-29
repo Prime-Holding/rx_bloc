@@ -73,8 +73,8 @@ class ProfilePage extends StatelessWidget {
             SliverList(
               delegate: SliverChildListDelegate([ {{#enable_feature_onboarding}}
                  AppListTile(
-                  featureTitle: context.l10n.featureOnboarding.changeEmail,
-                  featureSubtitle: context.l10n.featureOnboarding.manageEmail,
+                  featureTitle: context.l10n.changeEmail,
+                  featureSubtitle: context.l10n.manageEmail,
                   icon: context.designSystem.icons.accountIcon,
                   onTap: () =>
                       GoRouter.of(context).go(ChangeEmailRoute().routeLocation),
@@ -82,9 +82,9 @@ class ProfilePage extends StatelessWidget {
                 const AppDivider(),
                 AppListTile(
                   featureTitle:
-                      context.l10n.featureOnboarding.changePhoneNumber,
+                      context.l10n.changePhoneNumber,
                   featureSubtitle:
-                      context.l10n.featureOnboarding.managePhoneNumber,
+                      context.l10n.managePhoneNumber,
                   icon: context.designSystem.icons.phoneIcon,
                   onTap: () => GoRouter.of(context)
                       .push(const PhoneChangeRoute().location),
@@ -96,7 +96,7 @@ class ProfilePage extends StatelessWidget {
                   builder: (context, user, bloc) => AppListTile(
                     featureTitle: _buildPinButtonText(user, context),
                     icon: context.designSystem.icons.pin,
-                    featureSubtitle: context.l10n.libPinCode.pinCodeSubtitle,
+                    featureSubtitle: context.l10n.pinCodeSubtitle,
                     onTap: () => _onPinTileTap(context, user),
                   ),
                 ),
@@ -120,8 +120,8 @@ class ProfilePage extends StatelessWidget {
                       context.read<BiometricsLocalDataSource>(),
                   builder: (context, areEnabled, callback) => AppListTile(
                     onTap: () => callback(!areEnabled),
-                    featureTitle: context.l10n.libPinCode.biometricsTitle,
-                    featureSubtitle: context.l10n.libPinCode.biometricsSubtitle,
+                    featureTitle: context.l10n.biometricsTitle,
+                    featureSubtitle: context.l10n.biometricsSubtitle,
                     icon: context.designSystem.icons.fingerprint,
                     trailing: Switch(
                       value: areEnabled,
@@ -171,7 +171,7 @@ class ProfilePage extends StatelessWidget {
                     builder: (context) => MessagePanelWidget(
                       isLoading: false,
                       message:
-                          context.l10n.featureOnboarding.phoneNumberUpdated,
+                          context.l10n.phoneNumberUpdated,
                       messageState: MessagePanelState.positive,
                     ),
                   ),
@@ -191,8 +191,8 @@ class ProfilePage extends StatelessWidget {
   String _buildPinButtonText(
       AsyncSnapshot<UserModel?> user, BuildContext context) =>
       user.data?.hasPin == true
-          ? context.l10n.libPinCode.changePin
-          : context.l10n.libPinCode.createPin;
+          ? context.l10n.changePin
+          : context.l10n.createPin;
 
   void _onPinTileTap(BuildContext context, AsyncSnapshot<UserModel?> user) {
     if (user.data != null && user.data!.hasPin) {
@@ -212,8 +212,8 @@ class ProfilePage extends StatelessWidget {
   ) async {
     if (user != null && user.lastPinAction != LastPinAction.none) {
      final message = user.lastPinAction == LastPinAction.update
-         ? context.l10n.libPinCode.pinUpdatedMessage
-         : context.l10n.libPinCode.pinCreatedMessage;
+         ? context.l10n.pinUpdatedMessage
+         : context.l10n.pinCreatedMessage;
       await showBlurredBottomSheet(
         context: context,
         configuration: const ModalConfiguration(safeAreaBottom: false),

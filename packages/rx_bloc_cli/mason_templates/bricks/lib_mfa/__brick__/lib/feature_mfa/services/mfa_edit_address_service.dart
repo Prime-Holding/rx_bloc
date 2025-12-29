@@ -2,7 +2,7 @@
 
 import 'package:widget_toolkit/edit_address.dart';
 
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 
 class MfaEditAddressService extends EditAddressService<CountryModel> {
@@ -51,7 +51,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
   Future<String> validateCityOnSubmit(String text) async {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -62,7 +62,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
   Future<String> validateStreetOnSubmit(String text) async {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -73,7 +73,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
   void validateCityOnType(String text) {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -83,7 +83,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
   void validateStreetOnType(String text) {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: text,
       );
     }

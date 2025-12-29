@@ -24,7 +24,7 @@ class VerifyPinCodePage extends StatelessWidget {
             automaticallyImplyLeading: false,
             surfaceTintColor: Colors.red,
             title: Text(
-              context.l10n.libPinCode.verifyPinCodePage,
+              context.l10n.verifyPinCodePage,
               style: context.designSystem.typography.h1Reg22,
             ),
             foregroundColor: context.designSystem.colors.pinAppBarColor,
@@ -63,15 +63,15 @@ String _exampleMapMessageToString(
     BiometricsMessage message, BuildContext context) {
   switch (message) {
     case BiometricsMessage.notSetup:
-      return context.l10n.libPinCode.biometricsNotSetup;
+      return context.l10n.biometricsNotSetup;
 
     case BiometricsMessage.notSupported:
-      return context.l10n.libPinCode.biometricsNotSupported;
+      return context.l10n.biometricsNotSupported;
 
     case BiometricsMessage.enabled:
-      return context.l10n.libPinCode.biometricsEnabled;
+      return context.l10n.biometricsEnabled;
 
     case BiometricsMessage.disabled:
-      return context.l10n.libPinCode.biometricsDisabled;
+      return context.l10n.biometricsDisabled;
   }
 }

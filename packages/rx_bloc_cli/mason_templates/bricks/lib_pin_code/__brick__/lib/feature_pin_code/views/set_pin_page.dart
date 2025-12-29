@@ -71,8 +71,8 @@ class SetPinPage extends StatelessWidget {
 
 extension on CreatePinModel {
   String asTitle(BuildContext context) => switch (this) {
-        CreatePinSetModel() => context.l10n.libPinCode.createPin,
-        CreatePinConfirmModel() => context.l10n.libPinCode.confirmPin,
+        CreatePinSetModel() => context.l10n.createPin,
+        CreatePinConfirmModel() => context.l10n.confirmPin,
         CreatePinCompleteModel() => '',
       };
 }

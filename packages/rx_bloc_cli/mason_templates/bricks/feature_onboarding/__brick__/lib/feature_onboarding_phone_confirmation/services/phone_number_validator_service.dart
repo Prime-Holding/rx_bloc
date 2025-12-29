@@ -1,4 +1,4 @@
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../../base/models/country_code_model.dart';
 import '../../base/models/errors/error_model.dart';
 
@@ -12,24 +12,24 @@ class PhoneNumberValidatorService {
   ) {
     if (countryCode == null || countryCode.code.isEmpty) {
       throw FieldRequiredErrorModel(
-        fieldKey: I18nFieldKeys.countryCode,
+        fieldKey: S.current..countryCode,
         fieldValue: countryCode?.code ?? '',
       );
     }
 
     if (phoneNumber.isEmpty) {
       throw FieldRequiredErrorModel(
-        fieldKey: I18nFieldKeys.phoneNumber,
+        fieldKey: S.current..phoneNumber,
         fieldValue: phoneNumber,
       );
     } else if (phoneNumber.length < 8) {
       throw FieldErrorModel(
-        errorKey: I18nErrorKeys.tooShort,
+        errorKey: S.current..tooShort,
         fieldValue: phoneNumber,
       );
     } else if (phoneNumber.length > 13) {
       throw FieldErrorModel(
-        errorKey: I18nErrorKeys.tooLong,
+        errorKey: S.current..tooLong,
         fieldValue: phoneNumber,
       );
     }

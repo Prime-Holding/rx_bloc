@@ -38,12 +38,12 @@ class LoginPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(context.l10n.featureLogin.loginPageTitle,
+                          Text(context.l10n.loginPageTitle,
                               textAlign: TextAlign.center,
                               style: context.designSystem.typography.h1Bold24),
                           SizedBox(height: context.designSystem.spacing.xxxxl),
                           LoginForm(
-                            title: context.l10n.featureLogin.loginCredentialsHint,
+                            title: context.l10n.loginCredentialsHint,
                           ),{{/enable_login}}{{#enable_social_logins}}
                           SizedBox(height: context.designSystem.spacing.xs1),
                           Row(
@@ -57,7 +57,7 @@ class LoginPage extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                   horizontal: context.designSystem.spacing.xs),
-                                  child: Text(context.l10n.featureLogin.or),
+                                  child: Text(context.l10n.or),
                                 ),
                                 Expanded(
                                   flex: 1,
@@ -90,7 +90,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: context.designSystem.spacing.xl),{{/enable_feature_onboarding}}{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
-                Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
+                Center(child: Text(context.l10n.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
               ],
             ),
           ),

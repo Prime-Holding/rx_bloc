@@ -2,7 +2,7 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
@@ -33,9 +33,9 @@ class PushNotificationRepository {
           case AuthorizationStatus.provisional:
             return true;
           case AuthorizationStatus.denied:
-            throw GenericErrorModel(I18nErrorKeys.notificationsDisabledMessage);
+            throw GenericErrorModel(S.current.notificationsDisabledMessage);
           case AuthorizationStatus.notDetermined:
-            throw GenericErrorModel(I18nErrorKeys.accessDenied);
+            throw GenericErrorModel(S.current.accessDenied);
         }
       });
 
@@ -70,7 +70,7 @@ class PushNotificationRepository {
       await _performAction(_pushDataSource.subscribePushToken);
       await _setNotificationsEnabledUser(true);
     } else {
-      throw GenericErrorModel(I18nErrorKeys.notificationsDisabledMessage);
+      throw GenericErrorModel(S.current.notificationsDisabledMessage);
     }
   }
 

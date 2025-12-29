@@ -38,12 +38,12 @@ class PasswordResetRequestPage extends StatelessWidget {
                     ),
                     SizedBox(height: context.designSystem.spacing.s),
                     Text(
-                      context.l10n.featurePasswordReset.passwordReset,
+                      context.l10n.passwordReset,
                       style: context.designSystem.typography.h1Med32,
                     ),
                     SizedBox(height: context.designSystem.spacing.xs),
                     Text(
-                      context.l10n.featurePasswordReset.requestPageHeader,
+                      context.l10n.requestPageHeader,
                       style: context.designSystem.typography.h2Reg16,
                       textAlign: TextAlign.center,
                     ),
@@ -95,6 +95,6 @@ class PasswordResetRequestPage extends StatelessWidget {
             ? ButtonStateModel.loading
             : ButtonStateModel.enabled,
         onPressed: bloc.events.request,
-        text: context.l10n.featurePasswordReset.request,
+        text: context.l10n.request,
       );
 }

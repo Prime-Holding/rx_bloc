@@ -23,7 +23,7 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: customAppBar(
           context,
-          title: context.l10n.featureNotifications.notificationPageTitle,
+          title: context.l10n.notificationPageTitle,
           actions: [
             IconButton(
               onPressed: () => showBlurredBottomSheet(
@@ -32,8 +32,7 @@ class NotificationsPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      context.l10n.featureNotifications
-                          .notificationsPageDescription,
+                      context.l10n.notificationsPageDescription,
                       textAlign: TextAlign.center,
                     ),
                     const Divider(
@@ -43,7 +42,7 @@ class NotificationsPage extends StatelessWidget {
                       endIndent: 120,
                     ),
                     Text(
-                      context.l10n.featureNotifications.notificationsPageConfig,
+                      context.l10n.notificationsPageConfig,
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -94,7 +93,7 @@ class NotificationsPage extends StatelessWidget {
                   buildError: (context, error, bloc) => PushTokenWidget(
                     label: context
                         .l10n.featureNotifications.notificationTokenLabel,
-                    error: context.l10n.error.notImplemented,
+                    error: context.l10n.notImplemented,
                     key: const Key('pushTokenErrorWidget'),
                   ),
                   buildLoading: (context, bloc) => PushTokenWidget(

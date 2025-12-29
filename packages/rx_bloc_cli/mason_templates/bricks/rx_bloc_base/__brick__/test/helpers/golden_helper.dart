@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:{{project_name}}/assets.dart';
 import 'package:{{project_name}}/base/theme/design_system.dart';
 
-import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';{{#enable_remote_translations}}
-import 'package:{{project_name}}/l10n/{{project_name}}_app_i18n.dart';{{/enable_remote_translations}}
+import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';
+import 'package:{{project_name}}/l10n/generated/l10n.dart';
+import 'package:{{project_name}}/l10n/{{project_name}}_app_i18n.dart';
 
 import 'enums/app_themes.dart';
 import 'enums/golden_alignment.dart';
@@ -188,7 +188,7 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
           ...GlobalMaterialLocalizations.delegates,
           GlobalMaterialLocalizations.delegate,
         ],
-        localeOverrides: I18n.supportedLocales,
+        localeOverrides: S.delegate.supportedLocales,
         theme: theme == Themes.light
             ? {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light())
             : {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),

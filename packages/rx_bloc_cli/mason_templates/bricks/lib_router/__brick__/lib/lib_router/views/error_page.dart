@@ -15,12 +15,12 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(context.l10n.libRouter.appBarText),
+          title: Text(context.l10n.appBarText),
         ),
         body: Center(
           child: error == null
-              ? Text(context.l10n.libRouter.errorOccurred)
-              : Text(context.l10n.libRouter.error(error.toString())),
+              ? Text(context.l10n.errorOccurred)
+              : Text(context.l10n.error(error.toString())),
         ),
       );
 }
