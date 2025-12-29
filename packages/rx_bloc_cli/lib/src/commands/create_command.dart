@@ -183,6 +183,16 @@ class CreateCommand extends Command<int> {
 
     _progressFinish(dartGet, progress);
 
+    progress = _logger.progress('Generating localizations');
+
+    final genL10n = await Process.run(
+      'bash',
+      ['bin/gen_l10n.sh'],
+      workingDirectory: outputDirectory.path,
+    );
+
+    _progressFinish(genL10n, progress);
+
     progress = _logger.progress(
       'flutter pub run build_runner build',
     );

@@ -6,11 +6,7 @@ dart run bin/merge_arb_files.dart
 
 echo ""
 echo "Generating localizations..."
-flutter gen-l10n
-
-echo ""
-echo "Generating remote translations wrapper..."
-dart run bin/generate_remote_wrapper.dart
+dart run intl_utils:generate
 
 echo ""
 echo "Done! Localizations generated successfully."

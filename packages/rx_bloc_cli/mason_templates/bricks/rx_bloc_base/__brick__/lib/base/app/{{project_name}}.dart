@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
 
-import '../../assets.dart';
 import '../../l10n/{{project_name}}_app_i18n.dart';{{#analytics}}
 import '../../lib_analytics/blocs/analytics_bloc.dart';{{/analytics}}{{#has_authentication}}{{#enable_pin_code}}
 import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
@@ -238,7 +237,7 @@ Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
        theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
        darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
        localizationsDelegates: const [ 
-         I18n.delegate,
+        AppI18n.delegate,
          ...GlobalMaterialLocalizations.delegates,
        ],
        supportedLocales: AppI18n.delegate.supportedLocales,

@@ -184,7 +184,7 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
         tester,
         widget,
         localizations: const [ 
-          I18n.delegate,
+          AppI18n.delegate,
           ...GlobalMaterialLocalizations.delegates,
           GlobalMaterialLocalizations.delegate,
         ],

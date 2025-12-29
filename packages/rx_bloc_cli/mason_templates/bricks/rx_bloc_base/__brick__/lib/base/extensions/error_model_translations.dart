@@ -70,7 +70,7 @@ extension ErrorFieldModelL10n on FieldErrorModel {
 
 extension ErrorFieldRequiredModelL10n on FieldRequiredErrorModel {
   String translate(BuildContext context) => context.l10n.requiredField(
-        context.l10n.field.getString(fieldKey)!,
+        context.l10n.getString(fieldKey)!,
       );
 }
 

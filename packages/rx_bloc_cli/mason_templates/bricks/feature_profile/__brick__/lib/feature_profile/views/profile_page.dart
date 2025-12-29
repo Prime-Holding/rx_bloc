@@ -108,8 +108,7 @@ class ProfilePage extends StatelessWidget {
                       .read<ChangeLanguageBlocType>()
                       .events
                       .setCurrentLanguage(language),
-                  buttonText: context
-                      .l10n.featureProfile.profilePageChangeLanguageButton,
+                  buttonText: context.l10n.profilePageChangeLanguageButton,
                   translate: (model) => model.asText(context),
                 ),
                 const AppDivider(),
@@ -135,13 +134,10 @@ class ProfilePage extends StatelessWidget {
                   state: (bloc) => bloc.states.areNotificationsEnabled,
                   builder: (context, areNotificationsEnabled, bloc) =>
                       AppListTile(
-                    featureTitle: context
-                        .l10n.featureProfile.profilePageEnableNotificationText,
+                    featureTitle: context.l10n.profilePageEnableNotificationText,
                     featureSubtitle: areNotificationsEnabled.value
-                        ? context
-                            .l10n.featureProfile.notificationsSubtitleDeactivete
-                        : context
-                            .l10n.featureProfile.notificationsSubtitleActivete,
+                        ? context.l10n.notificationsSubtitleDeactivete
+                        : context.l10n.notificationsSubtitleActivete,
                     icon: areNotificationsEnabled.value
                         ? context.designSystem.icons.notificationsActive
                         : context.designSystem.icons.notificationsInactive,

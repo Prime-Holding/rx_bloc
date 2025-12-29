@@ -79,8 +79,8 @@ class PasswordResetRequestPage extends StatelessWidget {
         controller: fieldState.controller,
         textInputAction: TextInputAction.done,
         decoration: fieldState.decoration.copyWith(
-          labelText: context.l10n.field.email,
-          hintText: context.l10n.featureLogin.emailHint,
+          labelText: context.l10n.email,
+          hintText: context.l10n.emailHint,
           hintStyle: context.designSystem.typography.h2Reg16,
         ),
       );

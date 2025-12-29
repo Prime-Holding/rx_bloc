@@ -129,8 +129,8 @@ class PasswordResetPage extends StatelessWidget {
               ? fieldState.decoration.labelStyle
               : fieldState.decoration.labelStyle
                   ?.copyWith(color: DefaultTextStyle.of(context).style.color),
-          labelText: context.l10n.field.password,
-          hintText: context.l10n.featureLogin.passwordHint,
+          labelText: context.l10n.password,
+          hintText: context.l10n.passwordHint,
           hintStyle: context.designSystem.typography.h2Reg16,
         ),
       );

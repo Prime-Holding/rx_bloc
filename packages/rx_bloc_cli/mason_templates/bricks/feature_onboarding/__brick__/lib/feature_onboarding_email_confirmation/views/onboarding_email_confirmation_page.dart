@@ -158,7 +158,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
         builder: (context, isSendNewLinkActivated, loading, bloc) => Visibility(
           visible: !loading.isLoading && !isSendNewLinkActivated.isLoading,
           child: IconTextButton(
-            text: context.l10n.featureOnboarding.sendNewLink.toUpperCase(),
+            text: context.l10n.sendNewLink.toUpperCase(),
             state: loading.isLoading
                 ? ButtonStateModel.loading
                 : isSendNewLinkActivated.isLoading

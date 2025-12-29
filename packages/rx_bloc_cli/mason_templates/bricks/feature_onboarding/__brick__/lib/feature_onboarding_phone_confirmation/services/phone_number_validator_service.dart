@@ -12,24 +12,24 @@ class PhoneNumberValidatorService {
   ) {
     if (countryCode == null || countryCode.code.isEmpty) {
       throw FieldRequiredErrorModel(
-        fieldKey: S.current..countryCode,
+        fieldKey: S.current.countryCode,
         fieldValue: countryCode?.code ?? '',
       );
     }
 
     if (phoneNumber.isEmpty) {
       throw FieldRequiredErrorModel(
-        fieldKey: S.current..phoneNumber,
+        fieldKey: S.current.phoneNumber,
         fieldValue: phoneNumber,
       );
     } else if (phoneNumber.length < 8) {
       throw FieldErrorModel(
-        errorKey: S.current..tooShort,
+        errorKey: S.current.tooShort,
         fieldValue: phoneNumber,
       );
     } else if (phoneNumber.length > 13) {
       throw FieldErrorModel(
-        errorKey: S.current..tooLong,
+        errorKey: S.current.tooLong,
         fieldValue: phoneNumber,
       );
     }

@@ -47,7 +47,7 @@ class EmailChangePage extends StatelessWidget {
                         SizedBox(height: context.designSystem.spacing.xs),
                         Text(
                           context
-                              .l10n.featureOnboarding.changeEmailDescription,
+                              .l10n.changeEmailDescription,
                           textAlign: TextAlign.center,
                           style: context.designSystem.typography.h2Reg16,
                         ),

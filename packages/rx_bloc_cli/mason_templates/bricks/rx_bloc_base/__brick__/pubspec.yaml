@@ -32,12 +32,13 @@ dependencies: {{#enable_dev_menu}}
   go_router: ^17.0.1{{#enable_social_logins}}
   google_sign_in: ^7.2.0{{/enable_social_logins}}
   http: ^1.2.2 # This package is used for the local server (if not used, can be removed)
+  intl: ^0.20.2
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.9.0
   jwt_decoder: ^2.0.1{{#enable_pin_code}}
   local_session_timeout: ^3.2.0{{/enable_pin_code}}
   provider: ^6.1.2
-  retrofit: ^4.9.1
+  retrofit: ^4.9.2
   rx_bloc: ^6.0.0
   rx_bloc_list: ^5.0.0
   rxdart: ^0.28.0
@@ -66,10 +67,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   go_router_builder: ^4.1.3
+  intl_utils: ^2.8.13
   json_serializable: ^6.8.0
   mockito: ^5.4.4 {{#enable_patrol}}
   patrol: ^3.13.0-dev.3 {{/enable_patrol}}
-  retrofit_generator: 10.2.0
+  retrofit_generator: 10.2.1
   rx_bloc_generator: ^9.0.0
   rx_bloc_test: ^5.0.0
   test: any {{#enable_patrol}}

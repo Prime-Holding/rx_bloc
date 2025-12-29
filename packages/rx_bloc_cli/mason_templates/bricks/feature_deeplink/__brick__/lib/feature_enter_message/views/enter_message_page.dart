@@ -66,7 +66,7 @@ class EnterMessagePage extends StatelessWidget {
                               ErrorModelFieldL10n.translateError<String>(
                                   error, context),
                           label: context
-                              .l10n.featureEnterMessage.fieldMessageLabel,
+                              .l10n.fieldMessageLabel,
                           value: message.data,
                           emptyLabel:
                               context.l10n.fieldHintMessage,
