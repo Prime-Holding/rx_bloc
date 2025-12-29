@@ -8,7 +8,7 @@ import 'dart:convert';
 ///
 ///
 ///
-/// Future<void> main(List<String> args) async {
+/// Future`<void>` main(List`<String>` args) async {
 /// await _flushThenExit(await RxBlocCommandRunner().run(args));
 ///}
 void main() {

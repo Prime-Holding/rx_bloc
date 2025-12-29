@@ -11,7 +11,7 @@ extension ErrorModelFieldL10nX<T> on Stream<T> {
   /// based on the error field type
   Stream<T> translate(BuildContext context) {
     return handleError(
-          (error) => ErrorModelFieldL10n.translateError<T>(error, context),
+      (error) => ErrorModelFieldL10n.translateError<T>(error, context),
     );
   }
 }

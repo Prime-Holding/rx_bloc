@@ -63,15 +63,11 @@ extension ConflictErrorModelL10n on ConflictErrorModel {
 }
 
 extension ErrorFieldModelL10n on FieldErrorModel {
-  String translate(BuildContext context) {
-    return context.l10n.getString(errorKey) ?? 'error';
-  }
+  String translate(BuildContext context) => errorValue;
 }
 
 extension ErrorFieldRequiredModelL10n on FieldRequiredErrorModel {
-  String translate(BuildContext context) => context.l10n.requiredField(
-        context.l10n.getString(fieldKey)!,
-      );
+  String translate(BuildContext context) => errorValue;
 }
 
 extension ErrorServerGenericModelL10n on ErrorServerGenericModel {

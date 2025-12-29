@@ -10,7 +10,7 @@ class Stubs {
   static const password = 'password';{{#enable_login}}
 
   static final error = FieldErrorModel(
-    errorKey: S.current.invalidEmail,
+    errorValue: S.current.invalidEmail,
     fieldValue: email,
   );
   static final userModel = UserModel(
