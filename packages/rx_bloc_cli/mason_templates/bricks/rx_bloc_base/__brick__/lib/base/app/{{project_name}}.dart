@@ -237,9 +237,8 @@ Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
        theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
        darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
-       localizationsDelegates: const [ {{#enable_remote_translations}}
-         AppI18n.delegate,{{/enable_remote_translations}}{{^enable_remote_translations}}
-         I18n.delegate,{{/enable_remote_translations}}
+       localizationsDelegates: const [ 
+         I18n.delegate,
          ...GlobalMaterialLocalizations.delegates,
        ],
        supportedLocales: I18n.supportedLocales,

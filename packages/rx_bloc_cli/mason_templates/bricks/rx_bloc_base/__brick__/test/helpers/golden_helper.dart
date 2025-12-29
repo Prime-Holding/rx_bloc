@@ -183,9 +183,8 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
     pumpScenarioBuilderWithMaterialApp(
         tester,
         widget,
-        localizations: const [ {{#enable_remote_translations}}
-          AppI18n.delegate,{{/enable_remote_translations}}{{^enable_remote_translations}}
-          I18n.delegate,{{/enable_remote_translations}}
+        localizations: const [ 
+          I18n.delegate,
           ...GlobalMaterialLocalizations.delegates,
           GlobalMaterialLocalizations.delegate,
         ],
