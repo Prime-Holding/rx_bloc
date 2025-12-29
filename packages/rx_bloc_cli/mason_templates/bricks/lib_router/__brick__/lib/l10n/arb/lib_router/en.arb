@@ -1,6 +1,0 @@
-{
-  "@@locale": "en",
-  "appBarText": "Error page!",
-  "errorOccurred": "An error occurred.",
-  "error": "Error: {theError}"
-}
