@@ -7,9 +7,6 @@ extension ErrorModelL10n on ErrorModel {
   /// Translate the business error to a user friendly message
   /// based on the error type.
   String translate(BuildContext context) {
-    if (this is L10nErrorKeyProvider) {
-      return context.l10n.getString((this as L10nErrorKeyProvider).l10nErrorKey)!;
-    }
 
     if (this is BadRequestErrorModel) {
       return (this as BadRequestErrorModel).translate(context);
@@ -41,6 +38,10 @@ extension ErrorModelL10n on ErrorModel {
 
     if (this is ErrorTimeoutModel) {
       return (this as ErrorTimeoutModel).translate(context);
+    }
+
+    if (this is NetworkErrorModel) {
+      return (this as NetworkErrorModel).translate(context);
     }
 
     return context.l10n.unknown;
@@ -83,3 +84,8 @@ extension _ErrorTimeoutModelL10n on ErrorTimeoutModel {
   String translate(BuildContext context) =>
       message ?? context.l10n.server;
 }
+
+extension _NetworkErrorModelL10n on NetworkErrorModel {
+  String translate(BuildContext context) => message;
+}
+

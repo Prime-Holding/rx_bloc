@@ -9,7 +9,7 @@ import '../stubs.dart';
 void main() {
   runGoldenTests([
     buildScenario(
-      customPumpBeforeTest: (widgetTester) => widgetTester.pump(
+      customPumpBeforeTest: (widgetTester) => widgetTester.pumpAndSettle(
         const Duration(milliseconds: 350),
       ),
       scenario: 'onboarding_success',
@@ -20,7 +20,7 @@ void main() {
       ),
     ),
     buildScenario(
-      customPumpBeforeTest: (widgetTester) => widgetTester.pump(
+      customPumpBeforeTest: (widgetTester) => widgetTester.pumpAndSettle(
         const Duration(milliseconds: 350),
       ),
       scenario: 'onboarding_loading',

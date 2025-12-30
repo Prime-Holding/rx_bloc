@@ -1,10 +1,9 @@
 part of 'error_model.dart';
 
-class NetworkErrorModel extends ErrorModel implements L10nErrorKeyProvider {
+class NetworkErrorModel extends ErrorModel {
   NetworkErrorModel([super.errorLogDetails]);
 
-  @override
-  String get l10nErrorKey => S.current.network;
+  String get message => S.current.network;
 
   @override
   String toString() => 'NetworkError.';

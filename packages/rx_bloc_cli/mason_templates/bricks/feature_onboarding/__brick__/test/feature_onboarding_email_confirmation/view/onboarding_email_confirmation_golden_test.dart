@@ -14,7 +14,7 @@ void main() {
     buildScenario(
       scenario: 'onboarding_email_confirmation_loading',
       customPumpBeforeTest: (tester) =>
-          tester.pump(const Duration(microseconds: 350)),
+          tester.pumpAndSettle(const Duration(microseconds: 350)),
       widget: onboardingEmailConfirmationFactory(
         isLoading: true,
         email: 'test@example.com',
