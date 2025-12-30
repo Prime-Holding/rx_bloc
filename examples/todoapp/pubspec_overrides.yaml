@@ -22,3 +22,18 @@ dependency_overrides:
     path: ../../packages/rx_bloc_generator
   rx_bloc_list:
     path: ../../packages/rx_bloc_list
+  ## TODO: Temporary fix until [this issue](https://github.com/realm/realm-dart/issues/1876) is addressed
+  realm:
+    git:
+      url: https://github.com/NatsuOnFire/realm-dart.git
+      ref: update_source_gen_v4
+      path: packages/realm
+  ## TODO: Temporary fix until [this issue](https://github.com/realm/realm-dart/issues/1876) is addressed
+  realm_generator:
+    git:
+      url: https://github.com/NatsuOnFire/realm-dart.git
+      ref: update_source_gen_v4
+      path: packages/realm_generator
+  r_flutter:
+    git:
+      url: https://github.com/DavidDWiser/r_flutter

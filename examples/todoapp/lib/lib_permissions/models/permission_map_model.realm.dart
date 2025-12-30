@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 part of 'permission_map_model.dart';
 
@@ -6,6 +7,7 @@ part of 'permission_map_model.dart';
 // RealmObjectGenerator
 // **************************************************************************
 
+// coverage:ignore-file
 // ignore_for_file: type=lint
 class PermissionMap extends $PermissionMap
     with RealmEntity, RealmObjectBase, EmbeddedObject {

@@ -2,7 +2,9 @@ part of '../router.dart';
 
 @TypedGoRoute<SplashRoute>(path: RoutesPath.splash)
 @immutable
-class SplashRoute extends GoRouteData implements RouteDataModel {
+class SplashRoute extends GoRouteData
+    with $SplashRoute
+    implements RouteDataModel {
   const SplashRoute();
 
   @override
@@ -82,7 +84,9 @@ class StatsBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class TodoListRoute extends GoRouteData implements RouteDataModel {
+class TodoListRoute extends GoRouteData
+    with $TodoListRoute
+    implements RouteDataModel {
   const TodoListRoute();
 
   @override
@@ -100,7 +104,9 @@ class TodoListRoute extends GoRouteData implements RouteDataModel {
 }
 
 @immutable
-class StatsRoute extends GoRouteData implements RouteDataModel {
+class StatsRoute extends GoRouteData
+    with $StatsRoute
+    implements RouteDataModel {
   const StatsRoute();
 
   @override
@@ -118,7 +124,9 @@ class StatsRoute extends GoRouteData implements RouteDataModel {
 }
 
 @TypedGoRoute<TodoCreateRoute>(path: RoutesPath.todoCreate)
-class TodoCreateRoute extends GoRouteData implements RouteDataModel {
+class TodoCreateRoute extends GoRouteData
+    with $TodoCreateRoute
+    implements RouteDataModel {
   TodoCreateRoute();
 
   @override
@@ -138,7 +146,9 @@ class TodoCreateRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-class TodoUpdateRoute extends GoRouteData implements RouteDataModel {
+class TodoUpdateRoute extends GoRouteData
+    with $TodoUpdateRoute
+    implements RouteDataModel {
   TodoUpdateRoute(this.id);
 
   final String id;
@@ -163,7 +173,9 @@ class TodoUpdateRoute extends GoRouteData implements RouteDataModel {
 }
 
 @immutable
-class TodoDetailsRoute extends GoRouteData implements RouteDataModel {
+class TodoDetailsRoute extends GoRouteData
+    with $TodoDetailsRoute
+    implements RouteDataModel {
   const TodoDetailsRoute({required this.id});
 
   final String id;
