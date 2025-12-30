@@ -137,7 +137,6 @@ class CreateCommand extends Command<int> {
             'enable_login': arguments.loginEnabled,
             'enable_social_logins': arguments.socialLoginsEnabled,
             'enable_change_language': arguments.changeLanguageEnabled,
-            'enable_remote_translations': arguments.remoteTranslationsEnabled,
             'enable_dev_menu': arguments.devMenuEnabled,
             'enable_feature_otp': arguments.otpEnabled,
             'enable_patrol': arguments.patrolTestsEnabled,
@@ -183,6 +182,16 @@ class CreateCommand extends Command<int> {
     );
 
     _progressFinish(dartGet, progress);
+
+    progress = _logger.progress('Generating localizations');
+
+    final genL10n = await Process.run(
+      'bash',
+      ['bin/gen_l10n.sh'],
+      workingDirectory: outputDirectory.path,
+    );
+
+    _progressFinish(genL10n, progress);
 
     progress = _logger.progress(
       'flutter pub run build_runner build',
@@ -291,7 +300,6 @@ class CreateCommand extends Command<int> {
     _usingLog('Social Logins [Apple, Google, Facebook]',
         arguments.socialLoginsEnabled);
     _usingLog('Enable Change Language', arguments.changeLanguageEnabled);
-    _usingLog('Remote Translations', arguments.remoteTranslationsEnabled);
     _usingLog('Dev Menu', arguments.devMenuEnabled);
     _usingLog('OTP Feature', arguments.otpEnabled);
     _usingLog('Patrol integration tests', arguments.patrolTestsEnabled);

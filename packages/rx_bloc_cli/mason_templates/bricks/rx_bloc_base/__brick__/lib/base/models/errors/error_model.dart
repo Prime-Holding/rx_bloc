@@ -3,7 +3,7 @@
 import 'package:widget_toolkit/models.dart' as wt_models;
 import 'package:widget_toolkit/models.dart' show L10nErrorKeyProvider;
 
-import '../../../assets.dart' show I18nErrorKeys;
+import '../../../app_extensions.dart';
 
 export 'package:widget_toolkit/models.dart'
     show L10nErrorKeyProvider;

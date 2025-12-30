@@ -2,19 +2,18 @@
 
 import 'package:widget_toolkit/edit_address.dart';
 
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 
 class MfaEditAddressService extends EditAddressService<CountryModel> {
   MfaEditAddressService();
 
   Future<List<CountryModel>> get searchList => Future.delayed(
-        const Duration(seconds: 1),
-        () => _countriesList
-            .map((country) =>
-                CountryModel(countryCode: 'US', countryName: country))
-            .toList(),
-      );
+    const Duration(seconds: 1),
+    () => _countriesList
+        .map((country) => CountryModel(countryCode: 'US', countryName: country))
+        .toList(),
+  );
 
   final _countriesList = [
     'Angola',
@@ -31,7 +30,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
     'Bulgaria',
     'Cuba',
     'Egypt',
-    'Italy'
+    'Italy',
   ];
 
   @override
@@ -51,7 +50,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
   Future<String> validateCityOnSubmit(String text) async {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorValue: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -62,7 +61,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
   Future<String> validateStreetOnSubmit(String text) async {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorValue: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -73,7 +72,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
   void validateCityOnType(String text) {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorValue: S.current.tooShort,
         fieldValue: text,
       );
     }
@@ -83,7 +82,7 @@ class MfaEditAddressService extends EditAddressService<CountryModel> {
   void validateStreetOnType(String text) {
     if (text.trim().isEmpty) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorValue: S.current.tooShort,
         fieldValue: text,
       );
     }

@@ -13,7 +13,7 @@ void main() {
       widget: onboardingPhoneFactory(),
     ),
     buildScenario(
-      customPumpBeforeTest: (tester) => tester.pump(
+      customPumpBeforeTest: (tester) => tester.pumpAndSettle(
         const Duration(microseconds: 300),
       ),
       scenario: 'onboarding_phone_filled',
@@ -26,7 +26,7 @@ void main() {
     ),
     buildScenario(
       scenario: 'onboarding_phone_loading',
-      customPumpBeforeTest: (tester) => tester.pump(
+      customPumpBeforeTest: (tester) => tester.pumpAndSettle(
         const Duration(milliseconds: 350),
       ),
       widget: onboardingPhoneFactory(

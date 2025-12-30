@@ -91,7 +91,7 @@ class _RegisterFormState extends State<RegisterForm> {
         focusNode: _passwordFocusNode,
         onEditingComplete: () => FocusScope.of(context).unfocus(),
         decoration: fieldState.decoration.copyWith(
-          labelText: context.l10n.field.password,
+          labelText: context.l10n.password,
         ),
       );
 
@@ -107,7 +107,7 @@ class _RegisterFormState extends State<RegisterForm> {
         onEditingComplete: () =>
             FocusScope.of(context).requestFocus(_passwordFocusNode),
         decoration: fieldState.decoration.copyWith(
-          labelText: context.l10n.field.email,
+          labelText: context.l10n.email,
         ),
       );
 
@@ -122,6 +122,6 @@ class _RegisterFormState extends State<RegisterForm> {
             ? ButtonStateModel.loading
             : ButtonStateModel.enabled,
         onPressed: bloc.events.register,
-        text: context.l10n.featureOnboarding.register,
+        text: context.l10n.register,
       );
 }

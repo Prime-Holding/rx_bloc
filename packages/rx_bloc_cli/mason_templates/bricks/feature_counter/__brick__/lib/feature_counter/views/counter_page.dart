@@ -3,13 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_ui_components/action_button.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/update_button.dart';
-import '../../base/theme/design_system.dart';
-import '../../keys.dart';
-import '../../l10n/l10n.dart';
 import '../blocs/counter_bloc.dart';
 
 class CounterPage extends StatelessWidget {
@@ -71,7 +69,7 @@ class CounterPage extends StatelessWidget {
               floatingActionButtonKey: K.counterIncrement,
               appLoadingIndicatorKey: K.appLoadingIndicatorIncrement,
               icon: Icon(context.designSystem.icons.plusSign),
-              tooltip: context.l10n.featureCounter.increment,
+              tooltip: context.l10n.increment,
               onPressed: isLoading ? null : bloc.events.increment,
               loading: isLoading && tag == CounterBloc.tagIncrement,
               heroTag: 'increment',
@@ -81,7 +79,7 @@ class CounterPage extends StatelessWidget {
               floatingActionButtonKey: K.counterDecrement,
               appLoadingIndicatorKey: K.appLoadingIndicatorDecrement,
               icon: Icon(context.designSystem.icons.minusSign),
-              tooltip: context.l10n.featureCounter.decrement,
+              tooltip: context.l10n.decrement,
               onPressed: isLoading ? null : bloc.events.decrement,
               loading: isLoading && tag == CounterBloc.tagDecrement,
               heroTag: 'decrement',

@@ -40,8 +40,7 @@ import '../../lib_permissions/data_sources/remote/permissions_remote_data_source
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/router.dart';{{#has_authentication}}
-import '../../lib_router/services/router_service.dart';{{/has_authentication}}{{#enable_remote_translations}}
-import '../../lib_translations/di/translations_dependencies.dart';{{/enable_remote_translations}}
+import '../../lib_router/services/router_service.dart';{{/has_authentication}}
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
@@ -101,7 +100,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ..._mappers,
         ..._httpClients,
         ..._dataStorages,
-        ..._libs,
         ..._dataSources,
         ..._repositories,
         ..._services,
@@ -167,10 +165,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (_) => FirebaseMessaging.instance,
         ),
       ];
-
-  List<SingleChildWidget> get _libs => [{{#enable_remote_translations}}
-      ...TranslationsDependencies.from(baseUrl: config.baseUrl).providers,{{/enable_remote_translations}}
-  ];
 
   List<Provider> get _dataSources => [{{#has_authentication}}
         // Use different data source depending on the platform.
@@ -408,8 +402,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),{{/has_authentication}}
         Provider<SplashService>(
           create: (context) => SplashService(
-          context.read(),{{#enable_remote_translations}}
-          context.read(),{{/enable_remote_translations}}
+          context.read(),
           ),
         ),
         {{#enable_feature_deeplinks}}

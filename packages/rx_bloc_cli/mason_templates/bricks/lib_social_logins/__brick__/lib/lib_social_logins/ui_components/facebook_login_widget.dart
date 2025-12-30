@@ -42,7 +42,7 @@ class FacebookLoginWidget extends StatelessWidget {
               color: context.designSystem.colors.socialLoginBorderColor,
               width: 0.3,
             ),
-            text: context.l10n.featureLogin.facebookLogin,
+            text: context.l10n.facebookLogin,
             textStyle: context.designSystem.typography.socialButtonText,
             progressIndicatorColor:
                 context.designSystem.colors.textButtonColor,

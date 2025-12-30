@@ -75,7 +75,7 @@ class _LoginFormState extends State<LoginForm> {
           TextButton(
             onPressed: () =>
               GoRouter.of(context).go(PasswordResetRequestRoute().routeLocation),
-            child: Text(context.l10n.featureLogin.forgottenPassword),
+            child: Text(context.l10n.forgottenPassword),
           ),
           SizedBox(height: context.designSystem.spacing.xs1),{{/enable_forgotten_password}}
           AppErrorModalWidget<LoginBlocType>(
@@ -100,8 +100,8 @@ class _LoginFormState extends State<LoginForm> {
               ? fieldState.decoration.labelStyle
               : fieldState.decoration.labelStyle
                   ?.copyWith(color: DefaultTextStyle.of(context).style.color),
-          labelText: context.l10n.field.password,
-          hintText: context.l10n.featureLogin.passwordHint,
+          labelText: context.l10n.password,
+          hintText: context.l10n.passwordHint,
           hintStyle: context.designSystem.typography.h2Reg16,
           helperText: ' ', // this will prevent the error text from shifting
         ),
@@ -123,8 +123,8 @@ class _LoginFormState extends State<LoginForm> {
               ? fieldState.decoration.labelStyle
               : fieldState.decoration.labelStyle
                   ?.copyWith(color: DefaultTextStyle.of(context).style.color),
-          labelText: context.l10n.field.email,
-          hintText: context.l10n.featureLogin.emailHint,
+          labelText: context.l10n.email,
+          hintText: context.l10n.emailHint,
           hintStyle: context.designSystem.typography.h2Reg16,
           helperText: ' ', // this will prevent the error text from shifting
         ),
@@ -141,6 +141,6 @@ class _LoginFormState extends State<LoginForm> {
             ? ButtonStateModel.loading
             : ButtonStateModel.enabled,
         onPressed: bloc.events.login,
-        text: context.l10n.featureLogin.logIn,
+        text: context.l10n.logIn,
       );
 }

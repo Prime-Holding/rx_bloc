@@ -5,7 +5,6 @@ import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:widget_toolkit/language_picker.dart';
 
 import '../../base/models/errors/error_model.dart';
-import '../../l10n/l10n.dart';
 
 String translateError(BuildContext context, Exception exception) {
   if (exception is ErrorAccessDeniedModel) {
@@ -28,9 +27,8 @@ extension RxFieldExceptionFatory on RxFieldException {
   static RxFieldException<T> fromFormField<T>(
     FieldErrorModel formFieldModel,
     BuildContext context,
-  ) =>
-      RxFieldException<T>(
-        error: context.l10n.getString(formFieldModel.errorKey) ?? '',
-        fieldValue: formFieldModel.fieldValue,
-      );
+  ) => RxFieldException<T>(
+    error: formFieldModel.errorValue,
+    fieldValue: formFieldModel.fieldValue,
+  );
 }

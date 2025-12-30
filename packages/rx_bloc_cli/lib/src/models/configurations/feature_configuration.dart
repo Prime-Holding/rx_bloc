@@ -3,7 +3,6 @@ class FeatureConfiguration {
   /// Feature Configuration constructor
   FeatureConfiguration({
     required this.changeLanguageEnabled,
-    required this.remoteTranslationsEnabled,
     required this.analyticsEnabled,
     required this.pushNotificationsEnabled,
     required this.realtimeCommunicationEnabled,
@@ -28,9 +27,6 @@ class FeatureConfiguration {
 
   /// Change language
   final bool changeLanguageEnabled;
-
-  /// Remote translations
-  final bool remoteTranslationsEnabled;
 
   /// Dev menu
   final bool devMenuEnabled;

@@ -22,7 +22,7 @@ class MfaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(context.l10n.featureMfa.appBarTitle),
+          title: Text(context.l10n.appBarTitle),
         ),
         body: Padding(
           padding: EdgeInsets.all(context.designSystem.spacing.s),
@@ -42,7 +42,7 @@ class MfaPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        context.l10n.featureMfa.changeAddressActionTitle,
+                        context.l10n.changeAddressActionTitle,
                         style: context.designSystem.typography.h2Med16,
                       ),
                       SizedBox(height: context.designSystem.spacing.m),
@@ -59,7 +59,7 @@ class MfaPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        context.l10n.featureMfa.changeAddressActionDescription,
+                        context.l10n.changeAddressActionDescription,
                         style: context.designSystem.typography.h3Med11,
                       ),
                     ],
@@ -73,7 +73,7 @@ class MfaPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        context.l10n.featureMfa.unlockActionTitle,
+                        context.l10n.unlockActionTitle,
                         style: context.designSystem.typography.h2Med16,
                       ),
                       Center(
@@ -82,13 +82,13 @@ class MfaPage extends StatelessWidget {
                           builder: (context, user, bloc) => PrimaryButton(
                             onPressed: () => _handleUnlockButton(context, user),
                             child:
-                                Text(context.l10n.featureMfa.unlockButtonText),
+                                Text(context.l10n.unlockButtonText),
                           ),
                         ),
                       ),
                       SizedBox(height: context.designSystem.spacing.m),
                       Text(
-                        context.l10n.featureMfa.unlockActionDescription,
+                        context.l10n.unlockActionDescription,
                         style: context.designSystem.typography.h3Med11,
                       ),
                     ],
@@ -106,8 +106,8 @@ class MfaPage extends StatelessWidget {
         configuration: const ModalConfiguration(
           showCloseButton: false,
         ),
-        error: context.l10n.featureMfa.pinNotSetMessage,
-        retryButtonText: context.l10n.featureMfa.pinNotSetButtonText,
+        error: context.l10n.pinNotSetMessage,
+        retryButtonText: context.l10n.pinNotSetButtonText,
         retryCallback: (_) {
           context.pop();
           GoRouter.of(context).go(

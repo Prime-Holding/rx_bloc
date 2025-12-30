@@ -2,7 +2,7 @@
 
 import 'dart:developer';
 
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
 import '../../base/repositories/push_notification_repository.dart';
@@ -39,7 +39,7 @@ class UserAccountService {
     required String password,
   }) async {
     if (username.isEmpty || password.isEmpty) {
-      throw GenericErrorModel(I18nErrorKeys.wrongEmailOrPassword);
+      throw GenericErrorModel(S.current.wrongEmailOrPassword);
     }
 
     final userWithAuthToken = await _authRepository.authenticate(

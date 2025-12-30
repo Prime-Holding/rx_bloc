@@ -1,8 +1,7 @@
 {{> licence.dart }}
 
 import 'package:dio/dio.dart';
-import 'package:retrofit/error_logger.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
 part 'permissions_remote_data_source.g.dart';
 

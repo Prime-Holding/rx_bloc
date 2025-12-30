@@ -1,5 +1,4 @@
-{{#enable_login}}import 'package:{{project_name}}/assets.dart';
-import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
+{{#enable_login}}import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
@@ -10,7 +9,7 @@ class Stubs {
   static const password = 'password';{{#enable_login}}
 
   static final error = FieldErrorModel(
-    errorKey: I18nErrorKeys.invalidEmail,
+    errorValue: 'Please enter a valid email',
     fieldValue: email,
   );
   static final userModel = UserModel(

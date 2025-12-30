@@ -44,12 +44,12 @@ class OnboardingPage extends StatelessWidget {
                     ),
                     SizedBox(height: context.designSystem.spacing.s),
                     Text(
-                      context.l10n.featureOnboarding.registerPageTitle,
+                      context.l10n.registerPageTitle,
                       style: context.designSystem.typography.h1Med32,
                     ),
                     SizedBox(height: context.designSystem.spacing.xs),
                     Text(
-                      context.l10n.featureOnboarding.registerCredentialsHint,
+                      context.l10n.registerCredentialsHint,
                       style: context.designSystem.typography.h2Reg16,
                       textAlign: TextAlign.center,
                     ),

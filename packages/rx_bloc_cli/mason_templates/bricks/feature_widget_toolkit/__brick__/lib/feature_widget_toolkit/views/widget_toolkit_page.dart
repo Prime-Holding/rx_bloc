@@ -31,26 +31,26 @@ class _WidgetToolkitPageState extends State<WidgetToolkitPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    title = context.l10n.featureWidgetToolkit.commonComponents;
+    title = context.l10n.commonComponents;
   }
 
   void maintainAppBar() {
     pageController.addListener(() {
       if (pageController.page == 0) {
         setState(() {
-          title = context.l10n.featureWidgetToolkit.commonComponents;
+          title = context.l10n.commonComponents;
           nextPageIndex = 1;
         });
       }
       if (pageController.page == 1) {
         setState(() {
-          title = context.l10n.featureWidgetToolkit.pickers;
+          title = context.l10n.pickers;
           nextPageIndex = 2;
         });
       }
       if (pageController.page == 2) {
         setState(() {
-          title = context.l10n.featureWidgetToolkit.editFields;
+          title = context.l10n.editFields;
           nextPageIndex = 0;
         });
       }

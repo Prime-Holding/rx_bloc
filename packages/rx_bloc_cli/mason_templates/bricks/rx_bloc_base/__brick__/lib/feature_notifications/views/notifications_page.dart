@@ -23,7 +23,7 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: customAppBar(
           context,
-          title: context.l10n.featureNotifications.notificationPageTitle,
+          title: context.l10n.notificationPageTitle,
           actions: [
             IconButton(
               onPressed: () => showBlurredBottomSheet(
@@ -32,8 +32,7 @@ class NotificationsPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      context.l10n.featureNotifications
-                          .notificationsPageDescription,
+                      context.l10n.notificationsPageDescription,
                       textAlign: TextAlign.center,
                     ),
                     const Divider(
@@ -43,7 +42,7 @@ class NotificationsPage extends StatelessWidget {
                       endIndent: 120,
                     ),
                     Text(
-                      context.l10n.featureNotifications.notificationsPageConfig,
+                      context.l10n.notificationsPageConfig,
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -71,8 +70,7 @@ class NotificationsPage extends StatelessWidget {
                   right: context.designSystem.spacing.l,
                 ),
                 child: PushTokenWidget(
-                    label: context
-                        .l10n.featureNotifications.notificationConsoleLabel,
+                    label: context.l10n.notificationConsoleLabel,
                     value: firebaseProjectUrl),
               ),
               SizedBox(
@@ -86,20 +84,17 @@ class NotificationsPage extends StatelessWidget {
                 child: RxResultBuilder<NotificationsBlocType, String>(
                   state: (bloc) => bloc.states.pushToken,
                   buildSuccess: (context, pushToken, bloc) => PushTokenWidget(
-                    label: context
-                        .l10n.featureNotifications.notificationTokenLabel,
+                    label: context.l10n.notificationTokenLabel,
                     value: pushToken,
                     key: const Key('pushTokenSuccessWidget'),
                   ),
                   buildError: (context, error, bloc) => PushTokenWidget(
-                    label: context
-                        .l10n.featureNotifications.notificationTokenLabel,
-                    error: context.l10n.error.notImplemented,
+                    label: context.l10n.notificationTokenLabel,
+                    error: context.l10n.notImplemented,
                     key: const Key('pushTokenErrorWidget'),
                   ),
                   buildLoading: (context, bloc) => PushTokenWidget(
-                    label: context
-                        .l10n.featureNotifications.notificationTokenLabel,
+                    label: context.l10n.notificationTokenLabel,
                     value: null,
                     key: const Key('pushTokenLoadingWidget'),
                   ),

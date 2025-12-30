@@ -13,7 +13,7 @@ class OtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(context.l10n.featureOtp.otpPageTitle),
+          title: Text(context.l10n.otpPageTitle),
         ),
         body: SafeArea(
           child: SmsCodeProvider(
@@ -26,7 +26,7 @@ class OtpPage extends StatelessWidget {
                 children: [
                   SmsPhoneNumberField(
                     builder: (context, number, onChanged) => TextFieldDialog(
-                      label: context.l10n.featureOtp.phoneNumber,
+                      label: context.l10n.phoneNumber,
                       value: number,
                       validator: OtpTextFieldValidator(),
                       translateError: (Object error) => null,
@@ -36,7 +36,7 @@ class OtpPage extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        context.l10n.featureOtp.hint,
+                        context.l10n.hint,
                         style: TextStyle(
                           color: context.designSystem.colors.tintColor,
                         ),

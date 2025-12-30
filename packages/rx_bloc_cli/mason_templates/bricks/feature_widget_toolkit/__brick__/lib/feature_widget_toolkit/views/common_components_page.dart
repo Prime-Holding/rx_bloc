@@ -24,12 +24,12 @@ class CommonComponentsPage extends StatelessWidget {
           children: [
             WidgetSection(
               description:
-                  context.l10n.featureWidgetToolkit.openUrlWidgetLaunchURLLink,
+                  context.l10n.openUrlWidgetLaunchURLLink,
               child: OpenUrlWidgetWithDependencies(
-                url: context.l10n.featureWidgetToolkit.primeHoldingUrl,
+                url: context.l10n.primeHoldingUrl,
                 translateError: translateError,
                 child: Text(
-                  context.l10n.featureWidgetToolkit.primeHoldingUrl,
+                  context.l10n.primeHoldingUrl,
                   style: const TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
@@ -40,13 +40,13 @@ class CommonComponentsPage extends StatelessWidget {
             ),
             WidgetSection(
               description: context
-                  .l10n.featureWidgetToolkit.openUrlWidgetCallAPhoneNumber,
+                  .l10n.openUrlWidgetCallAPhoneNumber,
               child: OpenUrlWidgetWithDependencies(
-                url: context.l10n.featureWidgetToolkit.phoneNumber,
+                url: context.l10n.phoneNumber,
                 uriType: UriType.telephone,
                 translateError: translateError,
                 child: Text(
-                  context.l10n.featureWidgetToolkit.phoneNumber,
+                  context.l10n.phoneNumber,
                   style: const TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
@@ -57,7 +57,7 @@ class CommonComponentsPage extends StatelessWidget {
             ),
             LoadingStateSwitcher(
               builder: (isLoading, simulateLoading) => WidgetSection(
-                description: context.l10n.featureWidgetToolkit.shimmerWrapper,
+                description: context.l10n.shimmerWrapper,
                 childSize: const Size(180, 120),
                 onRefresh: () => simulateLoading.call(true),
                 child: ShimmerWrapper(
@@ -70,14 +70,14 @@ class CommonComponentsPage extends StatelessWidget {
             ),
             LoadingStateSwitcher(
               builder: (isLoading, simulateLoading) => WidgetSection(
-                description: context.l10n.featureWidgetToolkit.textShimmer,
+                description: context.l10n.textShimmer,
                 childSize: const Size(320, 32),
                 onRefresh: () => simulateLoading.call(true),
                 child: ShimmerText(
                   isLoading
                       ? null
                       : context
-                          .l10n.featureWidgetToolkit.displaysTextAfterLoaded,
+                          .l10n.displaysTextAfterLoaded,
                   alignment: Alignment.center,
                   type: ShimmerType.random(),
                 ),
@@ -85,15 +85,15 @@ class CommonComponentsPage extends StatelessWidget {
             ),
             WidgetSection(
               description:
-                  context.l10n.featureWidgetToolkit.modalSheetWithMessage,
+                  context.l10n.modalSheetWithMessage,
               child: OutlineFillButton(
-                text: context.l10n.featureWidgetToolkit.openModalSheet,
+                text: context.l10n.openModalSheet,
                 onPressed: () => showBlurredBottomSheet(
                   context: context,
                   builder: (BuildContext context) => Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: MessagePanelWidget(
-                        message: context.l10n.featureWidgetToolkit
+                        message: context.l10n
                             .thisIsAnInformativeMessage,
                         messageState: MessagePanelState.informative),
                   ),
@@ -101,27 +101,27 @@ class CommonComponentsPage extends StatelessWidget {
               ),
             ),
             WidgetSection(
-              description: context.l10n.featureWidgetToolkit.errorModalSheet,
+              description: context.l10n.errorModalSheet,
               child: GradientFillButton(
-                text: context.l10n.featureWidgetToolkit.presentErrorInModal,
+                text: context.l10n.presentErrorInModal,
                 onPressed: () => showErrorBlurredBottomSheet(
-                  error: context.l10n.featureWidgetToolkit.thisIsAnErrorMessage,
+                  error: context.l10n.thisIsAnErrorMessage,
                   context: context,
                   retryCallback: (context) =>
                       Future.delayed(const Duration(seconds: 2)),
-                  retryButtonText: context.l10n.featureWidgetToolkit.retry,
+                  retryButtonText: context.l10n.retry,
                 ),
               ),
             ),
             WidgetSection(
-              description: context.l10n.featureWidgetToolkit.buttons,
+              description: context.l10n.buttons,
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 15),
                     child: OutlineFillButton(
-                      text: context.l10n.featureWidgetToolkit.outlineFillButton,
+                      text: context.l10n.outlineFillButton,
                       onPressed: () {},
                     ),
                   ),
@@ -130,7 +130,7 @@ class CommonComponentsPage extends StatelessWidget {
                         vertical: 10, horizontal: 15),
                     child: GradientFillButton(
                       text:
-                          context.l10n.featureWidgetToolkit.gradientFillButton,
+                          context.l10n.gradientFillButton,
                       onPressed: () {},
                     ),
                   ),
@@ -139,7 +139,7 @@ class CommonComponentsPage extends StatelessWidget {
                         vertical: 10, horizontal: 15),
                     child: GradientFillButton(
                       text: context
-                          .l10n.featureWidgetToolkit.gradientFillButtonDisabled,
+                          .l10n.gradientFillButtonDisabled,
                       state: ButtonStateModel.disabled,
                       onPressed: null,
                     ),
@@ -148,7 +148,7 @@ class CommonComponentsPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 15),
                     child: IconTextButton(
-                      text: context.l10n.featureWidgetToolkit.iconTextButton,
+                      text: context.l10n.iconTextButton,
                       icon: Icons.send_time_extension_outlined,
                       onPressed: () {},
                     ),

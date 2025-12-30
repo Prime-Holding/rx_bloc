@@ -43,7 +43,7 @@ class AppleLoginWidget extends StatelessWidget {
               color: context.designSystem.colors.socialLoginBorderColor,
               width: 0.3,
             ),
-            text: context.l10n.featureLogin.appleLogin,
+            text: context.l10n.appleLogin,
             progressIndicatorColor: context.designSystem.colors.textButtonColor,
             onPressed:
                 (snapshot.data ?? false) ? null : () => bloc.events.login(),

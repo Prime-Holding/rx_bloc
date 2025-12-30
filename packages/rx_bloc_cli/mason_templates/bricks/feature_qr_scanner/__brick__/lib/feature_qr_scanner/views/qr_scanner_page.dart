@@ -15,7 +15,7 @@ class QrScannerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(context.l10n.featureQr.qrCodePageTitle),
+          title: Text(context.l10n.qrCodePageTitle),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(

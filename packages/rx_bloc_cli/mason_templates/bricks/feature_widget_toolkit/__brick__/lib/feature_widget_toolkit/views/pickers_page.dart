@@ -29,13 +29,13 @@ class PickersPage extends StatelessWidget {
           children: [
             WidgetSection(
               description:
-                  context.l10n.featureWidgetToolkit.itemPickerSingleSelect,
+                  context.l10n.itemPickerSingleSelect,
               child: UpdateStateOnSelection<DataModel>(
                 builder: (updatedData, updateFunction) => OutlineFillButton(
-                  text: context.l10n.featureWidgetToolkit.selectOneItem,
+                  text: context.l10n.selectOneItem,
                   onPressed: () => showItemPickerBottomSheet<DataModel>(
                     context: context,
-                    title: context.l10n.featureWidgetToolkit.selectASingleItem,
+                    title: context.l10n.selectASingleItem,
                     selectedItems: updatedData,
                     callback: (data) => updateFunction.call(data),
                     service: DataService(),
@@ -47,13 +47,13 @@ class PickersPage extends StatelessWidget {
             ),
             WidgetSection(
               description:
-                  context.l10n.featureWidgetToolkit.itemPickerMultiSelect,
+                  context.l10n.itemPickerMultiSelect,
               child: UpdateStateOnSelection<DataModel>(
                 builder: (updatedData, updateFunction) => OutlineFillButton(
-                  text: context.l10n.featureWidgetToolkit.selectAFewItems,
+                  text: context.l10n.selectAFewItems,
                   onPressed: () => showItemPickerBottomSheet<DataModel>(
                       context: context,
-                      title: context.l10n.featureWidgetToolkit.selectAFewItems,
+                      title: context.l10n.selectAFewItems,
                       selectedItems: updatedData,
                       callback: (data) => updateFunction.call(data),
                       service: DataService(),
@@ -63,17 +63,17 @@ class PickersPage extends StatelessWidget {
               ),
             ),
             WidgetSection(
-              description: context.l10n.featureWidgetToolkit.searchPicker,
+              description: context.l10n.searchPicker,
               child: UpdateStateOnSelection<CountryModel>(
                 getString: (CountryModel element) => element.itemDisplayName,
                 builder: (updatedData, updateFunction) => OutlineFillButton(
                   text: context
-                      .l10n.featureWidgetToolkit.selectAnItemFromLongList,
+                      .l10n.selectAnItemFromLongList,
                   onPressed: () => showSearchPickerBottomSheet<CountryModel>(
                     context: context,
-                    title: context.l10n.featureWidgetToolkit.selectCountry,
-                    hintText: context.l10n.featureWidgetToolkit.typeSubstring,
-                    retryText: context.l10n.featureWidgetToolkit.retry,
+                    title: context.l10n.selectCountry,
+                    hintText: context.l10n.typeSubstring,
+                    retryText: context.l10n.retry,
                     selectedItem:
                         updatedData.isNotEmpty ? updatedData[0] : null,
                     onItemTap: (item) =>
@@ -83,7 +83,7 @@ class PickersPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: MessagePanelWidget(
                         message:
-                            context.l10n.featureWidgetToolkit.thereAreNoResults,
+                            context.l10n.thereAreNoResults,
                         messageState: MessagePanelState.informative,
                       ),
                     ),

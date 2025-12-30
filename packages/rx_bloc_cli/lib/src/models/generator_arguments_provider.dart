@@ -135,10 +135,6 @@ class GeneratorArgumentsProvider {
     final changeLanguageEnabled =
         _reader.read<bool>(CreateCommandArguments.changeLanguage);
 
-    // Remote translations
-    final remoteTranslationsEnabled =
-        _reader.read<bool>(CreateCommandArguments.remoteTranslations);
-
     // Analytics, Push Notifications, Firebase
     final analyticsEnabled =
         _reader.read<bool>(CreateCommandArguments.analytics);
@@ -195,7 +191,6 @@ class GeneratorArgumentsProvider {
 
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
-      remoteTranslationsEnabled: remoteTranslationsEnabled,
       analyticsEnabled: analyticsEnabled,
       pushNotificationsEnabled: pushNotificationsEnabled,
       realtimeCommunicationEnabled: realtimeCommunicationEnabled,

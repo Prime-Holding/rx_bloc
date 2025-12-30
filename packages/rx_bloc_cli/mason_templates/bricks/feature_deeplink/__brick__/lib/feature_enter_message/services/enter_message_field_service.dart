@@ -2,7 +2,7 @@
 
 import 'package:widget_toolkit/widget_toolkit.dart';
 
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 
 class EnterMessageFieldService extends TextFieldValidator<String> {
@@ -16,7 +16,7 @@ class EnterMessageFieldService extends TextFieldValidator<String> {
     if (text.length < minLengthRequired) {
       throw FieldErrorModel<String>(
         fieldValue: text,
-        errorKey: I18nErrorKeys.invalidMessage,
+        errorValue: S.current.invalidMessage,
       );
     }
   }

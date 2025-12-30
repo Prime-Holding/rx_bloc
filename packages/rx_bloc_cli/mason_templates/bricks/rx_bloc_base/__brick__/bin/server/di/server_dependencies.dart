@@ -10,13 +10,11 @@ import '../controllers/password_reset_controller.dart';{{/enable_forgotten_passw
 import '../controllers/permissions_controller.dart';{{#enable_pin_code}}
 import '../controllers/pin_code_controller.dart';{{/enable_pin_code}}
 import '../controllers/push_notifications_controller.dart';{{#enable_feature_onboarding}}
-import '../controllers/registration_controller.dart';{{/enable_feature_onboarding}}
-import '../controllers/translations_controller.dart';{{#enable_feature_onboarding}}
+import '../controllers/registration_controller.dart';
 import '../controllers/users_controller.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
 import '../repositories/auth_token_repository.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
 import '../repositories/country_codes_repository.dart';{{/enable_feature_onboarding}}{{#enable_pin_code}}
-import '../repositories/pin_code_repository.dart';{{/enable_pin_code}}
-import '../repositories/translations_repository.dart';{{#has_authentication}}
+import '../repositories/pin_code_repository.dart';{{/enable_pin_code}}{{#has_authentication}}
 import '../repositories/users_repository.dart';{{/has_authentication}}{{#has_authentication}}
 import '../services/authentication_service.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
 import '../services/country_codes_service.dart';{{/enable_feature_onboarding}}{{#enable_pin_code}}
@@ -31,8 +29,7 @@ class ServerDependencies{
   static Future<void> registerDependencies(DependencyInjector di) async {
     {{#has_authentication}}
     di.register(AuthTokenRepository());
-    di.register(AuthenticationService(di.get()));{{/has_authentication}}
-    di.register(TranslationsRepository());{{#enable_pin_code}}
+    di.register(AuthenticationService(di.get()));{{/has_authentication}}{{#enable_pin_code}}
     di.register(PinCodeRepository());
     di.register(PinCodeService(di.get()));{{/enable_pin_code}}{{#has_authentication}}
     di.register(UsersRepository());
@@ -51,7 +48,6 @@ class ServerDependencies{
       DependencyInjector di,
       ) async {
     routeGenerator
-      ..addController(TranslationsController(di.get()))
     {{#enable_feature_counter}}
     ..addController(CountController())
     {{/enable_feature_counter}}{{#has_authentication}}

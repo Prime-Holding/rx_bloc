@@ -2,7 +2,7 @@
 
 import 'package:widget_toolkit/text_field_dialog.dart';
 
-import '../../assets.dart';
+import '../../app_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 
 class LocalAddressFieldService extends TextFieldValidator<String> {
@@ -14,7 +14,7 @@ class LocalAddressFieldService extends TextFieldValidator<String> {
     await Future.delayed(const Duration(seconds: 1));
     if (text.length >= maxLengthRequired) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooLong,
+        errorValue: S.current.tooLong,
         fieldValue: text,
       );
     }
@@ -25,7 +25,7 @@ class LocalAddressFieldService extends TextFieldValidator<String> {
   void validateOnType(String text) {
     if (text.length < minLengthRequired) {
       throw FieldErrorModel<String>(
-        errorKey: I18nErrorKeys.tooShort,
+        errorValue: S.current.tooShort,
         fieldValue: text,
       );
     }

@@ -41,7 +41,6 @@ if [ "$project_type" == "all_enabled" ]; then
   --enable-login \
   --enable-social-logins \
   --enable-change-language \
-  --enable-remote-translations \
   --enable-dev-menu \
   --enable-patrol \
   --realtime-communication=sse \
@@ -64,7 +63,6 @@ if [ "$project_type" == "all_disabled" ]; then
   --no-enable-login \
   --no-enable-social-logins \
   --no-enable-change-language \
-  --no-enable-remote-translations \
   --no-enable-dev-menu \
   --no-enable-patrol \
   --realtime-communication=none \
@@ -84,7 +82,6 @@ if [ "$project_type" == "without_showcase_features" ]; then
     --enable-login \
     --enable-social-logins \
     --enable-change-language \
-    --enable-remote-translations \
     --enable-dev-menu \
     --enable-patrol \
     --realtime-communication=sse \

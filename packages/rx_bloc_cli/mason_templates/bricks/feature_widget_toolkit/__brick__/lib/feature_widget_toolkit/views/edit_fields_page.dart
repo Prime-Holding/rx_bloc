@@ -23,20 +23,20 @@ class EditFieldsPage extends StatelessWidget {
         child: Column(
           children: [
             WidgetSection(
-              description: context.l10n.featureWidgetToolkit.textFieldDialog,
+              description: context.l10n.textFieldDialog,
               child: TextFieldDialog<String>(
                 translateError: (error) =>
                     ErrorModelFieldL10n.translateError<String>(error, context),
-                label: context.l10n.featureWidgetToolkit.textFieldLabel,
-                value: context.l10n.featureWidgetToolkit.nameValue,
+                label: context.l10n.textFieldLabel,
+                value: context.l10n.nameValue,
                 validator: LocalAddressFieldService(),
-                header: context.l10n.featureWidgetToolkit.headerValue,
+                header: context.l10n.headerValue,
                 fillButtonText:
-                    context.l10n.featureWidgetToolkit.textFieldButtonText,
+                    context.l10n.textFieldButtonText,
               ),
             ),
             WidgetSection(
-              description: context.l10n.featureWidgetToolkit.editAddress,
+              description: context.l10n.editAddress,
               child: EditAddressWidget<CountryModel>(
                 translateError: (error) =>
                     ErrorModelFieldL10n.translateError<String>(error, context),

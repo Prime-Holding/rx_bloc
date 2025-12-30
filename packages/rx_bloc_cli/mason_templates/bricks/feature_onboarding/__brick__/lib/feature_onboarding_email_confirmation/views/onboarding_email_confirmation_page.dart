@@ -68,8 +68,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                           ),
                           SizedBox(height: context.designSystem.spacing.l),
                           Text(
-                            context
-                                .l10n.featureOnboarding.titleEmailConfirmation,
+                            context.l10n.titleEmailConfirmation,
                             style: context.designSystem.typography.h1Med32,
                             textAlign: TextAlign.center,
                           ),
@@ -80,7 +79,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                             builder: (context, email, bloc) => ShimmerText(
                               loading.isLoading
                                   ? null
-                                  : context.l10n.featureOnboarding
+                                  : context.l10n
                                       .emailConfirmationSent(email.data ?? ''),
                               textAlign: TextAlign.center,
                               alignment: Alignment.center,
@@ -116,8 +115,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                                       ),
                               child: MessagePanelWidget(
                                 isLoading: loading.isLoading,
-                                message: context
-                                    .l10n.featureOnboarding.pleaseOpenEmail,
+                                message: context.l10n.pleaseOpenEmail,
                                 messageState: MessagePanelState.positive,
                               ),
                             ),
@@ -135,9 +133,8 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                                 : () => context
                                     .read<OnboardingEmailConfirmationBlocType>()
                                     .events
-                                    .openMailClient(context
-                                        .l10n.featureOnboarding.selectMailApp),
-                            text: context.l10n.featureOnboarding.openMailClient,
+                                    .openMailClient(context.l10n.selectMailApp),
+                            text: context.l10n.openMailClient,
                           ),
                           SizedBox(
                             height: context.designSystem.spacing.s,
@@ -161,7 +158,7 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
         builder: (context, isSendNewLinkActivated, loading, bloc) => Visibility(
           visible: !loading.isLoading && !isSendNewLinkActivated.isLoading,
           child: IconTextButton(
-            text: context.l10n.featureOnboarding.sendNewLink.toUpperCase(),
+            text: context.l10n.sendNewLink.toUpperCase(),
             state: loading.isLoading
                 ? ButtonStateModel.loading
                 : isSendNewLinkActivated.isLoading

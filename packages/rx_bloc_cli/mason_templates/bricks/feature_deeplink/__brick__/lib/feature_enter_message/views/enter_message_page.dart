@@ -43,7 +43,7 @@ class EnterMessagePage extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  context.l10n.featureEnterMessage.pageDescription,
+                  context.l10n.pageDescription,
                   style: context.designSystem.typography.h3Med14,
                   textAlign: TextAlign.center,
                 ),
@@ -66,19 +66,19 @@ class EnterMessagePage extends StatelessWidget {
                               ErrorModelFieldL10n.translateError<String>(
                                   error, context),
                           label: context
-                              .l10n.featureEnterMessage.fieldMessageLabel,
+                              .l10n.fieldMessageLabel,
                           value: message.data,
                           emptyLabel:
-                              context.l10n.featureEnterMessage.fieldHintMessage,
+                              context.l10n.fieldHintMessage,
                           validator: context.read<EnterMessageFieldService>(),
                           header:
-                              context.l10n.featureEnterMessage.fieldHintMessage,
+                              context.l10n.fieldHintMessage,
                           onChanged: (value) => bloc.events.setMessage(value),
                           modalConfiguration: const TextFieldModalConfiguration(
                             safeAreaBottom: false,
                           ),
                           fillButtonText:
-                              context.l10n.featureEnterMessage.fillButtonText,
+                              context.l10n.fillButtonText,
                         ),
                       ),
                     ),

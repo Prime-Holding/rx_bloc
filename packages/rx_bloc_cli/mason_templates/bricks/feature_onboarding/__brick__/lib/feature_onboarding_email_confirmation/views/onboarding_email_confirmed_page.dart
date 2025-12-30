@@ -50,8 +50,7 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                             ShimmerText(
                               loading.isLoading
                                   ? null
-                                  : context.l10n.featureOnboarding
-                                      .titleEmailConfirmed,
+                                  : context.l10n.titleEmailConfirmed,
                               style: context.designSystem.typography.h1Med32,
                               textAlign: TextAlign.center,
                               alignment: Alignment.center,
@@ -60,8 +59,7 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                             ShimmerText(
                               loading.isLoading
                                   ? null
-                                  : context.l10n.featureOnboarding
-                                      .titleEmailConfirmedDescription,
+                                  : context.l10n.titleEmailConfirmedDescription,
                               textAlign: TextAlign.center,
                               alignment: Alignment.center,
                               style: context.designSystem.typography.h2Reg16,

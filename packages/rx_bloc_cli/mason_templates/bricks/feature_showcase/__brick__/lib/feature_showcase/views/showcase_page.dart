@@ -21,7 +21,7 @@ class ShowcasePage extends StatelessWidget {
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
-                  context.l10n.featureShowcase.showcaseTitle,
+                  context.l10n.showcaseTitle,
                   style: context.designSystem.typography.h1Bold20,
                 ),
                 titlePadding: EdgeInsetsDirectional.only(
@@ -56,44 +56,44 @@ extension on BuildContext {
   List<({String title, String subtitle, RouteDataModel route, Icon icon})>
       get features => [
             (
-              title: l10n.featureNotifications.notificationPageTitle,
-              subtitle: l10n.featureNotifications.notificationPageSubtitle,
+              title: l10n.notificationPageTitle,
+              subtitle: l10n.notificationPageSubtitle,
               route: const NotificationsRoute(),
               icon: designSystem.icons.notifications,
             ),
             {{#enable_feature_counter}}(
-              title: l10n.featureShowcase.counterShowcase,
-              subtitle: l10n.featureShowcase.counterShowcaseDescription,
+              title: l10n.counterShowcase,
+              subtitle: l10n.counterShowcaseDescription,
               route: const CounterRoute(),
               icon: designSystem.icons.calculateIcon,
             ), {{/enable_feature_counter}} {{#enable_feature_widget_toolkit}}
             (
-              title: l10n.featureShowcase.widgetToolkitShowcase,
-              subtitle: l10n.featureShowcase.widgetToolkitShowcaseDescription,
+              title: l10n.widgetToolkitShowcase,
+              subtitle: l10n.widgetToolkitShowcaseDescription,
               route: const WidgetToolkitRoute(),
               icon: designSystem.icons.widgetIcon,
             ), {{/enable_feature_widget_toolkit}} {{#enable_feature_qr_scanner}}
             (
-              title: l10n.featureShowcase.qrCodeShowcase,
-              subtitle: l10n.featureShowcase.qrCodeShowcaseDescription,
+              title: l10n.qrCodeShowcase,
+              subtitle: l10n.qrCodeShowcaseDescription,
               route: const QrCodeRoute(),
               icon: designSystem.icons.qrCode,
             ), {{/enable_feature_qr_scanner}} {{#enable_feature_deeplinks}}
             (
-              title: l10n.featureShowcase.deepLinkShowcase,
-              subtitle: l10n.featureShowcase.deepLinkShowcaseDescription,
+              title: l10n.deepLinkShowcase,
+              subtitle: l10n.deepLinkShowcaseDescription,
               route: const DeepLinksRoute(),
               icon: designSystem.icons.linkIcon,
             ), {{/enable_feature_deeplinks}} {{#enable_mfa}}
             (
-              title: l10n.featureShowcase.mfaShowcase,
-              subtitle: l10n.featureShowcase.mfaShowcaseDescription,
+              title: l10n.mfaShowcase,
+              subtitle: l10n.mfaShowcaseDescription,
               route: const FeatureMfaRoute(),
               icon: designSystem.icons.pin,
             ), {{/enable_mfa}} {{#enable_feature_otp}}
             (
-              title: l10n.featureShowcase.otpShowcase,
-              subtitle: l10n.featureShowcase.otpShowcaseDescription,
+              title: l10n.otpShowcase,
+              subtitle: l10n.otpShowcaseDescription,
               route: const FeatureOtpRoute(),
               icon: designSystem.icons.otp,
             ), {{/enable_feature_otp}}

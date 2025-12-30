@@ -17,6 +17,6 @@ linter:
 analyzer:
   exclude:
     - lib/generated_plugin_registrant.dart
-    - lib/assets.dart
+    - 'lib/l10n/generated/**'
     - '**/*.g.dart'
     - '**/*.mocks.dart'

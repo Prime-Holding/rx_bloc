@@ -40,14 +40,14 @@ class EmailChangePage extends StatelessWidget {
                         ),
                         SizedBox(height: context.designSystem.spacing.s),
                         Text(
-                          context.l10n.featureOnboarding.changeEmailTitle,
+                          context.l10n.changeEmailTitle,
                           textAlign: TextAlign.center,
                           style: context.designSystem.typography.h1Med32,
                         ),
                         SizedBox(height: context.designSystem.spacing.xs),
                         Text(
                           context
-                              .l10n.featureOnboarding.changeEmailDescription,
+                              .l10n.changeEmailDescription,
                           textAlign: TextAlign.center,
                           style: context.designSystem.typography.h2Reg16,
                         ),
@@ -64,7 +64,7 @@ class EmailChangePage extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         decoration: fieldState.decoration.copyWith(
                           hintText:
-                              context.l10n.featureOnboarding.changeEmailHint,
+                              context.l10n.changeEmailHint,
                         ),
                       ),
                     ),
@@ -77,7 +77,7 @@ class EmailChangePage extends StatelessWidget {
                             ? ButtonStateModel.loading
                             : ButtonStateModel.enabled,
                         onPressed: bloc.events.changeEmail,
-                        text: context.l10n.featureOnboarding.changeEmail,
+                        text: context.l10n.changeEmail,
                       ),
                     ),
                     RxBlocListener<EmailChangeBlocType, ErrorModel>(

@@ -45,8 +45,8 @@ class _UpdateStateOnSelectionState<T> extends State<UpdateStateOnSelection<T>> {
             const SizedBox(height: 12),
             Text(
               localData.length >= 2
-                  ? context.l10n.featureWidgetToolkit.selectedItems
-                  : context.l10n.featureWidgetToolkit.selectedItem,
+                  ? context.l10n.selectedItems
+                  : context.l10n.selectedItem,
             ),
             const SizedBox(height: 12),
             ...localData.map(

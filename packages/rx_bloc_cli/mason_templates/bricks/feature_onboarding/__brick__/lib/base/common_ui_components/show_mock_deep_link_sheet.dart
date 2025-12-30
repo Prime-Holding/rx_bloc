@@ -20,14 +20,14 @@ void showMockDeepLinkSheet(
       builder: (_) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(context.l10n.featureOnboarding.titleMockDeepLinkSuccess),
+          Text(context.l10n.titleMockDeepLinkSuccess),
           SizedBox(height: context.designSystem.spacing.m),
           GradientFillButton(
             text: deepLinkSuccess,
             onPressed: onDeepLinkSuccessTapped,
           ),
           SizedBox(height: context.designSystem.spacing.xl),
-          Text(context.l10n.featureOnboarding.titleMockDeepLinkError),
+          Text(context.l10n.titleMockDeepLinkError),
           SizedBox(height: context.designSystem.spacing.m),
           GradientFillButton(
             text: deepLinkError,

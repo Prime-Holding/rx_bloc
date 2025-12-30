@@ -1,10 +1,9 @@
 part of 'error_model.dart';
 
-class ServerErrorModel extends ErrorModel implements L10nErrorKeyProvider {
+class ServerErrorModel extends ErrorModel {
   ServerErrorModel([super.errorLogDetails]);
 
-  @override
-  String get l10nErrorKey => I18nErrorKeys.server;
+  String get message => S.current.server;
 
   @override
   String toString() => 'ServerError.';

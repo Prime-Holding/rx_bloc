@@ -1,7 +1,5 @@
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
-import '../../base/common_blocs/coordinator_bloc.dart';
-
 /// Service used to implement SMS code logic
 class CustomSmsCodeService implements SmsCodeService {
   const CustomSmsCodeService();
