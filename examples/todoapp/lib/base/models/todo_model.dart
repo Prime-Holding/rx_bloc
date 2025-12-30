@@ -18,6 +18,7 @@ enum TodoModelActions { add, update, delete, none }
 
 @RealmModel()
 @JsonSerializable()
+// ignore: must_be_immutable
 class $TodoModel with EquatableMixin implements Identifiable {
   /// The unique identifier of the todo
   /// If the todo is not persisted yet, the id is null
