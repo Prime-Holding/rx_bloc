@@ -1,5 +1,6 @@
 ## [6.0.1]
 * Remove mention of remote translation lookup from the README
+* Fix issue with interactive mode where arguments were read twice
 
 ## [6.0.0]
 Contains breaking changes
