@@ -161,8 +161,7 @@ void main() {
 
       sut.readGeneratorArguments();
 
-      // Verify each argument that supports 
-      // interactive input is read exactly once
+      // Verify each argument that supports interactive input is read exactly once
       final interactiveArguments = CreateCommandArguments.values
           .where((arg) => arg.supportsInteractiveInput);
 
