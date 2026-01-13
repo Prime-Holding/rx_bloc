@@ -85,11 +85,7 @@ dart pub global activate rx_bloc_cli
     <td>
       <h3>Localization</h3>
       <p>Localization is crucial for building versatile, globally accessible apps with personalized user experiences.</p>
-      <p>Key functionalities:</p>
-      <ul>
-        <li>Seamless integration within widgets: Developers can easily integrate translations.</li>
-        <li>Remote Localization Lookup: Supports fetching remote localizations on app start, allowing dynamic updates without requiring an app release.</li>
-      </ul>
+      <p>Seamless integration within widgets: Developers can easily integrate translations</p>
     </td>
   </tr>
   <tr>
@@ -167,7 +163,6 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]enable-login`                  |                   `true`                    |                   Integrate login with email and password functionality into our application                    |
 | `--[no-]enable-social-logins`          |                   `false`                   |            Integrate social login with Apple, Google and Facebook functionality into our application            |
 | `--[no-]enable-change-language`        |                   `true`                    |                                Enables changing of the language for the project                                 |
-| `--[no-]enable-remote-translations`    |                   `true`                    |                       Enables remote translation lookup for localizations for the project                       |
 | `--[no-]enable-patrol`                 |                   `false`                   |                          Enables patrol package for integration tests for the project                           |
 | `--[no-]realtime-communication`        |                   `none`                    |                      Enables realtime communication facilities for SSE. Values: none, sse.                      |
 | `--[no-]enable-dev-menu`               |                   `true`                    |                           Enables dev menu to easily access proxy debugging services.                           |

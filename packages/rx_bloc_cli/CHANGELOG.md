@@ -1,3 +1,6 @@
+## [6.0.1]
+* Remove mention of remote translation lookup from the README
+
 ## [6.0.0]
 Contains breaking changes
 * Removed the `--enable-remote-translations` flag from the CLI
