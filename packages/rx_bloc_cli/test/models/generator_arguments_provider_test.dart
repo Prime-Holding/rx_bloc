@@ -155,5 +155,28 @@ void main() {
 
       verify(logger.warn(any)).called(4);
     });
+
+    test('should read each argument exactly once', () {
+      configureArgumentValues(Stub.defaultValues);
+
+      sut.readGeneratorArguments();
+
+      // Verify each argument that supports 
+      // interactive input is read exactly once
+      final interactiveArguments = CreateCommandArguments.values
+          .where((arg) => arg.supportsInteractiveInput);
+
+      for (final argument in interactiveArguments) {
+        verify(reader.read<Object>(
+          argument,
+          validation: anyNamed('validation'),
+        )).called(1);
+      }
+
+      verifyNever(reader.read<Object>(
+        CreateCommandArguments.interactive,
+        validation: anyNamed('validation'),
+      ));
+    });
   });
 }
