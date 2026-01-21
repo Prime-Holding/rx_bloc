@@ -11,6 +11,8 @@ import 'package:test/test.dart';
 
 part 'test_utilities.dart';
 
+void main() {}
+
 @ShouldGenerate(r'''
 part of 'rx_bloc_test.dart';
 
@@ -431,34 +433,19 @@ abstract class CounterBlocEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: 0)
   void withAnnotationAndPositional(int pp);
 
-  @RxBlocEvent(
-    type: RxBlocEventType.behaviour,
-    seed: (pp1: 1, pp2: 2),
-  )
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: (pp1: 1, pp2: 2))
   void withAnnotationAnd2Positional(int pp1, int pp2);
 
-  @RxBlocEvent(
-    type: RxBlocEventType.behaviour,
-    seed: (pp: 1, op: 2),
-  )
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: (pp: 1, op: 2))
   void withSeededPositionalAndOptional(int pp, [int? op]);
 
-  @RxBlocEvent(
-    type: RxBlocEventType.behaviour,
-    seed: (p1: null, p2: null),
-  )
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: (p1: null, p2: null))
   void withSeededTwoPositionalOptionalDefaultNull([int? p1, int? p2]);
 
-  @RxBlocEvent(
-    type: RxBlocEventType.behaviour,
-    seed: (p1: 0, p2: 1),
-  )
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: (p1: 0, p2: 1))
   void withSeededTwoPositionalOptional([int? p1, int? p2]);
 
-  @RxBlocEvent(
-    type: RxBlocEventType.behaviour,
-    seed: TestEnumParam.seed,
-  )
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: TestEnumParam.seed)
   void withSeededPositionalEnum(TestEnumParam op);
 
   @RxBlocEvent(
