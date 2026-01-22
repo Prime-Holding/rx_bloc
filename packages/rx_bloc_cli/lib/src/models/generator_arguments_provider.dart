@@ -31,8 +31,23 @@ class GeneratorArgumentsProvider {
   /// Performs necessary input validations
   GeneratorArguments readGeneratorArguments() {
     final projectConfiguration = _readProjectConfiguration();
-    final authConfiguration = _readAuthConfiguration();
-    final featureConfiguration = _readFeatureConfiguration(authConfiguration);
+
+    // Read onboarding and forgottenPassword once, as they are needed by both
+    // auth and feature configurations
+    final onboardingEnabled =
+        _reader.read<bool>(CreateCommandArguments.onboarding);
+    final forgottenPassword =
+        _reader.read<bool>(CreateCommandArguments.forgottenPassword);
+
+    final authConfiguration = _readAuthConfiguration(
+      onboardingEnabled: onboardingEnabled,
+      forgottenPassword: forgottenPassword,
+    );
+    final featureConfiguration = _readFeatureConfiguration(
+      authConfiguration: authConfiguration,
+      onboardingEnabled: onboardingEnabled,
+      forgottenPassword: forgottenPassword,
+    );
     final showcaseConfiguration = _readShowcaseConfiguration(
       authConfiguration,
       featureConfiguration,
@@ -71,7 +86,10 @@ class GeneratorArgumentsProvider {
 
   /// region Auth Configuration
 
-  AuthConfiguration _readAuthConfiguration() {
+  AuthConfiguration _readAuthConfiguration({
+    required bool onboardingEnabled,
+    required bool forgottenPassword,
+  }) {
     // Login
     var loginEnabled = _reader.read<bool>(CreateCommandArguments.login);
 
@@ -87,14 +105,6 @@ class GeneratorArgumentsProvider {
 
     // Multi-Factor Authentication
     final mfaEnabled = _reader.read<bool>(CreateCommandArguments.mfa);
-
-    // Onboarding/Registration
-    final onboardingEnabled =
-        _reader.read<bool>(CreateCommandArguments.onboarding);
-
-    // Forgotten Password
-    final forgottenPassword =
-        _reader.read<bool>(CreateCommandArguments.forgottenPassword);
 
     if (mfaEnabled && !otpEnabled) {
       _logger
@@ -129,8 +139,11 @@ class GeneratorArgumentsProvider {
 
   /// region Feature Configuration
 
-  FeatureConfiguration _readFeatureConfiguration(
-      AuthConfiguration authConfiguration) {
+  FeatureConfiguration _readFeatureConfiguration({
+    required AuthConfiguration authConfiguration,
+    required bool onboardingEnabled,
+    required bool forgottenPassword,
+  }) {
     // Change language
     final changeLanguageEnabled =
         _reader.read<bool>(CreateCommandArguments.changeLanguage);
@@ -162,18 +175,12 @@ class GeneratorArgumentsProvider {
     // Profile
     var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
 
-    // Onboarding/Registration
-    var onboardingEnabled =
-        _reader.read<bool>(CreateCommandArguments.onboarding);
-
-    // Forgotten Password
-    final forgottenPassword =
-        _reader.read<bool>(CreateCommandArguments.forgottenPassword);
-
-    if (forgottenPassword && !onboardingEnabled) {
+    // Adjust onboarding based on forgottenPassword dependency
+    var adjustedOnboardingEnabled = onboardingEnabled;
+    if (forgottenPassword && !adjustedOnboardingEnabled) {
       _logger.warn(
           'Onboarding enabled, due to Forgotten Password feature requirement');
-      onboardingEnabled = true;
+      adjustedOnboardingEnabled = true;
     }
 
     // Authentication
@@ -200,7 +207,7 @@ class GeneratorArgumentsProvider {
       cicdGithubEnabled: cicdGithubEnabled,
       cicdCodemagicEnabled: cicdCodemagicEnabled,
       profileEnabled: profileEnabled,
-      onboardingEnabled: onboardingEnabled,
+      onboardingEnabled: adjustedOnboardingEnabled,
       forgottenPassword: forgottenPassword,
     );
   }
