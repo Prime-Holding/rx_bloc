@@ -1,13 +1,10 @@
-## [6.0.1]
-* Remove mention of remote translation lookup from the README
-* Fix issue with interactive mode where arguments were read twice
-
 ## [6.0.0]
 Contains breaking changes
 * Removed the `--enable-remote-translations` flag from the CLI
 * Remote translation functionality is now removed from the generated project
 * `r_flutter` dependency is removed from the generated project as it is no longer maintained
 * Update generated project's dependencies to the latest versions
+* Fix issue with interactive mode where arguments were read twice
 
 ## [5.5.4]
 * Fix generated project not properly compiling due to old dependencies
