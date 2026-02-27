@@ -191,6 +191,15 @@ enum CreateCommandArguments {
     help: 'Enables Profile feature capability for the project',
   ),
 
+  /// In-app notifications
+  inAppNotifications(
+    name: 'enable-in-app-notifications',
+    type: CreateCommandArgumentType.boolean,
+    defaultsTo: true,
+    prompt: 'Enable In-app notifications:',
+    help: 'Enables In-app notifications for the project',
+  ),
+
   /// Interactive input
   interactive(
     name: 'interactive',

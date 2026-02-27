@@ -25,7 +25,8 @@ dependencies: {{#enable_dev_menu}}
   flutter_facebook_auth: ^7.1.1{{/enable_social_logins}}{{#push_notifications}}
   flutter_local_notifications: ^19.0.0{{/push_notifications}}
   flutter_localizations:
-    sdk: flutter
+    sdk: flutter{{#enable_in_app_notifications}}
+  flutter_quill: ^11.5.0{{/enable_in_app_notifications}}
   flutter_rx_bloc: ^7.0.0
   flutter_secure_storage: ^9.2.2{{#enable_social_logins}}
   flutter_svg: ^2.0.10{{/enable_social_logins}}

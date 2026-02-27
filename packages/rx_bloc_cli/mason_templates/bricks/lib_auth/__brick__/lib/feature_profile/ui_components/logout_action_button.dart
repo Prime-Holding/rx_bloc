@@ -14,8 +14,7 @@ class LogoutActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: context.designSystem.spacing.m),
+        padding: EdgeInsets.only(right: context.designSystem.spacing.m),
         child: RxBlocMultiBuilder2<UserAccountBlocType, bool, bool>(
           state1: (bloc) => bloc.states.isLoading,
           state2: (bloc) => bloc.states.loggedIn,

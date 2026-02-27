@@ -4,7 +4,8 @@
 import '../controllers/authentication_controller.dart';{{/has_authentication}}{{#enable_feature_counter}}
 import '../controllers/count_controller.dart';{{/enable_feature_counter}}{{#enable_feature_onboarding}}
 import '../controllers/country_codes_controller.dart';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
-import '../controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}{{#enable_mfa}}
+import '../controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}{{#enable_in_app_notifications}}
+import '../controllers/in_app_notifications_controller.dart';{{/enable_in_app_notifications}}{{#enable_mfa}}
 import '../controllers/mfa_controller.dart';{{/enable_mfa}}{{#enable_forgotten_password}}
 import '../controllers/password_reset_controller.dart';{{/enable_forgotten_password}}
 import '../controllers/permissions_controller.dart';{{#enable_pin_code}}
@@ -65,7 +66,8 @@ class ServerDependencies{
     ..addController(RegistrationController(di.get(), di.get()))
     ..addController(CountryCodesController(di.get()))
     {{/enable_feature_onboarding}}{{#enable_forgotten_password}}
-    ..addController(PasswordResetController(di.get()));{{/enable_forgotten_password}}
+    ..addController(PasswordResetController(di.get())){{/enable_forgotten_password}}{{#enable_in_app_notifications}}
+    ..addController(InAppNotificationsController()){{/enable_in_app_notifications}}
   ;
 
     /// TODO: Add your controllers here

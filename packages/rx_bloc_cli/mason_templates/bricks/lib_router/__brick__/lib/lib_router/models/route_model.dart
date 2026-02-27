@@ -155,7 +155,18 @@ enum RouteModel {
     fullPath: '/profile',
     permissionName: RoutePermissions.profile,
   ),{{/enable_profile}}
-
+{{#enable_in_app_notifications}}
+  inAppNotifications(
+    pathName: RoutesPath.inAppNotifications,
+    fullPath: '/profile/inAppNotifications',
+    permissionName: RoutePermissions.inAppNotifications,
+  ),
+  inAppNotificationDetails(
+    pathName: RoutesPath.inAppNotificationDetails,
+    fullPath: '/inAppNotificationDetails/:id',
+    permissionName: RoutePermissions.inAppNotificationDetails,
+  ),
+{{/enable_in_app_notifications}}
   {{#enable_pin_code}}
   /// Pin Code
   verifyPinCode(

@@ -49,7 +49,9 @@ import '../lib_mfa/models/mfa_response.dart';{{/enable_mfa}}
 import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
-import 'models/routes_path.dart';
+import 'models/routes_path.dart';{{#enable_in_app_notifications}}
+import '../feature_in_app_notifications/di/in_app_notification_details_page_with_dependencies.dart';
+import '../feature_in_app_notifications/di/in_app_notifications_page_with_dependencies.dart';{{/enable_in_app_notifications}}
 import 'views/error_page.dart';
 
 part 'router.g.dart'; {{#enable_mfa}}

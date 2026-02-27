@@ -14,6 +14,7 @@ class FeatureConfiguration {
     required this.profileEnabled,
     required this.onboardingEnabled,
     required this.forgottenPassword,
+    required this.inAppNotificationsEnabled,
   });
 
   /// Analytics
@@ -54,4 +55,7 @@ class FeatureConfiguration {
 
   /// Forgotten password feature
   final bool forgottenPassword;
+
+  /// In-app notifications
+  final bool inAppNotificationsEnabled;
 }

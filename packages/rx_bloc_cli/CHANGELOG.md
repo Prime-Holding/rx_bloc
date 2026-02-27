@@ -1,5 +1,8 @@
+## [6.1.0]
+* Introduces in app notification feature (enabled under `--enable-in-app-notifications` flag)
+
 ## [6.0.0]
-Contains breaking changes
+Contains breaking changes:
 * Removed the `--enable-remote-translations` flag from the CLI
 * Remote translation functionality is now removed from the generated project
 * `r_flutter` dependency is removed from the generated project as it is no longer maintained

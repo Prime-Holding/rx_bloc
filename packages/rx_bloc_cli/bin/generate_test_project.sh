@@ -51,7 +51,8 @@ if [ "$project_type" == "all_enabled" ]; then
   --enable-feature-qr-scanner \
   --enable-profile \
   --enable-feature-onboarding \
-  --enable-forgotten-password
+  --enable-forgotten-password \
+  --enable-in-app-notifications
 fi 
 
 if [ "$project_type" == "all_disabled" ]; then
@@ -73,7 +74,8 @@ if [ "$project_type" == "all_disabled" ]; then
   --no-enable-feature-qr-scanner \
   --no-enable-profile \
   --no-enable-feature-onboarding \
-  --no-enable-forgotten-password
+  --no-enable-forgotten-password \
+  --no-enable-in-app-notifications
 fi
 
 if [ "$project_type" == "without_showcase_features" ]; then
@@ -95,5 +97,6 @@ if [ "$project_type" == "without_showcase_features" ]; then
     --no-enable-feature-deeplinks \
     --no-enable-feature-qr-scanner \
     --no-enable-feature-onboarding \
-    --no-enable-forgotten-password
+    --no-enable-forgotten-password \
+    --no-enable-in-app-notifications
 fi

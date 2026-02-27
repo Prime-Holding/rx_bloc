@@ -27,7 +27,8 @@ class PermissionsController extends ApiController {
   Response permissionsHandler(Request request) { {{#has_authentication}}
     final headers = request.headers;
     if (!headers.containsKey(AuthenticationService.authHeader) {{#enable_feature_onboarding}} || _usersService.isTempUser(_authenticationService.getUserIdFromAuthHeader(headers)) {{/enable_feature_onboarding}}) {
-      return responseBuilder.buildOK(data: { {{#enable_mfa}}
+      return responseBuilder.buildOK(data: { {{#enable_in_app_notifications}}
+        'InAppNotificationsRoute': true, {{/enable_in_app_notifications}}{{#enable_mfa}}
         'MfaRoute': false,{{/enable_mfa}}{{#enable_pin_code}}
         'SetPinCodeRoute': false,
         'ConfirmPinCodeRoute': false,
@@ -62,7 +63,8 @@ class PermissionsController extends ApiController {
 
     _authenticationService.isAuthenticated(request);{{/has_authentication}}
 
-    return responseBuilder.buildOK(data: { {{#enable_mfa}}
+    return responseBuilder.buildOK(data: { {{#enable_in_app_notifications}}
+      'InAppNotificationsRoute': true,{{/enable_in_app_notifications}}{{#enable_mfa}}
       'MfaRoute': true,{{/enable_mfa}}{{#enable_pin_code}}
       'SetPinCodeRoute': true,
       'ConfirmPinCodeRoute': true,

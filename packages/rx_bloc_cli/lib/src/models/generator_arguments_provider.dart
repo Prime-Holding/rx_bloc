@@ -175,6 +175,10 @@ class GeneratorArgumentsProvider {
     // Profile
     var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
 
+    // In-app notifications
+    final inAppNotificationsEnabled =
+        _reader.read<bool>(CreateCommandArguments.inAppNotifications);
+
     // Adjust onboarding based on forgottenPassword dependency
     var adjustedOnboardingEnabled = onboardingEnabled;
     if (forgottenPassword && !adjustedOnboardingEnabled) {
@@ -209,6 +213,7 @@ class GeneratorArgumentsProvider {
       profileEnabled: profileEnabled,
       onboardingEnabled: adjustedOnboardingEnabled,
       forgottenPassword: forgottenPassword,
+      inAppNotificationsEnabled: inAppNotificationsEnabled,
     );
   }
 
@@ -237,8 +242,16 @@ class GeneratorArgumentsProvider {
         _reader.read<bool>(CreateCommandArguments.qrScanner);
 
     // Widget toolkit
-    final widgetToolkitEnabled =
+    var widgetToolkitEnabled =
         _reader.read<bool>(CreateCommandArguments.widgetToolkit);
+
+    // In-app notifications depend on widget toolkit
+    if (featureConfiguration.inAppNotificationsEnabled &&
+        !widgetToolkitEnabled) {
+      _logger.warn(
+          'Widget toolkit enabled, due to In-app notifications feature requirement');
+      widgetToolkitEnabled = true;
+    }
 
     return ShowcaseConfiguration(
       counterEnabled: counterEnabled,

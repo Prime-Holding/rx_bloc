@@ -1,0 +1,10 @@
+name: feature_in_app_notifications
+description: Brick containing code for in-app notifications functionality.
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.49 <0.1.0"
+
+vars:
+  - project_name

@@ -21,7 +21,8 @@ class ProfilePageWithDependencies extends StatelessWidget {
         RxBlocProvider<ProfileBlocType>(
           create: (context) => ProfileBloc(
             context.read(),{{#enable_feature_onboarding}}
-            context.read(),{{/enable_feature_onboarding}}
+            context.read(),{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
+            context.read(),{{/enable_in_app_notifications}}
           ),
         ),
       ];

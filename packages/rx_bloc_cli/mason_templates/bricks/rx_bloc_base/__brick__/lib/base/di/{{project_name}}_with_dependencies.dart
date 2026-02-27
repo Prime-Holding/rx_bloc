@@ -14,7 +14,10 @@ import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 
 import '../../feature_pin_code/repository/pin_biometrics_repository.dart';
-import '../../feature_pin_code/services/verify_pin_code_service.dart';{{/enable_pin_code}}
+import '../../feature_pin_code/services/verify_pin_code_service.dart';{{/enable_pin_code}}{{#enable_in_app_notifications}}
+import '../../feature_in_app_notifications/data_sources/in_app_notifications_data_source.dart';
+import '../../feature_in_app_notifications/repositories/in_app_notifications_repository.dart';
+import '../../feature_in_app_notifications/services/in_app_notifications_service.dart';{{/enable_in_app_notifications}}
 import '../../feature_splash/services/splash_service.dart';{{#analytics}}
 import '../../lib_analytics/blocs/analytics_bloc.dart';
 import '../../lib_analytics/repositories/analytics_repository.dart';
@@ -259,7 +262,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PasswordResetRemoteDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),{{/enable_forgotten_password}}
+        ),{{/enable_forgotten_password}}{{#enable_in_app_notifications}}
+        Provider<InAppNotificationsDataSource>(
+          create: (context) => InAppNotificationsDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),{{/enable_in_app_notifications}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -367,7 +375,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
           ),
-        ),{{/enable_forgotten_password}}
+        ),{{/enable_forgotten_password}}{{#enable_in_app_notifications}}
+        Provider<InAppNotificationsRepository>(
+          create: (context) => InAppNotificationsRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),{{/enable_in_app_notifications}}
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -452,7 +466,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
           dispose: (context, value) => value.dispose(),
-        ),{{/enable_feature_deeplinks}}
+        ),{{/enable_feature_deeplinks}}{{#enable_in_app_notifications}}
+        Provider<InAppNotificationsService>(
+          create: (context) => InAppNotificationsService(
+            context.read(),
+          ),
+        ),{{/enable_in_app_notifications}}
       ];
 
   List<SingleChildWidget> get _blocs => [ {{#has_authentication}}

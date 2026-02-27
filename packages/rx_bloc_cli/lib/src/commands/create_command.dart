@@ -149,6 +149,8 @@ class CreateCommand extends Command<int> {
             'cicd_codemagic': arguments.cicdCodemagicEnabled,
             'enable_mfa': arguments.mfaEnabled,
             'enable_profile': arguments.profileEnabled,
+            'enable_in_app_notifications':
+                arguments.inAppNotificationsEnabled,
             'has_otp': arguments.hasOtp,
           },
     );
@@ -308,6 +310,7 @@ class CreateCommand extends Command<int> {
     _usingLog('CI/CD', arguments.cicdEnabled);
     _usingLog('Multi-Factor Authentication', arguments.mfaEnabled);
     _usingLog('Profile Feature', arguments.profileEnabled);
+    _usingLog('In-app Notifications', arguments.inAppNotificationsEnabled);
   }
 
   /// Shows a delayed log with a success symbol in front of it
