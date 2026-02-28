@@ -167,11 +167,23 @@ Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events
       this._coordinatorBloc,
     ) {
       _$loadPageEvent
-          .startWith(const _LoadPageEventArgs(reset: true))
-          .fetchPaginatedList(
-            (reset) => _service.fetchPaginatedData(reset),
+          .startWith(true)
+          .switchMap(
+            (reset) {
+              if (reset) _paginatedList.value.reset();
+
+              return _service
+                  .fetchPaginatedData(
+                    page: _paginatedList.value.pageNumber + 1,
+                    pageSize: _paginatedList.value.pageSize,
+                  )
+                  .asResultStream();
+            },
           )
+          // Enable state handling by the current bloc
           .setResultStateHandler(this)
+          // Merge the data in the _paginatedList
+          .mergeWithPaginatedList(_paginatedList)
           .bind(_paginatedList)
           .addTo(_compositeSubscription);
     }
