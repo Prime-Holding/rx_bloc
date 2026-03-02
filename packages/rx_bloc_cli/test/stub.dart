@@ -159,7 +159,8 @@ final class Stub {
       onboardingEnabled: CreateCommandArguments.onboarding.defaultValue(),
       forgottenPassword:
           CreateCommandArguments.forgottenPassword.defaultValue(),
-      inAppNotificationsEnabled: CreateCommandArguments.inAppNotifications.defaultValue(),
+      inAppNotificationsEnabled:
+          CreateCommandArguments.inAppNotifications.defaultValue(),
     ),
     showcaseConfiguration: ShowcaseConfiguration(
       counterEnabled: CreateCommandArguments.counter.defaultValue(),

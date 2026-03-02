@@ -248,8 +248,9 @@ class GeneratorArgumentsProvider {
     // In-app notifications depend on widget toolkit
     if (featureConfiguration.inAppNotificationsEnabled &&
         !widgetToolkitEnabled) {
-      _logger.warn(
-          'Widget toolkit enabled, due to In-app notifications feature requirement');
+      _logger
+          .warn('Widget toolkit enabled, due to In-app notifications feature '
+              'requirement');
       widgetToolkitEnabled = true;
     }
 
