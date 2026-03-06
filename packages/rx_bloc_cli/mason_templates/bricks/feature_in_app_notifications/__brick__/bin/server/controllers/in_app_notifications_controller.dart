@@ -1,79 +1,53 @@
+// ignore_for_file: cascade_invocations
+
+import 'dart:async';
+
 import 'package:shelf/shelf.dart';
 
+import '../repositories/in_app_notifications_repository.dart';
+import '../repositories/sse_repository.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
 
 class InAppNotificationsController extends ApiController {
-  final _notifications = List.generate(
-    25,
-    (i) => {
-      'id': '${i + 1}',
-      'title': 'Notification ${i + 1}',
-      'description': 'Description for notification ${i + 1}. '
-          'This is a sample notification to demonstrate paginated loading.',
-      'body': _buildQuillDelta(i + 1),
-      'date': DateTime(DateTime.now().year, DateTime.now().month, i % 28 + 1).toIso8601String(),
-      'isUnread': i < 5,
-    },
-  );
+  InAppNotificationsController(this._repository, this._sseRepository) {
+    _sseRepository
+      ..onFirstClientConnected = _startPeriodicNotifications
+      ..onLastClientDisconnected = _stopPeriodicNotifications;
+  }
 
-  static List<Map<String, dynamic>> _buildQuillDelta(int index) => [
-        {
-          'insert': 'Notification $index',
-          'attributes': {'bold': true},
-        },
-        {
-          'insert': '\n',
-          'attributes': {'header': 1},
-        },
-        {'insert': '\nThis is a detailed description for '},
-        {
-          'insert': 'notification $index',
-          'attributes': {'bold': true},
-        },
-        {
-          'insert': '. It contains rich text content rendered with a Quill editor.\n\n',
-        },
-        {
-          'insert': 'Key Details',
-          'attributes': {'bold': true},
-        },
-        {
-          'insert': '\n',
-          'attributes': {'header': 3},
-        },
-        {'insert': 'Created on January ${index % 28 + 1}, 2025'},
-        {
-          'insert': '\n',
-          'attributes': {'list': 'bullet'},
-        },
-        {'insert': 'Priority: ${index <= 5 ? "High" : "Normal"}'},
-        {
-          'insert': '\n',
-          'attributes': {'list': 'bullet'},
-        },
-        {'insert': 'Type: ${index <= 5 ? "Warning" : "Information"}'},
-        {
-          'insert': '\n',
-          'attributes': {'list': 'bullet'},
-        },
-        { 'insert': '\n' },
-        {
-          'insert': {
-            'image':
-                'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800',
-          },
-        },
-        {'insert': '\n\n'},
-        {'insert': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'},
-        {'insert': '\n\n'},
-        {
-          'insert':
-              'Please review the information above and take the appropriate action.',
-          'attributes': {'italic': true},
-        },
-        {'insert': '\n'},
-      ];
+  final InAppNotificationsRepository _repository;
+  final SseRepository _sseRepository;
+  Timer? _notificationTimer;
+
+  static const _notificationInterval = Duration(seconds: 30);
+  static const _newNotificationEvent = 'newNotification';
+
+  void _startPeriodicNotifications() {
+    if (_notificationTimer != null) return;
+    _notificationTimer = Timer.periodic(
+      _notificationInterval,
+      (_) => _generateNotification(),
+    );
+    print(
+        '[Notifications] Periodic generation started (every ${_notificationInterval.inSeconds} seconds)');
+  }
+
+  void _stopPeriodicNotifications() {
+    _notificationTimer?.cancel();
+    _notificationTimer = null;
+    print('[Notifications] Periodic generation stopped (no clients)');
+  }
+
+  void _generateNotification() {
+    final notification = _repository.generateNotification();
+
+    _sseRepository.broadcastEvent({
+      'type': _newNotificationEvent,
+    });
+
+    print('[Notifications] Auto-generated: ${notification['title']}');
+  }
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -94,26 +68,25 @@ class InAppNotificationsController extends ApiController {
       '/api/in-app-notifications/<id>/read',
       _markAsReadHandler,
     );
+
+    router.addRequest(
+      RequestType.GET,
+      '/api/sse',
+      _sseHandler,
+    );
   }
 
   Response _notificationsHandler(Request request) {
-    final page = int.tryParse(
-          request.url.queryParameters['page'] ?? '0',
-        ) ??
-        0;
-    final pageSize = int.tryParse(
-          request.url.queryParameters['pageSize'] ?? '10',
-        ) ??
-        10;
+    final page = int.tryParse(request.url.queryParameters['page'] ?? '0') ?? 0;
+    final pageSize =
+        int.tryParse(request.url.queryParameters['pageSize'] ?? '10') ?? 10;
     final unreadOnly =
         request.url.queryParameters['unreadOnly']?.toLowerCase() == 'true';
 
-    final filtered = unreadOnly
-        ? _notifications.where((n) => n['isUnread'] == true).toList()
-        : _notifications;
+    final filtered =
+        unreadOnly ? _repository.getUnread() : _repository.getAll();
 
-    final totalUnreadCount =
-        _notifications.where((n) => n['isUnread'] == true).length;
+    final totalUnreadCount = _repository.unreadCount;
 
     final start = page * pageSize;
     final end = (start + pageSize).clamp(0, filtered.length);
@@ -132,26 +105,38 @@ class InAppNotificationsController extends ApiController {
   }
 
   Response _getNotificationByIdHandler(Request request, String id) {
-    final notification = _notifications.firstWhere(
-      (n) => n['id'] == id,
-      orElse: () => throw NotFoundException(
-        'Notification with id: $id is not found.',
-      ),
-    );
+    final notification = _repository.getById(id);
+    if (notification == null) {
+      throw NotFoundException('Notification with id: $id is not found.');
+    }
 
     return responseBuilder.buildOK(data: notification);
   }
 
   Response _markAsReadHandler(Request request, String id) {
-    final notification = _notifications.firstWhere(
-      (n) => n['id'] == id,
-      orElse: () => throw NotFoundException(
-        'Notification with id: $id is not found.',
-      ),
-    );
+    final notification = _repository.getById(id);
+    if (notification == null) {
+      throw NotFoundException('Notification with id: $id is not found.');
+    }
 
-    notification['isUnread'] = false;
+    _repository.markAsRead(id);
 
     return responseBuilder.buildOK(data: notification);
+  }
+
+  Response _sseHandler(Request request) {
+    final stream = _sseRepository.connectClient(
+      initialEvent: {
+        'type': 'connected',
+      },
+    );
+
+    return Response.ok(
+      stream,
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+      },
+    );
   }
 }

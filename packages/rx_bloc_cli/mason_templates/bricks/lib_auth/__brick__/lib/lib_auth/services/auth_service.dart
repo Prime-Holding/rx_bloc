@@ -14,10 +14,7 @@ class AuthService {
   Future<String?> getToken() => _authRepository.getToken();
 
   /// Checks if the user is authenticated.
-  Future<bool> isAuthenticated() async {
-    final token = await getToken();
-    return token != null;
-  }
+  Future<bool> isAuthenticated() => _authRepository.isAuthenticated();
 
   /// Saves the token passed as [newToken] into persist storage.
   Future<void> saveToken(String newToken) =>

@@ -14,13 +14,16 @@ import '../controllers/push_notifications_controller.dart';{{#enable_feature_onb
 import '../controllers/registration_controller.dart';
 import '../controllers/users_controller.dart';{{/enable_feature_onboarding}}{{#has_authentication}}
 import '../repositories/auth_token_repository.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
-import '../repositories/country_codes_repository.dart';{{/enable_feature_onboarding}}{{#enable_pin_code}}
-import '../repositories/pin_code_repository.dart';{{/enable_pin_code}}{{#has_authentication}}
-import '../repositories/users_repository.dart';{{/has_authentication}}{{#has_authentication}}
+import '../repositories/country_codes_repository.dart';{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
+import '../repositories/in_app_notifications_repository.dart';{{/enable_in_app_notifications}}{{#enable_pin_code}}
+import '../repositories/pin_code_repository.dart';{{/enable_pin_code}}{{#realtime_communication}}
+import '../repositories/sse_repository.dart';{{/realtime_communication}}{{#has_authentication}}
+import '../repositories/users_repository.dart';
 import '../services/authentication_service.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
 import '../services/country_codes_service.dart';{{/enable_feature_onboarding}}{{#enable_pin_code}}
 import '../services/pin_code_service.dart';{{/enable_pin_code}}{{#has_authentication}}
 import '../services/users_service.dart';{{/has_authentication}}
+
 import '../utils/api_controller.dart';
 import '../utils/dependency_injector.dart';
 
@@ -36,8 +39,9 @@ class ServerDependencies{
     di.register(UsersRepository());
     di.register(UsersService(di.get()));{{/has_authentication}}{{#enable_feature_onboarding}}
     di.register(CountryCodesRepository());
-    di.register(CountryCodesService(di.get()));
-    {{/enable_feature_onboarding}}
+    di.register(CountryCodesService(di.get()));{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
+    di.register(InAppNotificationsRepository());{{/enable_in_app_notifications}}{{#realtime_communication}}
+    di.register(SseRepository());{{/realtime_communication}}
 
     /// TODO: Add your dependencies here
 
@@ -67,7 +71,7 @@ class ServerDependencies{
     ..addController(CountryCodesController(di.get()))
     {{/enable_feature_onboarding}}{{#enable_forgotten_password}}
     ..addController(PasswordResetController(di.get())){{/enable_forgotten_password}}{{#enable_in_app_notifications}}
-    ..addController(InAppNotificationsController()){{/enable_in_app_notifications}}
+    ..addController(InAppNotificationsController(di.get(), di.get())){{/enable_in_app_notifications}}
   ;
 
     /// TODO: Add your controllers here

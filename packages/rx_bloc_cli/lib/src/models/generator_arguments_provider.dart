@@ -156,7 +156,7 @@ class GeneratorArgumentsProvider {
     // Realtime communication
     final realtimeCommunication = _reader.read<RealtimeCommunicationType>(
         CreateCommandArguments.realtimeCommunication);
-    final realtimeCommunicationEnabled =
+    var realtimeCommunicationEnabled =
         realtimeCommunication != RealtimeCommunicationType.none;
 
     // Dev menu
@@ -178,6 +178,12 @@ class GeneratorArgumentsProvider {
     // In-app notifications
     final inAppNotificationsEnabled =
         _reader.read<bool>(CreateCommandArguments.inAppNotifications);
+
+    if (inAppNotificationsEnabled && !realtimeCommunicationEnabled) {
+      _logger.warn('Realtime communication enabled, due to In-app '
+          'notifications feature requirement');
+      realtimeCommunicationEnabled = true;
+    }
 
     // Adjust onboarding based on forgottenPassword dependency
     var adjustedOnboardingEnabled = onboardingEnabled;

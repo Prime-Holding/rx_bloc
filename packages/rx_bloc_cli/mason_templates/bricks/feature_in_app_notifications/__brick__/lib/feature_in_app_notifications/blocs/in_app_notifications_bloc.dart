@@ -3,6 +3,8 @@ import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/app/config/app_constants.dart';
+import '../../base/common_blocs/event_bloc.dart';
+import '../../base/models/notification_event_model.dart';
 import '../models/in_app_notification_model.dart';
 import '../models/in_app_notifications_response_model.dart';
 import '../services/in_app_notifications_service.dart';
@@ -39,17 +41,23 @@ abstract class InAppNotificationsBlocStates {
 /// A bloc for fetching and managing in-app notifications
 @RxBloc()
 class InAppNotificationsBloc extends $InAppNotificationsBloc {
-  InAppNotificationsBloc(this._service) {
+  InAppNotificationsBloc(this._service, this._eventBloc) {
     _$markAsReadEvent
         .switchMap((id) => _service.markAsRead(id).asResultStream())
         .setResultStateHandler(this)
         .whereSuccess()
         .listen((_) => loadNotifications(reset: true))
         .addTo(_compositeSubscription);
+
+    _eventBloc.states.notificationEvents
+        .where((event) => event.type == NotificationEventType.newNotification)
+        .listen((_) => loadNotifications(reset: true))
+        .addTo(_compositeSubscription);
   }
 
   static const _pageSize = 10;
   final InAppNotificationsService _service;
+  final EventBlocType _eventBloc;
   final _paginatedListSubject =
       BehaviorSubject<PaginatedList<InAppNotificationModel>>.seeded(
     PaginatedList(list: [], pageSize: _pageSize),
@@ -62,8 +70,10 @@ class InAppNotificationsBloc extends $InAppNotificationsBloc {
       _$loadNotificationsEvent
           .startWith(false)
           .throttleTime(kBackpressureDuration)
-          .withLatestFrom(_showUnreadOnlySubject,
-              (reset, showUnreadOnly) => (reset, showUnreadOnly))
+          .withLatestFrom(
+            _showUnreadOnlySubject,
+            (reset, showUnreadOnly) => (reset, showUnreadOnly),
+          )
           .switchMap((args) {
             if (args.$1) {
               _paginatedListSubject.value.reset();
@@ -96,7 +106,9 @@ class InAppNotificationsBloc extends $InAppNotificationsBloc {
   @override
   Stream<bool> get isFilteredByUnread => _$toggleUnreadFilterEvent
       .withLatestFrom(
-          _showUnreadOnlySubject, (_, showUnreadOnly) => !showUnreadOnly)
+        _showUnreadOnlySubject,
+        (_, showUnreadOnly) => !showUnreadOnly,
+      )
       .doOnData((showUnreadOnly) {
         _showUnreadOnlySubject.add(showUnreadOnly);
         loadNotifications(reset: true);

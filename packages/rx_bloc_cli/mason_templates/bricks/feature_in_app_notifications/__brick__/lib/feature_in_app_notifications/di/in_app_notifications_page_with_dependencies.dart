@@ -12,7 +12,8 @@ class InAppNotificationsPageWithDependencies extends StatelessWidget {
   Widget build(BuildContext context) => MultiProvider(
         providers: [
           RxBlocProvider<InAppNotificationsBlocType>(
-            create: (context) => InAppNotificationsBloc(context.read()),
+            create: (context) =>
+                InAppNotificationsBloc(context.read(), context.read()),
           ),
         ],
         child: const InAppNotificationsPage(),

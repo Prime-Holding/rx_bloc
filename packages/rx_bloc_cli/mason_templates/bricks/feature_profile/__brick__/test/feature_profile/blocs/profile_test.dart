@@ -1,10 +1,10 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';{{#enable_feature_onboarding}}
-import 'package:{{project_name}}/base/common_blocs/coordinator_bloc.dart';{{/enable_feature_onboarding}}
+import 'package:{{project_name}}/base/common_blocs/coordinator_bloc.dart';{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
+import 'package:{{project_name}}/base/common_blocs/event_bloc.dart';{{/enable_in_app_notifications}}
 import 'package:{{project_name}}/base/common_services/push_notifications_service.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';{{#enable_in_app_notifications}}
 import 'package:{{project_name}}/feature_in_app_notifications/services/in_app_notifications_service.dart';{{/enable_in_app_notifications}}
@@ -17,13 +17,15 @@ import 'profile_test.mocks.dart';
 @GenerateMocks([
   {{#enable_feature_onboarding}}CoordinatorBlocType,{{/enable_feature_onboarding}}
   PushNotificationsService,{{#enable_in_app_notifications}}
-  InAppNotificationsService,{{/enable_in_app_notifications}}
+  InAppNotificationsService,
+  EventBlocType,{{/enable_in_app_notifications}}
 ])
 void main() {
   {{#enable_feature_onboarding}}
   late CoordinatorBlocType coordinatorBloc;{{/enable_feature_onboarding}}
   late PushNotificationsService notificationService;{{#enable_in_app_notifications}}
-  late InAppNotificationsService inAppNotificationsService;{{/enable_in_app_notifications}}
+  late InAppNotificationsService inAppNotificationsService;
+  late EventBlocType eventBloc;{{/enable_in_app_notifications}}
 
   void defineWhen({
     bool? areNotificationsEnabled,
@@ -38,12 +40,14 @@ void main() {
   ProfileBloc profileBloc() => ProfileBloc(
         notificationService,{{#enable_feature_onboarding}}
         coordinatorBloc,{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
-        inAppNotificationsService,{{/enable_in_app_notifications}}
+        inAppNotificationsService,
+        eventBloc,{{/enable_in_app_notifications}}
       );
   setUp(() { {{#enable_feature_onboarding}}
     coordinatorBloc = coordinatorBlocMockFactory();{{/enable_feature_onboarding}}
     notificationService = MockPushNotificationsService();{{#enable_in_app_notifications}}
-    inAppNotificationsService = MockInAppNotificationsService();{{/enable_in_app_notifications}}
+    inAppNotificationsService = MockInAppNotificationsService();
+    eventBloc = MockEventBlocType();{{/enable_in_app_notifications}}
   });
 
   group('test profile_bloc_dart state areNotificationsEnabled', () {

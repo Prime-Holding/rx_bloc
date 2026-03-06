@@ -39,14 +39,17 @@ Future main() async {
       .addMiddleware(_securedEndpoints(config.di.get())){{/has_authentication}}
       .addHandler(cascade.handler);
 
-  // See https://pub.dev/documentation/shelf/latest/shelf_io/serve.html
-  final server = await shelf_io.serve(
-    pipeline,
+ final httpServer = await HttpServer.bind(
     InternetAddress.anyIPv4, // Allows external connections
     port,
   );
+  final requestStream = httpServer.map((request) {
+    request.response.bufferOutput = false;
+    return request;
+  });
+  shelf_io.serveRequests(requestStream, pipeline);
 
-  print('Serving at http://${server.address.host}:${server.port}');
+  print('Serving at http://${httpServer.address.host}:${httpServer.port}');
 }
 
 // Serve files from the file system.

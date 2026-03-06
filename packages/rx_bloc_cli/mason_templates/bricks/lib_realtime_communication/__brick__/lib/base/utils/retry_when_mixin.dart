@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 
+import '../models/errors/error_model.dart';
+
 /// Truncated exponential backoff.
 mixin RetryWhenMixin {
   List<Duration> get retryDelays;
@@ -14,6 +16,12 @@ mixin RetryWhenMixin {
 
   Stream<void> retry(Object error, StackTrace stackTrace) async* {
     // TODO: add custom error handling here if needed
+
+    if (!(await isAuthenticated())) {
+      _retryAttempt = 0;
+      yield* Stream.error(AccessDeniedErrorModel(), stackTrace);
+      return;
+    }
 
     final retryAfterDuration = retryDelays
             .firstWhereIndexedOrNull((index, _) => index == _retryAttempt) ??
@@ -37,4 +45,6 @@ mixin RetryWhenMixin {
   }
 
   void resetAttempts(_) => _retryAttempt = 0;
+
+  Future<bool> isAuthenticated() => Future.value(true);
 }

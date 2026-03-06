@@ -45,12 +45,16 @@ import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/router.dart';{{#has_authentication}}
 import '../../lib_router/services/router_service.dart';{{/has_authentication}}
 import '../app/config/environment_config.dart';
-import '../common_blocs/coordinator_bloc.dart';
+import '../common_blocs/coordinator_bloc.dart';{{#enable_in_app_notifications}}
+import '../common_blocs/event_bloc.dart';{{/enable_in_app_notifications}}
 import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/app_links_service.dart';
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
-import '../common_services/push_notifications_service.dart';{{#enable_feature_deeplinks}}
+import '../common_services/push_notifications_service.dart';{{#realtime_communication}}
+import '../common_services/sse_service.dart';
+import '../data_sources/remote/sse_remote_data_source.dart';
+import '../repositories/sse_repository.dart';{{/realtime_communication}}{{#enable_feature_deeplinks}}
 import '../data_sources/local/app_links_data_source.dart';{{/enable_feature_deeplinks}}{{#enable_feature_onboarding}}
 import '../common_services/onboarding_service.dart';{{/enable_feature_onboarding}}
 import '../data_sources/local/notifications_local_data_source.dart';{{#enable_pin_code}}
@@ -267,7 +271,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => InAppNotificationsDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),{{/enable_in_app_notifications}}
+        ),{{/enable_in_app_notifications}}{{#realtime_communication}}
+        Provider<SseRemoteDataSource>(
+          create: (context) => SseRemoteDataSource(
+          context.read<ApiHttpClient>(), config.baseUrl),
+        ),{{/realtime_communication}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -381,7 +389,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
           ),
-        ),{{/enable_in_app_notifications}}
+        ),{{/enable_in_app_notifications}}{{#realtime_communication}}
+        Provider<SseRepository>(
+          create: (context) =>
+              SseRepository(context.read(), context.read(), context.read()),
+        ),{{/realtime_communication}}
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -466,7 +478,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
           dispose: (context, value) => value.dispose(),
-        ),{{/enable_feature_deeplinks}}{{#enable_in_app_notifications}}
+        ),{{/enable_feature_deeplinks}}{{#realtime_communication}}
+        Provider<SseService>(
+          create: (context) => SseService(context.read()),
+        ),{{/realtime_communication}}{{#enable_in_app_notifications}}
         Provider<InAppNotificationsService>(
           create: (context) => InAppNotificationsService(
             context.read(),
@@ -474,7 +489,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),{{/enable_in_app_notifications}}
       ];
 
-  List<SingleChildWidget> get _blocs => [ {{#has_authentication}}
+  List<SingleChildWidget> get _blocs => [ {{#enable_in_app_notifications}}
+        RxBlocProvider<EventBlocType>(
+          create: (context) => EventBloc(context.read(), context.read()),
+        ),{{/enable_in_app_notifications}}{{#has_authentication}}
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
             context.read(),
