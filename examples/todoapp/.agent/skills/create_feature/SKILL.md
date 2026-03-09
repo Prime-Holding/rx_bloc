@@ -1,67 +1,49 @@
 ---
-description: Create a new feature in the project.
+description: Create a new feature in the Flutter project - Complete feature scaffolding including data layer, business logic, presentation layer, and routing
 ---
 
-# Create a New Feature Skill
+# Create a New Feature
 
-This skill guides the Agentic Development Environment (e.g., Cursor, Antigravity) in creating a new feature in the  project, adhering strictly to the established architecture and structure.
+This skill guides the AI agent in creating a new feature in the Flutter project, adhering strictly to the established architecture and RxBloc patterns.
+
+> **Reference implementation:** `lib/feature_profile/` and `lib/feature_accounts/` — these are canonical examples
 
 ## Inputs Required
 
 To successfully execute this skill, the following inputs MUST be provided:
-1. **Figma Link (using MCP):** The design file containing the UI layout, colors, typography, and intended interactions for the new feature.
-2. **Swagger (Open API) Specification:** The API documentation defining the needed API endpoints, request models, and response models.
+1. **Feature name:** The name for the new feature (e.g., `transfer_history`, `card_details`)
+2. **Figma Link (optional, using MCP):** The design file containing the UI layout, colors, typography, and intended interactions for the new feature.
+3. **Swagger (Open API) Specification (optional):** The API documentation defining the needed API endpoints, request models, and response models.
 
-## Project Structure & Architecture
+## Core Principle
 
-The application uses the **RxBloc** pattern for state management, **GoRouter** for navigation, and a centralized dependency injection system. A rigorous directory hierarchy rules where logic should be placed. Always refer to the following structure map before creating or modifying files:
+**Architecture compliance > Feature completeness > Speed**
 
-### Application-Specific Classes
-These files govern the root behavior, themes, routing, and shared dependencies of the entire app:
-- `lib/base/app`: The root widget used in application entry points.
-- `lib/base/app/config`: Environment-specific configurations and constants.
-- `lib/base/app/initialization`: Core initializations like Firebase, Push Notifications, etc.
-- `lib/base/data_sources/local`: Scoped local data sources (Shared Preferences, Secure Storage).
-- `lib/base/data_sources/remote`: Remote data sources (APIs). **Retrofit code lives here.**
-- `lib/base/theme/design_system`: Central design catalog for colors, typography, images, and spacing.
-- `lib/base/common_mappers`: Application-wide mappers converting DTOs to business models (e.g., ErrorMapper).
-- `lib/base/common_ui_components`: Reusable application-wide widgets (buttons, controls, text fields).
-- `lib/base/common_blocs`: Generic purpose BLoCs shared globally (e.g., `CoordinatorBloc`).
-- `lib/base/common_services`: Shared service classes (e.g., `TodoListService`).
-- `lib/base/repositories`: Repository classes handling generalized endpoints.
-- `lib/base/models`: Foundation DTOs and business models.
-- `lib/base/di`: Centralized DI providers for global instances.
-
-### Application-Specific Libraries
-These handle core technical mechanics disconnected from UI features.
-- `lib/lib_auth`: OAuth2 token management logic.
-- `lib/lib_permissions`: ACL (Access Control List) logic guarding route access.
-- `lib/lib_router`: Core navigation handling (`RouterBloc` and GoRouter instances).
-- `lib/lib_router/routes`: Declarations for mapping path definitions to UI pages.
-
-### Feature-Specific Classes
-Every new visual or functional vertical in the application MUST be isolated within `lib/feature_{name}` following this strict internal structure:
-- `feature_{name}/views`: Contains the UI screen implementation (`{name}_page.dart`).
-- `feature_{name}/ui_components`: Local, non-reusable UI widgets tailored uniquely to this feature.
-- `feature_{name}/models` *(optional)*: States or DTOs bound singularly to this feature's logic.
-- `feature_{name}/blocs`: The `rx_bloc` files reacting to UI inputs to compute states (`{name}_bloc.dart` + generated files).
-- `feature_{name}/services`: Middle-layer orchestrators parsing repository data for the BLoC (`{name}_service.dart`).
-- `feature_{name}/di`: Dependency injection initializing the BLoC and required dependencies (`{name}_page_with_dependencies.dart`).
-
+Every new feature must follow the exact patterns from the reference implementations. The agent must understand the project architecture before generating any code.
 
 ## Step-by-Step Execution Plan
 
-### 1. Analyze Inputs
-- Use MCP to parse the provided Figma Link and extract the UI design details (widget hierarchy, styling from the design system).
-- Analyze the Swagger spec to identify necessary DTOs (Data Transfer Objects) and endpoints.
+### 1. Analysis Phase (Before Generating)
+
+Before generating any code, the agent MUST:
+
+- [ ] Determine the feature name in snake_case (e.g., `my_new_feature`)
+- [ ] Review the Figma design (if provided) to understand UI requirements
+- [ ] Review the Swagger spec (if provided) to identify API endpoints and models
+- [ ] Check `lib/base/models/` for existing models that can be reused
+- [ ] Check `lib/base/repositories/` for existing repositories
+- [ ] Check `lib/base/common_services/` for existing services
+- [ ] Enumerate all pages/screens needed for the feature
+- [ ] Identify which BLoC pattern to use (list, details, or manage)
 
 ### 2. Generate Data Layer
-- **Models:** Create necessary request/response models in `lib/base/models/` (or feature-specific models) using `json_serializable` and `json_annotation`.
+- **Models:** Create necessary request/response models in `lib/base/models/` using `json_serializable` and `json_annotation`. Feature-specific models can optionally go in `lib/feature_{name}/models/`.
 - **Data Sources:** Add new endpoints in `lib/base/data_sources/remote/`. You **MUST use Retrofit** to define these HTTP clients.
     - Create the abstract class using `@RestApi()` and include the `.g.dart` file so `build_runner` can generate the implementation.
   ```dart
   import 'package:dio/dio.dart';
-  import 'package:retrofit/retrofit.dart';
+  import 'package:retrofit/error_logger.dart';
+  import 'package:retrofit/http.dart';
 
   part 'my_feature_remote_data_source.g.dart';
 
@@ -77,10 +59,10 @@ Every new visual or functional vertical in the application MUST be isolated with
     Future<MyDomainModel> addItem(@Body() MyDomainModel item);
   }
   ```
-- **Repositories:** Implement or update repositories in `lib/base/repositories/` to map the DTOs to business models and provide them to the services.
+- **Repositories:** Implement repositories in `lib/base/repositories/` to interact with data sources and provide data to services.
     - **Error Handling:** When implementing repository methods, you MUST wrap your data source calls using the `ErrorMapper` (located in `lib/base/common_mappers/error_mappers/error_mapper.dart`). This ensures that specific exceptions (like `DioException`) are properly caught and mapped to unified `ErrorModel` exceptions.
   ```dart
-  import 'package:todoapp/base/common_mappers/error_mappers/error_mapper.dart';
+  import '../common_mappers/error_mappers/error_mapper.dart';
 
   class MyFeatureRepository {
     MyFeatureRepository(this._errorMapper, this._remoteDataSource);
@@ -96,30 +78,67 @@ Every new visual or functional vertical in the application MUST be isolated with
 ### 3. Generate Business Domain Layer
 The Domain Layer orchestrates logic between business requirements and the Data Layer. If your feature contains complex logic, data transformations, or requires filtering/syncing, you should implement a `Service` class.
 
-- **Services:** Create your service in `lib/feature_{new_feature_name}/services/` (or `lib/base/common_services/` if highly reusable).
-- **Dependency Injection Requirements:** Services MUST act strictly as orchestrators and rely on dependency injection for access to their Repositories.
+- **Services:** Create your service in `lib/feature_{new_feature_name}/services/`.
+- **Dependency Injection:** Services act as orchestrators and rely on dependency injection for access to repositories and other services.
 
   ```dart
-  import '../models/my_domain_model.dart';
-  import '../repositories/my_feature_repository.dart';
+  class MyFeatureService {
+    //Add repository dependencies as needed
+    MyFeatureService();
+
+    Future<String> fetchData() async {
+      // Perform business logic, data transformations, or call repositories
+      await Future.delayed(const Duration(seconds: 1));
+      return 'Data fetched successfully';
+    }
+  }
+  ```
+
+  **With Repository Dependencies:**
+  ```dart
+  import '../../base/repositories/my_feature_repository.dart';
 
   class MyFeatureService {
-    // Inject required repositories via the constructor
-    MyFeatureService(
-      this._repository,
-      // Optional: Inject other repositories (e.g., ConnectivityRepository) if needed
-    );
+    MyFeatureService(this._repository);
 
     final MyFeatureRepository _repository;
 
-    /// Fetches a list of items and applies business logic
+    /// Fetches data and applies business logic
     Future<List<MyDomainModel>> performBusinessLogic() async {
-      final List<MyDomainModel> items = await _repository.fetchData();
+      final items = await _repository.fetchData();
       
       // Perform any necessary business transformations
-      final filteredItems = items.where((item) => item.isValid).toList();
-      
-      return filteredItems;
+      return items.where((item) => item.isValid).toList();
+    }
+  }
+  ```
+
+  **infinite scroll capabilities service example**
+  ```dart
+  import 'package:rx_bloc_list/rx_bloc_list.dart';
+
+  import '../../base/repositories/my_feature_repository.dart';
+  import '../../base/models/my_domain/my_domain_model.dart';
+
+  class MyFeatureService {
+    MyFeatureService(this._repository);
+
+    final MyFeatureRepository _repository;
+
+    Future<PaginatedList<MyDomainModel>> fetchPaginatedData({
+      int page = 1,
+      int pageSize = 10,
+    }) async {
+      final response = await _repository.fetchPaginatedData(
+        page: page,
+        pageSize: pageSize,
+      );
+
+      return PaginatedList<MyDomainModel>(
+        list: response.items,
+        pageSize: pageSize,
+        totalCount: response.totalCount,
+      );
     }
   }
   ```
@@ -129,6 +148,59 @@ Create a new directory `lib/feature_{new_feature_name}` and generate its archite
 
 **A. BLoC (Business Logic Component)**
 Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events and expose streams as state. Ensure you declare the `.rxb.g.dart` generated files in this file as required by `build_runner`.
+
+*Note: The following is an example of a simple BLoC that manages state with loading and error handling:*
+
+  ```dart
+  import 'package:rx_bloc/rx_bloc.dart';
+  import 'package:rxdart/rxdart.dart';
+
+  import '../../base/extensions/error_model_extensions.dart';
+  import '../../base/models/errors/error_model.dart';
+  import '../services/my_feature_service.dart';
+
+  part 'my_feature_bloc.rxb.g.dart';
+
+  /// A contract class containing all events of the MyFeatureBloC.
+  abstract class MyFeatureBlocEvents {
+    /// TODO: Document the event
+    void fetchData();
+  }
+
+  /// A contract class containing all states of the MyFeatureBloC.
+  abstract class MyFeatureBlocStates {
+    /// The loading state
+    Stream<bool> get isLoading;
+
+    /// The error state
+    Stream<ErrorModel> get errors;
+
+    /// TODO: Document the state
+    Stream<Result<String>> get data;
+  }
+
+  @RxBloc()
+  class MyFeatureBloc extends $MyFeatureBloc {
+    MyFeatureBloc(this.myFeatureService);
+
+    final MyFeatureService myFeatureService;
+
+    @override
+    Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
+        .startWith(null)
+        .switchMap((value) => myFeatureService.fetchData().asResultStream())
+        .setResultStateHandler(this)
+        .shareReplay(maxSize: 1);
+
+    @override
+    Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
+
+    @override
+    Stream<bool> _mapToIsLoadingState() => loadingState;
+  }
+  ```
+
+
 *Note: The following is an example specifically demonstrating a BLoC that manages **listing with infinite scroll capabilities** utilizing the `rx_bloc_list` package.*
 
   ```dart
@@ -217,256 +289,275 @@ Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events
   }
   ```
 
-*Note: The following is an example demonstrating a BLoC that manages **a details page** requesting a single specific model and handling generic routing within the BLoC.*
+*Note: The following is an example demonstrating a BLoC that handles **form management and validation** where UI interactions flow through the BLoC.*
 
   ```dart
-  import 'dart:async';
-
+  import 'package:go_router/go_router.dart';
   import 'package:rx_bloc/rx_bloc.dart';
   import 'package:rxdart/rxdart.dart';
 
   import '../../base/common_blocs/coordinator_bloc.dart';
-  import '../../base/models/my_domain_model.dart';
-  import '../../lib_router/blocs/router_bloc.dart';
+  import '../../base/common_services/validators/credentials_validator_service.dart';
+  import '../../base/extensions/error_model_extensions.dart';
+  import '../../base/models/errors/error_model.dart';
+  import '../../lib_router/router.dart';
   import '../services/my_feature_service.dart';
 
-  part 'my_details_bloc.rxb.g.dart';
+  part 'my_feature_bloc.rxb.g.dart';
 
-  abstract class MyDetailsBlocEvents {
-    /// Dispatches a fetch instruction
-    void fetchDetails();
+  /// A contract class containing all events of the MyFeatureBloC.
+  abstract class MyFeatureBlocEvents {
+    @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
+    void setEmail(String email);
 
-    /// Triggers navigation behavior to a specific route
-    void onActionTapped();
+    @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
+    void setPassword(String password);
+
+    void submit();
   }
 
-  abstract class MyDetailsBlocStates {
-    /// The stream emitting the result of the details fetch.
-    ConnectableStream<Result<MyDomainModel>> get details;
+  /// A contract class containing all states of the MyFeatureBloC.
+  abstract class MyFeatureBlocStates {
+    /// The currently entered email state
+    Stream<String> get email;
 
-    /// Trigger routing behaviors from the UI through this stream
-    ConnectableStream<void> get onRouting;
+    /// The currently entered password state
+    Stream<String> get password;
 
+    /// State indicating whether the submission was successful
+    ConnectableStream<bool> get submitted;
+
+    /// The state indicating whether we show errors to the user
+    Stream<bool> get showErrors;
+
+    /// The loading state
     Stream<bool> get isLoading;
-    Stream<String> get errors;
+
+    /// The error state
+    Stream<ErrorModel> get errors;
   }
 
   @RxBloc()
-  class MyDetailsBloc extends $MyDetailsBloc {
-    MyDetailsBloc(
-      this._itemId,
-      this._initialItem,
-      this._service,
+  class MyFeatureBloc extends $MyFeatureBloc {
+    MyFeatureBloc(
       this._coordinatorBloc,
-      this._routerBloc,
+      this._myFeatureService,
+      this._validatorService,
+      this._router,
     ) {
-      details.connect().addTo(_compositeSubscription);
-      onRouting.connect().addTo(_compositeSubscription);
+      submitted.connect().addTo(_compositeSubscription);
     }
 
-    final MyFeatureService _service;
     final CoordinatorBlocType _coordinatorBloc;
-    final RouterBlocType _routerBloc;
-    final String _itemId;
-    final MyDomainModel? _initialItem;
+    final MyFeatureService _myFeatureService;
+    final CredentialsValidatorService _validatorService;
+    final GoRouter _router;
 
     @override
-    ConnectableStream<Result<MyDomainModel>> _mapToDetailsState() =>
-        _$fetchDetailsEvent
-            .startWith(null)
-            .switchMap(
-              (_) => _service.fetchDetailsById(_itemId, _initialItem).asResultStream(),
-            )
-            .setResultStateHandler(this)
-            .mergeWith([
-          _coordinatorBloc.states.onItemUpdated
-              .whereSuccess()
-              .where((updatedItem) => _itemId == updatedItem.id)
-              .mapToResult()
-        ]).publish();
+    Stream<String> _mapToEmailState() => _$setEmailEvent
+        .map(_validatorService.validateEmail)
+        .startWith('')
+        .shareReplay(maxSize: 1);
 
     @override
-    ConnectableStream<void> _mapToOnRoutingState() => _$onActionTappedEvent
-        .withLatestFrom(details, (_, model) => model)
-        .whereSuccess()
-        .doOnData(
-          (item) =>
-              _routerBloc.events.push(MyUpdatingRoute(item.id!), extra: item),
+    Stream<String> _mapToPasswordState() => _$setPasswordEvent
+        .map(_validatorService.validatePassword)
+        .startWith('')
+        .shareReplay(maxSize: 1);
+
+    @override
+    ConnectableStream<bool> _mapToSubmittedState() => _$submitEvent
+        .throttleTime(const Duration(seconds: 1))
+        .withLatestFrom2<Result<String>, Result<String>, MyCredentials?>(
+          email.asResultStream(),
+          password.asResultStream(),
+          (_, emailResult, passwordResult) =>
+              _validateAndReturnCredentials(emailResult, passwordResult),
         )
-        .publish();
-
-    @override
-    Stream<bool> _mapToIsLoadingState() => loadingState;
-    
-    @override
-    Stream<String> get errors => errorState.map((error) => error.toString());
-  }
-  ```
-
-*Note: The following is an example demonstrating a BLoC that handles **management configurations (Forms, Creation, Updating)** where UI interactions flow through the BLoC for validation and submission.*
-
-  ```dart
-  import 'dart:async';
-
-  import 'package:rx_bloc/rx_bloc.dart';
-  import 'package:rxdart/rxdart.dart';
-
-  import '../../base/common_blocs/coordinator_bloc.dart';
-  import '../../base/models/my_domain_model.dart';
-  import '../../lib_router/blocs/router_bloc.dart';
-  import '../services/my_manage_service.dart';
-
-  part 'my_manage_bloc.rxb.g.dart';
-
-  abstract class MyManageBlocEvents {
-    /// Sets the title field of the model.
-    @RxBlocEvent(type: RxBlocEventType.behaviour)
-    void setTitle(String title);
-
-    /// Dispatches a save action.
-    void save();
-  }
-
-  abstract class MyManageBlocStates {
-    /// The stream of the title or an error if invalid.
-    Stream<String> get title;
-
-    /// Streams validation error visibility.
-    Stream<bool> get showError;
-
-    Stream<bool> get isLoading;
-
-    /// The stream emitting the result of the submission.
-    ConnectableStream<MyDomainModel> get onSaved;
-  }
-
-  @RxBloc()
-  class MyManageBloc extends $MyManageBloc {
-    MyManageBloc(
-      this._itemId,
-      this._initialItem,
-      this._manageService,
-      this._coordinatorBloc,
-      this._routerBloc,
-    ) {
-      onSaved.connect().addTo(_compositeSubscription);
-      
-      // Seed _itemSubject with _initialItem if Editing
-      if (_initialItem != null) {
-        _itemSubject.add(_initialItem!);
-      }
-    }
-
-    final MyManageService _manageService;
-    final CoordinatorBlocType _coordinatorBloc;
-    final RouterBlocType _routerBloc;
-    final String? _itemId;
-    final MyDomainModel? _initialItem;
-
-    final _itemSubject = BehaviorSubject<MyDomainModel>();
-
-    @override
-    Stream<String> _mapToTitleState() => Rx.merge([
-          _$setTitleEvent.startWith(''),
-          _itemSubject.map((item) => item.title),
-        ]).shareReplay(maxSize: 1);
-
-    @override
-    ConnectableStream<MyDomainModel> _mapToOnSavedState() => _$saveEvent
-        .withLatestFrom(title, (_, titleText) => titleText)
-        .switchMap(
-          (titleText) =>
-              _manageService.addOrUpdate(_itemId, titleText).asResultStream(),
+        .where((args) => args != null)
+        .exhaustMap(
+          (args) => _myFeatureService
+              .processData(email: args!.email, password: args.password)
+              .then((value) => true)
+              .asResultStream(),
         )
         .setResultStateHandler(this)
-        .doOnData(_coordinatorBloc.events.itemAddedOrUpdated)
         .whereSuccess()
-        .doOnData((item) => _routerBloc.events.pop())
+        .doOnData((_) => _router.go(const DashboardRoute().location))
+        .startWith(false)
         .publish();
+
+    @override
+    Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
     @override
     Stream<bool> _mapToIsLoadingState() => loadingState;
 
     @override
-    Stream<bool> _mapToShowErrorState() =>
-        _$saveEvent.mapTo(true).startWith(false);
+    Stream<bool> _mapToShowErrorsState() =>
+        _$submitEvent.mapTo(true).startWith(false);
 
-    @override
-    void dispose() {
-      _itemSubject.closeSafely();
-      super.dispose();
+    MyCredentials? _validateAndReturnCredentials(
+      Result<String> emailResult,
+      Result<String> passwordResult,
+    ) {
+      if (emailResult is ResultError || passwordResult is ResultError) {
+        return null;
+      }
+      if (emailResult is ResultLoading || passwordResult is ResultLoading) {
+        return null;
+      }
+
+      return MyCredentials(
+        email: (emailResult as ResultSuccess<String>).data,
+        password: (passwordResult as ResultSuccess<String>).data,
+      );
     }
   }
   ```
 
-**B. Cross-BLoC Orchestration (CoordinatorBloc)**
-The application utilizes a singleton/global `CoordinatorBloc` (located in `lib/base/common_blocs/coordinator_bloc.dart`) to manage communication between completely decoupled BLoCs (e.g., between List, Details, and Manage BLoCs).
+**B. Dependency Injection (DI)**
+Create `di/{name}_page_with_dependencies.dart` that initializes your BLoC and any specific dependencies required. The page wraps the actual view with services and BLoCs using `MultiProvider`.
 
-- **Role:** If a feature updates, deletes, or adds a global entity, it should push that event to the `CoordinatorBloc`. Other BLoCs interested in this entity listen to the `CoordinatorBloc`'s states and merge those updates into their own localized streams.
-- **Example Flow - Creation/Updating (Manage -> List):**
-    1. The `MyManageBloc` successfully performs an API update via its service.
-    2. It immediately pushes the result into the coordinator: `.doOnData(_coordinatorBloc.events.itemAddedOrUpdated)`
-    3. The `MyListBloc` (or `MyDetailsBloc`) listens for this global state: `_coordinatorBloc.states.onItemUpdated.whereSuccess()`
-    4. The List/Details BLoC merges this updated item into its own state stream (acting as a localized reactivity point) without ever needing to know about `MyManageBloc`.
+```dart
+import 'package:flutter/widgets.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
 
-**C. Dependency Injection (DI)**
-Create `di/{name}_page_with_dependencies.dart` that initializes your BLoC and any specific dependencies required.
+import '../blocs/my_feature_bloc.dart';
+import '../services/my_feature_service.dart';
+import '../views/my_feature_page.dart';
 
-**C. View & UI Components**
+class MyFeaturePageWithDependencies extends StatelessWidget {
+  const MyFeaturePageWithDependencies({super.key});
+
+  List<Provider> get _services => [
+    Provider<MyFeatureService>(
+      create: (context) => MyFeatureService(
+        context.read(), // Repository from parent context
+        context.read(), // Another dependency
+      ),
+    ),
+  ];
+
+  List<RxBlocProvider> get _blocs => [
+    RxBlocProvider<MyFeatureBlocType>(
+      create: (context) => MyFeatureBloc(
+        context.read(), // Service injected
+        context.read(), // EventsBlocType or other bloc
+      ),
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) => MultiProvider(
+    providers: [..._services, ..._blocs],
+    child: const MyFeaturePage(),
+  );
+}
+```
+
+**D. View & UI Components**
 Build the UI in `views/{name}_page.dart` focusing on the Figma design. Ensure you use the centralized design system (`context.designSystem`) for typography, colors, and layout spacing.
+
+### Error Handling
+
+The application follows a strict error handling architecture across all layers:
+
+#### Data Source/Server Side Validations
+All data source related errors (such as `DioException`, `GeneralSecurityException`, etc.) are treated as DTOs. Each repository is responsible for mapping Error DTOs to Business Errors (such as `ErrorAccessModel`, `ErrorNotFound`, etc.) using the `ErrorMapper` which should be injected into each Repository.
+
+#### Client Side Validations
+The `Service` layer is responsible for throwing client-side validation exceptions (e.g., `ErrorRequiredFieldModel`) instead of the data layer.
+
+#### BLoC Error Handling
+Each BLoC should expose its errors via a dedicated state stream for UI visualization:
+
+```dart
+/// The error state
+ConnectableStream<ErrorModel> get errors;
+```
+
+The `ErrorModel` can be mapped to appropriate UI representation using `error_model_extensions.dart`.
+
+#### User Friendly Messages
+To provide user-friendly (translated) messages, the `ErrorModel` should be translated in the UI Layer by calling:
+
+```dart
+error.translate(context)
+```
+
+If a new Business Error is introduced, it should be translated/mapped in `ErrorModelX.translate` (see `error_model_translations.dart`).
+
+#### Form Validations
+Each form validator should throw a business error that is translated in the UI Layer by calling `translateErrors(context)`:
+
+```dart
+RxTextFormFieldBuilder<MyBlocType>(
+  state: (bloc) => bloc.states.fieldName.translateErrors(context),
+  // ...
+)
+```
+
+When a new client-side error type is introduced, it should be mapped to `RxFieldException` in the extension method `translateErrors` located in `stream_translate_field_extension.dart`.
 
 ### 4. Register the Routing
 
-Follow these exact steps to register the new feature in the application's routing and access control systems.
+Follow these exact steps to register the new feature in the application's routing and access control systems. The application uses **Declarative Routing** with [GoRouter](https://pub.dev/packages/go_router) and [go_router_builder](https://pub.dev/packages/go_router_builder).
 
 **A. Define Route Path**
 Add your feature path in `lib/lib_router/models/routes_path.dart`:
 
 ```dart
 class RoutesPath {
-  static const myNewFeature = 'my-new-feature';
   // ... existing paths
+  static const myNewFeature = '/my-new-feature';
 }
 ```
 
 **B. Define Route Permission**
-Add your feature permission name in `lib/lib_permissions/models/route_permissions.dart`:
+Add the route permission in `lib/lib_permissions/models/route_permissions.dart`:
 
 ```dart
 class RoutePermissions {
+  // ... existing permissions
   static const myNewFeature = 'MyNewFeatureRoute';
-  // ... existing routes
 }
 ```
 
-**C. Declare Route Model**
-Register the new route in the `RouteModel` enum located in `lib/lib_router/models/route_model.dart`:
+**C. Define Route Model**
+Add the route enum entry in `lib/lib_router/models/route_model.dart`:
 
 ```dart
 enum RouteModel {
-  myNewFeature(
-      pathName: RoutesPath.myNewFeature,
-      fullPath: '/my-new-feature',
-      permissionName: RoutePermissions.myNewFeature,
-  ),
   // ... existing routes
+  myNewFeature(
+    pathName: RoutesPath.myNewFeature,
+    fullPath: '/my-new-feature',
+    permissionName: RoutePermissions.myNewFeature,
+  ),
+  // ...
 }
 ```
 
 **D. Create the Route Configuration**
-Create the specific route mapping using `typed_go_router` under `lib/lib_router/routes/` files (usually `routes.dart` or a specific flow route file):
+Create the specific route mapping using `@TypedGoRoute` under `lib/lib_router/routes/` files (usually `routes.dart` or a specific feature route file like `{feature}_routes.dart`):
 
 ```dart
+part of '../router.dart';
+
 @TypedGoRoute<MyFeatureRoute>(path: RoutesPath.myNewFeature)
 @immutable
-class MyFeatureRoute extends GoRouteData implements RouteDataModel {
+class MyFeatureRoute extends GoRouteData
+    with $MyFeatureRoute
+    implements RouteDataModel {
   const MyFeatureRoute();
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const MyFeaturePage(),
+        child: const MyFeaturePageWithDependencies(),
       );
 
   @override
@@ -478,18 +569,126 @@ class MyFeatureRoute extends GoRouteData implements RouteDataModel {
 ```
 
 **E. Navigation Usage**
-Once registered, navigate to the feature using the `RouterBloc`:
+Once registered, navigate to the feature using the router:
 
 ```dart
-// Navigating using go
-context.read<RouterBlocType>().events.go(const MyFeatureRoute());
+// Navigating using go (replaces entire stack)
+context.read<GoRouter>().go(const MyFeatureRoute().location);
 
-// Or using push
-context.read<RouterBlocType>().events.push(const MyFeatureRoute());
+// Or using push (adds to stack)
+context.read<GoRouter>().push(const MyFeatureRoute().location);
 ```
 
 ### 5. Finalize
-- Add localizations in `lib/l10n/arb/en.arb` for new strings, and follow the project's translation sync process via `bin/sync_translations.py`.
-- Run code generation commands (`flutter pub run build_runner build --delete-conflicting-outputs`) to generate Retrofit, JsonSerializable, and RxBloc files.
 
-By following these architecture and testing guidelines strictly, you will produce seamless, clean, scalable enhancements fully integrated into the pipeline.
+- **Localization:** Add localizations in `lib/l10n/arb/en.arb` for new strings. Use the `r_flutter` package format for translations. Access translations via `context.l10n.someTranslationKey`.
+- **Translation Sync:** Run `./bin/update_translations.py` from the project root to propagate new strings to other language files.
+  - *Note:* If your Python distribution does not ship with the yaml module, install it by running `pip3 install pyyaml`.
+- **Code Generation:** Run code generation commands to generate Retrofit, JsonSerializable, and RxBloc files:
+  ```bash
+  flutter pub run build_runner build --delete-conflicting-outputs
+  ```
+  Or simply run `bin/build_runner_build.sh`.
+
+### 6. Testing
+
+After creating the feature, tests should be created following the project's testing patterns:
+
+- **Unit Tests:** Create unit tests for services and BLoCs in `test/feature_<name>/`
+- **Golden Tests:** Create golden tests for pages in `test/feature_<name>/view/`
+
+Refer to the `unit_test` and `golden_test` skills for detailed testing guidelines.
+
+## Directory Structure (MANDATORY)
+
+```
+lib/feature_<name>/
+├── blocs/                              # BLoC files
+│   ├── <name>_bloc.dart
+│   └── <name>_bloc.rxb.g.dart          # Auto-generated by build_runner
+├── di/                                 # Dependency injection
+│   └── <name>_page_with_dependencies.dart
+├── services/                           # Feature-specific services
+│   └── <name>_service.dart
+├── views/                              # UI pages
+│   └── <name>_page.dart
+├── ui_components/                      # Feature-specific widgets (optional)
+│   └── <widget_name>.dart
+└── models/                             # Feature-specific models (optional)
+    └── <model_name>.dart
+```
+
+## File Naming Conventions (MANDATORY)
+
+| Artifact | Pattern | Example |
+|---|---|---|
+| BLoC file | `<name>_bloc.dart` | `profile_bloc.dart` |
+| Generated BLoC | `<name>_bloc.rxb.g.dart` | `profile_bloc.rxb.g.dart` |
+| Service file | `<name>_service.dart` | `profile_service.dart` |
+| Page file | `<name>_page.dart` | `profile_page.dart` |
+| DI file | `<name>_page_with_dependencies.dart` | `profile_page_with_dependencies.dart` |
+| Repository | `<name>_repository.dart` | `profile_repository.dart` |
+| Data source | `<name>_remote_data_source.dart` | `profile_remote_data_source.dart` |
+
+## Forbidden Actions
+
+- **NEVER** create a BLoC without the corresponding `.rxb.g.dart` part directive
+- **NEVER** instantiate services or repositories directly in BLoCs — use dependency injection
+- **NEVER** put business logic in the UI layer (pages/widgets)
+- **NEVER** call APIs directly from BLoCs — use services and repositories
+- **NEVER** skip error handling with `ErrorMapper` in repositories
+- **NEVER** hardcode strings — use localization keys
+- **NEVER** create routes without registering them in the router
+- **NEVER** use `setState` in pages — use BLoC states instead
+- **NEVER** create feature-specific models in `lib/base/models/` — put them in `lib/feature_<name>/models/`
+
+## Reference: Key Import Paths
+
+### In BLoC files:
+
+```dart
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rxdart/rxdart.dart';
+import '../../base/common_blocs/coordinator_bloc.dart';
+import '../services/<name>_service.dart';
+
+part '<name>_bloc.rxb.g.dart';
+```
+
+### In Service files:
+
+```dart
+import '../../base/repositories/<name>_repository.dart';
+import '../../base/models/<domain>/<model>.dart';
+```
+
+### In DI files:
+
+```dart
+import 'package:flutter/widgets.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
+import '../blocs/<name>_bloc.dart';
+import '../services/<name>_service.dart';
+import '../views/<name>_page.dart';
+```
+
+### In Route files:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../feature_<name>/di/<name>_page_with_dependencies.dart';
+```
+
+## Ambiguous Case Rule
+
+If the agent cannot clearly determine:
+
+- What API endpoints are needed, OR
+- What UI states the page should handle, OR
+- What navigation flow is required
+
+Then the agent MUST ask for clarification before proceeding. **Never guess.**
+
+By following these architecture guidelines strictly, you will produce seamless, clean, scalable features fully integrated into the project.
