@@ -1,0 +1,55 @@
+---
+description: Project structure and architecture guidelines for the ProCredit Flutter application
+globs:
+  - "lib/**/*.dart"
+alwaysApply: true
+---
+
+# Project Structure & Architecture
+
+The application uses the **RxBloc** pattern for state management, **GoRouter** for navigation, and a centralized dependency injection system. A rigorous directory hierarchy rules where logic should be placed. Always refer to the following structure map before creating or modifying files:
+
+## Application-Specific Classes
+
+These files govern the root behavior, themes, routing, and shared dependencies of the entire app:
+
+- `lib/base/app`: The root widget used in application entry points.
+- `lib/base/app/config`: Environment-specific configurations and constants.
+- `lib/base/app/initialization`: Core initializations like Firebase, Push Notifications, etc.
+- `lib/base/data_sources/local`: Local data sources, such as Shared Preferences, Secure Storage, etc.
+- `lib/base/data_sources/remote`: Remote data sources (APIs). **Retrofit code lives here.**
+- `lib/base/theme/design_system`: Central design catalog for colors, typography, images, and spacing.
+- `lib/base/common_mappers`: Application-wide mappers converting DTOs to business models (e.g., ErrorMapper).
+- `lib/base/common_ui_components`: Reusable application-wide widgets (buttons, controls, text fields).
+- `lib/base/common_blocs`: Global BLoCs shared across the entire app (e.g., `CoordinatorBloc`, `EventsBloc`).
+- `lib/base/common_services`: Global Services accessible within the entire app. Register at `app_dependencies.dart` and access via `context.read<ServiceClassName>()`.
+- `lib/base/repositories`: Repository classes used to fetch and persist models.
+- `lib/base/models`: Business models organized by domain, including request/response DTOs using `json_serializable`.
+- `lib/base/di`: Centralized DI providers for global instances.
+- `lib/base/extensions`: Global extension methods.
+- `lib/base/utils`: Global utilities.
+
+## Application-Specific Libraries
+
+These handle core technical mechanics disconnected from UI features. Each `lib_*` folder contains reusable functionality that can be shared across multiple features.
+
+### Core Libraries
+
+- `lib/lib_router`: Core navigation handling using GoRouter and `typed_go_router`.
+  - `lib/lib_router/models`: Path definitions (`paths.dart`) and route name constants (`route_name.dart`).
+  - `lib/lib_router/routes`: Route declarations mapping path definitions to UI pages.
+
+### UI Component Libraries
+- `lib/lib_dev_menu`: Developer menu for debugging.
+
+## Feature-Specific Classes
+
+Every new visual or functional vertical in the application MUST be isolated within `lib/feature_{name}` following this strict internal structure:
+
+- `feature_{name}/views`: Contains the UI screen implementation (`{name}_page.dart`). **Every page (screen) should be implemented as a Stateless Widget unless it requires a StatefulWidget for specific lifecycle needs.**
+- `feature_{name}/ui_components`: Local, non-reusable UI widgets tailored uniquely to this feature.
+- `feature_{name}/models` *(optional)*: States or DTOs bound singularly to this feature's logic.
+- `feature_{name}/blocs`: The `rx_bloc` files reacting to UI inputs to compute states (`{name}_bloc.dart` + generated files). **Complex BLoC implementation details can be offloaded to a separate `{name}_bloc_extensions.dart` file for improved readability.**
+- `feature_{name}/services`: Middle-layer orchestrators parsing repository data for the BLoC (`{name}_service.dart`). Feature-specific services should be registered at `lib/feature_{name}/di` and will be accessible only within the feature.
+- `feature_{name}/di`: Dependency injection initializing the BLoC and required dependencies (`{name}_page_with_dependencies.dart`).
+
