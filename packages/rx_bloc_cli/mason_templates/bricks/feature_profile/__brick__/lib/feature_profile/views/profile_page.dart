@@ -22,7 +22,7 @@ import '../../lib_router/router.dart';{{/has_authentication}}
 import '../blocs/profile_bloc.dart';
 import '../extensions/push_notifications_extensions.dart';{{#has_authentication}}
 import '../ui_components/logout_action_button.dart';{{/has_authentication}}{{#enable_in_app_notifications}}
-import '../ui_components/notification_action_button.dart';{{/enable_in_app_notifications}}
+ import '../../feature_in_app_notifications/ui_components/notification_action_button.dart';{{/enable_in_app_notifications}}
 
 
 class ProfilePage extends StatelessWidget {
@@ -65,25 +65,15 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              {{#has_authentication}}
-              actions: {{^enable_in_app_notifications}}const [
-                LogoutActionButton(),
-              ],{{/enable_in_app_notifications}}{{#enable_in_app_notifications}}[
-                RxBlocBuilder<ProfileBlocType, int>(
-                  state: (bloc) => bloc.states.inAppNotificationCount,
-                  builder: (context, snapshot, bloc) => NotificationActionButton(
-                    notificationCount: snapshot.data ?? 0,
-                    onPressed: () async {
-                      await GoRouter.of(context).push(
-                        const InAppNotificationsRoute().location,
-                      );
-                      bloc.events.fetchUnreadNotifications();
-                    },
-                  ),
-                ),
-                const LogoutActionButton(),
-              ],{{/enable_in_app_notifications}}
-              {{/has_authentication}}
+              actions: [ {{#has_authentication}}
+                const LogoutActionButton(),{{/has_authentication}} {{#enable_in_app_notifications}}
+                Padding(
+                  padding:
+                      EdgeInsets.only(right: context.designSystem.spacing.s),
+                  child: const NotificationActionButton(),
+                ),{{/enable_in_app_notifications}}
+              ],
+
             ),
             SliverList(
               delegate: SliverChildListDelegate([ {{#enable_feature_onboarding}}

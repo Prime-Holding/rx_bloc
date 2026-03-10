@@ -3,6 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+
 import '../blocs/profile_bloc.dart';
 import '../views/profile_page.dart';
 
@@ -21,9 +22,7 @@ class ProfilePageWithDependencies extends StatelessWidget {
         RxBlocProvider<ProfileBlocType>(
           create: (context) => ProfileBloc(
             context.read(),{{#enable_feature_onboarding}}
-            context.read(),{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
-            context.read(),
-            context.read(),{{/enable_in_app_notifications}}
+            context.read(),{{/enable_feature_onboarding}}
           ),
         ),
       ];

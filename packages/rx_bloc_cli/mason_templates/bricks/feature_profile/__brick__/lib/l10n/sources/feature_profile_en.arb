@@ -10,5 +10,6 @@
   "notificationsSubtitleActivete" : "Tap to activate",
   "notificationsSubtitleDeactivete" : "Tap to deactivate"{{#enable_in_app_notifications}},
   "inAppNotificationsEmptyStateTitle": "You're all caught up.",
-  "inAppNotificationDetailsCta": "See more information"{{/enable_in_app_notifications}}
+  "inAppNotificationDetailsCta": "See more information",
+  "inAppNotificationsUnread": "Unread"{{/enable_in_app_notifications}}
 }

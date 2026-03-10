@@ -10,5 +10,6 @@
   "notificationsSubtitleActivete" : "Докоснете, за да активирате",
   "notificationsSubtitleDeactivete" : "Докоснете, за да деактивирате"{{#enable_in_app_notifications}},
   "inAppNotificationsEmptyStateTitle": "Към момента нямате известия",
-  "inAppNotificationDetailsCta": "Виж повече информация"{{/enable_in_app_notifications}}
+  "inAppNotificationDetailsCta": "Виж повече информация",
+  "inAppNotificationsUnread": "Непрочетени"{{/enable_in_app_notifications}}
 }

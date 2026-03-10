@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
@@ -19,10 +21,8 @@ class InAppNotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: customAppBar(
-          context,
-          title: context.l10n.notifications,
-        ),
+        appBar: customAppBar(context, title: context.l10n.notifications),
+        backgroundColor: context.designSystem.colors.unreadNotificationColor,
         body: Column(
           children: [
             _buildFilterBar(context),
@@ -39,22 +39,26 @@ class InAppNotificationsPage extends StatelessWidget {
                     Center(child: AppLoadingIndicator.taskValue(context)),
                 buildError: (context, list, bloc) => AppErrorWidget(
                   error: list.error!,
-                  onTabRetry: () =>
-                      bloc.events.loadNotifications(reset: true),
+                  onTabRetry: () => bloc.events.loadNotifications(reset: true),
                 ),
                 buildSuccess: (context, list, bloc) {
                   if (list.isEmpty) {
                     return const Center(child: NoIaNotifications());
                   }
+
+                  final groups = _groupNotificationsByMonth(list);
+                  final loadedCount =
+                      groups.fold<int>(0, (sum, g) => sum + g.length);
+                  final hasMore = loadedCount < list.itemCount;
+
                   return ListView.separated(
                     padding: EdgeInsets.symmetric(
                       horizontal: context.designSystem.spacing.m,
                       vertical: context.designSystem.spacing.s,
                     ),
-                    itemCount: list.itemCount,
+                    itemCount: groups.length + (hasMore ? 1 : 0),
                     itemBuilder: (context, index) {
-                      final notification = list.getItem(index);
-                      if (notification == null) {
+                      if (index >= groups.length) {
                         return Center(
                           child: Padding(
                             padding: EdgeInsets.all(
@@ -64,27 +68,10 @@ class InAppNotificationsPage extends StatelessWidget {
                           ),
                         );
                       }
-                      return IaNotification(
-                        title: notification.title,
-                        description: notification.description,
-                        date: notification.date,
-                        isUnread: notification.isUnread,
-                        onTap: () {
-                          if (notification.isUnread) {
-                            context
-                                .read<InAppNotificationsBlocType>()
-                                .events
-                                .markAsRead(notification.id);
-                          }
-                          GoRouter.of(context).push(
-                            InAppNotificationDetailsRoute(notification.id)
-                                .routeLocation,
-                          );
-                        },
-                      );
+                      return _buildMonthGroup(context, groups[index]);
                     },
                     separatorBuilder: (context, index) =>
-                        SizedBox(height: context.designSystem.spacing.s),
+                        SizedBox(height: context.designSystem.spacing.m),
                   );
                 },
               ),
@@ -105,8 +92,7 @@ class InAppNotificationsPage extends StatelessWidget {
               builder: (context, unreadSnapshot, bloc) =>
                   RxBlocBuilder<InAppNotificationsBlocType, bool>(
                 state: (bloc) => bloc.states.isFilteredByUnread,
-                builder: (context, filterSnapshot, bloc) =>
-                    UnreadFilterButton(
+                builder: (context, filterSnapshot, bloc) => UnreadFilterButton(
                   unreadCount: unreadSnapshot.data ?? 0,
                   isActive: filterSnapshot.data ?? false,
                   onPressed: () => bloc.events.toggleUnreadFilter(),
@@ -116,4 +102,86 @@ class InAppNotificationsPage extends StatelessWidget {
           ],
         ),
       );
+
+  List<List<InAppNotificationModel>> _groupNotificationsByMonth(
+    PaginatedList<InAppNotificationModel> list,
+  ) =>
+      Iterable.generate(list.itemCount, list.getItem)
+          .takeWhile((item) => item != null)
+          .cast<InAppNotificationModel>()
+          .fold<List<List<InAppNotificationModel>>>([], (groups, item) {
+        if (groups.isEmpty ||
+            groups.last.first.date.year != item.date.year ||
+            groups.last.first.date.month != item.date.month) {
+          groups.add([item]);
+        } else {
+          groups.last.add(item);
+        }
+        return groups;
+      });
+
+  Widget _buildMonthGroup(
+    BuildContext context,
+    List<InAppNotificationModel> notifications,
+  ) {
+    final designSystem = context.designSystem;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            top: designSystem.spacing.xs,
+            bottom: designSystem.spacing.s,
+          ),
+          child: Text(
+            DateFormat.yMMMM().format(notifications.first.date),
+            style: designSystem.typography.h1Bold18.copyWith(
+              color: designSystem.colors.messageColor,
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(designSystem.spacing.xss),
+          decoration: BoxDecoration(
+            color: designSystem.colors.readNotificationColor,
+            borderRadius: BorderRadius.circular(designSystem.spacing.l),
+            boxShadow: [
+              BoxShadow(
+                color: designSystem.colors.tintColor.withValues(alpha: 0.1),
+                blurRadius: designSystem.spacing.xxl,
+              ),
+            ],
+          ),
+          child: Column(
+            children: notifications
+                .mapIndexed(
+                  (i, notification) => IaNotification(
+                    title: notification.title,
+                    description: notification.description,
+                    date: notification.date,
+                    isUnread: notification.isUnread,
+                    previousUnread: i > 0 && notifications[i - 1].isUnread,
+                    nextUnread: i < notifications.length - 1 &&
+                        notifications[i + 1].isUnread,
+                    onTap: () {
+                      if (notification.isUnread) {
+                        context
+                            .read<InAppNotificationsBlocType>()
+                            .events
+                            .markAsRead(notification.id);
+                      }
+                      GoRouter.of(context).push(
+                        InAppNotificationDetailsRoute(
+                          notification.id,
+                        ).routeLocation,
+                      );
+                    },
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      ],
+    );
+  }
 }

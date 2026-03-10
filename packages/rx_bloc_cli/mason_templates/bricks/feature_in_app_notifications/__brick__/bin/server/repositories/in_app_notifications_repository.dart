@@ -1,5 +1,7 @@
 class InAppNotificationsRepository {
   int _nextIndex = 25;
+  int _nextMonth = DateTime.now().month;
+  int _nextYear = DateTime.now().year;
 
   static const _titles = [
     'System Update Available',
@@ -68,10 +70,23 @@ class InAppNotificationsRepository {
       unread: true,
       titleOverride: title,
       descriptionOverride: description,
+      month: _nextMonth,
+      year: _nextYear,
     );
     _nextIndex++;
+    _maybeAdvanceMonth();
     _notifications.insert(0, notification);
     return notification;
+  }
+
+  void _maybeAdvanceMonth() {
+    if (DateTime.now().millisecondsSinceEpoch % 2 == 0) {
+      _nextMonth++;
+      if (_nextMonth > 12) {
+        _nextMonth = 1;
+        _nextYear++;
+      }
+    }
   }
 
   static Map<String, dynamic> _buildNotification(
@@ -79,6 +94,8 @@ class InAppNotificationsRepository {
     bool unread = false,
     String? titleOverride,
     String? descriptionOverride,
+    int? month,
+    int? year,
   }) =>
       {
         'id': '${index + 1}',
@@ -88,8 +105,8 @@ class InAppNotificationsRepository {
                 'This is a sample notification to demonstrate paginated loading.',
         'body': _buildQuillDelta(index + 1),
         'date': DateTime(
-          DateTime.now().year,
-          DateTime.now().month,
+          year ?? DateTime.now().year,
+          month ?? DateTime.now().month,
           index % 28 + 1,
         ).toIso8601String(),
         'isUnread': unread,

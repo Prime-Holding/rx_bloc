@@ -37,7 +37,7 @@ class UnreadFilterButton extends StatelessWidget {
           border: Border.all(
             color: isActive
                 ? colors.filterButtonActiveColor
-                : colors.filterButtonBorderColor,
+                : colors.filterButtonBorderColor.withValues(alpha: 0.55),
             width: 2,
           ),
         ),
@@ -45,7 +45,7 @@ class UnreadFilterButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              Icons.filter_list,
+              Icons.mark_unread_chat_alt_outlined,
               size: spacing.m,
               color: isActive
                   ? colors.filterButtonActiveTextColor
@@ -53,7 +53,7 @@ class UnreadFilterButton extends StatelessWidget {
             ),
             SizedBox(width: spacing.xs),
             Text(
-              unreadCount.toString(),
+              '${context.l10n.inAppNotificationsUnread} ($unreadCount)',
               style: context.designSystem.typography.h3Med14.copyWith(
                 color: isActive
                     ? colors.filterButtonActiveTextColor

@@ -4,22 +4,17 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 {{#enable_feature_onboarding}}
-import '../../base/common_blocs/coordinator_bloc.dart';{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
-import '../../base/common_blocs/event_bloc.dart';{{/enable_in_app_notifications}}
+import '../../base/common_blocs/coordinator_bloc.dart';{{/enable_feature_onboarding}}
 import '../../base/common_services/push_notifications_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
-import '../../base/models/errors/error_model.dart';{{#enable_in_app_notifications}}
-import '../../base/models/notification_event_model.dart';
-import '../../feature_in_app_notifications/services/in_app_notifications_service.dart';{{/enable_in_app_notifications}}
+import '../../base/models/errors/error_model.dart';
 
 part 'profile_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the ProfileBloC.
 abstract class ProfileBlocEvents {
   void toggleNotifications();
-{{#enable_in_app_notifications}}
-  void fetchUnreadNotifications();
-{{/enable_in_app_notifications}}}
+}
 
 /// A contract class containing all states of the ProfileBloC.
 abstract class ProfileBlocStates {
@@ -31,10 +26,7 @@ abstract class ProfileBlocStates {
 
   /// The error state
   Stream<ErrorModel> get errors;
-{{#enable_in_app_notifications}}
-  /// The count of unread in-app notifications
-  Stream<int> get inAppNotificationCount;
-{{/enable_in_app_notifications}}{{#enable_feature_onboarding}}
+  {{#enable_feature_onboarding}}
 
   /// State indicating that the phone number was updated
   @RxBlocIgnoreState()
@@ -45,17 +37,13 @@ abstract class ProfileBlocStates {
 class ProfileBloc extends $ProfileBloc {
   ProfileBloc(
     this._notificationService,{{#enable_feature_onboarding}}
-    this._coordinatorBloc,{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
-    this._inAppNotificationsService,
-    this._eventBloc,{{/enable_in_app_notifications}}
+    this._coordinatorBloc,{{/enable_feature_onboarding}}
   ) {
     areNotificationsEnabled.connect().addTo(_compositeSubscription);
   }
 
   final PushNotificationsService _notificationService;{{#enable_feature_onboarding}}
-  final CoordinatorBlocType _coordinatorBloc;{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
-  final InAppNotificationsService _inAppNotificationsService;
-  final EventBlocType _eventBloc;{{/enable_in_app_notifications}}
+  final CoordinatorBlocType _coordinatorBloc;{{/enable_feature_onboarding}}
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
@@ -75,16 +63,4 @@ class ProfileBloc extends $ProfileBloc {
             .asResultStream()),
         _notificationService.areNotificationsEnabled().asResultStream(),
       ]).setResultStateHandler(this).publishReplay(maxSize: 1);
-{{#enable_in_app_notifications}}
-  @override
-  Stream<int> _mapToInAppNotificationCountState() => Rx.merge([
-    _$fetchUnreadNotificationsEvent.startWith(null),
-    _eventBloc.states.notificationEvents.where((event) => event.type==NotificationEventType.newNotification)
-  ]).switchMap(
-      (_) => _inAppNotificationsService
-          .getUnreadCount()
-          .asResultStream()
-          .setResultStateHandler(this)
-          .whereSuccess(),
-    ).startWith(0);
-{{/enable_in_app_notifications}}}
+}

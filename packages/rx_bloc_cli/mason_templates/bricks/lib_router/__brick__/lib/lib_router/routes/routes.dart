@@ -111,7 +111,7 @@ class HomeStatefulShellRoute extends StatefulShellRouteData {
 
   static Widget $navigatorContainerBuilder(BuildContext context,
       StatefulNavigationShell navigationShell, List<Widget> children) =>
-      HomePage(
+      HomePageWithDependencies(
         currentIndex: navigationShell.currentIndex,
         branchNavigators: children,
         onNavigationItemSelected: (index) => navigationShell.goBranch(

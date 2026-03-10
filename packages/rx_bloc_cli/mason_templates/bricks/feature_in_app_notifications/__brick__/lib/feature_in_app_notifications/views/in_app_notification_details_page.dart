@@ -47,8 +47,7 @@ class _InAppNotificationDetailsPageState
 
   @override
   Widget build(BuildContext context) =>
-      RxResultBuilder<InAppNotificationDetailsBlocType,
-          InAppNotificationModel>(
+      RxResultBuilder<InAppNotificationDetailsBlocType, InAppNotificationModel>(
         state: (bloc) => bloc.states.notification,
         buildLoading: (context, bloc) => Scaffold(
           appBar: customAppBar(context),
@@ -106,16 +105,19 @@ class _InAppNotificationDetailsPageState
                 child: GradientFillButton(
                   text: context.l10n.inAppNotificationDetailsCta,
                   state: ButtonStateModel.enabled,
-                  onPressed: () {
-                    // TODO: Do something on button press
-                  },
+                  onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        context.l10n.notImplemented,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
           );
         },
       );
-      
 }
 
 class _ImageEmbedBuilder extends EmbedBuilder {
@@ -124,19 +126,20 @@ class _ImageEmbedBuilder extends EmbedBuilder {
 
   @override
   Widget build(BuildContext context, EmbedContext embedContext) => Padding(
-      padding: EdgeInsets.symmetric(vertical: context.designSystem.spacing.xs),
-      child: AppImage(
-        embedContext.node.value.data as String,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        errorBuilder: (context, error, stackTrace) => SizedBox(
-          child: Center(
-            child: Icon(
-              Icons.broken_image,
-              size: context.designSystem.spacing.xxxxl,
+        padding:
+            EdgeInsets.symmetric(vertical: context.designSystem.spacing.xs),
+        child: AppImage(
+          embedContext.node.value.data as String,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          errorBuilder: (context, error, stackTrace) => SizedBox(
+            child: Center(
+              child: Icon(
+                Icons.broken_image,
+                size: context.designSystem.spacing.xxxxl,
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
 }

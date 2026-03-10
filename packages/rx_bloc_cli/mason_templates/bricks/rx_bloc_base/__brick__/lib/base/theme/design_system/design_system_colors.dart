@@ -20,7 +20,7 @@ class DesignSystemColors {
         googleBackground = const Color(0xFFFFFFFF),
         facebookBackground = const Color(0xFF1877F2){{/enable_social_logins}}{{#enable_in_app_notifications}},
         readNotificationColor = Colors.white,
-        unreadNotificationColor = const Color.fromARGB(255, 220, 220, 220){{/enable_in_app_notifications}};
+        unreadNotificationColor = const Color.fromARGB(102, 220, 220, 220){{/enable_in_app_notifications}};
 
   const DesignSystemColors.dark()
       : brightness = Brightness.dark,
@@ -34,7 +34,7 @@ class DesignSystemColors {
         googleBackground = Colors.black,
         facebookBackground = const Color(0xFFFFFFFF){{/enable_social_logins}}{{#enable_in_app_notifications}},
         readNotificationColor = const Color.fromARGB(255, 120, 120, 120),
-        unreadNotificationColor = const Color.fromARGB(255, 75, 75, 75){{/enable_in_app_notifications}};
+        unreadNotificationColor = const Color.fromARGB(102, 75, 75, 75){{/enable_in_app_notifications}};
 
   final Brightness brightness;
 
@@ -112,7 +112,7 @@ class DesignSystemColors {
 
   final Color filterButtonTextColor = const Color(0xFF004F95);
 
-  final Color filterButtonBorderColor = const Color(0xFFF0F0F2);
+  final Color filterButtonBorderColor = const Color.fromARGB(255, 216, 216, 218);
 
   final Color filterButtonActiveColor = const Color(0xFF004F95);
 
