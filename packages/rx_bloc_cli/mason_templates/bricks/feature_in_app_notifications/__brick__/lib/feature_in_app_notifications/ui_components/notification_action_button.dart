@@ -46,19 +46,25 @@ class _NotificationCountBadge extends StatelessWidget {
   final int count;
 
   @override
-  Widget build(BuildContext context) => Container(
-        constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        decoration: BoxDecoration(
-          color: context.designSystem.colors.errorColor,
-          borderRadius: BorderRadius.circular(10),
+  Widget build(BuildContext context) {
+    final spacing = context.designSystem.spacing;
+    return Container(
+      constraints: BoxConstraints(
+        minWidth: spacing.m,
+        minHeight: spacing.m,
+      ),
+      padding: EdgeInsets.symmetric(horizontal: spacing.xss),
+      decoration: BoxDecoration(
+        color: context.designSystem.colors.errorColor,
+        borderRadius: BorderRadius.circular(spacing.xs1),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        count.toString(),
+        style: context.designSystem.typography.h1Reg12.copyWith(
+          color: Colors.white,
         ),
-        alignment: Alignment.center,
-        child: Text(
-          '$count',
-          style: context.designSystem.typography.h1Reg12.copyWith(
-            color: Colors.white,
-          ),
-        ),
-      );
+      ),
+    );
+  }
 }

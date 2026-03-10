@@ -1,7 +1,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/common_blocs/event_bloc.dart';
+import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/models/notification_event_model.dart';
 import '../services/in_app_notifications_service.dart';
 
@@ -22,17 +22,15 @@ abstract class UnreadNotificationsBlocStates {
 @RxBloc()
 class UnreadNotificationsBloc extends $UnreadNotificationsBloc {
   UnreadNotificationsBloc(
-    this._inAppNotificationsService,
-    this._eventBloc,
-  );
+      this._inAppNotificationsService, this._coordinatorBloc);
 
   final InAppNotificationsService _inAppNotificationsService;
-  final EventBlocType _eventBloc;
+  final CoordinatorBlocType _coordinatorBloc;
 
   @override
   Stream<int> _mapToInAppNotificationCountState() => Rx.merge([
         _$fetchUnreadNotificationsEvent.startWith(null),
-        _eventBloc.states.notificationEvents.where(
+        _coordinatorBloc.states.notificationEvents.where(
           (event) => event.type == NotificationEventType.newNotification,
         ),
       ])

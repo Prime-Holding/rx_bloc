@@ -36,21 +36,27 @@ abstract class EventBlocStates {
 /// Bloc responsible for managing notifications
 @RxBloc()
 class EventBloc extends $EventBloc {
-  EventBloc(this._sseService, this._coordinatorBloc){
-
+  EventBloc(this._sseService, this._coordinatorBloc) {
     Rx.merge<NotificationEvent>([
-      _$startListeningForSSEEvent.startWith(null).mergeWith([
-        _coordinatorBloc.states.isAuthenticated
-          .where((isAuthenticated) => isAuthenticated)
-          .mapTo(null)
-          .debounceTime(kBackpressureDuration),
-      ])
-        .switchMap((_) => 
-          _sseService.getEventStream()
-            .parseSseEvent(_coordinatorBloc)
-            .whereType<NotificationEvent>()),
+      _$startListeningForSSEEvent
+          .mergeWith([
+            _coordinatorBloc.states.isAuthenticated
+                .where((isAuth) => isAuth)
+                .mapTo(null)
+                .debounceTime(kBackpressureDuration),
+          ])
+          .throttleTime(kBackpressureDuration)
+          .switchMap(
+            (_) => _sseService
+                .getEventStream()
+                .parseSseEvent(_coordinatorBloc)
+                .whereType<NotificationEvent>(),
+          ),
       _$receiveEventEvent,
-    ]).bind(_notificationEventsSubject).addTo(_compositeSubscription);
+    ])
+        .doOnData(_coordinatorBloc.events.notificationEvent)
+        .bind(_notificationEventsSubject)
+        .addTo(_compositeSubscription);
   }
 
   final SseService _sseService;
@@ -58,7 +64,8 @@ class EventBloc extends $EventBloc {
   final _notificationEventsSubject = BehaviorSubject<NotificationEvent>();
 
   @override
-  Stream<NotificationEvent> get notificationEvents => _notificationEventsSubject;
+  Stream<NotificationEvent> get notificationEvents =>
+      _notificationEventsSubject;
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();

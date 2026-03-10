@@ -492,6 +492,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   List<SingleChildWidget> get _blocs => [ {{#enable_in_app_notifications}}
         RxBlocProvider<EventBlocType>(
           create: (context) => EventBloc(context.read(), context.read()),
+          lazy: false,
         ),{{/enable_in_app_notifications}}{{#has_authentication}}
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
