@@ -276,11 +276,19 @@ For more an in depth explanation of manual feature creation, check out the [Manu
 
 Your app supports [localization][localization_lnk] out of the box.
 
-You define localizations by adding a translation file in the `lib/l10n/arb/[language_code].arb` directory. The `language_code` represents the code of the language you want to support (`en`, `zh`,`de`, ...). Inside that file, in JSON format, you define key-value pairs for your strings. **Make sure that all your translation files contain the same keys!**
+You define localizations by adding translation files in the `lib/l10n/sources/` directory. Translations are organized by feature, allowing you to maintain separate ARB files for different parts of your app. The naming convention follows the pattern `[feature]_[language_code].arb` or `intl_[language_code].arb` for app-level translations. The `language_code` represents the code of the language you want to support (`en`, `zh`, `de`, ...). Inside each file, in JSON format, you define key-value pairs for your strings. **Make sure that all your translation files for the same language contain the same keys!**
 
-If there are new keys added to the main translation file they can be propagated to the others by running the `bin/sync_translations.py` script. This script depends on the `pyyaml` library. If your python distribution does not include it you can install it by running `pip3 install pyyaml`.
+**Important**: Translation keys must be unique across all ARB files. If the same key appears in multiple files, the merge process will result in conflicts. It is recommended to use feature references in your keys to avoid collisions. For example, use `counterTitle` instead of just `title` for a counter feature, or `loginButton` instead of `button` for a login feature.
 
-Upon rebuild, your translations are auto-generated inside `lib/assets.dart`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey` or `context.l10n.featureName.someTranslationKey`.
+To merge the feature-specific ARB files and generate the localization code, run the `bin/gen_l10n.sh` script. This script will:
+1. Merge all ARB files from `lib/l10n/sources/` into consolidated files in `lib/l10n/`
+2. Generate the Dart localization code using `intl_utils`
+
+**Note**: Before running the merge script, make sure to update the `locales` list in `bin/merge_arb_files.dart` to reflect all the locales used in your app. The default list is `['en', 'bg']`, but you should modify it to include all language codes you support (e.g., `['en', 'bg', 'de', 'fr']`).
+
+The generated translations are available in `lib/l10n/generated/`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey`.
+
+If there are new keys added to the main translation file they can be propagated to the others by running `dart run bin/sync_translations.dart` from the project root directory.
 
 #### Remote localization lookup
 
