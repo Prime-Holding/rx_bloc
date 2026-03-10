@@ -1,0 +1,110 @@
+---
+description: Conventions for authoring and editing mason bricks inside mason_templates/bricks — Mustache syntax, brick.yaml, conditional generation, and the compile workflow
+globs:
+  - "mason_templates/**"
+alwaysApply: false
+---
+
+# Mason Bricks — Authoring Guide
+
+All mason bricks live under `mason_templates/bricks/<brick_name>/`. After **any** edit to a brick you must recompile it — the generated `lib/src/templates/<brick_name>_bundle.dart` is what the CLI actually uses at runtime.
+
+## Brick Structure
+
+```
+mason_templates/bricks/<brick_name>/
+  brick.yaml          # Name, version, var declarations
+  __brick__/          # Template files — Mustache-interpolated at generation time
+  README.md           # Optional
+  CHANGELOG.md        # Optional
+```
+
+## Mustache Syntax Cheatsheet
+
+| Syntax | Meaning |
+|---|---|
+| `{{variable}}` | Interpolate a string variable |
+| `{{#flag}}...{{/flag}}` | Render only when `flag` is `true` |
+| `{{^flag}}...{{/flag}}` | Render only when `flag` is `false` |
+| `{{> partial.dart }}` | Include a partial template (e.g., licence header) |
+| `{{#flag}}dirname{{/flag}}` | **Directory name** is conditional on `flag` |
+
+Variable names used in this project are defined in `lib/src/commands/create_command.dart` (the vars dict passed to mason). Always check that file before adding new template variables.
+
+## Conditional File & Directory Inclusion
+
+To include a file only when a flag is enabled, place it inside a directory whose name uses the flag syntax:
+
+```
+__brick__/{{#enable_feature_counter}}feature_counter{{/enable_feature_counter}}/
+```
+
+For conditional content within a file, wrap sections with `{{#flag}}...{{/flag}}`.
+
+## Conditional Imports Pattern
+
+Place conditional imports at the top of a file in flag blocks:
+
+```dart
+{{#enable_login}}
+import '../../feature_login/blocs/login_bloc.dart';
+{{/enable_login}}
+```
+
+## Partials
+
+The `licence.dart` partial is available everywhere:
+
+```dart
+{{> licence.dart }}
+```
+
+## The `rx_bloc_base` Brick
+
+This is the **base brick** — it holds the always-present scaffold. Feature-specific files live in **separate bricks** (e.g., `feature_login`, `lib_auth`) and are merged in by `BundleGenerator`. Do not add feature-specific files directly to `rx_bloc_base` unless they are always needed.
+
+### Key directories in `rx_bloc_base/__brick__/`
+
+| Path | Notes |
+|---|---|
+| `lib/base/` | Always-present application base classes |
+| `lib/feature_splash/` | Always included |
+| `lib/feature_home/` | Always included |
+| `lib/feature_dashboard/` | Always included |
+| `lib/lib_router/` | Added by `lib_router` brick (always merged) |
+| `.cursor/rules/` | Cursor rules included in generated projects |
+| `.agents/skills/` | Agent skills included in generated projects |
+| `.vscode/` | VS Code settings for generated projects |
+
+## Compiling Bricks
+
+After editing any brick, regenerate its bundle dart file:
+
+```sh
+# Compile a single brick
+dart run mason_cli:mason bundle -t dart -o lib/src/templates/ mason_templates/bricks/<brick_name>
+
+# Compile all bricks
+bin/compile_bundles.sh
+```
+
+The compiled bundle is a single Dart file with all brick content base64-encoded. **Never edit it manually.**
+
+## Adding a Brick to the CLI
+
+After compiling, wire it up in the Dart source:
+
+1. Import the bundle in `lib/src/models/bundle_generator.dart`
+2. Add a field `final _myBundle = myBrickBundle;`
+3. Add conditional logic: `if (arguments.myFeatureEnabled) { _bundle.files.addAll(_myBundle.files); }`
+4. Add the `create_mason_bundle my_brick` line to `bin/compile_bundles.sh`
+
+## Testing Brick Output
+
+```sh
+# Generate a full project and inspect
+bin/generate_test_project.sh all_enabled example/testapp
+
+# Verify the generated project compiles
+cd example/testapp && flutter pub get && flutter analyze
+```

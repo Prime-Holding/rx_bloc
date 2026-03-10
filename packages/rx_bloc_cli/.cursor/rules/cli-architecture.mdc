@@ -1,0 +1,160 @@
+---
+description: Architecture and conventions for working on the rx_bloc_cli Dart package — commands, models, processors, templates, and mason bricks
+globs:
+  - "lib/**/*.dart"
+  - "test/**/*.dart"
+  - "mason_templates/**"
+  - "bin/*.sh"
+alwaysApply: true
+---
+
+# rx_bloc_cli — Package Architecture
+
+This is a **Dart CLI tool** (`dart run rx_bloc_cli create`) that scaffolds Flutter projects using [Mason](https://pub.dev/packages/mason) bricks. Understanding the full pipeline is essential before changing any code.
+
+## Generation Pipeline
+
+```
+CLI args (ArgParser)
+  → CreateCommandArguments (enum, arg definitions)
+  → GeneratorArgumentsProvider (reads args, constructs configs)
+  → GeneratorArguments (aggregates all configs)
+  → BundleGenerator (assembles MasonBundle from feature bricks)
+  → CreateCommand.generate() (runs mason, then processors)
+  → Platform Processors (mutate Android/iOS/CI config files)
+```
+
+## Source Layout (`lib/src/`)
+
+| Directory | Purpose |
+|---|---|
+| `commands/` | `create_command.dart` — the main CLI command; wires everything together |
+| `models/` | Core domain types: `GeneratorArguments`, `BundleGenerator`, configs, readers |
+| `models/command_arguments/` | `CreateCommandArguments` enum — single source of truth for every CLI flag |
+| `models/configurations/` | Value objects: `ProjectConfiguration`, `AuthConfiguration`, `FeatureConfiguration`, `ShowcaseConfiguration` |
+| `models/readers/` | Argument readers that coerce raw ArgResults to typed values |
+| `processors/` | Post-generation mutators for platform-specific files |
+| `processors/android/` | `AndroidManifestProcessor`, `AppBuildGradleProcessor`, etc. |
+| `processors/ios/` | `PodfileProcessor`, `InfoPlistProcessor`, `XcodeFileRegistrant`, etc. |
+| `processors/cicd/` | `CiCdConfigFileProcessor` |
+| `processors/common/` | Abstractions: `AbstractProcessor`, `GeneratedFilesProcessor`, `FileStringProcessor` |
+| `processors/ide/` | IDE-specific file processors |
+| `templates/` | **Auto-generated** `*_bundle.dart` files compiled from mason bricks. **Never edit by hand.** |
+| `extensions/` | ArgParser, ArgResults, String, XML extensions |
+| `utils/` | Shared utilities |
+
+## Key Invariants
+
+- **`CreateCommandArguments` is the single source of truth.** Every CLI flag is defined here (name, type, default, help, prompt). Adding a feature always starts here.
+- **`templates/` is auto-generated.** Run `bin/compile_bundles.sh` after editing any mason brick. Never edit `*_bundle.dart` files manually.
+- **`BundleGenerator` controls which brick files are included.** It conditionally merges feature bundles into the base bundle based on `GeneratorArguments` flags.
+- **`CreateCommand` maps `GeneratorArguments` fields to mason template vars.** The vars dict in `CreateCommand._generate()` is what Mustache templates receive.
+- **Processors run after mason generation.** They patch files (XML, plist, gradle, podfile) that cannot be expressed as Mustache templates.
+
+## Development Workflow
+
+### Adding a feature brick
+
+1. Create/edit the brick under `mason_templates/bricks/<brick_name>/`
+2. Run `bin/compile_bundles.sh` to regenerate `lib/src/templates/<brick_name>_bundle.dart`
+3. Wire the flag in `CreateCommandArguments`, configurations, `GeneratorArguments`, `BundleGenerator`, and `CreateCommand` vars dict
+4. Add any platform-specific mutations in the relevant `processors/`
+5. Update tests in `test/models/`
+6. Run `bin/generate_test_project.sh all_enabled example/testapp` to verify end-to-end generation
+
+### Running tests
+
+```sh
+dart test
+```
+
+### Generating and verifying a test project
+
+```sh
+# default config
+bin/generate_test_project.sh default
+
+# full feature set
+bin/generate_test_project.sh all_enabled
+
+# all features disabled
+bin/generate_test_project.sh all_disabled
+
+# no showcase features
+bin/generate_test_project.sh without_showcase_features
+```
+
+### Full CI run
+
+```sh
+bin/ci.sh
+```
+
+## Mason Variable Names (passed to templates)
+
+These are the exact keys passed to mason in `CreateCommand._generate()`:
+
+| Variable | Type | Flag |
+|---|---|---|
+| `project_name` | string | `--project-name` |
+| `domain_name` | string | `--organisation` (domain part) |
+| `organization_name` | string | `--organisation` (org part) |
+| `uses_firebase` | bool | implied by analytics/push |
+| `analytics` | bool | `--enable-analytics` |
+| `push_notifications` | bool | `--enable-push-notifications` |
+| `enable_feature_counter` | bool | `--enable-feature-counter` |
+| `enable_feature_qr_scanner` | bool | `--enable-feature-qr-scanner` |
+| `enable_feature_deeplinks` | bool | `--enable-feature-deeplinks` |
+| `enable_feature_widget_toolkit` | bool | `--enable-feature-widget-toolkit` |
+| `enable_feature_onboarding` | bool | `--enable-feature-onboarding` |
+| `enable_forgotten_password` | bool | `--enable-forgotten-password` |
+| `enable_login` | bool | `--enable-login` |
+| `enable_social_logins` | bool | `--enable-social-logins` |
+| `enable_change_language` | bool | `--enable-change-language` |
+| `enable_dev_menu` | bool | `--enable-dev-menu` |
+| `enable_feature_otp` | bool | `--enable-otp` |
+| `enable_patrol` | bool | `--enable-patrol` |
+| `has_authentication` | bool | derived (`enable_login`) |
+| `has_showcase` | bool | derived (any showcase enabled) |
+| `realtime_communication` | bool | `--realtime-communication` |
+| `enable_pin_code` | bool | `--enable-pin-code` |
+| `cicd` | bool | `--cicd` |
+| `cicd_github` | bool | derived from `--cicd=github` |
+| `cicd_codemagic` | bool | derived from `--cicd=codemagic` |
+| `enable_mfa` | bool | `--enable-mfa` |
+| `enable_profile` | bool | `--enable-profile` |
+| `has_otp` | bool | derived (`enable_otp OR enable_onboarding`) |
+| `enable_in_app_notifications` | bool | `--enable-in-app-notifications` |
+
+## Feature Cross-Dependencies
+
+Some features require other features to be enabled. When adding a new feature flag, explicitly declare its dependencies.
+
+### Hard cross-brick dependencies
+
+| Feature | Requires | Enforced by |
+|---|---|---|
+| `enable_login` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_social_logins` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_otp` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_mfa` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_pin_code` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_feature_onboarding` | `lib_auth` | ⚠️ not enforced — `onboardingEnabled` is not part of `authenticationEnabled` |
+| `enable_profile` | `lib_auth` | ⚠️ not enforced — `profileEnabled` is not part of `authenticationEnabled` |
+| `enable_in_app_notifications` | `realtime_communication`, `enable_feature_widget_toolkit` | ⚠️ not enforced — `inAppNotificationsEnabled` is not part of `realtimeCommunicationEnabled` or `widgetToolkitEnabled` |
+
+**Pattern to enforce:** Add a derived property in the relevant `*Configuration` class that ORs the dependent flag into an existing `bool get xEnabled` (e.g. `authenticationEnabled`), so `BundleGenerator` picks it up automatically.
+
+### Soft dependencies — conditional content via Mustache
+
+These features enrich another feature's output when present, but are not required for compilation:
+
+| Feature | Conditional content added by |
+|---|---|
+| `enable_mfa` | `{{#enable_feature_otp}}` — OTP method in MFA page |
+| `enable_profile` | `{{#enable_pin_code}}` — biometrics section; `{{#enable_change_language}}` — language setting |
+| `enable_login` | `{{#enable_social_logins}}` — social login buttons; `{{#enable_feature_onboarding}}` — onboarding link |
+
+### `package:widget_toolkit` vs `enable_feature_widget_toolkit`
+
+Most bricks import `package:widget_toolkit` — this is a **base Flutter package dependency**, not a dependency on the `enable_feature_widget_toolkit` showcase flag. Do not confuse them.
