@@ -33,6 +33,8 @@ Before generating any code, the agent MUST:
 - [ ] Check `lib/base/models/` for existing models that can be reused
 - [ ] Check `lib/base/repositories/` for existing repositories
 - [ ] Check `lib/base/common_services/` for existing services
+- [ ] **Scan `lib/base/common_ui_components/`** for existing reusable widgets (error states, loaders, buttons, list items, etc.) that can be used as-is before creating new ones
+- [ ] **Review `lib/base/theme/design_system/`** to understand available colors, typography styles, spacing tokens, and icons — all UI values MUST come from here
 - [ ] Enumerate all pages/screens needed for the feature
 - [ ] Identify which BLoC pattern to use (list, details, or manage)
 
@@ -468,7 +470,61 @@ class MyFeaturePageWithDependencies extends StatelessWidget {
 ```
 
 **D. View & UI Components**
-Build the UI in `views/{name}_page.dart` focusing on the Figma design. Ensure you use the centralized design system (`context.designSystem`) for typography, colors, and layout spacing.
+Build the UI in `views/{name}_page.dart` focusing on the Figma design.
+
+**Design System — mandatory:**
+All visual values MUST come from `context.designSystem`. Never use raw Material constants or hardcoded values.
+
+```dart
+// ✅ Correct
+Text(
+  context.l10n.hello,
+  style: context.designSystem.typography.h2Med16,
+)
+ColoredBox(color: context.designSystem.colors.primaryColor)
+SizedBox(height: context.designSystem.spacing.m)
+
+// ❌ Wrong
+Text('Hello', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+ColoredBox(color: Colors.blue)
+SizedBox(height: 16)
+```
+
+If the required color, typography style, spacing value, or icon is missing from the design system, **add it to the appropriate file in `lib/base/theme/design_system/`** rather than hardcoding it at the call site.
+
+**Reusable components — check before creating:**
+Always check `lib/base/common_ui_components/` for an existing widget before building a new one. Common examples include:
+- Error states → use `AppErrorWidget` (or equivalent) rather than writing a custom error view
+- Loading indicators → use the project's shared loading widget
+- Buttons, list tiles, avatars, empty-state views — check if they already exist
+
+Only create a new widget in `feature_{name}/ui_components/` if no suitable reusable component exists. If you create something that is clearly reusable across features, place it in `lib/base/common_ui_components/` instead.
+
+**Strings & Localisation — mandatory:**
+Every user-visible string MUST go through the l10n system. Never use raw string literals in the UI.
+
+Workflow:
+1. **Extract strings from Figma** (labels, titles, button text, placeholders, error messages, etc.)
+2. **Add each string to every `.arb` file** in `lib/l10n/arb/` (e.g., `en.arb`, `de.arb`, …). Use a `feature_<name>_` prefix to keep keys namespaced:
+   ```json
+   // en.arb
+   "featureMyNameTitle": "My Feature",
+   "featureMyNameEmptyState": "Nothing here yet.",
+   "featureMyNameRetryButton": "Retry"
+   ```
+3. **Run code generation** so the typed accessors are created:
+   ```sh
+   flutter pub run build_runner build --delete-conflicting-outputs
+   # or
+   bin/build_runner_build.sh
+   ```
+4. **Use the generated accessors in the UI** via `context.l10n.<key>`:
+   ```dart
+   Text(context.l10n.featureMyNameTitle)
+   ElevatedButton(onPressed: onRetry, child: Text(context.l10n.featureMyNameRetryButton))
+   ```
+
+If a string appears in Figma but no translation exists in the `.arb` files yet, add it — do not inline the raw English string as a fallback.
 
 ### Error Handling
 
@@ -666,6 +722,9 @@ lib/feature_<name>/
 - **NEVER** create routes without registering them in the router
 - **NEVER** use `setState` in pages — use BLoC states instead
 - **NEVER** create feature-specific models in `lib/base/models/` — put them in `lib/feature_<name>/models/`
+- **NEVER** use hardcoded colors, font sizes, font weights, spacing/padding values, or icons — always use `context.designSystem.*`; if the value doesn't exist yet, add it to `lib/base/theme/design_system/`
+- **NEVER** write a custom error, loading, or empty-state widget without first checking `lib/base/common_ui_components/` for an existing one
+- **NEVER** use raw string literals in the UI — every user-visible string must be an l10n key in the `.arb` files and accessed via `context.l10n.<key>`
 
 ## Reference: Key Import Paths
 
