@@ -124,3 +124,37 @@ These are the exact keys passed to mason in `CreateCommand._generate()`:
 | `enable_mfa` | bool | `--enable-mfa` |
 | `enable_profile` | bool | `--enable-profile` |
 | `has_otp` | bool | derived (`enable_otp OR enable_onboarding`) |
+| `enable_in_app_notifications` | bool | `--enable-in-app-notifications` |
+
+## Feature Cross-Dependencies
+
+Some features require other features to be enabled. When adding a new feature flag, explicitly declare its dependencies.
+
+### Hard cross-brick dependencies
+
+| Feature | Requires | Enforced by |
+|---|---|---|
+| `enable_login` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_social_logins` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_otp` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_mfa` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_pin_code` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_feature_onboarding` | `lib_auth` | ⚠️ not enforced — `onboardingEnabled` is not part of `authenticationEnabled` |
+| `enable_profile` | `lib_auth` | ⚠️ not enforced — `profileEnabled` is not part of `authenticationEnabled` |
+| `enable_in_app_notifications` | `realtime_communication`, `enable_feature_widget_toolkit` | ⚠️ not enforced — `inAppNotificationsEnabled` is not part of `realtimeCommunicationEnabled` or `widgetToolkitEnabled` |
+
+**Pattern to enforce:** Add a derived property in the relevant `*Configuration` class that ORs the dependent flag into an existing `bool get xEnabled` (e.g. `authenticationEnabled`), so `BundleGenerator` picks it up automatically.
+
+### Soft dependencies — conditional content via Mustache
+
+These features enrich another feature's output when present, but are not required for compilation:
+
+| Feature | Conditional content added by |
+|---|---|
+| `enable_mfa` | `{{#enable_feature_otp}}` — OTP method in MFA page |
+| `enable_profile` | `{{#enable_pin_code}}` — biometrics section; `{{#enable_change_language}}` — language setting |
+| `enable_login` | `{{#enable_social_logins}}` — social login buttons; `{{#enable_feature_onboarding}}` — onboarding link |
+
+### `package:widget_toolkit` vs `enable_feature_widget_toolkit`
+
+Most bricks import `package:widget_toolkit` — this is a **base Flutter package dependency**, not a dependency on the `enable_feature_widget_toolkit` showcase flag. Do not confuse them.

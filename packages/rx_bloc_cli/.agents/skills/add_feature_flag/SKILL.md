@@ -14,6 +14,7 @@ This skill guides adding a complete new boolean feature flag to `rx_bloc_cli`, f
 4. **Associated mason brick name** — e.g., `feature_my_feature` (or an existing brick to extend)
 5. **Default value** — `true` or `false`
 6. **Whether platform processors are needed** — does it require changes to AndroidManifest, plist, podfile, or gradle?
+7. **Whether it has hard dependencies on other features** — e.g., if `enable_my_feature` is true, `realtime_communication` must also be included for the generated project to compile.
 
 ## Checklist — Touch Every File Below
 
@@ -76,6 +77,38 @@ if (arguments.myFeatureEnabled) {
   _bundle.files.addAll(_myFeatureBundle.files);
 }
 ```
+
+### 5a. Declare and enforce feature dependencies
+
+If your feature depends on another feature being present, enforce this **before** wiring the bundle.
+
+**Pattern 1 — derived property (preferred for auth-style deps):**
+Add a derived getter to the relevant `*Configuration` class or `GeneratorArguments`:
+
+```dart
+// In auth_configuration.dart (or similar):
+bool get authenticationEnabled =>
+    loginEnabled || socialLoginsEnabled || myFeatureEnabled; // add here
+```
+
+This ensures `lib_auth` (or another shared brick) is always included when your feature is on.
+
+**Pattern 2 — explicit guard in BundleGenerator:**
+```dart
+if (arguments.myFeatureEnabled) {
+  // Ensure the dependency brick is included too
+  if (!arguments.dependencyAlreadyIncluded) {
+    _bundle.files.addAll(_dependencyBundle.files);
+  }
+  _bundle.files.addAll(_myFeatureBundle.files);
+}
+```
+
+**Canonical example — `feature_in_app_notifications` → `realtime_communication`:**
+`feature_in_app_notifications` creates an `EventBloc` that uses `SseService` from `lib_realtime_communication`. If someone enables in-app notifications without enabling realtime communication, the generated project will fail to compile. The correct fix is to include `lib_realtime_communication` whenever `inAppNotificationsEnabled` is true (via a derived property or explicit guard).
+
+**Soft dependencies (no enforcement needed):**
+If your feature *optionally enriches* another feature via `{{#my_feature}}...{{/my_feature}}` conditionals in Mustache templates, no Dart-side enforcement is needed — the templates handle the conditional rendering automatically.
 
 ### 6. `lib/src/commands/create_command.dart`
 

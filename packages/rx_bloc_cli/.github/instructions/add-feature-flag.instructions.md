@@ -23,6 +23,11 @@ When asked to add a new feature flag to rx_bloc_cli, follow this exact sequence.
 5. **`lib/src/models/bundle_generator.dart`**
    Import the new bundle and conditionally add its files inside `generate()`.
 
+   **If the feature depends on another feature**, enforce the dependency here or in a derived property in `*Configuration`:
+   - Preferred: add your flag to an existing derived `bool get xEnabled => ... || myFeatureEnabled` in the relevant config class so the dependency brick is included automatically.
+   - Alternative: add an explicit guard in `generate()` that also includes the dependency bundle when your flag is true.
+   - Example: `feature_in_app_notifications` requires `realtime_communication` — `EventBloc` uses `SseService` from `lib_realtime_communication`; without it, the generated project won't compile.
+
 6. **`lib/src/commands/create_command.dart`**
    Add the mason variable to the vars dict and add a `_usingLog(...)` call.
 

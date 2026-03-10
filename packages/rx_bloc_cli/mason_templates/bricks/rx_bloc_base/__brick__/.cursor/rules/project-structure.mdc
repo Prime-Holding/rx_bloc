@@ -27,7 +27,7 @@ These files govern the root behavior, themes, routing, and shared dependencies o
 - `lib/base/common_mappers`: Application-wide mappers converting DTOs to business models.
   - `lib/base/common_mappers/error_mappers`: Error mapping via `ErrorMapper`. Always wrap data source calls with `ErrorMapper` inside repositories.
 - `lib/base/common_ui_components`: Reusable application-wide widgets (buttons, controls, text fields).
-- `lib/base/common_blocs`: Global BLoCs shared across the entire app (e.g., `CoordinatorBloc`{{#push_notifications}}, `PushNotificationsBloc`{{/push_notifications}}).
+- `lib/base/common_blocs`: Global BLoCs shared across the entire app (e.g., `CoordinatorBloc`{{#push_notifications}}, `PushNotificationsBloc`{{/push_notifications}}{{#enable_in_app_notifications}}, `EventBloc`{{/enable_in_app_notifications}}).
 - `lib/base/common_services`: Global Services accessible within the entire app. Register at `app_dependencies.dart` and access via `context.read<ServiceClassName>()`.
 - `lib/base/repositories`: Repository classes used to fetch and persist models.
 - `lib/base/models`: Business models organized by domain, including request/response DTOs using `json_serializable`.
@@ -121,6 +121,9 @@ The following feature directories are present in this project. All follow the in
 {{#enable_feature_qr_scanner}}
 - `lib/feature_qr_scanner` — QR code scanning. Subdirs: `di`, `services`, `views`.
 {{/enable_feature_qr_scanner}}
+{{#enable_in_app_notifications}}
+- `lib/feature_in_app_notifications` — In-app notification centre (SSE-driven). Subdirs: `blocs`, `data_sources`, `di`, `models`, `repositories`, `services`, `ui_components`, `views`.
+{{/enable_in_app_notifications}}
 
 ## Feature-Specific Classes
 

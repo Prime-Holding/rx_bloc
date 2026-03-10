@@ -38,12 +38,41 @@ When adding a new feature flag, touch all of the following:
 1. `lib/src/models/command_arguments/create_command_arguments.dart` — add enum value
 2. `lib/src/models/configurations/<relevant>_configuration.dart` — add field
 3. `lib/src/models/generator_arguments.dart` — delegate to config
-4. `lib/src/models/bundle_generator.dart` — conditionally add brick files
+4. `lib/src/models/bundle_generator.dart` — conditionally add brick files; **enforce any hard dependencies** (see below)
 5. `lib/src/commands/create_command.dart` — add to vars dict and `_usingLog`
 6. Relevant `lib/src/processors/` if platform files need patching
 7. `mason_templates/bricks/<new_brick>/` — create or extend the brick
 8. `bin/compile_bundles.sh` — add `create_mason_bundle <brick_name>`
 9. `bin/generate_test_project.sh` — add the flag to `all_enabled` and `all_disabled` configs
+
+## Feature Cross-Dependencies
+
+When a brick **imports code from another brick** (not just `package:widget_toolkit` which is a base package), enforce the dependency so the generated project compiles correctly.
+
+### Hard cross-brick dependencies
+
+| Feature | Requires | Enforced by |
+|---|---|---|
+| `enable_login` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_social_logins` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_otp` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_mfa` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_pin_code` | `lib_auth` | `authenticationEnabled` derived property |
+| `enable_feature_onboarding` | `lib_auth` | ⚠️ not enforced — `onboardingEnabled` is not part of `authenticationEnabled` |
+| `enable_profile` | `lib_auth` | ⚠️ not enforced — `profileEnabled` is not part of `authenticationEnabled` |
+| `enable_in_app_notifications` | `realtime_communication`, `enable_feature_widget_toolkit` | ⚠️ not enforced — `inAppNotificationsEnabled` is not part of `realtimeCommunicationEnabled` or `widgetToolkitEnabled` |
+
+**Pattern to enforce:** Add the dependent flag to a derived `bool get xEnabled` in the relevant config class (e.g. add `onboardingEnabled` to `authenticationEnabled`), so `BundleGenerator` picks it up automatically.
+
+### Soft dependencies (Mustache-only, no Dart enforcement needed)
+
+| Feature | Conditionally enriched by |
+|---|---|
+| `lib_mfa` | `{{#enable_feature_otp}}` — OTP method in MFA page |
+| `feature_profile` | `{{#enable_pin_code}}`, `{{#enable_change_language}}` |
+| `feature_login` | `{{#enable_social_logins}}`, `{{#enable_feature_onboarding}}` |
+
+> **Note:** `package:widget_toolkit` is a base Flutter package imported by most bricks — it does NOT imply a dependency on the `enable_feature_widget_toolkit` showcase flag.
 
 ## Mason Template Variables Reference
 
@@ -79,6 +108,7 @@ The complete set of variables passed to mason templates:
 | `cicd` | bool | `--cicd` |
 | `cicd_github` | bool | derived from `--cicd=github` |
 | `cicd_codemagic` | bool | derived from `--cicd=codemagic` |
+| `enable_in_app_notifications` | bool | `--enable-in-app-notifications` |
 
 ## Testing the CLI
 
