@@ -1,3 +1,6 @@
+## [Next Version]
+* Convert the sync translation tool from python to dart
+
 ## [6.0.0]
 Contains breaking changes
 * Removed the `--enable-remote-translations` flag from the CLI
