@@ -1,5 +1,6 @@
 ## [6.1.0]
-* Introduces in app notification feature (enabled under `--enable-in-app-notifications` flag)
+* Add `--enable-in-app-notifications` flag to configure In App Notification flows in the generated project, including periodic pings from server using SSE
+* Add Cursor agent rules and skills, Copilot instructions to provide context for working with rx_bloc_cli and generated project
 
 ## [6.0.0]
 Contains breaking changes:

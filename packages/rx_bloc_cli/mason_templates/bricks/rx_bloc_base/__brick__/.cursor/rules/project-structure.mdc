@@ -1,0 +1,137 @@
+---
+description: Project structure and architecture guidelines for the {{project_name}} Flutter application
+globs:
+  - "lib/**/*.dart"
+alwaysApply: true
+---
+
+# Project Structure & Architecture
+
+The application uses the **RxBloc** pattern for state management, **GoRouter** for navigation, and a centralized dependency injection system. A rigorous directory hierarchy rules where logic should be placed. Always refer to the following structure map before creating or modifying files:
+
+## Application-Specific Classes
+
+These files govern the root behavior, themes, routing, and shared dependencies of the entire app:
+
+- `lib/base/app`: The root widget used in application entry points.
+- `lib/base/app/config`: Environment-specific configurations and constants.
+- `lib/base/app/initialization`: Core initializations like Firebase, Push Notifications, etc.
+- `lib/base/data_sources/local`: Local data sources, such as Shared Preferences, Secure Storage, etc.
+- `lib/base/data_sources/remote`: Remote data sources (APIs). **Retrofit code lives here.**
+  - `lib/base/data_sources/remote/http_clients`: HTTP client definitions.
+  - `lib/base/data_sources/remote/interceptors`: Request/response interceptors.
+{{#realtime_communication}}
+- `lib/base/data_sources/domain`: Domain-level data sources for real-time communication (WebSocket/SSE clients).
+{{/realtime_communication}}
+- `lib/base/theme/design_system`: Central design catalog for colors, typography, images, and spacing.
+- `lib/base/common_mappers`: Application-wide mappers converting DTOs to business models.
+  - `lib/base/common_mappers/error_mappers`: Error mapping via `ErrorMapper`. Always wrap data source calls with `ErrorMapper` inside repositories.
+- `lib/base/common_ui_components`: Reusable application-wide widgets (buttons, controls, text fields).
+- `lib/base/common_blocs`: Global BLoCs shared across the entire app (e.g., `CoordinatorBloc`{{#push_notifications}}, `PushNotificationsBloc`{{/push_notifications}}{{#enable_in_app_notifications}}, `EventBloc`{{/enable_in_app_notifications}}).
+- `lib/base/common_services`: Global Services accessible within the entire app. Register at `app_dependencies.dart` and access via `context.read<ServiceClassName>()`.
+- `lib/base/repositories`: Repository classes used to fetch and persist models.
+- `lib/base/models`: Business models organized by domain, including request/response DTOs using `json_serializable`.
+  - `lib/base/models/errors`: Error model definitions.
+  - `lib/base/models/request_models`: Request DTO models.
+- `lib/base/di`: Centralized DI providers for global instances.
+- `lib/base/extensions`: Global extension methods.
+- `lib/base/utils`: Global utilities.
+
+## Application-Specific Libraries
+
+These handle core technical mechanics disconnected from UI features. Each `lib_*` folder contains reusable functionality that can be shared across multiple features.
+
+### Core Libraries
+
+- `lib/lib_router`: Core navigation handling using GoRouter and `typed_go_router`.
+  - `lib/lib_router/models`: Path definitions (`paths.dart`) and route name constants (`route_name.dart`).
+  - `lib/lib_router/routes`: Route declarations mapping path definitions to UI pages.
+  - `lib/lib_router/services`: Router-level services (e.g., deep link resolution).
+  - `lib/lib_router/views`: Navigation-specific views (e.g., not-found page).
+{{#enable_login}}
+- `lib/lib_auth`: Core authentication state and token management. Subdirs: `blocs`, `data_sources`, `models`, `repositories`, `services`.
+{{/enable_login}}
+{{#enable_social_logins}}
+- `lib/lib_social_logins`: OAuth/social sign-in providers (Google, Apple, etc.). Subdirs: `blocs`, `data_sources`, `models`, `repositories`, `services`, `ui_components`.
+{{/enable_social_logins}}
+{{#enable_mfa}}
+- `lib/lib_mfa`: Core MFA logic and method implementations. Subdirs: `data_source`, `extensions`, `methods`, `models`, `repositories`, `services`.
+{{/enable_mfa}}
+{{#enable_change_language}}
+- `lib/lib_change_language`: Language switching and locale persistence. Subdirs: `bloc`, `data_sources`, `extensions`, `repositories`, `services`, `ui_components`, `utils`.
+{{/enable_change_language}}
+{{#analytics}}
+- `lib/lib_analytics`: Firebase Analytics and Crashlytics integration. Subdirs: `blocs`, `models`, `repositories`, `services`.
+{{/analytics}}
+
+### UI Component Libraries
+
+{{#enable_dev_menu}}
+
+- `lib/lib_dev_menu`: In-app developer menu for debugging and QA. Subdirs: `blocs`, `data_source`, `di`, `extensions`, `repository`, `service`, `ui_components`.
+{{/enable_dev_menu}}
+
+## Feature Directories
+
+The following feature directories are present in this project. All follow the internal structure described in the [Feature-Specific Classes](#feature-specific-classes) section below.
+
+- `lib/feature_splash` — Initial loading screen. Subdirs: `blocs`, `di`, `services`, `views`.
+- `lib/feature_home` — Home screen shell. Subdirs: `views`.
+- `lib/feature_dashboard` — Main navigation hub. Subdirs: `blocs`, `di`, `services`, `views`.
+{{#push_notifications}}
+- `lib/feature_notifications` — In-app notification list and handling. Subdirs: `blocs`, `di`, `services`, `ui_components`, `views`.
+{{/push_notifications}}
+{{#enable_profile}}
+- `lib/feature_profile` — User profile screen. Subdirs: `blocs`, `di`, `extensions`, `views`.
+{{/enable_profile}}
+{{#enable_login}}
+- `lib/feature_login` — Login/authentication screen. Subdirs: `blocs`, `di`, `ui_components`, `views`.
+{{/enable_login}}
+{{#enable_feature_otp}}
+- `lib/feature_otp` — SMS/OTP code entry. Subdirs: `di`, `services`, `views`.
+{{/enable_feature_otp}}
+{{#enable_pin_code}}
+- `lib/feature_pin_code` — Biometric and PIN code screen. Subdirs: `di`, `repository`, `services`, `views`.
+{{/enable_pin_code}}
+{{#enable_mfa}}
+- `lib/feature_mfa` — MFA challenge screens. Subdirs: `blocs`, `di`, `services`, `views`.
+{{/enable_mfa}}
+{{#enable_forgotten_password}}
+- `lib/feature_password_reset` — Password reset entry point. Subdirs: `blocs`, `di`, `services`, `views`.
+- `lib/feature_password_reset_request` — Reset request screen. Subdirs: `blocs`, `di`, `services`, `views`.
+- `lib/feature_password_reset_confirmation` — Reset confirmation screen. Subdirs: `blocs`, `di`, `services`, `views`.
+{{/enable_forgotten_password}}
+{{#enable_feature_onboarding}}
+- `lib/feature_onboarding` — Onboarding flow entry. Subdirs: `blocs`, `di`, `ui_components`, `views`.
+- `lib/feature_onboarding_email_confirmation` — Email verification step. Subdirs: `blocs`, `di`, `views`.
+- `lib/feature_onboarding_phone_confirmation` — Phone verification step. Subdirs: `blocs`, `di`, `repositories`, `services`, `ui_components`, `views`.
+- `lib/feature_email_change` — Email change during onboarding. Subdirs: `blocs`, `di`, `services`, `views`.
+{{/enable_feature_onboarding}}
+{{#enable_feature_counter}}
+- `lib/feature_counter` — Counter showcase feature. Subdirs: `blocs`, `di`, `services`, `views`.
+{{/enable_feature_counter}}
+{{#enable_feature_widget_toolkit}}
+- `lib/feature_widget_toolkit` — Widget toolkit component demos. Subdirs: `di`, `models`, `repositories`, `services`, `ui_components`, `utils`, `views`.
+{{/enable_feature_widget_toolkit}}
+{{#enable_feature_deeplinks}}
+- `lib/feature_deep_link_list` — Deep link list. Subdirs: `blocs`, `di`, `ui_components`, `views`.
+- `lib/feature_deep_link_details` — Deep link detail view. Subdirs: `blocs`, `di`, `views`.
+- `lib/feature_enter_message` — Message entry for deep link testing. Subdirs: `blocs`, `di`, `services`, `views`.
+{{/enable_feature_deeplinks}}
+{{#enable_feature_qr_scanner}}
+- `lib/feature_qr_scanner` — QR code scanning. Subdirs: `di`, `services`, `views`.
+{{/enable_feature_qr_scanner}}
+{{#enable_in_app_notifications}}
+- `lib/feature_in_app_notifications` — In-app notification centre (SSE-driven). Subdirs: `blocs`, `data_sources`, `di`, `models`, `repositories`, `services`, `ui_components`, `views`.
+{{/enable_in_app_notifications}}
+
+## Feature-Specific Classes
+
+Every new visual or functional vertical in the application MUST be isolated within `lib/feature_{name}` following this strict internal structure:
+
+- `feature_{name}/views`: Contains the UI screen implementation (`{name}_page.dart`). **Every page (screen) should be implemented as a Stateless Widget unless it requires a StatefulWidget for specific lifecycle needs.**
+- `feature_{name}/ui_components`: Local, non-reusable UI widgets tailored uniquely to this feature.
+- `feature_{name}/models` *(optional)*: States or DTOs bound singularly to this feature's logic.
+- `feature_{name}/blocs`: The `rx_bloc` files reacting to UI inputs to compute states (`{name}_bloc.dart` + generated files). **Complex BLoC implementation details can be offloaded to a separate `{name}_bloc_extensions.dart` file for improved readability.**
+- `feature_{name}/services`: Middle-layer orchestrators parsing repository data for the BLoC (`{name}_service.dart`). Feature-specific services should be registered at `lib/feature_{name}/di` and will be accessible only within the feature.
+- `feature_{name}/di`: Dependency injection initializing the BLoC and required dependencies (`{name}_page_with_dependencies.dart`).
