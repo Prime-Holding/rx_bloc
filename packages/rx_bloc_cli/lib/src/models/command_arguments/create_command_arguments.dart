@@ -195,7 +195,7 @@ enum CreateCommandArguments {
   inAppNotifications(
     name: 'enable-in-app-notifications',
     type: CreateCommandArgumentType.boolean,
-    defaultsTo: true,
+    defaultsTo: false,
     prompt: 'Enable In-app notifications:',
     help: 'Enables In-app notifications for the project',
   ),
