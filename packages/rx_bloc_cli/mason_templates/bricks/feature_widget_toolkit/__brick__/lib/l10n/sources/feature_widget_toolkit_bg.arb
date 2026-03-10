@@ -1,7 +1,7 @@
 {
   "@@locale": "bg",
   "navWidgetToolkit": "Компоненти",
-  "commonComponents" : "Общи компоненти",
+  "commonComponents": "Общи компоненти",
   "pickers": "Kомпоненти с избиране",
   "editFields": "Полета за редактиране",
   "openUrlWidgetLaunchURLLink": "Компонент за избор на URL връзка",
