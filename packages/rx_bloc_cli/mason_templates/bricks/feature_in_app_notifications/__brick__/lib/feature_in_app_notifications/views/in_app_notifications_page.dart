@@ -23,84 +23,85 @@ class InAppNotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: customAppBar(context, title: context.l10n.notifications),
         backgroundColor: context.designSystem.colors.unreadNotificationColor,
-        body: Column(
-          children: [
-            _buildFilterBar(context),
-            Expanded(
-              child: RxPaginatedBuilder<InAppNotificationsBlocType,
-                  InAppNotificationModel>.withRefreshIndicator(
-                state: (bloc) => bloc.states.notifications,
-                onBottomScrolled: (bloc) => bloc.events.loadNotifications(),
-                onRefresh: (bloc) async {
-                  bloc.events.loadNotifications(reset: true);
-                  return bloc.states.notifications.waitToLoad();
-                },
-                buildLoading: (context, list, bloc) =>
-                    Center(child: AppLoadingIndicator.taskValue(context)),
-                buildError: (context, list, bloc) => AppErrorWidget(
-                  error: list.error!,
-                  onTabRetry: () => bloc.events.loadNotifications(reset: true),
-                ),
-                buildSuccess: (context, list, bloc) {
-                  if (list.isEmpty) {
-                    return const Center(child: NoIaNotifications());
-                  }
+        body: RxPaginatedBuilder<InAppNotificationsBlocType,
+            InAppNotificationModel>.withRefreshIndicator(
+          state: (bloc) => bloc.states.notifications,
+          onBottomScrolled: (bloc) => bloc.events.loadNotifications(),
+          onRefresh: (bloc) async {
+            bloc.events.loadNotifications(reset: true);
+            return bloc.states.notifications.waitToLoad();
+          },
+          buildLoading: (context, list, bloc) =>
+              Center(child: AppLoadingIndicator.taskValue(context)),
+          buildError: (context, list, bloc) => AppErrorWidget(
+            error: list.error!,
+            onTabRetry: () => bloc.events.loadNotifications(reset: true),
+          ),
+          buildSuccess: (context, list, bloc) {
+            final padding = EdgeInsets.symmetric(
+              horizontal: context.designSystem.spacing.m,
+              vertical: context.designSystem.spacing.s,
+            );
 
-                  final groups = _groupNotificationsByMonth(list);
-                  final loadedCount =
-                      groups.fold<int>(0, (sum, g) => sum + g.length);
-                  final hasMore = loadedCount < list.itemCount;
+            if (list.isEmpty) {
+              return ListView(
+                padding: padding,
+                children: [
+                  _buildFilterBar(context),
+                  SizedBox(height: context.designSystem.spacing.m),
+                  const NoIaNotifications(),
+                ],
+              );
+            }
 
-                  return ListView.separated(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.designSystem.spacing.m,
-                      vertical: context.designSystem.spacing.s,
+            final groups = _groupNotificationsByMonth(list);
+            final loadedCount = groups.fold<int>(
+              0,
+              (sum, g) => sum + g.length,
+            );
+            final hasMore = loadedCount < list.itemCount;
+
+            return ListView.separated(
+              padding: padding,
+              itemCount: 1 + groups.length + (hasMore ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return _buildFilterBar(context);
+                }
+                if (index > groups.length) {
+                  return Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(
+                        context.designSystem.spacing.m,
+                      ),
+                      child: AppLoadingIndicator.textButtonValue(context),
                     ),
-                    itemCount: groups.length + (hasMore ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index >= groups.length) {
-                        return Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(
-                              context.designSystem.spacing.m,
-                            ),
-                            child: AppLoadingIndicator.textButtonValue(context),
-                          ),
-                        );
-                      }
-                      return _buildMonthGroup(context, groups[index]);
-                    },
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: context.designSystem.spacing.m),
                   );
-                },
-              ),
-            ),
-          ],
+                }
+                return _buildMonthGroup(context, groups[index - 1]);
+              },
+              separatorBuilder: (context, index) =>
+                  SizedBox(height: context.designSystem.spacing.m),
+            );
+          },
         ),
       );
 
-  Widget _buildFilterBar(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: context.designSystem.spacing.m,
-          vertical: context.designSystem.spacing.xs,
-        ),
-        child: Row(
-          children: [
-            RxBlocBuilder<InAppNotificationsBlocType, int>(
-              state: (bloc) => bloc.states.unreadCount,
-              builder: (context, unreadSnapshot, bloc) =>
-                  RxBlocBuilder<InAppNotificationsBlocType, bool>(
-                state: (bloc) => bloc.states.isFilteredByUnread,
-                builder: (context, filterSnapshot, bloc) => UnreadFilterButton(
-                  unreadCount: unreadSnapshot.data ?? 0,
-                  isActive: filterSnapshot.data ?? false,
-                  onPressed: () => bloc.events.toggleUnreadFilter(),
-                ),
+  Widget _buildFilterBar(BuildContext context) => Row(
+        children: [
+          RxBlocBuilder<InAppNotificationsBlocType, int>(
+            state: (bloc) => bloc.states.unreadCount,
+            builder: (context, unreadSnapshot, bloc) =>
+                RxBlocBuilder<InAppNotificationsBlocType, bool>(
+              state: (bloc) => bloc.states.isFilteredByUnread,
+              builder: (context, filterSnapshot, bloc) => UnreadFilterButton(
+                unreadCount: unreadSnapshot.data ?? 0,
+                isActive: filterSnapshot.data ?? false,
+                onPressed: () => bloc.events.toggleUnreadFilter(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
 
   List<List<InAppNotificationModel>> _groupNotificationsByMonth(
