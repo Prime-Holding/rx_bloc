@@ -156,7 +156,7 @@ class GeneratorArgumentsProvider {
     // Realtime communication
     final realtimeCommunication = _reader.read<RealtimeCommunicationType>(
         CreateCommandArguments.realtimeCommunication);
-    final realtimeCommunicationEnabled =
+    var realtimeCommunicationEnabled =
         realtimeCommunication != RealtimeCommunicationType.none;
 
     // Dev menu
@@ -174,6 +174,16 @@ class GeneratorArgumentsProvider {
 
     // Profile
     var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
+
+    // In-app notifications
+    final inAppNotificationsEnabled =
+        _reader.read<bool>(CreateCommandArguments.inAppNotifications);
+
+    if (inAppNotificationsEnabled && !realtimeCommunicationEnabled) {
+      _logger.warn('Realtime communication enabled, due to In-app '
+          'notifications feature requirement');
+      realtimeCommunicationEnabled = true;
+    }
 
     // Adjust onboarding based on forgottenPassword dependency
     var adjustedOnboardingEnabled = onboardingEnabled;
@@ -209,6 +219,7 @@ class GeneratorArgumentsProvider {
       profileEnabled: profileEnabled,
       onboardingEnabled: adjustedOnboardingEnabled,
       forgottenPassword: forgottenPassword,
+      inAppNotificationsEnabled: inAppNotificationsEnabled,
     );
   }
 
@@ -237,8 +248,17 @@ class GeneratorArgumentsProvider {
         _reader.read<bool>(CreateCommandArguments.qrScanner);
 
     // Widget toolkit
-    final widgetToolkitEnabled =
+    var widgetToolkitEnabled =
         _reader.read<bool>(CreateCommandArguments.widgetToolkit);
+
+    // In-app notifications depend on widget toolkit
+    if (featureConfiguration.inAppNotificationsEnabled &&
+        !widgetToolkitEnabled) {
+      _logger
+          .warn('Widget toolkit enabled, due to In-app notifications feature '
+              'requirement');
+      widgetToolkitEnabled = true;
+    }
 
     return ShowcaseConfiguration(
       counterEnabled: counterEnabled,

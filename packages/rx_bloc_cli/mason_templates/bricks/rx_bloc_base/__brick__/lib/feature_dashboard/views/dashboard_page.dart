@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_widget.dart';
 import '../../base/extensions/error_model_field_translations.dart';
-import '../../base/models/errors/error_model.dart';
+import '../../base/models/errors/error_model.dart';{{#enable_in_app_notifications}}
+import '../../feature_in_app_notifications/ui_components/notification_action_button.dart';{{/enable_in_app_notifications}}
 import '../blocs/dashboard_bloc.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -17,7 +18,11 @@ class DashboardPage extends StatelessWidget {
             IconButton(
               icon: Icon(context.designSystem.icons.reload),
               onPressed: context.read<DashboardBlocType>().events.fetchData,
-            ),
+            ),{{#enable_in_app_notifications}}
+            Padding(
+              padding: EdgeInsets.only(right: context.designSystem.spacing.s),
+              child: NotificationActionButton(),
+            ),{{/enable_in_app_notifications}}
           ],
         ),
         body: Column(

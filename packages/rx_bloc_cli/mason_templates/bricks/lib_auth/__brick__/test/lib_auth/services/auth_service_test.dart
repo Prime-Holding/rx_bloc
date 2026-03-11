@@ -33,12 +33,12 @@ void main() {
     });
 
     test('isAuthenticated should return true', () async {
-      when(mockRepository.getToken()).thenAnswer((_) async => Stubs.authToken);
+      when(mockRepository.isAuthenticated()).thenAnswer((_) async => true);
 
       final result = await authService.isAuthenticated();
 
       expect(result, true);
-      verify(mockRepository.getToken()).called(1);
+      verify(mockRepository.isAuthenticated()).called(1);
     });
 
     test('saveToken should call repository saveToken', () async {

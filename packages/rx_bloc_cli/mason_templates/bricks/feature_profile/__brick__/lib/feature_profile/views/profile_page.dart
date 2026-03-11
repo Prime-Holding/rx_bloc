@@ -21,7 +21,8 @@ import '../../lib_change_language/ui_components/language_picker_button.dart'; {{
 import '../../lib_router/router.dart';{{/has_authentication}}
 import '../blocs/profile_bloc.dart';
 import '../extensions/push_notifications_extensions.dart';{{#has_authentication}}
-import '../ui_components/logout_action_button.dart';{{/has_authentication}}
+import '../ui_components/logout_action_button.dart';{{/has_authentication}}{{#enable_in_app_notifications}}
+ import '../../feature_in_app_notifications/ui_components/notification_action_button.dart';{{/enable_in_app_notifications}}
 
 
 class ProfilePage extends StatelessWidget {
@@ -64,11 +65,15 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              {{#has_authentication}}
-              actions: const [
-                LogoutActionButton(),
+              actions: [ {{#has_authentication}}
+                const LogoutActionButton(),{{/has_authentication}} {{#enable_in_app_notifications}}
+                Padding(
+                  padding:
+                      EdgeInsets.only(right: context.designSystem.spacing.s),
+                  child: const NotificationActionButton(),
+                ),{{/enable_in_app_notifications}}
               ],
-              {{/has_authentication}}
+
             ),
             SliverList(
               delegate: SliverChildListDelegate([ {{#enable_feature_onboarding}}

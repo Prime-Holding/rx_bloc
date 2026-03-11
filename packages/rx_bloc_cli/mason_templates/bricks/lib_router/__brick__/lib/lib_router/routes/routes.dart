@@ -82,8 +82,16 @@ class SplashRoute extends GoRouteData with $SplashRoute implements RouteDataMode
                 routes: [
                   TypedGoRoute<VerifyChangeEmailRoute>(
                       path: RoutesPath.emailChangeVerify),
-                ]),
-          ],{{/enable_feature_onboarding}}
+                ]),{{#enable_in_app_notifications}}
+            TypedGoRoute<InAppNotificationsRoute>(
+              path: RoutesPath.inAppNotifications,
+            ),{{/enable_in_app_notifications}}
+          ],{{/enable_feature_onboarding}}{{^enable_feature_onboarding}}{{#enable_in_app_notifications}}
+          routes: [
+            TypedGoRoute<InAppNotificationsRoute>(
+              path: RoutesPath.inAppNotifications,
+            ),
+          ],{{/enable_in_app_notifications}}{{/enable_feature_onboarding}}
         ),
       ],
     ),{{/enable_profile}}
@@ -103,7 +111,7 @@ class HomeStatefulShellRoute extends StatefulShellRouteData {
 
   static Widget $navigatorContainerBuilder(BuildContext context,
       StatefulNavigationShell navigationShell, List<Widget> children) =>
-      HomePage(
+      HomePageWithDependencies(
         currentIndex: navigationShell.currentIndex,
         branchNavigators: children,
         onNavigationItemSelected: (index) => navigationShell.goBranch(
@@ -155,4 +163,53 @@ class NotificationsRoute extends GoRouteData with $NotificationsRoute implements
   @override
   String get routeLocation => location;
 }
-{{/enable_profile}}
+{{/enable_profile}}{{#enable_in_app_notifications}}
+
+@immutable
+class InAppNotificationsRoute extends GoRouteData
+    with $InAppNotificationsRoute
+    implements RouteDataModel {
+  const InAppNotificationsRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const InAppNotificationsPageWithDependencies(),
+      );
+
+  @override
+  String get permissionName => RouteModel.inAppNotifications.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+
+@immutable
+@TypedGoRoute<InAppNotificationDetailsRoute>(
+  path: RoutesPath.inAppNotificationDetails,
+)
+class InAppNotificationDetailsRoute extends GoRouteData
+    with $InAppNotificationDetailsRoute
+    implements RouteDataModel {
+  const InAppNotificationDetailsRoute(this.id);
+
+  final String id;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: InAppNotificationDetailsPageWithDependencies(
+          notificationId: id,
+        ),
+      );
+
+  @override
+  String get permissionName =>
+      RouteModel.inAppNotificationDetails.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+{{/enable_in_app_notifications}}

@@ -8,7 +8,8 @@ import 'package:rxdart/rxdart.dart';
 {{#analytics}}
 import '../../lib_analytics/models/log_event_model.dart';
 {{/analytics}}
-import '../models/errors/error_model.dart';
+import '../models/errors/error_model.dart'; {{#enable_in_app_notifications}}
+import '../models/notification_event_model.dart';{{/enable_in_app_notifications}}
 
 part 'coordinator_bloc.rxb.g.dart';
 
@@ -27,7 +28,10 @@ abstract class CoordinatorEvents {
   {{/analytics}}{{#enable_feature_onboarding}}
 
   /// Event that signals that the phone number was updated
-  void updatePhoneNumber();{{/enable_feature_onboarding}}
+  void updatePhoneNumber();{{/enable_feature_onboarding}} {{#enable_in_app_notifications}}
+
+  /// Event that signals that a notification event has occurred
+  void notificationEvent(NotificationEvent event); {{/enable_in_app_notifications}}
 }
 
 abstract class CoordinatorStates {
@@ -42,7 +46,11 @@ abstract class CoordinatorStates {
 
   /// State indicating that the phone number was updated
   @RxBlocIgnoreState()
-  Stream<void> get phoneNumberUpdated;{{/enable_feature_onboarding}}
+  Stream<void> get phoneNumberUpdated;{{/enable_feature_onboarding}} {{#enable_in_app_notifications}}
+
+  /// State emitting the notification events
+  @RxBlocIgnoreState()
+  Stream<NotificationEvent> get notificationEvents; {{/enable_in_app_notifications}}
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -55,9 +63,12 @@ class CoordinatorBloc extends $CoordinatorBloc {
   Stream<bool> get isAuthenticated => _$authenticatedEvent;{{#enable_feature_onboarding}}
 
   @override
-  Stream<void> get phoneNumberUpdated => _$updatePhoneNumberEvent;{{/enable_feature_onboarding}}
+  Stream<void> get phoneNumberUpdated => _$updatePhoneNumberEvent;{{/enable_feature_onboarding}}{{#enable_in_app_notifications}}
 
-  {{#analytics}}
+  @override
+  Stream<NotificationEvent> get notificationEvents => _$notificationEventEvent; {{/enable_in_app_notifications}}
+
+{{#analytics}}
   @override
   Stream<String> get navigationChange => _$navigationChangedEvent;
 

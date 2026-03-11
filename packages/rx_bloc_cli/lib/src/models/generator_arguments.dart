@@ -115,6 +115,11 @@ class GeneratorArguments
   @override
   bool get forgottenPassword => _featureConfiguration.forgottenPassword;
 
+  /// In-app notifications
+  @override
+  bool get inAppNotificationsEnabled =>
+      _featureConfiguration.inAppNotificationsEnabled;
+
   /// Dev menu
   @override
   bool get devMenuEnabled => _featureConfiguration.devMenuEnabled;

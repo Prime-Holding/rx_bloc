@@ -47,7 +47,9 @@ class RoutesPath {
 
   {{#enable_profile}}
   /// Profile
-  static const profile = '/profile';{{/enable_profile}}
+  static const profile = '/profile';{{/enable_profile}}{{#enable_in_app_notifications}}
+  static const inAppNotifications = 'inAppNotifications';
+  static const inAppNotificationDetails = '/inAppNotificationDetails/:id';{{/enable_in_app_notifications}}
 
   {{#enable_pin_code}}
   /// Pin Code

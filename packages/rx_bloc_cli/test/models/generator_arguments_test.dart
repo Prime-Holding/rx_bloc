@@ -43,6 +43,7 @@ void main() {
       profileEnabled: true,
       onboardingEnabled: true,
       forgottenPassword: true,
+      inAppNotificationsEnabled: true,
     );
     showcaseConfiguration = ShowcaseConfiguration(
       counterEnabled: true,

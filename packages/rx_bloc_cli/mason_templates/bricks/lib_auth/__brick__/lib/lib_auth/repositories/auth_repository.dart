@@ -60,6 +60,8 @@ class AuthRepository {
         ),
       );
 
+  Future<bool> isAuthenticated() => getToken().then((token) => token != null);
+
   Future<void> logout() => _errorMapper.execute(() => _authDataSource.logout());
 
   Future<UserModel> getCurrentUser() =>

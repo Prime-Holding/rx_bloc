@@ -18,7 +18,9 @@ class DesignSystemColors {
         dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFF000000),
         googleBackground = const Color(0xFFFFFFFF),
-        facebookBackground = const Color(0xFF1877F2){{/enable_social_logins}};
+        facebookBackground = const Color(0xFF1877F2){{/enable_social_logins}}{{#enable_in_app_notifications}},
+        readNotificationColor = Colors.white,
+        unreadNotificationColor = const Color.fromARGB(102, 220, 220, 220){{/enable_in_app_notifications}};
 
   const DesignSystemColors.dark()
       : brightness = Brightness.dark,
@@ -30,7 +32,9 @@ class DesignSystemColors {
         dividerColor = const Color(0xff808080){{#enable_social_logins}},
         appleBackground = const Color(0xFFFFFFFF),
         googleBackground = Colors.black,
-        facebookBackground = const Color(0xFFFFFFFF){{/enable_social_logins}};
+        facebookBackground = const Color(0xFFFFFFFF){{/enable_social_logins}}{{#enable_in_app_notifications}},
+        readNotificationColor = const Color.fromARGB(255, 120, 120, 120),
+        unreadNotificationColor = const Color.fromARGB(102, 75, 75, 75){{/enable_in_app_notifications}};
 
   final Brightness brightness;
 
@@ -99,6 +103,20 @@ class DesignSystemColors {
 {{/enable_feature_otp}}{{#has_otp}}
 
   final Color pinSuccessBorderColor = Colors.green;{{/has_otp}}
+{{#enable_in_app_notifications}}
+  /// In App Notifications
 
+  final Color readNotificationColor;
+
+  final Color unreadNotificationColor;
+
+  final Color filterButtonTextColor = const Color(0xFF004F95);
+
+  final Color filterButtonBorderColor = const Color.fromARGB(255, 216, 216, 218);
+
+  final Color filterButtonActiveColor = const Color(0xFF004F95);
+
+  final Color filterButtonActiveTextColor = Colors.white;
+{{/enable_in_app_notifications}}
   ///
 }

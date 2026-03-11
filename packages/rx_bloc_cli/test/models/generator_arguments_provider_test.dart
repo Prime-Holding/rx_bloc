@@ -65,6 +65,26 @@ void main() {
       expect(() => sut.readGeneratorArguments(), returnsNormally);
     });
 
+    test('should preserve default values and output directory', () {
+      configureArgumentValues(Stub.defaultValues);
+
+      final generatorArguments = sut.readGeneratorArguments();
+
+      expect(generatorArguments.outputDirectory.path, outputDirectory.path);
+      expect(generatorArguments.projectName, Stub.projectName);
+      expect(generatorArguments.organisation,
+          CreateCommandArguments.organisation.defaultValue<String>());
+      expect(generatorArguments.changeLanguageEnabled, isTrue);
+      expect(generatorArguments.pushNotificationsEnabled, isTrue);
+      expect(generatorArguments.realtimeCommunicationEnabled, isFalse);
+      expect(generatorArguments.cicdEnabled, isTrue);
+      expect(generatorArguments.cicdGithubEnabled, isFalse);
+      expect(generatorArguments.cicdCodemagicEnabled, isFalse);
+      expect(generatorArguments.widgetToolkitEnabled, isFalse);
+
+      verifyNever(logger.warn(any));
+    });
+
     test('should throw error if projectName is invalid', () {
       configureArgumentValues(Stub.invalidProjectNameValues);
       expect(() => sut.readGeneratorArguments(),
@@ -141,6 +161,37 @@ void main() {
       verify(logger.warn(any)).called(3);
     });
 
+    test(
+      'should keep login disabled when social logins satisfy onboarding '
+      'dependency',
+      () {
+        configureArgumentValues(Map<String, Object>.from(Stub.defaultValues)
+          ..[CreateCommandArguments.onboarding.name] = true
+          ..[CreateCommandArguments.login.name] = false
+          ..[CreateCommandArguments.socialLogins.name] = true
+          ..[CreateCommandArguments.profile.name] = false
+          ..[CreateCommandArguments.deepLink.name] = false);
+
+        final generatorArguments = sut.readGeneratorArguments();
+
+        expect(generatorArguments.loginEnabled, isFalse);
+        expect(generatorArguments.socialLoginsEnabled, isTrue);
+        expect(generatorArguments.profileEnabled, isTrue);
+        expect(generatorArguments.deepLinkEnabled, isTrue);
+
+        verifyNever(logger.warn(
+          'Login enabled, due to OTP/PIN/Onboarding/Forgotten Password feature requirement',
+        ));
+        verify(logger.warn(
+          'Profile enabled, due to authentication feature requirement',
+        )).called(1);
+        verify(logger.warn(
+          'Deep links enabled, due to Onboarding feature requirement',
+        )).called(1);
+        verifyNoMoreInteractions(logger);
+      },
+    );
+
     test('should return updated values if forgotten pass is enabled', () {
       configureArgumentValues(Stub.forgottenPassEnabled);
 
@@ -156,12 +207,93 @@ void main() {
       verify(logger.warn(any)).called(4);
     });
 
+    test(
+      'should enable realtime communication and widget toolkit '
+      'for in-app notifications',
+      () {
+        configureArgumentValues(Map<String, Object>.from(Stub.defaultValues)
+          ..[CreateCommandArguments.inAppNotifications.name] = true
+          ..[CreateCommandArguments.realtimeCommunication.name] =
+              RealtimeCommunicationType.none
+          ..[CreateCommandArguments.widgetToolkit.name] = false);
+
+        final generatorArguments = sut.readGeneratorArguments();
+
+        expect(generatorArguments.inAppNotificationsEnabled, isTrue);
+        expect(generatorArguments.realtimeCommunicationEnabled, isTrue);
+        expect(generatorArguments.widgetToolkitEnabled, isTrue);
+
+        verify(logger.warn(
+          'Realtime communication enabled, due to In-app notifications '
+          'feature requirement',
+        )).called(1);
+        verify(logger.warn(
+          'Widget toolkit enabled, due to In-app notifications '
+          'feature requirement',
+        )).called(1);
+        verifyNoMoreInteractions(logger);
+      },
+    );
+
+    test('should map realtime communication enum to enabled flag', () {
+      configureArgumentValues(Map<String, Object>.from(Stub.defaultValues)
+        ..[CreateCommandArguments.realtimeCommunication.name] =
+            RealtimeCommunicationType.sse);
+
+      final generatorArguments = sut.readGeneratorArguments();
+
+      expect(generatorArguments.realtimeCommunicationEnabled, isTrue);
+      verifyNever(logger.warn(any));
+    });
+
+    test(
+      'should disable cicd flags when no provider is selected',
+      () {
+        configureArgumentValues(Map<String, Object>.from(Stub.defaultValues)
+          ..[CreateCommandArguments.cicd.name] = CICDType.none);
+
+        final generatorArguments = sut.readGeneratorArguments();
+
+        expect(generatorArguments.cicdEnabled, isFalse);
+        expect(generatorArguments.cicdGithubEnabled, isFalse);
+        expect(generatorArguments.cicdCodemagicEnabled, isFalse);
+        verifyNever(logger.warn(any));
+      },
+    );
+
+    test(
+      'should map github cicd type to github flag only',
+      () {
+        configureArgumentValues(Map<String, Object>.from(Stub.defaultValues)
+          ..[CreateCommandArguments.cicd.name] = CICDType.github);
+
+        final generatorArguments = sut.readGeneratorArguments();
+
+        expect(generatorArguments.cicdEnabled, isTrue);
+        expect(generatorArguments.cicdGithubEnabled, isTrue);
+        expect(generatorArguments.cicdCodemagicEnabled, isFalse);
+        verifyNever(logger.warn(any));
+      },
+    );
+
+    test('should map codemagic cicd type to codemagic flag only', () {
+      configureArgumentValues(Map<String, Object>.from(Stub.defaultValues)
+        ..[CreateCommandArguments.cicd.name] = CICDType.codemagic);
+
+      final generatorArguments = sut.readGeneratorArguments();
+
+      expect(generatorArguments.cicdEnabled, isTrue);
+      expect(generatorArguments.cicdGithubEnabled, isFalse);
+      expect(generatorArguments.cicdCodemagicEnabled, isTrue);
+      verifyNever(logger.warn(any));
+    });
+
     test('should read each argument exactly once', () {
       configureArgumentValues(Stub.defaultValues);
 
       sut.readGeneratorArguments();
 
-      // Verify each argument that supports interactive input is read exactly once
+      // Verify arguments that supports interactive input are read exactly once
       final interactiveArguments = CreateCommandArguments.values
           .where((arg) => arg.supportsInteractiveInput);
 

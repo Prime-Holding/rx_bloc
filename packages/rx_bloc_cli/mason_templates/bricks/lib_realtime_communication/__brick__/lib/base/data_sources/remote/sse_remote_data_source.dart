@@ -33,7 +33,7 @@ class SseRemoteDataSource {
       yield* response.data!.stream
           .doOnCancel(() {
             // Cancel the HTTP request because it looks like this is not done
-            // automatically when the stream is cosed.
+            // automatically when the stream is closed.
             cancelToken.cancel();
           })
           .transform<List<int>>(
