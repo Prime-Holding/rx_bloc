@@ -280,6 +280,8 @@ You define localizations by adding translation files in the `lib/l10n/sources/` 
 
 **Important**: Translation keys must be unique across all ARB files. If the same key appears in multiple files, the merge process will result in conflicts. It is recommended to use feature references in your keys to avoid collisions. For example, use `counterTitle` instead of just `title` for a counter feature, or `loginButton` instead of `button` for a login feature.
 
+If there are new keys added to the main translation file they can be propagated to the others by running `dart run bin/sync_translations.dart` from the project root directory.
+
 To merge the feature-specific ARB files and generate the localization code, run the `bin/gen_l10n.sh` script. This script will:
 1. Merge all ARB files from `lib/l10n/sources/` into consolidated files in `lib/l10n/`
 2. Generate the Dart localization code using `intl_utils`
@@ -288,40 +290,16 @@ To merge the feature-specific ARB files and generate the localization code, run 
 
 The generated translations are available in `lib/l10n/generated/`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey`.
 
-If there are new keys added to the main translation file they can be propagated to the others by running `dart run bin/sync_translations.dart` from the project root directory.
+#### Accessing translations without BuildContext
 
-#### Remote localization lookup
-
-Localization lookups are also supported. That means that you can request any remote localizations from a dedicated translations endpoint at app start (by default, all remote localizations are fetched during the splash screen). Grabbing any remote localization for existing features will replace the local translations with new ones.
-
-The endpoint retrieving the updated translations should return an object containing key-value pairs (under the `translations` key) where the key is the language code, while the value is a translation file object containing values to be overwritten.
-
-Example response:
-```json
-{
-   "translations":{
-      "en":{
-         "_ok":"Okay",
-         "login___logIn":"Login via email"
-      },
-      "bg":{
-         "_ok":"ok",
-         "login___logIn":"Вход с имейл"
-      }
-   }
-}
-```
-
-One thing to note is that the keys in the translations follow a naming scheme which consists of three parts: the feature name, separator and the translation key. The feature name by default represents the feature under which the translations are categorized followed by two underscores. It is optional and if omitted, the key overrides are placed within the main translations. The separator is a character used to separate the feature name and the translation key. The translation key is the key within the specified feature used in the app.
+When you need to access translations outside of a widget context (e.g., in services, repositories, or error models), you can use `S.current.someKey` directly. The `S` class is the generated localization class from `intl_utils` and is available in `lib/l10n/generated/l10n.dart`. The `current` static getter provides access to the current locale's translations.
 
 Example:
+```dart
+throw GenericErrorModel(S.current.wrongEmailOrPassword);
 ```
-Translations feature: feature_notifications
-Feature name: notifications__
-Separator: _
-Translation key: ok
-Full translation key (feature name+separator+translation key): notifications___ok
-```
+
+**Note**: The pattern `context.l10n.featureName.someTranslationKey` is not available. All translations are accessed directly from the root level, regardless of which feature ARB file they were defined in.
 
 ## Firebase Analytics
 
