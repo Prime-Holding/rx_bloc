@@ -1,21 +1,19 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:widget_toolkit/ui_components.dart';
-
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_widget.dart';
 import '../../base/common_ui_components/app_image.dart';
 import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
+import '../../base/common_ui_components/primary_button.dart';
 import '../blocs/in_app_notification_details_bloc.dart';
 import '../models/in_app_notification_model.dart';
 
 class InAppNotificationDetailsPage extends StatefulWidget {
-  const InAppNotificationDetailsPage({
-    required this.notificationId,
-    super.key,
-  });
+  const InAppNotificationDetailsPage({required this.notificationId, super.key});
 
   final String notificationId;
 
@@ -69,9 +67,19 @@ class _InAppNotificationDetailsPageState
           Widget content;
           if (body == null || body.isEmpty) {
             content = Center(
-              child: Text(
-                notification.description,
-                style: context.designSystem.typography.h2Reg16,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.designSystem.spacing.l,
+                  vertical: context.designSystem.spacing.m,
+                ),
+                child: Text(
+                  notification.description,
+                  style: (context.designSystem.typography.textTheme.bodyMedium ??
+                          context.designSystem.typography.textTheme.bodyLarge)
+                      ?.copyWith(
+                    color: context.designSystem.colors.colorScheme.onSurface,
+                  ),
+                ),
               ),
             );
           } else {
@@ -85,9 +93,7 @@ class _InAppNotificationDetailsPageState
                 controller: controller,
                 config: QuillEditorConfig(
                   showCursor: false,
-                  embedBuilders: [
-                    _ImageEmbedBuilder(),
-                  ],
+                  embedBuilders: [_ImageEmbedBuilder()],
                 ),
               ),
             );
@@ -102,16 +108,11 @@ class _InAppNotificationDetailsPageState
                   horizontal: context.designSystem.spacing.xxxxl,
                   vertical: context.designSystem.spacing.m,
                 ),
-                child: GradientFillButton(
-                  text: context.l10n.inAppNotificationDetailsCta,
-                  state: ButtonStateModel.enabled,
+                child: PrimaryButton(
                   onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        context.l10n.notImplemented,
-                      ),
-                    ),
+                    SnackBar(content: Text(context.l10n.notImplemented)),
                   ),
+                  child: Text(context.l10n.inAppNotificationDetailsCta),
                 ),
               ),
             ),
@@ -126,20 +127,19 @@ class _ImageEmbedBuilder extends EmbedBuilder {
 
   @override
   Widget build(BuildContext context, EmbedContext embedContext) => Padding(
-        padding:
-            EdgeInsets.symmetric(vertical: context.designSystem.spacing.xs),
-        child: AppImage(
-          embedContext.node.value.data as String,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          errorBuilder: (context, error, stackTrace) => SizedBox(
-            child: Center(
-              child: Icon(
-                Icons.broken_image,
-                size: context.designSystem.spacing.xxxxl,
-              ),
-            ),
+    padding: EdgeInsets.symmetric(vertical: context.designSystem.spacing.xs),
+    child: AppImage(
+      embedContext.node.value.data as String,
+      fit: BoxFit.cover,
+      width: double.infinity,
+      errorBuilder: (context, error, stackTrace) => SizedBox(
+        child: Center(
+          child: Icon(
+            Icons.broken_image,
+            size: context.designSystem.spacing.xxxxl,
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

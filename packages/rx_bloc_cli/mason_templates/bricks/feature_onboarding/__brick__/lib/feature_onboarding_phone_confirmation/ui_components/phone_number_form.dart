@@ -47,7 +47,7 @@ class PhoneNumberForm extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border(
               bottom: BorderSide(
-                color: context.designSystem.colors.primaryColor,
+                color: context.designSystem.colors.colorScheme.primary,
                 width: 2,
               ),
             )),
@@ -64,11 +64,11 @@ class PhoneNumberForm extends StatelessWidget {
                   Text(
                     '+${countryCodeSnapshot.data?.code ?? ''}',
                     textAlign: TextAlign.center,
-                    style: context.designSystem.typography.h2Reg16,
+                    style: context.designSystem.typography.textTheme.bodyLarge,
                   ),
                   Icon(
                     Icons.arrow_drop_down,
-                    color: context.designSystem.colors.primaryColor,
+                    color: context.designSystem.colors.colorScheme.primary,
                   ),
                 ],
               ),

@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
@@ -49,20 +51,20 @@ class _NotificationCountBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final spacing = context.designSystem.spacing;
     return Container(
-      constraints: BoxConstraints(
-        minWidth: spacing.m,
-        minHeight: spacing.m,
-      ),
+      constraints: BoxConstraints(minWidth: spacing.m, minHeight: spacing.m),
       padding: EdgeInsets.symmetric(horizontal: spacing.xss),
       decoration: BoxDecoration(
-        color: context.designSystem.colors.errorColor,
+        color: context.designSystem.colors.colorScheme.error,
         borderRadius: BorderRadius.circular(spacing.xs1),
       ),
       alignment: Alignment.center,
       child: Text(
         count.toString(),
-        style: context.designSystem.typography.h1Reg12.copyWith(
-          color: Colors.white,
+        style: (context.designSystem.typography.textTheme.labelSmall ??
+                context.designSystem.typography.textTheme.bodySmall)
+            ?.copyWith(
+          color: context.designSystem.colors.colorScheme.onError,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );

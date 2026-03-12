@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
@@ -32,12 +34,14 @@ class UnreadFilterButton extends StatelessWidget {
           vertical: spacing.xs,
         ),
         decoration: BoxDecoration(
-          color: isActive ? colors.filterButtonActiveColor : Colors.transparent,
+          color: isActive
+              ? colors.colorScheme.primary
+              : colors.colorScheme.surface,
           borderRadius: BorderRadius.circular(spacing.l),
           border: Border.all(
             color: isActive
-                ? colors.filterButtonActiveColor
-                : colors.filterButtonBorderColor.withValues(alpha: 0.55),
+                ? colors.colorScheme.primary
+                : colors.colorScheme.outlineVariant,
             width: 2,
           ),
         ),
@@ -48,16 +52,18 @@ class UnreadFilterButton extends StatelessWidget {
               Icons.mark_unread_chat_alt_outlined,
               size: spacing.m,
               color: isActive
-                  ? colors.filterButtonActiveTextColor
-                  : colors.filterButtonTextColor,
+                  ? colors.colorScheme.onPrimary
+                  : colors.colorScheme.primary,
             ),
             SizedBox(width: spacing.xs),
             Text(
               '${context.l10n.inAppNotificationsUnread} ($unreadCount)',
-              style: context.designSystem.typography.h3Med14.copyWith(
+              style: (context.designSystem.typography.textTheme.labelLarge ??
+                      context.designSystem.typography.textTheme.bodyMedium)
+                  ?.copyWith(
                 color: isActive
-                    ? colors.filterButtonActiveTextColor
-                    : colors.filterButtonTextColor,
+                    ? colors.colorScheme.onPrimary
+                    : colors.colorScheme.primary,
               ),
             ),
           ],

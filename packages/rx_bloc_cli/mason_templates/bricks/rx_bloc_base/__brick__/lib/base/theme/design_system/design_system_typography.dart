@@ -2,125 +2,113 @@
 
 import 'package:flutter/material.dart';
 
-import 'design_system_colors.dart';
+// Typography aligned with Wiser Technology–inspired design system (wisertech.com).
+// Use textTheme.* tokens in features (e.g. headlineLarge, labelLarge, bodyMedium).
 
 class DesignSystemTypography {
-  DesignSystemTypography.withColor(DesignSystemColors designSystemColor)
-      : _designSystemColor = designSystemColor;
+  DesignSystemTypography();
 
-  final DesignSystemColors _designSystemColor;
+  static const String family = 'WorkSans';
 
-  // Material design typography:
-  // https://material.io/design/typography/the-type-system.html#type-scale
-
-  // Keep the general purpose styles declared as 'const'. If not possible then
-  // declare them as late final properties.
-
-  final h1Med32 = const TextStyle(
-    fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 32.0);
-
-  final h1Reg32 = const TextStyle(
-    fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 32.0);
-
-  final bold30 = const TextStyle(
-      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 30.0);
-
-
-
-  final h1Med26 = const TextStyle(
-      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 26.0);
-
-  final h1Bold24 = const TextStyle(
-      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 24.0);
-
-  final h1Bold20 = const TextStyle(
-      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 20.0);
-
-  final h1Reg20 = const TextStyle(
-      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
-
-final h1Reg22 = const TextStyle(
-fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
-
-  final h1bold24 = const TextStyle(
-      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 24.0);
-
-  final h1Bold18 = const TextStyle(
-      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 18.0);
-
-  final h2ExtraBold18 = const TextStyle(
-      fontWeight: FontWeight.w800, fontStyle: FontStyle.normal, fontSize: 18.0);
-
-  final h2Med18 = const TextStyle(
-      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 18.0);
-
-  final h1Bold16 = const TextStyle(
-      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 16.0);
-
-  final h2Med18Italic = const TextStyle(
-      fontWeight: FontWeight.w500, fontStyle: FontStyle.italic, fontSize: 18.0);
-
-  final h2Med16 = const TextStyle(
-      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 16.0);
-
-  final h2Semibold17 = const TextStyle(
-      fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: 17.0);
-
-  final h2Semibold16 = const TextStyle(
-      fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: 16.0);
-
-  final h2Reg16 = const TextStyle(
-      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0);
-
-  final h3Med13 = const TextStyle(
-      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 13.0);
-
-  final h3Med14 = const TextStyle(
-      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 14.0);
-
-  final h3Reg14 = const TextStyle(
-      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 14.0);
-
-  final h3Reg13 = const TextStyle(
-      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0);
-
-  final h1Reg12 = const TextStyle(
-      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 12.0);
-
-  final h3Med11 = const TextStyle(
-      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 11.0);
-
-  /// App specific typography
-{{#enable_feature_counter}}
-  late final counterTitle =
-      h1Reg12.copyWith(color: _designSystemColor.primaryColor);
-
-  late final counterText = TextStyle(
-    fontWeight: FontWeight.w300,
-    fontSize: 96,
-    color: _designSystemColor.tintColor..withValues(alpha: 0.8),
-    letterSpacing: -1.5,
-  );
-{{/enable_feature_counter}}
-  late final fadedButtonText =
-      h3Med14.copyWith(color: _designSystemColor.messageColor);
-  {{#enable_social_logins}}
-  late final socialButtonText = TextStyle(
+  final TextTheme textTheme = TextTheme(
+    displayLarge: TextStyle(
+      fontSize: 48,
+      fontFamily: family,
+      fontWeight: FontWeight.w400,
+      height: 1.17,
+      letterSpacing: -1,
+    ),
+    displayMedium: TextStyle(
+      fontSize: 32,
+      fontFamily: family,
+      fontWeight: FontWeight.w400,
+      height: 1.19,
+      letterSpacing: -1,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 32,
+      fontFamily: family,
+      fontWeight: FontWeight.w400,
+      height: 1.19,
+    ),
+    headlineLarge: TextStyle(
+      fontSize: 32,
+      fontFamily: family,
+      fontWeight: FontWeight.w600,
+      height: 1.19,
+      letterSpacing: -1,
+    ),
+    headlineMedium: TextStyle(
+      fontSize: 24,
+      fontFamily: family,
+      fontWeight: FontWeight.w600,
+      height: 1.08,
+      letterSpacing: -1,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 20,
+      fontFamily: family,
+      fontWeight: FontWeight.w600,
+      height: 1.20,
+      letterSpacing: -1,
+    ),
+    titleLarge: TextStyle(
+      fontSize: 22,
+      fontFamily: family,
+      fontWeight: FontWeight.w400,
+      height: 1.27,
+    ),
+    titleMedium: TextStyle(
+      fontSize: 18,
+      fontFamily: family,
+      fontWeight: FontWeight.w600,
+      height: 1.56,
+    ),
+    titleSmall: TextStyle(
       fontSize: 14,
-      color: _designSystemColor.textButtonColor,
+      fontFamily: family,
+      fontWeight: FontWeight.w400,
+      height: 1.43,
+      letterSpacing: 0.10,
+    ),
+    bodyLarge: TextStyle(
+      fontSize: 16,
+      fontFamily: family,
+      fontWeight: FontWeight.w300,
+      height: 1.5,
+    ),
+    bodyMedium: TextStyle(
+      fontSize: 14,
+      fontFamily: family,
+      fontWeight: FontWeight.w300,
+      height: 1.43,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 12,
+      fontFamily: family,
+      fontWeight: FontWeight.w300,
+      height: 1.33,
+    ),
+    labelLarge: TextStyle(
+      fontSize: 16,
+      fontFamily: family,
+      fontWeight: FontWeight.w400,
+      height: 1.25,
+      letterSpacing: 2,
+    ),
+    labelMedium: TextStyle(
+      fontSize: 14,
+      fontFamily: family,
+      fontWeight: FontWeight.w400,
+      height: 1.14,
+      letterSpacing: 2,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 12,
+      fontFamily: family,
+      fontWeight: FontWeight.w400,
+      height: 1.17,
+      letterSpacing: 2,
+    ),
   );
-  {{/enable_social_logins}}
-  {{#enable_feature_otp}}
-  late final otpPinText = const TextStyle(
-    fontSize: 18,
-    color: Colors.black87,
-  );
-
-  late final otpResendButtonText = const TextStyle(
-    fontWeight: FontWeight.w600,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 0.8,
-    fontSize: 10.0)
-      .copyWith(color: _designSystemColor.messageColor);
-  {{/enable_feature_otp}}
 }

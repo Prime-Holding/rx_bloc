@@ -52,11 +52,13 @@ class CounterPage extends StatelessWidget {
           ? Text(
               snapshot.data!.toString(),
               key: K.counterCount,
-              style: context.designSystem.typography.counterText,
+              style: context.designSystem.typography.textTheme.displayLarge?.copyWith(
+                color: context.designSystem.colors.colorScheme.outline.withValues(alpha: 0.8),
+              ),
             )
           : Text(
               snapshot.connectionState.toString(),
-              style: context.designSystem.typography.h2Med16,
+              style: context.designSystem.typography.textTheme.bodyLarge,
             );
 
   Widget _buildActionButtons(BuildContext context) =>

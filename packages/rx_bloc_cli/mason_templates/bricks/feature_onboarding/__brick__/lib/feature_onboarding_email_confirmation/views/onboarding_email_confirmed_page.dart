@@ -51,7 +51,7 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                               loading.isLoading
                                   ? null
                                   : context.l10n.titleEmailConfirmed,
-                              style: context.designSystem.typography.h1Med32,
+                              style: context.designSystem.typography.textTheme.displayMedium,
                               textAlign: TextAlign.center,
                               alignment: Alignment.center,
                             ),
@@ -62,7 +62,7 @@ class OnboardingEmailConfirmedPage extends StatelessWidget {
                                   : context.l10n.titleEmailConfirmedDescription,
                               textAlign: TextAlign.center,
                               alignment: Alignment.center,
-                              style: context.designSystem.typography.h2Reg16,
+                              style: context.designSystem.typography.textTheme.bodyLarge,
                             ),
                           ],
                         ),
@@ -105,7 +105,7 @@ class _Icon extends StatelessWidget {
             ? Container(
                 decoration: BoxDecoration(
                     color: context
-                        .designSystem.colors.progressIndicatorBackgroundColor,
+                        .designSystem.colors.colorScheme.onPrimaryContainer,
                     borderRadius: BorderRadius.all(
                         Radius.circular(context.designSystem.spacing.s))),
                 width: context.designSystem.spacing.xxxl,

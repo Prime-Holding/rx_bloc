@@ -23,16 +23,14 @@ class DesignSystem extends ThemeExtension<DesignSystem> {
         icons = DesignSystemIcons(),
         images = const DesignSystemImages.light(),
         spacing = const DesignSystemSpacing(),
-        typography =
-            DesignSystemTypography.withColor(const DesignSystemColors.light());
+        typography = DesignSystemTypography();
 
   DesignSystem.dark()
       : colors = const DesignSystemColors.dark(),
         icons = DesignSystemIcons(),
         images = const DesignSystemImages.dark(),
         spacing = const DesignSystemSpacing(),
-        typography =
-            DesignSystemTypography.withColor(const DesignSystemColors.dark());
+        typography = DesignSystemTypography();
 
   final DesignSystemColors colors;
   final DesignSystemIcons icons;

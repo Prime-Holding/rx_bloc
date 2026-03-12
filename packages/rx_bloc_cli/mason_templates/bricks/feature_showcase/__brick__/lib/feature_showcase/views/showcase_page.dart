@@ -30,7 +30,7 @@ class ShowcasePage extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   context.l10n.showcaseTitle,
-                  style: context.designSystem.typography.h1Bold20,
+                  style: context.designSystem.typography.textTheme.headlineSmall,
                 ),
                 titlePadding: EdgeInsetsDirectional.only(
                   start: context.designSystem.spacing.l,

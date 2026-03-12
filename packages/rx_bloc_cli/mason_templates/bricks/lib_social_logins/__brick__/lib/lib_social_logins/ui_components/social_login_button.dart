@@ -83,7 +83,7 @@ class SocialLoginButton extends StatelessWidget {
               ),
               Text(
                 text,
-                style: textStyle ?? context.designSystem.typography.h3Med14,
+                style: textStyle ?? context.designSystem.typography.textTheme.bodyMedium,
               ),
             ],
           ),

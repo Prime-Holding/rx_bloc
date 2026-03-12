@@ -1,4 +1,5 @@
-import 'package:collection/collection.dart';
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,6 @@ import 'package:rx_bloc_list/rx_bloc_list.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_widget.dart';
 import '../../base/common_ui_components/app_loading_indicator.dart';
-import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../lib_router/router.dart';
 import '../blocs/in_app_notifications_bloc.dart';
 import '../models/in_app_notification_model.dart';
@@ -21,10 +21,11 @@ class InAppNotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: customAppBar(context, title: context.l10n.notifications),
-        backgroundColor: context.designSystem.colors.unreadNotificationColor,
-        body: RxPaginatedBuilder<InAppNotificationsBlocType,
-            InAppNotificationModel>.withRefreshIndicator(
+        backgroundColor: context.designSystem.colors.colorScheme.surface,
+        body: RxPaginatedBuilder<
+          InAppNotificationsBlocType,
+          InAppNotificationModel
+        >.withRefreshIndicator(
           state: (bloc) => bloc.states.notifications,
           onBottomScrolled: (bloc) => bloc.events.loadNotifications(),
           onRefresh: (bloc) async {
@@ -32,11 +33,25 @@ class InAppNotificationsPage extends StatelessWidget {
             return bloc.states.notifications.waitToLoad();
           },
           buildLoading: (context, list, bloc) =>
-              Center(child: AppLoadingIndicator.taskValue(context)),
-          buildError: (context, list, bloc) => AppErrorWidget(
-            error: list.error!,
-            onTabRetry: () => bloc.events.loadNotifications(reset: true),
-          ),
+              _buildScrollView(context, slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: AppLoadingIndicator.taskValue(context),
+              ),
+            ),
+          ]),
+          buildError: (context, list, bloc) => _buildScrollView(context, slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: AppErrorWidget(
+                  error: list.error!,
+                  onTabRetry: () => bloc.events.loadNotifications(reset: true),
+                ),
+              ),
+            ),
+          ]),
           buildSuccess: (context, list, bloc) {
             final padding = EdgeInsets.symmetric(
               horizontal: context.designSystem.spacing.m,
@@ -44,55 +59,88 @@ class InAppNotificationsPage extends StatelessWidget {
             );
 
             if (list.isEmpty) {
-              return ListView(
-                padding: padding,
-                children: [
-                  _buildFilterBar(context),
-                  SizedBox(height: context.designSystem.spacing.m),
-                  const NoIaNotifications(),
-                ],
-              );
+              return _buildScrollView(context, slivers: [
+                SliverPadding(
+                  padding: padding,
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate([
+                      _buildFilterBar(context),
+                      SizedBox(height: context.designSystem.spacing.m),
+                      const NoIaNotifications(),
+                    ]),
+                  ),
+                ),
+              ]);
             }
 
             final groups = _groupNotificationsByMonth(list);
-            final loadedCount = groups.fold<int>(
-              0,
-              (sum, g) => sum + g.length,
-            );
+            final loadedCount = groups.fold<int>(0, (sum, g) => sum + g.length);
             final hasMore = loadedCount < list.itemCount;
+            final itemCount = 1 + groups.length + (hasMore ? 1 : 0);
+            final spacing = context.designSystem.spacing.m;
 
-            return ListView.separated(
-              padding: padding,
-              itemCount: 1 + groups.length + (hasMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return _buildFilterBar(context);
-                }
-                if (index > groups.length) {
-                  return Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(
-                        context.designSystem.spacing.m,
-                      ),
-                      child: AppLoadingIndicator.textButtonValue(context),
-                    ),
-                  );
-                }
-                return _buildMonthGroup(context, groups[index - 1]);
-              },
-              separatorBuilder: (context, index) =>
-                  SizedBox(height: context.designSystem.spacing.m),
-            );
+            return _buildScrollView(context, slivers: [
+              SliverPadding(
+                padding: padding,
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      if (index.isOdd) {
+                        return SizedBox(height: spacing);
+                      }
+                      final itemIndex = index ~/ 2;
+                      if (itemIndex == 0) {
+                        return _buildFilterBar(context);
+                      }
+                      if (itemIndex > groups.length) {
+                        return Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(
+                              context.designSystem.spacing.m,
+                            ),
+                            child: AppLoadingIndicator.textButtonValue(context),
+                          ),
+                        );
+                      }
+                      return _buildMonthGroup(context, groups[itemIndex - 1]);
+                    },
+                    childCount: itemCount > 0 ? 2 * itemCount - 1 : 0,
+                    findChildIndexCallback: null,
+                  ),
+                ),
+              ),
+            ]);
           },
         ),
       );
 
+  CustomScrollView _buildScrollView(
+    BuildContext context, {
+    required List<Widget> slivers,
+  }) {
+    final colors = context.designSystem.colors.colorScheme;
+    final typography = context.designSystem.typography.textTheme;
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar.large(
+          title: Text(context.l10n.notifications),
+          backgroundColor: colors.surface,
+          foregroundColor: colors.onSurface,
+          surfaceTintColor: colors.surfaceTint,
+          titleTextStyle: typography.headlineLarge
+              ?.copyWith(color: colors.onSurface),
+        ),
+        ...slivers,
+      ],
+    );
+  }
+
   Widget _buildFilterBar(BuildContext context) => Row(
-        children: [
-          RxBlocBuilder<InAppNotificationsBlocType, int>(
-            state: (bloc) => bloc.states.unreadCount,
-            builder: (context, unreadSnapshot, bloc) =>
-                RxBlocBuilder<InAppNotificationsBlocType, bool>(
+    children: [
+      RxBlocBuilder<InAppNotificationsBlocType, int>(
+        state: (bloc) => bloc.states.unreadCount,
+        builder: (context, unreadSnapshot, bloc) =>
+            RxBlocBuilder<InAppNotificationsBlocType, bool>(
               state: (bloc) => bloc.states.isFilteredByUnread,
               builder: (context, filterSnapshot, bloc) => UnreadFilterButton(
                 unreadCount: unreadSnapshot.data ?? 0,
@@ -100,17 +148,16 @@ class InAppNotificationsPage extends StatelessWidget {
                 onPressed: () => bloc.events.toggleUnreadFilter(),
               ),
             ),
-          ),
-        ],
-      );
+      ),
+    ],
+  );
 
   List<List<InAppNotificationModel>> _groupNotificationsByMonth(
     PaginatedList<InAppNotificationModel> list,
-  ) =>
-      Iterable.generate(list.itemCount, list.getItem)
-          .takeWhile((item) => item != null)
-          .cast<InAppNotificationModel>()
-          .fold<List<List<InAppNotificationModel>>>([], (groups, item) {
+  ) => Iterable.generate(list.itemCount, list.getItem)
+      .takeWhile((item) => item != null)
+      .cast<InAppNotificationModel>()
+      .fold<List<List<InAppNotificationModel>>>([], (groups, item) {
         if (groups.isEmpty ||
             groups.last.first.date.year != item.date.year ||
             groups.last.first.date.month != item.date.month) {
@@ -136,50 +183,59 @@ class InAppNotificationsPage extends StatelessWidget {
           ),
           child: Text(
             DateFormat.yMMMM().format(notifications.first.date),
-            style: designSystem.typography.h1Bold18.copyWith(
-              color: designSystem.colors.messageColor,
+            style: (designSystem.typography.textTheme.titleMedium ??
+                    designSystem.typography.textTheme.bodyLarge)
+                ?.copyWith(
+              color: designSystem.colors.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
         Container(
-          padding: EdgeInsets.all(designSystem.spacing.xss),
+          padding: EdgeInsets.all(designSystem.spacing.xsss),
           decoration: BoxDecoration(
-            color: designSystem.colors.readNotificationColor,
-            borderRadius: BorderRadius.circular(designSystem.spacing.l),
+            color: designSystem.colors.colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(designSystem.spacing.xl),
             boxShadow: [
               BoxShadow(
-                color: designSystem.colors.tintColor.withValues(alpha: 0.1),
-                blurRadius: designSystem.spacing.xxl,
+                color: designSystem.colors.colorScheme.primary.withValues(alpha: 0.08),
+                blurRadius: designSystem.spacing.l,
               ),
             ],
           ),
           child: Column(
-            children: notifications
-                .mapIndexed(
-                  (i, notification) => IaNotification(
-                    title: notification.title,
-                    description: notification.description,
-                    date: notification.date,
-                    isUnread: notification.isUnread,
-                    previousUnread: i > 0 && notifications[i - 1].isUnread,
-                    nextUnread: i < notifications.length - 1 &&
-                        notifications[i + 1].isUnread,
-                    onTap: () {
-                      if (notification.isUnread) {
-                        context
-                            .read<InAppNotificationsBlocType>()
-                            .events
-                            .markAsRead(notification.id);
-                      }
-                      GoRouter.of(context).push(
-                        InAppNotificationDetailsRoute(
-                          notification.id,
-                        ).routeLocation,
-                      );
-                    },
+            children: [
+              for (var i = 0; i < notifications.length; i++) ...[
+                if (i > 0)
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: designSystem.colors.colorScheme.outlineVariant,
+                    indent: designSystem.spacing.s,
+                    endIndent: designSystem.spacing.s,
                   ),
-                )
-                .toList(),
+                IaNotification(
+                  title: notifications[i].title,
+                  description: notifications[i].description,
+                  date: notifications[i].date,
+                  isUnread: notifications[i].isUnread,
+                  isFirstInGroup: i == 0,
+                  isLastInGroup: i == notifications.length - 1,
+                  onTap: () {
+                    if (notifications[i].isUnread) {
+                      context
+                          .read<InAppNotificationsBlocType>()
+                          .events
+                          .markAsRead(notifications[i].id);
+                    }
+                    GoRouter.of(context).push(
+                      InAppNotificationDetailsRoute(
+                        notifications[i].id,
+                      ).routeLocation,
+                    );
+                  },
+                ),
+              ],
+            ],
           ),
         ),
       ],

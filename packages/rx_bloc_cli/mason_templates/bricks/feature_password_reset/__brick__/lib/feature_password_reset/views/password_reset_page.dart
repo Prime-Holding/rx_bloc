@@ -60,12 +60,12 @@ class PasswordResetPage extends StatelessWidget {
                             SizedBox(height: context.designSystem.spacing.s),
                             Text(
                               context.l10n.passwordReset,
-                              style: context.designSystem.typography.h1Med32,
+                              style: context.designSystem.typography.textTheme.displayMedium,
                             ),
                             SizedBox(height: context.designSystem.spacing.xs),
                             Text(
                               context.l10n.resetPageHeader,
-                              style: context.designSystem.typography.h2Reg16,
+                              style: context.designSystem.typography.textTheme.bodyLarge,
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: context.designSystem.spacing.l),
@@ -131,7 +131,7 @@ class PasswordResetPage extends StatelessWidget {
                   ?.copyWith(color: DefaultTextStyle.of(context).style.color),
           labelText: context.l10n.password,
           hintText: context.l10n.passwordHint,
-          hintStyle: context.designSystem.typography.h2Reg16,
+          hintStyle: context.designSystem.typography.textTheme.bodyLarge,
         ),
       );
 

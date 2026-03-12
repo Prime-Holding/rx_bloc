@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -9,8 +11,8 @@ class IaNotification extends StatelessWidget {
     required this.description,
     required this.date,
     this.isUnread = false,
-    this.previousUnread = false,
-    this.nextUnread = false,
+    this.isFirstInGroup = false,
+    this.isLastInGroup = false,
     this.onTap,
     super.key,
   });
@@ -27,11 +29,11 @@ class IaNotification extends StatelessWidget {
   /// Whether the notification is unread.
   final bool isUnread;
 
-  /// Whether the previous notification is unread.
-  final bool previousUnread;
+  /// Whether this is the first card in the group (round top corners).
+  final bool isFirstInGroup;
 
-  /// Whether the next notification is unread.
-  final bool nextUnread;
+  /// Whether this is the last card in the group (round bottom corners).
+  final bool isLastInGroup;
 
   /// The callback to be called when the notification is tapped.
   final VoidCallback? onTap;
@@ -46,26 +48,26 @@ class IaNotification extends StatelessWidget {
           designSystem.spacing.s,
           designSystem.spacing.s,
           designSystem.spacing.m,
-          designSystem.spacing.xs,
+          designSystem.spacing.s,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-            topLeft: previousUnread
-                ? Radius.zero
-                : Radius.circular(designSystem.spacing.l),
-            topRight: previousUnread
-                ? Radius.zero
-                : Radius.circular(designSystem.spacing.l),
-            bottomLeft: nextUnread
-                ? Radius.zero
-                : Radius.circular(designSystem.spacing.l),
-            bottomRight: nextUnread
-                ? Radius.zero
-                : Radius.circular(designSystem.spacing.l),
+            topLeft: isFirstInGroup
+                ? Radius.circular(designSystem.spacing.l)
+                : Radius.zero,
+            topRight: isFirstInGroup
+                ? Radius.circular(designSystem.spacing.l)
+                : Radius.zero,
+            bottomLeft: isLastInGroup
+                ? Radius.circular(designSystem.spacing.l)
+                : Radius.zero,
+            bottomRight: isLastInGroup
+                ? Radius.circular(designSystem.spacing.l)
+                : Radius.zero,
           ),
           color: isUnread
-              ? designSystem.colors.unreadNotificationColor
-              : designSystem.colors.readNotificationColor,
+              ? designSystem.colors.colorScheme.primaryContainer
+              : designSystem.colors.colorScheme.surface,
         ),
         child: Stack(
           children: [
@@ -79,11 +81,13 @@ class IaNotification extends StatelessWidget {
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: designSystem.typography.h3Med14.copyWith(
-                      color: designSystem.colors.messageColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: context.designSystem.spacing.m,
-                      height: 1.6,
+                    style: (designSystem.typography.textTheme.titleMedium ??
+                            designSystem.typography.textTheme.bodyLarge)
+                        ?.copyWith(
+                      color: isUnread
+                          ? designSystem.colors.colorScheme.onPrimaryContainer
+                          : designSystem.colors.colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -92,21 +96,23 @@ class IaNotification extends StatelessWidget {
                   description,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: designSystem.typography.h2Reg16.copyWith(
-                    color: designSystem.colors.messageColor,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 0,
+                  style: (designSystem.typography.textTheme.bodyMedium ??
+                          designSystem.typography.textTheme.bodyLarge)
+                      ?.copyWith(
+                    color: isUnread
+                        ? designSystem.colors.colorScheme.onPrimaryContainer
+                        : designSystem.colors.colorScheme.onSurfaceVariant,
                   ),
                 ),
                 SizedBox(height: designSystem.spacing.xss),
                 Text(
                   DateFormat('dd.MM.yyyy').format(date),
-                  style: designSystem.typography.h3Med11.copyWith(
-                    color: designSystem.colors.tintColor,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    height: 2,
-                    letterSpacing: 0,
+                  style: (designSystem.typography.textTheme.labelSmall ??
+                          designSystem.typography.textTheme.bodySmall)
+                      ?.copyWith(
+                    color: isUnread
+                        ? designSystem.colors.colorScheme.onPrimaryContainer
+                        : designSystem.colors.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -120,7 +126,7 @@ class IaNotification extends StatelessWidget {
                   height: designSystem.spacing.xss1,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: designSystem.colors.errorColor,
+                    color: designSystem.colors.colorScheme.error,
                   ),
                 ),
               ),

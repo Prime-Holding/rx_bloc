@@ -22,20 +22,64 @@ class PrimaryButton extends StatelessWidget {
   final ButtonStyle? style;
 
   @override
-  Widget build(BuildContext context) => OutlinedButton(
-        style: style,
-        onPressed: () => isLoading ? null : onPressed?.call(),
-        child: _buildChildWidget(context),
-      );
-
-  Widget _buildChildWidget(BuildContext context) => isLoading
-      ? SizedBox(
-          width: loadingIndicatorSize,
-          height: loadingIndicatorSize,
-          child: AppLoadingIndicator.textButtonValue(
-            context,
-            color: context.designSystem.colors.progressIndicatorBackgroundColor,
+  Widget build(BuildContext context) {
+    final colors = context.designSystem.colors.colorScheme;
+    final spacing = context.designSystem.spacing;
+    final effectiveStyle = (style ?? const ButtonStyle()).copyWith(
+      backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return colors.primaryContainer.withValues(alpha: 0.5);
+        }
+        return colors.primaryContainer;
+      }),
+      foregroundColor: WidgetStateProperty.all(colors.onPrimaryContainer),
+      padding: WidgetStateProperty.all(
+        EdgeInsets.symmetric(
+          horizontal: spacing.m,
+          vertical: spacing.s,
+        ),
+      ),
+    );
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+        style: effectiveStyle,
+        onPressed: isLoading ? null : () => onPressed?.call(),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: KeyedSubtree(
+            key: ValueKey(isLoading),
+            child: _buildChildWidget(context),
           ),
-        )
-      : child ?? const SizedBox();
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChildWidget(BuildContext context) {
+    if (isLoading) {
+      final indicator = SizedBox(
+        width: loadingIndicatorSize,
+        height: loadingIndicatorSize,
+        child: AppLoadingIndicator.textButtonValue(
+          context,
+          color: context.designSystem.colors.colorScheme.onPrimaryContainer,
+        ),
+      );
+      final label = child;
+      if (label != null) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            indicator,
+            SizedBox(width: context.designSystem.spacing.s),
+            label,
+          ],
+        );
+      }
+      return indicator;
+    }
+    return child ?? const SizedBox();
+  }
 }

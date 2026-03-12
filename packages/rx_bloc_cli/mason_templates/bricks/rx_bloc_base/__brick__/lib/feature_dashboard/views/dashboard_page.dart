@@ -103,14 +103,14 @@ class _DashboardSuccessWidgetState extends State<_DashboardSuccessWidget> {
                 SizedBox(height: context.designSystem.spacing.s),
                 Text(
                   context.l10n.dashboard,
-                  style: context.designSystem.typography.h1Med32,
+                  style: context.designSystem.typography.textTheme.displayMedium,
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: context.designSystem.spacing.xs),
                 Text(
                   widget.text,
                   textAlign: TextAlign.center,
-                  style: context.designSystem.typography.h2Reg16,
+                  style: context.designSystem.typography.textTheme.bodyLarge,
                 ),
               ],
             ),
