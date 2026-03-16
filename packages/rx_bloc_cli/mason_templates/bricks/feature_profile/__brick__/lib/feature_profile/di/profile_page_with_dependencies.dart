@@ -3,6 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+
 import '../blocs/profile_bloc.dart';
 import '../views/profile_page.dart';
 

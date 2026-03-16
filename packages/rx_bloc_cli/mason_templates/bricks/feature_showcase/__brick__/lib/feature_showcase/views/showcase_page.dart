@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/app_divider.dart';
+import '../../base/common_ui_components/app_divider.dart';{{#enable_in_app_notifications}}
+import '../../base/common_ui_components/custom_app_bar.dart';
+import '../../feature_in_app_notifications/ui_components/notification_action_button.dart';{{/enable_in_app_notifications}}
 import '../../base/common_ui_components/app_list_tile.dart';
 import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/router.dart';
@@ -13,7 +15,13 @@ class ShowcasePage extends StatelessWidget {
   const ShowcasePage({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => Scaffold( {{#enable_in_app_notifications}}
+          appBar: customAppBar(context, actions: [
+            Padding(
+              padding: EdgeInsets.only(right:context.designSystem.spacing.s),
+              child: const NotificationActionButton(),
+            ),
+          ]),{{/enable_in_app_notifications}}
         body: CustomScrollView(
           slivers: [
             SliverAppBar(

@@ -1,6 +1,8 @@
 {{> licence.dart }}
 
-class RoutePermissions { {{#has_showcase}}
+class RoutePermissions { {{#enable_in_app_notifications}}
+  static const inAppNotifications = 'InAppNotificationsRoute';
+  static const inAppNotificationDetails = 'InAppNotificationDetailsRoute';{{/enable_in_app_notifications}}{{#has_showcase}}
   static const showcase = 'ShowcaseRoute'; {{/has_showcase}}{{#enable_feature_qr_scanner}}
   static const qrCode = 'QrCodeRoute';{{/enable_feature_qr_scanner}} {{#enable_mfa}}
   static const mfa = 'MfaRoute';

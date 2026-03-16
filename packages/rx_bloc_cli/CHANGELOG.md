@@ -1,8 +1,12 @@
 ## [Next Version]
 * Convert the sync translation tool from python to dart
 
+## [6.1.0]
+* Add `--enable-in-app-notifications` flag to configure In App Notification flows in the generated project, including periodic pings from server using SSE
+* Add Cursor agent rules and skills, Copilot instructions to provide context for working with rx_bloc_cli and generated project
+
 ## [6.0.0]
-Contains breaking changes
+Contains breaking changes:
 * Removed the `--enable-remote-translations` flag from the CLI
 * Remote translation functionality is now removed from the generated project
 * `r_flutter` dependency is removed from the generated project as it is no longer maintained

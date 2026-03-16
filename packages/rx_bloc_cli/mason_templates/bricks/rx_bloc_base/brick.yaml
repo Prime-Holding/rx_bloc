@@ -26,3 +26,4 @@ vars:
   - enable_feature_otp
   - has_authentication
   - enable_profile
+  - enable_in_app_notifications

@@ -25,7 +25,8 @@ abstract class ProfileBlocStates {
   Stream<bool> get isLoading;
 
   /// The error state
-  Stream<ErrorModel> get errors;{{#enable_feature_onboarding}}
+  Stream<ErrorModel> get errors;
+  {{#enable_feature_onboarding}}
 
   /// State indicating that the phone number was updated
   @RxBlocIgnoreState()

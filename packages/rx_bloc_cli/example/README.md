@@ -280,8 +280,6 @@ You define localizations by adding translation files in the `lib/l10n/sources/` 
 
 **Important**: Translation keys must be unique across all ARB files. If the same key appears in multiple files, the merge process will result in conflicts. It is recommended to use feature references in your keys to avoid collisions. For example, use `counterTitle` instead of just `title` for a counter feature, or `loginButton` instead of `button` for a login feature.
 
-If there are new keys added to the main translation file they can be propagated to the others by running `dart run bin/sync_translations.dart` from the project root directory.
-
 To merge the feature-specific ARB files and generate the localization code, run the `bin/gen_l10n.sh` script. This script will:
 1. Merge all ARB files from `lib/l10n/sources/` into consolidated files in `lib/l10n/`
 2. Generate the Dart localization code using `intl_utils`

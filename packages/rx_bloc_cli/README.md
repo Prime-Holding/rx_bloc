@@ -173,6 +173,7 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]enable-pin-code`               |                   `false`                   |            Enables pin code feature with biometrics, that can help with building pin code workflows.            |
 | `--cicd`                               |                 `fastlane`                  | Provides a template for setting up ci/cd for your project. Available options: none, fastlane, github, codemagic |
 | `--[no-]enable-feature-qr-scanner`     |                 `false`                     |                                   Enables QR scanner feature for the project                                    |
+| `--[no-]enable-in-app-notifications`   |                 `false`                     |                              Enables In-app notifications for the project                                       |
 
 ### `$ rx_bloc_cli create_distribution`
 
