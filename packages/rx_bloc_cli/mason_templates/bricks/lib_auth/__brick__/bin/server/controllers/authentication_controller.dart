@@ -104,7 +104,7 @@ class AuthenticationController extends ApiController {
         _usersService.createRandomUser(params['username'], params['password']);
     _usersService.setPasswordForUser(
       params['username']!,
-      sha256.convert(params['password']!.codeUnits).toString(),
+      params['password']!,
     );
     final token = _authenticationService.issueNewToken(null, userId: user.id);
     return responseBuilder.buildOK(
