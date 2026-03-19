@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:intl/intl.dart';
@@ -21,8 +22,9 @@ class InAppNotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: context.designSystem.colors.colorScheme.surface,
-        body: RxPaginatedBuilder<
+    backgroundColor: context.designSystem.colors.colorScheme.surface,
+    body:
+        RxPaginatedBuilder<
           InAppNotificationsBlocType,
           InAppNotificationModel
         >.withRefreshIndicator(
@@ -32,67 +34,76 @@ class InAppNotificationsPage extends StatelessWidget {
             bloc.events.loadNotifications(reset: true);
             return bloc.states.notifications.waitToLoad();
           },
-          buildLoading: (context, list, bloc) =>
-              _buildScrollView(context, slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
-                child: AppLoadingIndicator.taskValue(context),
+          buildLoading: (context, list, bloc) => CustomScrollView(
+            slivers: [
+              _buildSliverAppBar(
+                context,
+                context.designSystem.colors.colorScheme.surface,
               ),
-            ),
-          ]),
-          buildError: (context, list, bloc) => _buildScrollView(context, slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
+              SliverFillRemaining(
+                child: Center(child: AppLoadingIndicator.taskValue(context)),
+              ),
+            ],
+          ),
+          buildError: (context, list, bloc) => CustomScrollView(
+            slivers: [
+              _buildSliverAppBar(
+                context,
+                context.designSystem.colors.colorScheme.surface,
+              ),
+              SliverFillRemaining(
                 child: AppErrorWidget(
                   error: list.error!,
                   onTabRetry: () => bloc.events.loadNotifications(reset: true),
                 ),
               ),
-            ),
-          ]),
+            ],
+          ),
           buildSuccess: (context, list, bloc) {
-            final padding = EdgeInsets.symmetric(
-              horizontal: context.designSystem.spacing.m,
-              vertical: context.designSystem.spacing.s,
-            );
-
             if (list.isEmpty) {
-              return _buildScrollView(context, slivers: [
-                SliverPadding(
-                  padding: padding,
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate([
-                      _buildFilterBar(context),
-                      SizedBox(height: context.designSystem.spacing.m),
-                      const NoIaNotifications(),
-                    ]),
+              return CustomScrollView(
+                slivers: [
+                  _buildSliverAppBar(
+                    context,
+                    context.designSystem.colors.colorScheme.surface,
                   ),
-                ),
-              ]);
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.designSystem.spacing.m,
+                      vertical: context.designSystem.spacing.s,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          SizedBox(height: context.designSystem.spacing.m),
+                          const NoIaNotifications(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
             }
 
             final groups = _groupNotificationsByMonth(list);
             final loadedCount = groups.fold<int>(0, (sum, g) => sum + g.length);
             final hasMore = loadedCount < list.itemCount;
-            final itemCount = 1 + groups.length + (hasMore ? 1 : 0);
-            final spacing = context.designSystem.spacing.m;
 
-            return _buildScrollView(context, slivers: [
-              SliverPadding(
-                padding: padding,
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      if (index.isOdd) {
-                        return SizedBox(height: spacing);
-                      }
-                      final itemIndex = index ~/ 2;
-                      if (itemIndex == 0) {
-                        return _buildFilterBar(context);
-                      }
-                      if (itemIndex > groups.length) {
+            return CustomScrollView(
+              slivers: [
+                _buildSliverAppBar(
+                  context,
+                  context.designSystem.colors.colorScheme.surface,
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.designSystem.spacing.m,
+                    vertical: context.designSystem.spacing.s,
+                  ),
+                  sliver: SliverList.separated(
+                    itemCount: groups.length + (hasMore ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index >= groups.length) {
                         return Center(
                           child: Padding(
                             padding: EdgeInsets.all(
@@ -102,38 +113,38 @@ class InAppNotificationsPage extends StatelessWidget {
                           ),
                         );
                       }
-                      return _buildMonthGroup(context, groups[itemIndex - 1]);
+                      return _buildMonthGroup(context, groups[index]);
                     },
-                    childCount: itemCount > 0 ? 2 * itemCount - 1 : 0,
-                    findChildIndexCallback: null,
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: context.designSystem.spacing.m),
                   ),
                 ),
-              ),
-            ]);
+              ],
+            );
           },
         ),
-      );
+  );
 
-  CustomScrollView _buildScrollView(
-    BuildContext context, {
-    required List<Widget> slivers,
-  }) {
-    final colors = context.designSystem.colors.colorScheme;
-    final typography = context.designSystem.typography.textTheme;
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar.large(
-          title: Text(context.l10n.notifications),
-          backgroundColor: colors.surface,
-          foregroundColor: colors.onSurface,
-          surfaceTintColor: colors.surfaceTint,
-          titleTextStyle: typography.headlineLarge
-              ?.copyWith(color: colors.onSurface),
+  Widget _buildSliverAppBar(BuildContext context, Color backgroundColor) =>
+      SliverAppBar.large(
+        title: Text(context.l10n.notifications),
+        backgroundColor: backgroundColor,
+        surfaceTintColor: Colors.transparent,
+        forceMaterialTransparency: false,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(context.designSystem.spacing.xxxxl2),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: context.designSystem.spacing.m,
+              vertical: context.designSystem.spacing.xs,
+            ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: _buildFilterBar(context),
+            ),
+          ),
         ),
-        ...slivers,
-      ],
-    );
-  }
+      );
 
   Widget _buildFilterBar(BuildContext context) => Row(
     children: [
@@ -183,59 +194,51 @@ class InAppNotificationsPage extends StatelessWidget {
           ),
           child: Text(
             DateFormat.yMMMM().format(notifications.first.date),
-            style: (designSystem.typography.textTheme.titleMedium ??
-                    designSystem.typography.textTheme.bodyLarge)
-                ?.copyWith(
-              color: designSystem.colors.colorScheme.onSurfaceVariant,
+            style: designSystem.typography.textTheme.titleMedium?.copyWith(
+              color: designSystem.colors.colorScheme.onSurface,
             ),
           ),
         ),
         Container(
-          padding: EdgeInsets.all(designSystem.spacing.xsss),
+          padding: EdgeInsets.all(designSystem.spacing.xss),
           decoration: BoxDecoration(
-            color: designSystem.colors.colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(designSystem.spacing.xl),
+            color: designSystem.colors.colorScheme.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(designSystem.spacing.l),
             boxShadow: [
               BoxShadow(
-                color: designSystem.colors.colorScheme.primary.withValues(alpha: 0.08),
-                blurRadius: designSystem.spacing.l,
+                color: designSystem.colors.colorScheme.surfaceTint.withValues(
+                  alpha: 0.1,
+                ),
+                blurRadius: designSystem.spacing.xxl,
               ),
             ],
           ),
           child: Column(
-            children: [
-              for (var i = 0; i < notifications.length; i++) ...[
-                if (i > 0)
-                  Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: designSystem.colors.colorScheme.outlineVariant,
-                    indent: designSystem.spacing.s,
-                    endIndent: designSystem.spacing.s,
+            children: notifications
+                .mapIndexed(
+                  (i, notification) => IaNotification(
+                    title: notification.title,
+                    description: notification.description,
+                    date: notification.date,
+                    isUnread: notification.isUnread,
+                    isFirstInGroup: i == 0,
+                    isLastInGroup: i == notifications.length - 1,
+                    onTap: () {
+                      if (notification.isUnread) {
+                        context
+                            .read<InAppNotificationsBlocType>()
+                            .events
+                            .markAsRead(notification.id);
+                      }
+                      GoRouter.of(context).push(
+                        InAppNotificationDetailsRoute(
+                          notification.id,
+                        ).routeLocation,
+                      );
+                    },
                   ),
-                IaNotification(
-                  title: notifications[i].title,
-                  description: notifications[i].description,
-                  date: notifications[i].date,
-                  isUnread: notifications[i].isUnread,
-                  isFirstInGroup: i == 0,
-                  isLastInGroup: i == notifications.length - 1,
-                  onTap: () {
-                    if (notifications[i].isUnread) {
-                      context
-                          .read<InAppNotificationsBlocType>()
-                          .events
-                          .markAsRead(notifications[i].id);
-                    }
-                    GoRouter.of(context).push(
-                      InAppNotificationDetailsRoute(
-                        notifications[i].id,
-                      ).routeLocation,
-                    );
-                  },
-                ),
-              ],
-            ],
+                )
+                .toList(),
           ),
         ),
       ],

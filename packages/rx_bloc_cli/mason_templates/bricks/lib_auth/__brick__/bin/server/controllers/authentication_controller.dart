@@ -99,11 +99,14 @@ class AuthenticationController extends ApiController {
     }
 
     {{/enable_feature_onboarding}}
-    
-    final token = _authenticationService.issueNewToken(null);
 
     final user =
         _usersService.createRandomUser(params['username'], params['password']);
+    _usersService.setPasswordForUser(
+      params['username']!,
+      sha256.convert(params['password']!.codeUnits).toString(),
+    );
+    final token = _authenticationService.issueNewToken(null, userId: user.id);
     return responseBuilder.buildOK(
       data: UserWithAuthTokenModel(
         user: user,
@@ -111,6 +114,7 @@ class AuthenticationController extends ApiController {
       ).toJson(),
     );
   }
+
 {{#enable_social_logins}}
   Future<Response> _authenticateWithAppleHandler(Request request) async {
     final params = await request.bodyFromFormData();

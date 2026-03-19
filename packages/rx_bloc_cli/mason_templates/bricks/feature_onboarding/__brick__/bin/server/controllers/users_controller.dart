@@ -98,8 +98,15 @@ class UsersController extends ApiController {
       );
     }
 
-    // delete the old user and create a new one with the new email
+    // Get the old email before deleting so we can clear its password
+    final userWithOldEmail = _usersService.getUserById(userId);
+    final oldEmail = userWithOldEmail?.email;
+
+    // Delete the original user (old email) and promote the temp user (new email)
     _usersService.deleteUser(userId, UserRole.user);
+    if (oldEmail != null) {
+      _usersService.removePasswordForUser(oldEmail);
+    }
     _usersService.updateUser(userId, role: UserRole.user);
 
     return responseBuilder.buildOK(
