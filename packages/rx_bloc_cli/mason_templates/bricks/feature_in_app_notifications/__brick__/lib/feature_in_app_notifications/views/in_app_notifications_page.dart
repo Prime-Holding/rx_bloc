@@ -34,23 +34,17 @@ class InAppNotificationsPage extends StatelessWidget {
             bloc.events.loadNotifications(reset: true);
             return bloc.states.notifications.waitToLoad();
           },
-          buildLoading: (context, list, bloc) => CustomScrollView(
-            slivers: [
-              _buildSliverAppBar(
-                context,
-                context.designSystem.colors.colorScheme.surface,
-              ),
+          buildLoading: (context, list, bloc) => _buildScrollViewWithAppBar(
+            context,
+            bodySlivers: [
               SliverFillRemaining(
                 child: Center(child: AppLoadingIndicator.taskValue(context)),
               ),
             ],
           ),
-          buildError: (context, list, bloc) => CustomScrollView(
-            slivers: [
-              _buildSliverAppBar(
-                context,
-                context.designSystem.colors.colorScheme.surface,
-              ),
+          buildError: (context, list, bloc) => _buildScrollViewWithAppBar(
+            context,
+            bodySlivers: [
               SliverFillRemaining(
                 child: AppErrorWidget(
                   error: list.error!,
@@ -61,12 +55,9 @@ class InAppNotificationsPage extends StatelessWidget {
           ),
           buildSuccess: (context, list, bloc) {
             if (list.isEmpty) {
-              return CustomScrollView(
-                slivers: [
-                  _buildSliverAppBar(
-                    context,
-                    context.designSystem.colors.colorScheme.surface,
-                  ),
+              return _buildScrollViewWithAppBar(
+                context,
+                bodySlivers: [
                   SliverPadding(
                     padding: EdgeInsets.symmetric(
                       horizontal: context.designSystem.spacing.m,
@@ -89,12 +80,9 @@ class InAppNotificationsPage extends StatelessWidget {
             final loadedCount = groups.fold<int>(0, (sum, g) => sum + g.length);
             final hasMore = loadedCount < list.itemCount;
 
-            return CustomScrollView(
-              slivers: [
-                _buildSliverAppBar(
-                  context,
-                  context.designSystem.colors.colorScheme.surface,
-                ),
+            return _buildScrollViewWithAppBar(
+              context,
+              bodySlivers: [
                 SliverPadding(
                   padding: EdgeInsets.symmetric(
                     horizontal: context.designSystem.spacing.m,
@@ -125,26 +113,35 @@ class InAppNotificationsPage extends StatelessWidget {
         ),
   );
 
-  Widget _buildSliverAppBar(BuildContext context, Color backgroundColor) =>
-      SliverAppBar.large(
-        title: Text(context.l10n.notifications),
-        backgroundColor: backgroundColor,
-        surfaceTintColor: Colors.transparent,
-        forceMaterialTransparency: false,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(context.designSystem.spacing.xxxxl2),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: context.designSystem.spacing.m,
-              vertical: context.designSystem.spacing.xs,
-            ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: _buildFilterBar(context),
+  Widget _buildScrollViewWithAppBar(
+    BuildContext context, {
+    required List<Widget> bodySlivers,
+  }) =>
+      CustomScrollView(
+        slivers: [
+          SliverAppBar.large(
+            title: Text(context.l10n.notifications),
+            backgroundColor: context.designSystem.colors.colorScheme.surface,
+            surfaceTintColor: Colors.transparent,
+            forceMaterialTransparency: false,
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(context.designSystem.spacing.xxxxl2),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.designSystem.spacing.m,
+                  vertical: context.designSystem.spacing.xs,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: _buildFilterBar(context),
+                ),
+              ),
             ),
           ),
-        ),
+          ...bodySlivers,
+        ],
       );
+
 
   Widget _buildFilterBar(BuildContext context) => Row(
     children: [
