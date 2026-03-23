@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';{{#enable_in_app_notifications}}
 import 'package:rx_bloc_list/rx_bloc_list.dart';{{/enable_in_app_notifications}}
 import 'package:{{project_name}}/base/models/errors/error_model.dart';{{#realtime_communication}}
 import 'package:{{project_name}}/base/models/response_models/sse_message_model.dart';{{/realtime_communication}}{{#enable_in_app_notifications}}
-import 'package:testapp/feature_in_app_notifications/models/in_app_notification_model.dart';{{/enable_in_app_notifications}}
+import 'package:{{project_name}}/feature_in_app_notifications/models/in_app_notification_model.dart';
+import 'package:{{project_name}}/feature_in_app_notifications/models/in_app_notifications_response_model.dart';{{/enable_in_app_notifications}}
 
 class Stubs {
   static const addIcon = Icon(Icons.add);
@@ -120,6 +121,22 @@ class Stubs {
         isLoading: true,
         isInitialized: true,
         totalCount: 10,
+      );
+
+  /// First page API response for in-app notification list tests.
+  static InAppNotificationsResponseModel get inAppNotificationsResponseFirstPage =>
+      InAppNotificationsResponseModel(
+        notifications: [inAppNotificationListItem1, inAppNotificationListItem2],
+        totalCount: 2,
+        unreadCount: 1,
+      );
+
+  /// Minimal response used when only [InAppNotificationsResponseModel.unreadCount] matters.
+  static InAppNotificationsResponseModel get inAppNotificationsResponseUnreadOnly =>
+      InAppNotificationsResponseModel(
+        notifications: [],
+        totalCount: 0,
+        unreadCount: 42,
       );
   {{/enable_in_app_notifications}}
 }
