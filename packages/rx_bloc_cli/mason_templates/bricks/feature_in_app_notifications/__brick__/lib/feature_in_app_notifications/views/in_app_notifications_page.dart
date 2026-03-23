@@ -116,32 +116,30 @@ class InAppNotificationsPage extends StatelessWidget {
   Widget _buildScrollViewWithAppBar(
     BuildContext context, {
     required List<Widget> bodySlivers,
-  }) =>
-      CustomScrollView(
-        slivers: [
-          SliverAppBar.large(
-            title: Text(context.l10n.notifications),
-            backgroundColor: context.designSystem.colors.colorScheme.surface,
-            surfaceTintColor: Colors.transparent,
-            forceMaterialTransparency: false,
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(context.designSystem.spacing.xxxxl2),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: context.designSystem.spacing.m,
-                  vertical: context.designSystem.spacing.xs,
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: _buildFilterBar(context),
-                ),
-              ),
+  }) => CustomScrollView(
+    slivers: [
+      SliverAppBar.large(
+        title: Text(context.l10n.notifications),
+        backgroundColor: context.designSystem.colors.colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        forceMaterialTransparency: false,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(context.designSystem.spacing.xxxxl2),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: context.designSystem.spacing.m,
+              vertical: context.designSystem.spacing.xs,
+            ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: _buildFilterBar(context),
             ),
           ),
-          ...bodySlivers,
-        ],
-      );
-
+        ),
+      ),
+      ...bodySlivers,
+    ],
+  );
 
   Widget _buildFilterBar(BuildContext context) => Row(
     children: [
@@ -211,6 +209,7 @@ class InAppNotificationsPage extends StatelessWidget {
             ],
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: notifications
                 .mapIndexed(
                   (i, notification) => IaNotification(

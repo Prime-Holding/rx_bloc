@@ -44,7 +44,7 @@ class IaNotification extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.fromLTRB(
+        padding: EdgeInsetsDirectional.fromSTEB(
           designSystem.spacing.s,
           designSystem.spacing.s,
           designSystem.spacing.m,
@@ -76,51 +76,74 @@ class IaNotification extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(right: designSystem.spacing.s),
+                  padding: EdgeInsetsDirectional.only(
+                    end: designSystem.spacing.s,
+                  ),
                   child: Text(
                     title,
+                    textAlign: TextAlign.start,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: (designSystem.typography.textTheme.titleMedium ??
-                            designSystem.typography.textTheme.bodyLarge)
-                        ?.copyWith(
-                      color: isUnread
-                          ? designSystem.colors.colorScheme.onPrimaryContainer
-                          : designSystem.colors.colorScheme.onSurface,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style:
+                        (designSystem.typography.textTheme.titleMedium ??
+                                designSystem.typography.textTheme.bodyLarge)
+                            ?.copyWith(
+                              color: isUnread
+                                  ? designSystem
+                                        .colors
+                                        .colorScheme
+                                        .onPrimaryContainer
+                                  : designSystem.colors.colorScheme.onSurface,
+                              fontWeight: FontWeight.w600,
+                            ),
                   ),
                 ),
                 SizedBox(height: designSystem.spacing.xxxs),
                 Text(
                   description,
+                  textAlign: TextAlign.start,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: (designSystem.typography.textTheme.bodyMedium ??
-                          designSystem.typography.textTheme.bodyLarge)
-                      ?.copyWith(
-                    color: isUnread
-                        ? designSystem.colors.colorScheme.onPrimaryContainer
-                        : designSystem.colors.colorScheme.onSurfaceVariant,
-                  ),
+                  style:
+                      (designSystem.typography.textTheme.bodyMedium ??
+                              designSystem.typography.textTheme.bodyLarge)
+                          ?.copyWith(
+                            color: isUnread
+                                ? designSystem
+                                      .colors
+                                      .colorScheme
+                                      .onPrimaryContainer
+                                : designSystem
+                                      .colors
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                          ),
                 ),
                 SizedBox(height: designSystem.spacing.xss),
                 Text(
                   DateFormat('dd.MM.yyyy').format(date),
-                  style: (designSystem.typography.textTheme.labelSmall ??
-                          designSystem.typography.textTheme.bodySmall)
-                      ?.copyWith(
-                    color: isUnread
-                        ? designSystem.colors.colorScheme.onPrimaryContainer
-                        : designSystem.colors.colorScheme.onSurfaceVariant,
-                  ),
+                  textAlign: TextAlign.start,
+                  style:
+                      (designSystem.typography.textTheme.labelSmall ??
+                              designSystem.typography.textTheme.bodySmall)
+                          ?.copyWith(
+                            color: isUnread
+                                ? designSystem
+                                      .colors
+                                      .colorScheme
+                                      .onPrimaryContainer
+                                : designSystem
+                                      .colors
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                          ),
                 ),
               ],
             ),
             if (isUnread)
-              Positioned(
+              PositionedDirectional(
                 top: designSystem.spacing.xss,
-                right: designSystem.spacing.xss,
+                end: designSystem.spacing.xss,
                 child: Container(
                   width: designSystem.spacing.xss1,
                   height: designSystem.spacing.xss1,
