@@ -479,9 +479,9 @@ All visual values MUST come from `context.designSystem`. Never use raw Material 
 // ✅ Correct
 Text(
   context.l10n.hello,
-  style: context.designSystem.typography.h2Med16,
+  style: context.designSystem.typography.textTheme.bodyLarge,
 )
-ColoredBox(color: context.designSystem.colors.primaryColor)
+ColoredBox(color: context.designSystem.colors.colorScheme.primary)
 SizedBox(height: context.designSystem.spacing.m)
 
 // ❌ Wrong

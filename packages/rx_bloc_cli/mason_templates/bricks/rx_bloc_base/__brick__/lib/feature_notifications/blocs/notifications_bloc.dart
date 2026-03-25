@@ -32,8 +32,12 @@ class NotificationsBloc extends $NotificationsBloc {
 
   final NotificationService _service;
 
+  {{#push_notifications}}
+  /// Skip the first error to avoid showing the initial error if firebase is not configured.
   @override
-  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
+  Stream<ErrorModel> _mapToErrorsState() => errorState.skip(1).mapToErrorModel();{{/push_notifications}}{{^push_notifications}}
+  @override
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();{{/push_notifications}}
 
   @override
   ConnectableStream<Result<String>> _mapToPushTokenState() =>

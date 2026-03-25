@@ -38,7 +38,7 @@ class ProfilePage extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   'John Doe',
-                  style: context.designSystem.typography.h1Bold20,
+                  style: context.designSystem.typography.textTheme.headlineSmall,
                 ),
                 centerTitle: true,
                 background: Padding(
@@ -53,12 +53,12 @@ class ProfilePage extends StatelessWidget {
                       ),
                       child: CircleAvatar(
                         backgroundColor:
-                            context.designSystem.colors.primaryColor,
+                            context.designSystem.colors.colorScheme.primary,
                         radius: 50,
                         child: Icon(
                           context.designSystem.icons.avatar,
                           size: 75,
-                          color: context.designSystem.colors.circleAvatarColor,
+                          color: context.designSystem.colors.colorScheme.surface,
                         ),
                       ),
                     ),

@@ -45,14 +45,14 @@ class OnboardingPhonePage extends StatelessWidget {
                           Text(
                             context.l10n.phoneNumberTitle,
                             textAlign: TextAlign.center,
-                            style: context.designSystem.typography.h1Med32,
+                            style: context.designSystem.typography.textTheme.displayMedium,
                           ),
                           SizedBox(height: context.designSystem.spacing.xs),
                           Text(
                             context
                                 .l10n.phoneNumberDescription,
                             textAlign: TextAlign.center,
-                            style: context.designSystem.typography.h2Reg16,
+                            style: context.designSystem.typography.textTheme.bodyLarge,
                           ),
                           SizedBox(height: context.designSystem.spacing.l),
                         ],

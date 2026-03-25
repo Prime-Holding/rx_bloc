@@ -92,6 +92,9 @@ class UsersService {
   void setPasswordForUser(String email, String password) =>
       _usersRepository.setPasswordForUser(email, password);
 
+  void removePasswordForUser(String email) =>
+      _usersRepository.removePasswordForUser(email);
+
   String? getPasswordForUser(String email) =>
       _usersRepository.getPasswordForUser(email);{{#enable_forgotten_password}}
 

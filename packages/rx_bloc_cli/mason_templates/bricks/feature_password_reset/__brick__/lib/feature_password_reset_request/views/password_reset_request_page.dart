@@ -39,12 +39,12 @@ class PasswordResetRequestPage extends StatelessWidget {
                     SizedBox(height: context.designSystem.spacing.s),
                     Text(
                       context.l10n.passwordReset,
-                      style: context.designSystem.typography.h1Med32,
+                      style: context.designSystem.typography.textTheme.displayMedium,
                     ),
                     SizedBox(height: context.designSystem.spacing.xs),
                     Text(
                       context.l10n.requestPageHeader,
-                      style: context.designSystem.typography.h2Reg16,
+                      style: context.designSystem.typography.textTheme.bodyLarge,
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: context.designSystem.spacing.l),
@@ -81,7 +81,7 @@ class PasswordResetRequestPage extends StatelessWidget {
         decoration: fieldState.decoration.copyWith(
           labelText: context.l10n.email,
           hintText: context.l10n.emailHint,
-          hintStyle: context.designSystem.typography.h2Reg16,
+          hintStyle: context.designSystem.typography.textTheme.bodyLarge,
         ),
       );
 

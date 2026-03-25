@@ -3,7 +3,7 @@
 class DesignSystemSpacing {
   const DesignSystemSpacing();
 
-  /// 1px of spacing
+  /// 1px
   final double xxxxs = 1;
 
   /// 2px of spacing

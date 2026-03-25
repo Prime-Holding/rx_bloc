@@ -102,7 +102,7 @@ class _LoginFormState extends State<LoginForm> {
                   ?.copyWith(color: DefaultTextStyle.of(context).style.color),
           labelText: context.l10n.password,
           hintText: context.l10n.passwordHint,
-          hintStyle: context.designSystem.typography.h2Reg16,
+          hintStyle: context.designSystem.typography.textTheme.bodyLarge,
           helperText: ' ', // this will prevent the error text from shifting
         ),
       );
@@ -125,7 +125,7 @@ class _LoginFormState extends State<LoginForm> {
                   ?.copyWith(color: DefaultTextStyle.of(context).style.color),
           labelText: context.l10n.email,
           hintText: context.l10n.emailHint,
-          hintStyle: context.designSystem.typography.h2Reg16,
+          hintStyle: context.designSystem.typography.textTheme.bodyLarge,
           helperText: ' ', // this will prevent the error text from shifting
         ),
       );

@@ -52,7 +52,7 @@ class AppLoadingIndicator extends StatelessWidget {
           context.designSystem.spacing.xxl,
           context.designSystem.spacing.xxl,
         ),
-        color: color ?? context.designSystem.colors.primaryColor,
+        color: color ?? context.designSystem.colors.colorScheme.primary,
       );
 
   @override
@@ -65,7 +65,7 @@ class AppLoadingIndicator extends StatelessWidget {
         width: size?.width ?? context.designSystem.spacing.xxxxl2,
         height: size?.height ?? context.designSystem.spacing.xxxxl2,
         child: CircularProgressIndicator(
-          color: color ?? context.designSystem.colors.primaryColor,
+          color: color ?? context.designSystem.colors.colorScheme.primary,
           strokeWidth: strokeWidth ?? context.designSystem.spacing.xsss,
         ),
       );

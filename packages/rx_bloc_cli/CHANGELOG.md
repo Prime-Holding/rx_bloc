@@ -1,3 +1,6 @@
+## [6.1.1]
+* Updated design system colors and typography to use unified ColorScheme and TextTheme approach
+
 ## [6.1.0]
 * Add `--enable-in-app-notifications` flag to configure In App Notification flows in the generated project, including periodic pings from server using SSE
 * Add Cursor agent rules and skills, Copilot instructions to provide context for working with rx_bloc_cli and generated project

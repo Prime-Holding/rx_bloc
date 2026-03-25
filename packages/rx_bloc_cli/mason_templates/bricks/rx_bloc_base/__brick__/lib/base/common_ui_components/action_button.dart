@@ -51,8 +51,8 @@ class ActionButton extends StatelessWidget {
     return FloatingActionButton(
       key: floatingActionButtonKey,
       backgroundColor: onPressed == null
-          ? context.designSystem.colors.inactiveButtonColor
-          : context.designSystem.colors.activeButtonColor,
+          ? context.designSystem.colors.colorScheme.outline
+          : context.designSystem.colors.colorScheme.primary,
       onPressed: onPressed,
       tooltip: tooltip,
       heroTag: heroTag,

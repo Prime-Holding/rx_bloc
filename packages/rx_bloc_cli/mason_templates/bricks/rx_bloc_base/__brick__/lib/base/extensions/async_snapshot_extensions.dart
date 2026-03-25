@@ -10,6 +10,6 @@ extension AsyncSnapshotLoadingState on AsyncSnapshot<bool> {
 
   /// The color based on the isLoading state
   Color getButtonColor(BuildContext context) => isLoading
-      ? context.designSystem.colors.inactiveButtonColor
-      : context.designSystem.colors.activeButtonColor;
+      ? context.designSystem.colors.colorScheme.outline
+      : context.designSystem.colors.colorScheme.primary;
 }

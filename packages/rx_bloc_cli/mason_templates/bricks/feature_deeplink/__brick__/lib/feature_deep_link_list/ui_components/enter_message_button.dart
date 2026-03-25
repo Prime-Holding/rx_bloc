@@ -38,7 +38,7 @@ class EnterMessageButton extends StatelessWidget {
         ),
         tooltip: context.l10n.pageWithResult,
         color: (isActive
-            ? context.designSystem.colors.activeButtonTextColor
-            : context.designSystem.colors.inactiveButtonTextColor),
+            ? context.designSystem.colors.colorScheme.onPrimary
+            : context.designSystem.colors.colorScheme.onSurfaceVariant),
       );
 }

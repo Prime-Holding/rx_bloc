@@ -34,15 +34,15 @@ class _OnboardingPhoneConfirmPageState
                 context: context,
                 builder: (context) => Text(
                   context.l10n.confirmPhoneFieldHint,
-                  style: context.designSystem.typography.h2Reg16.copyWith(
-                    color: context.designSystem.colors.tintColor,
+                  style: (context.designSystem.typography.textTheme.bodyLarge ?? const TextStyle()).copyWith(
+                    color: context.designSystem.colors.colorScheme.outline,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
               icon: Icon(
                 context.designSystem.icons.info,
-                color: context.designSystem.colors.primaryColor,
+                color: context.designSystem.colors.colorScheme.primary,
               ),
             ),
           ],
@@ -72,13 +72,13 @@ class _OnboardingPhoneConfirmPageState
                             SizedBox(height: context.designSystem.spacing.s),
                             Text(
                               context.l10n.phoneNumberConfirmTitle,
-                              style: context.designSystem.typography.h1Med32,
+                              style: context.designSystem.typography.textTheme.displayMedium,
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: context.designSystem.spacing.xs),
                             Text(
                               context.l10n.phoneNumberConfirmDescription,
-                              style: context.designSystem.typography.h2Reg16,
+                              style: context.designSystem.typography.textTheme.bodyLarge,
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: context.designSystem.spacing.l),
@@ -112,12 +112,12 @@ class _OnboardingPhoneConfirmPageState
                                     activeStateIcon: Icon(
                                       context.designSystem.icons.send,
                                       color: context
-                                          .designSystem.colors.primaryColor,
+                                          .designSystem.colors.colorScheme.primary,
                                     ),
                                     pressedStateIcon: Icon(
                                       context.designSystem.icons.success,
                                       color: context.designSystem.colors
-                                          .pinSuccessBorderColor,
+                                          .colorScheme.primary,
                                     ),
                                   ),
                                   const ResendButtonTimer(),

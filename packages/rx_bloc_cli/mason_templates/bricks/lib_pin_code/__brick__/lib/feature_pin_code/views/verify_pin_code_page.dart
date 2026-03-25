@@ -25,9 +25,9 @@ class VerifyPinCodePage extends StatelessWidget {
             surfaceTintColor: Colors.red,
             title: Text(
               context.l10n.verifyPinCodePage,
-              style: context.designSystem.typography.h1Reg22,
+              style: context.designSystem.typography.textTheme.titleLarge,
             ),
-            foregroundColor: context.designSystem.colors.pinAppBarColor,
+            foregroundColor: context.designSystem.colors.colorScheme.onSurface,
             forceMaterialTransparency: true,
           ),
           extendBodyBehindAppBar: true,

@@ -20,11 +20,11 @@ class LogoutActionButton extends StatelessWidget {
     builder: (context, loading, loggedIn, bloc) => Visibility(
       visible: loggedIn.data ?? false,
       child: IconButton(
-        highlightColor: context.designSystem.colors.transparent,
+        highlightColor: Colors.transparent,
         icon: loading.isLoading
             ? AppLoadingIndicator.textButtonValue(
                 context,
-                color: context.designSystem.colors.textButtonColor,
+                color: context.designSystem.colors.colorScheme.onSurface,
               )
             : context.designSystem.icons.logoutIcon,
         onPressed: loading.isLoading ? null : bloc.events.logout,

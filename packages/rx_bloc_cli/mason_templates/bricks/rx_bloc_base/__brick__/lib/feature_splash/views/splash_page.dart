@@ -26,7 +26,7 @@ class SplashPage extends StatelessWidget {
                       child: Center(
                         child: AppLoadingIndicator.taskValue(
                           context,
-                          color: context.designSystem.colors.primaryColor,
+                          color: context.designSystem.colors.colorScheme.primary,
                         ),
                       ),
                     )

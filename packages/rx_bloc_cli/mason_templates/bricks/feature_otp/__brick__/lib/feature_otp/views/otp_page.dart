@@ -38,7 +38,7 @@ class OtpPage extends StatelessWidget {
                       Text(
                         context.l10n.hint,
                         style: TextStyle(
-                          color: context.designSystem.colors.tintColor,
+                          color: context.designSystem.colors.colorScheme.outline,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -54,12 +54,12 @@ class OtpPage extends StatelessWidget {
                         ResendCodeButton(
                           activeStateIcon: Icon(
                             context.designSystem.icons.send,
-                            color: context.designSystem.colors.primaryColor,
+                            color: context.designSystem.colors.colorScheme.primary,
                           ),
                           pressedStateIcon: Icon(
                             context.designSystem.icons.success,
                             color: context
-                                .designSystem.colors.pinSuccessBorderColor,
+                                .designSystem.colors.colorScheme.primary,
                           ),
                         ),
                         const ResendButtonTimer(),
