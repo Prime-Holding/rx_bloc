@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class DesignSystemTypography {
   DesignSystemTypography();
 
-  static const String family = 'WorkSans';
+  static const String family = 'Sora';
 
   final TextTheme textTheme = TextTheme(
     displayLarge: TextStyle(
