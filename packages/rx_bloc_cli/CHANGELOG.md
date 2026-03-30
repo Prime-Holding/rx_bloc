@@ -1,5 +1,6 @@
 ## [6.1.1]
 * Updated design system colors and typography to use unified ColorScheme and TextTheme approach
+* Updated dev menu internals: replace Alice with [Talker][talker_pkg] 
 
 ## [6.1.0]
 * Add `--enable-in-app-notifications` flag to configure In App Notification flows in the generated project, including periodic pings from server using SSE
@@ -344,3 +345,4 @@ Contains breaking changes
 [mfa_doc_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
 [patrol_integration_test_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md
 [alchemist_url]: https://pub.dev/packages/alchemist
+[talker_pkg]: https://pub.dev/packages/talker

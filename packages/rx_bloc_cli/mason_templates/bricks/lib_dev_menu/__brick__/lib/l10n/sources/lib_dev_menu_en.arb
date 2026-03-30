@@ -5,5 +5,5 @@
   "restartApp": "After you save the IP, to apply the change, please restart your application!",
   "save": "Save",
   "proxy": "proxy",
-  "runInterceptor": "Run HTTP Interceptor"
+  "openHttpLogs": "Open HTTP logs"
 }

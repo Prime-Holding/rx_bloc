@@ -9,11 +9,9 @@ import 'dev_menu_bottom_sheet.dart';
 class AppDevMenuGestureDetectorWithDependencies extends StatelessWidget {
   const AppDevMenuGestureDetectorWithDependencies({
     required this.child,
-    this.navigatorKey,
     super.key,
   });
 
-  final GlobalKey<NavigatorState>? navigatorKey;
   final Widget child;
 
   @override
@@ -25,7 +23,6 @@ class AppDevMenuGestureDetectorWithDependencies extends StatelessWidget {
               AppRouter.rootNavigatorKey.currentContext!,
             );
           },
-          navigatorKey: navigatorKey,
           child: child,
         ),
       );
