@@ -40,7 +40,7 @@ class LoginPage extends StatelessWidget {
                         children: [
                           Text(context.l10n.loginPageTitle,
                               textAlign: TextAlign.center,
-                              style: context.designSystem.typography.h1Bold24),
+                              style: context.designSystem.typography.textTheme.headlineMedium),
                           SizedBox(height: context.designSystem.spacing.xxxxl),
                           LoginForm(
                             title: context.l10n.loginCredentialsHint,
@@ -52,7 +52,7 @@ class LoginPage extends StatelessWidget {
                             children: [
                                 Expanded(
                                   child: Divider(
-                                  color: context.designSystem.colors.dividerColor),
+                                  color: context.designSystem.colors.colorScheme.outline),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
                                 Expanded(
                                   flex: 1,
                                   child: Divider(
-                                  color: context.designSystem.colors.dividerColor),
+                                  color: context.designSystem.colors.colorScheme.outline),
                                 ),
                             ],
                           ),

@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
@@ -11,19 +13,18 @@ class NoIaNotifications extends StatelessWidget {
     children: [
       Icon(
         context.designSystem.icons.notifications.icon,
-        color: context.designSystem.colors.inactiveButtonTextColor,
+        color: context.designSystem.colors.colorScheme.primary,
         size: context.designSystem.spacing.xl,
       ),
       SizedBox(height: context.designSystem.spacing.xs),
       Text(
         context.l10n.inAppNotificationsEmptyStateTitle,
         textAlign: TextAlign.center,
-        style: context.designSystem.typography.h3Med11.copyWith(
-          color: context.designSystem.colors.inactiveButtonTextColor,
-          fontWeight: FontWeight.w700,
-          fontSize: 10,
-          height: 2.2,
-          letterSpacing: 0.8,
+        style: (context.designSystem.typography.textTheme.titleMedium ??
+                context.designSystem.typography.textTheme.bodyLarge)
+            ?.copyWith(
+          color: context.designSystem.colors.colorScheme.onSurfaceVariant,
+          fontWeight: FontWeight.w600,
         ),
       ),
     ],

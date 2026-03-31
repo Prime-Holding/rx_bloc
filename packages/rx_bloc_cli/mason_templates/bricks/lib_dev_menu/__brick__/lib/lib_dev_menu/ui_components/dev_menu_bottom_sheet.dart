@@ -1,9 +1,9 @@
 {{> licence.dart }}
 
-import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
@@ -107,14 +107,23 @@ class _DevMenuState extends State<_DevMenuWidget> {
                   ),
                   Expanded(
                     child: FilledButton(
-                      onPressed: () async {
-                        context.read<Alice>().showInspector();
+                      onPressed: () {
+                        final talker = context.read<Talker>();
+                        final title = context.l10n.openHttpLogs;
+                        Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => TalkerScreen(
+                              talker: talker,
+                              appBarTitle: title,
+                            ),
+                          ),
+                        );
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: context.designSystem.spacing.m),
                         child: Text(
-                          context.l10n.runInterceptor,
+                          context.l10n.openHttpLogs,
                           textAlign: TextAlign.center,
                         ),
                       ),

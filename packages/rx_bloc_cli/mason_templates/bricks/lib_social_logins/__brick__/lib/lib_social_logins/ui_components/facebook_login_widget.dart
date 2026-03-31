@@ -37,15 +37,16 @@ class FacebookLoginWidget extends StatelessWidget {
           state: (bloc) => bloc.states.isLoading,
           builder: (context, snapshot, bloc) => SocialLoginButton(
             isLoading: (snapshot.data ?? false) ? false : true,
-            backgroundColor: context.designSystem.colors.backgroundColor,
+            backgroundColor: context.designSystem.colors.colorScheme.surface,
             borderSide: BorderSide(
-              color: context.designSystem.colors.socialLoginBorderColor,
+              color: context.designSystem.colors.colorScheme.surface,
               width: 0.3,
             ),
             text: context.l10n.facebookLogin,
-            textStyle: context.designSystem.typography.socialButtonText,
+            textStyle: context.designSystem.typography.textTheme.labelMedium
+                ?.copyWith(color: context.designSystem.colors.colorScheme.onSurface),
             progressIndicatorColor:
-                context.designSystem.colors.textButtonColor,
+                context.designSystem.colors.colorScheme.onSurface,
             onPressed:
                 (snapshot.data ?? false) ? null : () => bloc.events.login(),
             child: SvgPicture.asset(

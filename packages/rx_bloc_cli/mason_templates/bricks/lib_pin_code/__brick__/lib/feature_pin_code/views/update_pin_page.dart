@@ -30,9 +30,9 @@ class UpdatePinPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             pinModel.asTitle(context),
-            style: context.designSystem.typography.h1Reg22,
+            style: context.designSystem.typography.textTheme.titleLarge,
           ),
-          foregroundColor: context.designSystem.colors.pinAppBarColor,
+          foregroundColor: context.designSystem.colors.colorScheme.onSurface,
           forceMaterialTransparency: true,
         ),
         extendBodyBehindAppBar: true,

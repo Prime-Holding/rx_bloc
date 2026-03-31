@@ -58,7 +58,7 @@ class MfaOtpPage extends StatelessWidget {
                       Text(
                         context.l10n.hint,
                         style:TextStyle(
-                          color: context.designSystem.colors.tintColor,
+                          color: context.designSystem.colors.colorScheme.outline,
                         ),
                       ),
                       SizedBox(height: context.designSystem.spacing.xs),
@@ -74,12 +74,12 @@ class MfaOtpPage extends StatelessWidget {
                         ResendCodeButton(
                           activeStateIcon: Icon(
                             Icons.send,
-                            color: context.designSystem.colors.primaryColor,
+                            color: context.designSystem.colors.colorScheme.primary,
                           ),
                           pressedStateIcon: Icon(
                             Icons.check_circle_outline,
                             color: context
-                                .designSystem.colors.pinSuccessBorderColor,
+                                .designSystem.colors.colorScheme.primary,
                           ),
                         ),
                         const ResendButtonTimer(),

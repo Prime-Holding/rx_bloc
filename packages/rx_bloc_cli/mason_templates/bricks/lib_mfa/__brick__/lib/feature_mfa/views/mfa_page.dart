@@ -43,7 +43,7 @@ class MfaPage extends StatelessWidget {
                     children: [
                       Text(
                         context.l10n.changeAddressActionTitle,
-                        style: context.designSystem.typography.h2Med16,
+                        style: context.designSystem.typography.textTheme.bodyLarge,
                       ),
                       SizedBox(height: context.designSystem.spacing.m),
                       RxBlocBuilder<UserAccountBlocType, UserModel?>(
@@ -60,7 +60,7 @@ class MfaPage extends StatelessWidget {
                       ),
                       Text(
                         context.l10n.changeAddressActionDescription,
-                        style: context.designSystem.typography.h3Med11,
+                        style: context.designSystem.typography.textTheme.labelSmall,
                       ),
                     ],
                   ),
@@ -74,7 +74,7 @@ class MfaPage extends StatelessWidget {
                     children: [
                       Text(
                         context.l10n.unlockActionTitle,
-                        style: context.designSystem.typography.h2Med16,
+                        style: context.designSystem.typography.textTheme.bodyLarge,
                       ),
                       Center(
                        child: RxBlocBuilder<UserAccountBlocType, UserModel?>(
@@ -89,7 +89,7 @@ class MfaPage extends StatelessWidget {
                       SizedBox(height: context.designSystem.spacing.m),
                       Text(
                         context.l10n.unlockActionDescription,
-                        style: context.designSystem.typography.h3Med11,
+                        style: context.designSystem.typography.textTheme.labelSmall,
                       ),
                     ],
                   ),

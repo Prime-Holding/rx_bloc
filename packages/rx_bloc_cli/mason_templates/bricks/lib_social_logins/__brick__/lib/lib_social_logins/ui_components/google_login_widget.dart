@@ -39,13 +39,14 @@ class GoogleLoginWidget extends StatelessWidget {
             isLoading: (loadingState.data ?? false) ? false : true,
             text: context.l10n.googleLogin,
             borderSide: BorderSide(
-              color: context.designSystem.colors.socialLoginBorderColor,
+              color: context.designSystem.colors.colorScheme.surface,
               width: 0.3,
             ),
-            textStyle: context.designSystem.typography.socialButtonText,
+            textStyle: context.designSystem.typography.textTheme.labelMedium
+                ?.copyWith(color: context.designSystem.colors.colorScheme.onSurface),
             backgroundColor: context.designSystem.colors.googleBackground,
             progressIndicatorColor:
-                context.designSystem.colors.textButtonColor,
+                context.designSystem.colors.colorScheme.onSurface,
             onPressed:
                 (loadingState.data ?? false) ? null : () => bloc.events.login(),
             child: SvgPicture.asset(

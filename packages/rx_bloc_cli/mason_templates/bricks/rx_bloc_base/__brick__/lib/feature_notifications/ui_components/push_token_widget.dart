@@ -58,7 +58,7 @@ class PushTokenWidget extends StatelessWidget {
                                 color: error == null
                                     ? context.textFieldDialogTheme
                                         .editFieldValueNotEditedColor
-                                    : context.designSystem.colors.errorColor),
+                                    : context.designSystem.colors.colorScheme.error),
                       )
                     ],
                   ),

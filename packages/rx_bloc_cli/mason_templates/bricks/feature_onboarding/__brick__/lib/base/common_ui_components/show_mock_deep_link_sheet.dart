@@ -34,10 +34,10 @@ void showMockDeepLinkSheet(
             onPressed: onDeepLinkErrorTapped,
             colorStyle: ButtonColorStyle.fromContext(
               context,
-              activeGradientColorStart: context.designSystem.colors.errorColor,
-              activeGradientColorEnd: context.designSystem.colors.messageColor,
+              activeGradientColorStart: context.designSystem.colors.colorScheme.error,
+              activeGradientColorEnd: context.designSystem.colors.colorScheme.onSurface,
               activeButtonTextColor:
-                  context.designSystem.colors.activeButtonTextColor,
+                  context.designSystem.colors.colorScheme.onPrimary,
             ),
           ),
         ],

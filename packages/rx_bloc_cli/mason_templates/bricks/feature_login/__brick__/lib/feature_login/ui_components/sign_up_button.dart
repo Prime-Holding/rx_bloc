@@ -29,13 +29,13 @@ class SignUpButton extends StatelessWidget {
               textAlign: TextAlign.center,
               TextSpan(
                 text: context.l10n.dontHaveAccount,
-                style: context.designSystem.typography.h2Reg16
-                    .copyWith(color: context.designSystem.colors.dividerColor),
+                style: (context.designSystem.typography.textTheme.bodyLarge ?? const TextStyle())
+                    .copyWith(color: context.designSystem.colors.colorScheme.outline),
                 children: [
                   const TextSpan(text: ' '),
                   TextSpan(
                     text: context.l10n.signUpLabel,
-                    style: context.designSystem.typography.h1Bold16,
+                    style: context.designSystem.typography.textTheme.bodyLarge,
                   ),
                 ],
               ),

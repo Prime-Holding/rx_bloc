@@ -38,7 +38,7 @@ class DeepLinkDetailsPage extends StatelessWidget {
                     children: [
                       Text(
                         itemData.description,
-                        style: context.designSystem.typography.h1Reg20,
+                        style: context.designSystem.typography.textTheme.headlineSmall,
                       ),
                     ],
                   ),

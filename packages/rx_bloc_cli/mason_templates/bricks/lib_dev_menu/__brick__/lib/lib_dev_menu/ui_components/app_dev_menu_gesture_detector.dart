@@ -1,10 +1,10 @@
 {{> licence.dart }}
 
-import 'package:alice/alice.dart';
-import 'package:alice_dio/alice_dio_adapter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../../base/data_sources/remote/http_clients/plain_http_client.dart';
@@ -14,13 +14,11 @@ class AppDevMenuGestureDetector extends StatefulWidget {
   const AppDevMenuGestureDetector({
     required this.child,
     required this.onDevMenuPresented,
-    required this.navigatorKey,
     super.key,
   });
 
   final Widget child;
   final VoidCallback onDevMenuPresented;
-  final GlobalKey<NavigatorState>? navigatorKey;
 
   @override
   State<AppDevMenuGestureDetector> createState() =>
@@ -39,7 +37,7 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
         .listen((_) => widget.onDevMenuPresented())
         .addTo(_compositeSubscription);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => _setupAlice());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _setupTalkerDioLogging());
 
     super.initState();
   }
@@ -56,21 +54,21 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
     super.dispose();
   }
 
-  void _setupAlice() {
-    Alice alice = context.read<Alice>();
-
-    final navKey = widget.navigatorKey;
-    if (navKey != null) {
-    //Set navigator key if not null
-    alice.setNavigatorKey(navKey);
-    }
-    final adapter = AliceDioAdapter();
-    alice.addAdapter(adapter);
+  void _setupTalkerDioLogging() {
+    final talker = context.read<Talker>();
+    final logger = TalkerDioLogger(
+      talker: talker,
+      settings: const TalkerDioLoggerSettings(
+        printRequestHeaders: true,
+        printResponseHeaders: true,
+        printResponseMessage: true,
+      ),
+    );
 
     // Attach interceptor to ApiHttpClient
-    context.read<ApiHttpClient>().interceptors.add(adapter);
+    context.read<ApiHttpClient>().interceptors.add(logger);
 
     // Attach interceptor to PlainHttpClient
-    context.read<PlainHttpClient>().interceptors.add(adapter);
+    context.read<PlainHttpClient>().interceptors.add(logger);
   }
 }

@@ -49,15 +49,15 @@ class PasswordResetConfirmationPage extends StatelessWidget {
                             alignment: Alignment.center,
                             showShimmer: loading.isLoading,
                             baseColor: context.designSystem.colors
-                                .progressIndicatorBackgroundColor,
+                                .colorScheme.surface,
                             highlightColor: context.designSystem.colors
-                                .progressIndicatorBackgroundColor
+                                .colorScheme.surface
                                 .withValues(alpha: 0.2),
                             child: loading.isLoading
                                 ? Container(
                                     decoration: BoxDecoration(
                                         color: context.designSystem.colors
-                                            .progressIndicatorBackgroundColor,
+                                            .colorScheme.surface,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(context
                                                 .designSystem.spacing.s))),
@@ -72,7 +72,7 @@ class PasswordResetConfirmationPage extends StatelessWidget {
                           SizedBox(height: context.designSystem.spacing.l),
                           Text(
                             context.l10n.titleEmailConfirmation,
-                            style: context.designSystem.typography.h1Med32,
+                            style: context.designSystem.typography.textTheme.displayMedium,
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: context.designSystem.spacing.xs),
@@ -89,13 +89,13 @@ class PasswordResetConfirmationPage extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   alignment: Alignment.center,
                                   baseColor: context.designSystem.colors
-                                      .progressIndicatorBackgroundColor,
+                                      .colorScheme.surface,
                                   highlightColor: context.designSystem.colors
-                                      .progressIndicatorBackgroundColor
+                                      .colorScheme.surface
                                       .withValues(alpha: 0.2),
                                   type: ShimmerType.fixed(placeholderLength: 2),
                                   style:
-                                      context.designSystem.typography.h2Reg16,
+                                      context.designSystem.typography.textTheme.bodyLarge,
                                 ),
                                 SizedBox(
                                   height: context.designSystem.spacing.xxl,

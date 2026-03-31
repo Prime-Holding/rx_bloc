@@ -82,6 +82,8 @@ class UsersRepository {
   void setPasswordForUser(String email, String password) =>
       _passwords[email] = password;
 
+  void removePasswordForUser(String email) => _passwords.remove(email);
+
   String? getPasswordForUser(String email) => _passwords[email];{{#enable_forgotten_password}}
 
   bool isPasswordResetLockedForUser(String email) =>
