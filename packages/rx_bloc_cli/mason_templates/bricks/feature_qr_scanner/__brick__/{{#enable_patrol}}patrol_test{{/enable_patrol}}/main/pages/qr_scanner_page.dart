@@ -7,9 +7,10 @@ class QrScannerPage extends BasePage {
   QrScannerPage(super.$);
 
   Future<void> grantPermissions() async {
-    if (await $.native
-        .isPermissionDialogVisible(timeout: const Duration(seconds: 10))) {
-      await $.native.grantPermissionOnlyThisTime();
+    if (await $.platformAutomator.mobile.isPermissionDialogVisible(
+      timeout: const Duration(seconds: 10),
+    )) {
+      await $.platformAutomator.mobile.grantPermissionOnlyThisTime();
     }
   }
 }
