@@ -72,7 +72,7 @@ dev_dependencies:
   intl_utils: ^2.8.13
   json_serializable: ^6.8.0
   mockito: ^5.4.4 {{#enable_patrol}}
-  patrol: ^3.13.0-dev.3 {{/enable_patrol}}
+  patrol: ^4.5.0 {{/enable_patrol}}
   retrofit_generator: 10.2.1
   rx_bloc_generator: ^9.0.0
   rx_bloc_test: ^5.0.0

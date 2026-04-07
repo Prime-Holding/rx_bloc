@@ -17,14 +17,14 @@ class PatrolBaseConfig {
     return patrolTesterConfig;
   }
 
-  /// Patrol NativeAutomatorConfig has far more options. Here only the most
+  /// Patrol [PlatformAutomatorConfig] has far more options. Here only the most
   /// common ones are listed. More info -> at the class documentation.
   /// The default values are set at ConfigParams class.
-  NativeAutomatorConfig customNativeAutomatorConfig() {
-    NativeAutomatorConfig nativeAutomatorConfig = const NativeAutomatorConfig(
-        connectionTimeout: ConfigParams.generalConnectionTimeout,
-        findTimeout: ConfigParams.generalFindTimeout);
-    return nativeAutomatorConfig;
+  PlatformAutomatorConfig customPlatformAutomatorConfig() {
+    return PlatformAutomatorConfig.fromOptions(
+      connectionTimeout: ConfigParams.generalConnectionTimeout,
+      findTimeout: ConfigParams.generalFindTimeout,
+    );
   }
 
   void patrol(
@@ -38,7 +38,7 @@ class PatrolBaseConfig {
       description,
       callback,
       config: customPatrolTesterConfig(),
-      nativeAutomatorConfig: customNativeAutomatorConfig(),
+      platformAutomatorConfig: customPlatformAutomatorConfig(),
       skip: skip,
       tags: tags,
     );
