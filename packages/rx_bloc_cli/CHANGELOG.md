@@ -1,6 +1,7 @@
 ## [6.1.1]
 * Updated design system colors and typography to use unified ColorScheme and TextTheme approach
-* Updated dev menu internals: replace Alice with [Talker][talker_pkg] 
+* Updated dev menu internals: replace Alice with [Talker][talker_pkg]
+* Fixed patrol integration tests
 
 ## [6.1.0]
 * Add `--enable-in-app-notifications` flag to configure In App Notification flows in the generated project, including periodic pings from server using SSE
