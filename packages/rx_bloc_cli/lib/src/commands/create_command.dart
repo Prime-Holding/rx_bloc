@@ -149,8 +149,7 @@ class CreateCommand extends Command<int> {
             'cicd_codemagic': arguments.cicdCodemagicEnabled,
             'enable_mfa': arguments.mfaEnabled,
             'enable_profile': arguments.profileEnabled,
-            'enable_in_app_notifications':
-                arguments.inAppNotificationsEnabled,
+            'enable_in_app_notifications': arguments.inAppNotificationsEnabled,
             'has_otp': arguments.hasOtp,
           },
     );
