@@ -9,8 +9,8 @@ environment:
 dependencies:
   app_links: ^7.0.0
   collection: ^1.18.0
-  copy_with_extension: ^10.0.0 {{#has_authentication}}
-  crypto: ^3.0.6 {{/has_authentication}}
+  copy_with_extension: ^10.0.0
+  crypto: ^3.0.6
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   equatable: ^2.0.5{{#analytics}}
@@ -72,7 +72,7 @@ dev_dependencies:
   intl_utils: ^2.8.13
   json_serializable: ^6.8.0
   mockito: ^5.4.4 {{#enable_patrol}}
-  patrol: ^3.13.0-dev.3 {{/enable_patrol}}
+  patrol: ^4.5.0 {{/enable_patrol}}
   retrofit_generator: 10.2.1
   rx_bloc_generator: ^9.0.0
   rx_bloc_test: ^5.0.0

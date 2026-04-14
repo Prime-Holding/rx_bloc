@@ -1,0 +1,24 @@
+{{> licence.dart }}
+
+import 'package:patrol/patrol.dart';
+import 'package:{{project_name}}/keys.dart';
+
+import '../base/base_page.dart';
+
+class OtpPage extends BasePage {
+    OtpPage(super.$);
+    static const _otpInputTimeout = Duration(seconds: 1);
+
+   Future<bool> checkOtpInputVisibility({Duration timeout = _otpInputTimeout}) async {
+     try {
+       await widgetVisibilityCheck(K.otpInput, timeout);
+       return true;
+     } on WaitUntilVisibleTimeoutException {
+       return false;
+     }
+   }
+
+    Future<void> enterOtpCode(String code) async {
+        await $(K.otpInput).enterText(code);
+    }
+}

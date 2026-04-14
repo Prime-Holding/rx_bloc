@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-{{#enable_feature_onboarding}}import 'package:crypto/crypto.dart';{{/enable_feature_onboarding}}
+import 'package:crypto/crypto.dart';
 import 'package:shelf/shelf.dart';
 import 'package:{{project_name}}/base/models/user_with_auth_token_model.dart';
 
@@ -104,7 +104,7 @@ class AuthenticationController extends ApiController {
         _usersService.createRandomUser(params['username'], params['password']);
     _usersService.setPasswordForUser(
       params['username']!,
-      params['password']!,
+      sha256.convert(params['password']!.codeUnits).toString(),
     );
     final token = _authenticationService.issueNewToken(null, userId: user.id);
     return responseBuilder.buildOK(

@@ -3,6 +3,7 @@
 * Updated design system colors and typography to use unified ColorScheme and TextTheme approach
 * Updated dev menu internals: replace Alice with [Talker][talker_pkg]
 * Convert sync translation tool from python to dart
+* Fixed patrol integration tests
 
 ## [6.1.0]
 * Add `--enable-in-app-notifications` flag to configure In App Notification flows in the generated project, including periodic pings from server using SSE

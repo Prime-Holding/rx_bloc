@@ -6,6 +6,7 @@ import '../pages/otp_page.dart';
 class OtpPageSteps {
     static Future<void> otpAction(PatrolIntegrationTester $) async {
         OtpPage otpPage = OtpPage($);
+        if (!await otpPage.checkOtpInputVisibility()) return;
         await otpPage.enterOtpCode('0000');
     }
 }
