@@ -1,6 +1,6 @@
 //TODO move it the desired place in the routing tree Or make it as root route: @TypedGoRoute<DevMenuRoute>(path: path) and run Build Runner - Build
 @immutable
-class DevMenuRoute extends GoRouteData implements RouteDataModel {
+class DevMenuRoute extends GoRouteData with $DevMenuRoute implements RouteDataModel {
   const DevMenuRoute();
 
   @override
