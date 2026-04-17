@@ -1,3 +1,6 @@
+## [6.0.2]
+* Updated documentation
+
 ## [6.0.1]
 * Fix static analysis issue with angle brackets interpreted as HTML
 
