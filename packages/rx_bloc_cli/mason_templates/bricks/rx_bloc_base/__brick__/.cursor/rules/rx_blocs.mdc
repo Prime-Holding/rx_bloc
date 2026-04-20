@@ -1,0 +1,273 @@
+---
+description: How BLoCs are built with rx_bloc + rxdart
+globs:
+  - "lib/**/blocs/*_bloc.dart"
+alwaysApply: true
+---
+
+# BLoC Authoring Rules
+
+All business logic is implemented as `@RxBloc()` classes generated via **`rx_bloc_generator`** and composed with **`rxdart`**. These conventions are enforced by every existing BLoC in the codebase and MUST be followed for new ones.
+
+## 1. File Layout
+
+- One bloc per file: `<name>_bloc.dart` next to any sibling in `blocs/` folder.
+- Generated code goes into `<name>_bloc.rxb.g.dart` via `part`. Complex private helpers (multi-field validation, DTO mapping) go into `<name>_bloc_extensions.dart`, also via `part`.
+- Always declare the `part` directives **before** the contract classes.
+
+```dart
+part 'login_bloc.rxb.g.dart';
+part 'login_bloc_extensions.dart'; // optional, only if it exists
+```
+
+## 2. Three-Class Skeleton
+
+Every bloc exposes exactly three top-level declarations in this order:
+
+1. `abstract class <Name>BlocEvents` — one `void` method per user-initiated action.
+2. `abstract class <Name>BlocStates` — one getter per observable state, typed as `Stream<T>` or `ConnectableStream<T>`.
+3. `@RxBloc() class <Name>Bloc extends $<Name>Bloc` — the implementation.
+
+Doc-comment each event/state. The `$<Name>Bloc` base class is generated — never write it by hand.
+
+```dart
+abstract class DashboardBlocEvents {
+  void fetchData();
+}
+
+abstract class DashboardBlocStates {
+  Stream<bool> get isLoading;
+  Stream<ErrorModel> get errors;
+  Stream<Result<String>> get data;
+}
+
+@RxBloc()
+class DashboardBloc extends $DashboardBloc {
+  DashboardBloc(this._service);
+
+  final DashboardService _service;
+
+  @override
+  Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
+      .startWith(null)
+      .switchMap((_) => _service.fetchData().asResultStream())
+      .setResultStateHandler(this)
+      .shareReplay(maxSize: 1);
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
+
+  @override
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
+}
+```
+
+## 3. Events
+
+- Fire-and-forget methods returning `void`. Parameters are the payload.
+- Use `@RxBlocEvent(type: RxBlocEventType.behaviour, seed: <value>)` for inputs that must replay their latest value (text fields, filters, pagination reset flags). Default (`publish`) is fine for one-shot actions like `login()` or `loadPage()`.
+- Inside the bloc, subscribe to the generated `_$<eventName>Event` stream; never invoke the public method from within the class except to trigger a self-dispatch.
+
+```dart
+@RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
+void setEmail(String email);
+
+void login();
+```
+
+## 4. States
+
+- Standard triplet present on nearly every bloc: `Stream<bool> isLoading`, `Stream<ErrorModel> errors`, plus feature-specific streams.
+- Wire `isLoading`/`errors` via the generated handlers — do not reinvent them:
+
+```dart
+@override
+Stream<bool> _mapToIsLoadingState() => loadingState;
+
+@override
+Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
+```
+
+- If different async actions need distinct loading scopes, switch the state to `Stream<LoadingWithTag>` and return `loadingWithTagState`; tag each `asResultStream(tag: ...)`:
+
+```dart
+abstract class CounterBlocStates {
+  Stream<LoadingWithTag> get isLoading;
+  // ...
+}
+
+@RxBloc()
+class CounterBloc extends $CounterBloc {
+  static const tagIncrement = 'Increment';
+  static const tagDecrement = 'Decrement';
+
+  @override
+  Stream<LoadingWithTag> _mapToIsLoadingState() => loadingWithTagState;
+
+  @override
+  Stream<int> _mapToCountState() => Rx.merge<Result<Count>>([
+        _$incrementEvent.switchMap(
+          (_) => _service.increment().asResultStream(tag: tagIncrement),
+        ),
+        _$decrementEvent.switchMap(
+          (_) => _service.decrement().asResultStream(tag: tagDecrement),
+        ),
+      ])
+      .setResultStateHandler(this)
+      .whereSuccess()
+      .map((e) => e.value)
+      .shareReplay(maxSize: 1);
+}
+```
+
+- Use `@RxBlocIgnoreState()` on getters that only proxy an event stream or a `BehaviorSubject`; do not implement them via `_mapTo...State`.
+- State streams that must survive rebuilds end with `.shareReplay(maxSize: 1)`. Use `ConnectableStream<T>` + `.publish()` / `.publishReplay(maxSize: 1)` when the stream must be active **before** any UI subscribes (routing, login success, one-shot effects). Call `xxx.connect().addTo(_compositeSubscription)` from the constructor.
+
+```dart
+@RxBloc()
+class LoginBloc extends $LoginBloc {
+  LoginBloc(this._service, this._router) {
+    loggedIn.connect().addTo(_compositeSubscription);
+    onRouting.connect().addTo(_compositeSubscription);
+  }
+
+  @override
+  ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
+      .exhaustMap((_) => _service.login().asResultStream())
+      .setResultStateHandler(this)
+      .whereSuccess()
+      .doOnData((_) => _router.go(const DashboardRoute().routeLocation))
+      .startWith(false)
+      .publish();
+}
+```
+
+## 5. Dependency Injection
+
+- Inject **services** (not repositories, not data sources) via the constructor; keep fields `final` and private.
+- For cross-bloc signalling, inject a shared coordinator type (e.g. `CoordinatorBlocType`) instead of another feature bloc.
+- For navigation, inject `GoRouter` and route via typed routes: `_router.go(const DashboardRoute().routeLocation)`.
+
+## 6. Stream Composition Guide
+
+| Situation | Operator |
+|---|---|
+| New input supersedes the in-flight request | `switchMap` |
+| Ignore taps while a request is in flight (login, register) | `exhaustMap` / `throttleTime(...)` |
+| Combine latest values of multiple streams on an event | `withLatestFrom` / `withLatestFromN` |
+| Merge heterogeneous triggers into one pipeline | `Rx.merge([...])` with a small private sealed signal type |
+| Text search debouncing | `.debounceTime(...)` + `.distinct()` before the network call |
+
+Always finish an async pipeline with `.asResultStream()` → `.setResultStateHandler(this)`; use `.whereSuccess()` / `.whereError()` afterwards. This is what plugs the pipeline into `loadingState` and `errorState` automatically.
+
+## 7. Subscriptions & Disposal
+
+- Every subscription / `connect()` MUST be piped through `.addTo(_compositeSubscription)` — the base class disposes it.
+- If the bloc owns `BehaviorSubject`s, override `dispose()` to close them, then call `super.dispose()` at the end.
+
+```dart
+final _paginatedListSubject =
+    BehaviorSubject<PaginatedList<Item>>.seeded(
+      PaginatedList(list: [], pageSize: _pageSize),
+    );
+
+@override
+void dispose() {
+  _paginatedListSubject.close();
+  super.dispose();
+}
+```
+
+## 8. Pagination (`rx_bloc_list`)
+
+When a state is a `Stream<PaginatedList<T>>`:
+
+- Back it with `final _paginated = BehaviorSubject<PaginatedList<T>>.seeded(PaginatedList(list: [], pageSize: _pageSize));`.
+- Expose `void loadPage({bool reset = false})` (or equivalent) as the sole event; on `reset: true` call `_paginated.value.reset()` before fetching.
+- Use `pageToLoad` (or `pageNumber + 1`) as the page argument, `.switchMap` into the service, then `.setResultStateHandler(this).mergeWithPaginatedList(_paginated).bind(_paginated)` and return `_paginated` from `_mapTo...State`.
+
+```dart
+@override
+Stream<PaginatedList<Item>> _mapToItemsState() => _$loadPageEvent
+    .startWith(false)
+    .switchMap((reset) {
+      if (reset) _paginated.value.reset();
+      return _service
+          .getItems(
+            page: _paginated.value.pageNumber + 1,
+            pageSize: _pageSize,
+          )
+          .asResultStream();
+    })
+    .setResultStateHandler(this)
+    .mergeWithPaginatedList(_paginated)
+    .bind(_paginated);
+```
+
+For **debounced-search + pagination in one pipeline**, `Rx.merge` the two triggers into a private sealed signal type, `switchMap` once, and reset the paginated list when a query arrives:
+
+```dart
+/// Discriminated union describing what triggered the next fetch.
+class _FetchTrigger {
+  const _FetchTrigger._(this.filter, this.resetRequested);
+  factory _FetchTrigger.filter(String value) => _FetchTrigger._(value, false);
+  factory _FetchTrigger.page(bool reset) => _FetchTrigger._(null, reset);
+
+  final String? filter;
+  final bool resetRequested;
+  bool get isFilter => filter != null;
+}
+
+// ...
+
+ProductsBloc(this._service) {
+  final debouncedFilter = _$onFilterChangedEvent
+      .map((v) => v.trim())
+      .debounceTime(const Duration(milliseconds: 300))
+      .distinct()
+      .map(_FetchTrigger.filter);
+
+  final paging = _$loadPageEvent.map(_FetchTrigger.page);
+
+  Rx.merge<_FetchTrigger>([debouncedFilter, paging])
+      .switchMap((trigger) {
+        // A new filter (or explicit refresh) always restarts pagination.
+        if (trigger.isFilter || trigger.resetRequested) {
+          _paginated.value.reset();
+        }
+        final filter = trigger.isFilter ? trigger.filter! : _currentFilter;
+        _currentFilter = filter;
+
+        return _service
+            .fetchProducts(
+              filter: filter,
+              page: _paginated.value.pageNumber + 1,
+              pageSize: _pageSize,
+            )
+            .asResultStream();
+      })
+      .setResultStateHandler(this)
+      .mergeWithPaginatedList(_paginated)
+      .bind(_paginated)
+      .addTo(_compositeSubscription);
+}
+```
+
+## 9. Things to Avoid
+
+- Don't hand-roll `StreamController` when a generated event or `BehaviorSubject` fits.
+- Don't call repositories / data sources / Dio from a bloc — always go through a service.
+- Don't put UI concerns (`BuildContext`, widgets, `SnackBar`s) inside a bloc. Emit a state; let the page react via `RxBlocListener` / `RxBlocBuilder`.
+- Don't mix `async`/`await` with reactive pipelines inside `_mapTo...State`; stick to `rxdart` operators so error/loading handlers wire up correctly.
+- Don't emit from another bloc directly — route it through a shared coordinator bloc.
+
+## Archetype Cheatsheet
+
+| Archetype | Shape |
+|---|---|
+| Minimal single-state | one event, one `_mapTo...State` using `switchMap` + `asResultStream` + `shareReplay(maxSize: 1)`. |
+| Tagged loading | `Stream<LoadingWithTag>` state + multiple `Rx.merge`-ed events with `asResultStream(tag: ...)`. |
+| Form + routing | `@RxBlocEvent(behaviour, seed: '')` input events, `ConnectableStream` result + routing streams connected in constructor, `withLatestFrom` to pick up current field values on submit. |
+| Paginated list | `BehaviorSubject<PaginatedList<T>>` + `loadPage({bool reset = false})` + `mergeWithPaginatedList` + `bind`. |
+| Debounced search + pagination | `Rx.merge` debounced query stream with page stream into a sealed signal; single `switchMap`. |
+| Global event hub / coordinator | no state mapping; expose events as `@RxBlocIgnoreState()` streams so other blocs can subscribe. |
