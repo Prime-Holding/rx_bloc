@@ -12,7 +12,7 @@ This skill guides the AI agent in creating a new feature in the Flutter project,
 
 To successfully execute this skill, the following inputs MUST be provided:
 1. **Feature name:** The name for the new feature (e.g., `transfer_history`, `card_details`)
-2. **Figma Link (optional, using MCP):** The design file containing the UI layout, colors, typography, and intended interactions for the new feature.
+2. **Figma Link (optional, using MCP):** The design file containing the UI layout, colors, typography, and intended interactions for the new feature. If any Figma links are provided, they MUST be read using Figma MCP.
 3. **Swagger (Open API) Specification (optional):** The API documentation defining the needed API endpoints, request models, and response models.
 
 ## Core Principle
@@ -37,15 +37,15 @@ Before generating any code, the agent MUST:
 - [ ] **Review `lib/base/theme/design_system/`** to understand available colors, typography styles, spacing tokens, and icons — all UI values MUST come from here
 - [ ] Enumerate all pages/screens needed for the feature
 - [ ] Identify which BLoC pattern to use (list, details, or manage)
+- [ ] Build an execution plan, save it inside `lib/feature_{name}/` as `PLAN.md` and ask the user to review it before proceeding with execution.
 
 ### 2. Generate Data Layer
-- **Models:** Create necessary request/response models in `lib/base/models/` using `json_serializable` and `json_annotation`. Feature-specific models can optionally go in `lib/feature_{name}/models/`.
-- **Data Sources:** Add new endpoints in `lib/base/data_sources/remote/`. You **MUST use Retrofit** to define these HTTP clients.
+- **Models:** Create necessary request/response models in `lib/base/models/` using `json_serializable` and `json_annotation`. Feature-specific models can optionally go in `lib/feature_{name}/models/`. They must follow the `*_model.dart` naming convention. Always add code docs to explain each field.
+- **Data Sources:** Add new endpoints in `lib/base/data_sources/remote/`. You **MUST use Retrofit** to define these HTTP clients. Always add code docs to explain each endpoint.
     - Create the abstract class using `@RestApi()` and include the `.g.dart` file so `build_runner` can generate the implementation.
   ```dart
   import 'package:dio/dio.dart';
-  import 'package:retrofit/error_logger.dart';
-  import 'package:retrofit/http.dart';
+  import 'package:retrofit/retrofit.dart';
 
   part 'my_feature_remote_data_source.g.dart';
 
@@ -61,7 +61,7 @@ Before generating any code, the agent MUST:
     Future<MyDomainModel> addItem(@Body() MyDomainModel item);
   }
   ```
-- **Repositories:** Implement repositories in `lib/base/repositories/` to interact with data sources and provide data to services.
+- **Repositories:** Implement repositories in `lib/base/repositories/` to interact with data sources and provide data to services. Always add code docs to explain each method.
     - **Error Handling:** When implementing repository methods, you MUST wrap your data source calls using the `ErrorMapper` (located in `lib/base/common_mappers/error_mappers/error_mapper.dart`). This ensures that specific exceptions (like `DioException`) are properly caught and mapped to unified `ErrorModel` exceptions.
   ```dart
   import '../common_mappers/error_mappers/error_mapper.dart';
@@ -80,7 +80,7 @@ Before generating any code, the agent MUST:
 ### 3. Generate Business Domain Layer
 The Domain Layer orchestrates logic between business requirements and the Data Layer. If your feature contains complex logic, data transformations, or requires filtering/syncing, you should implement a `Service` class.
 
-- **Services:** Create your service in `lib/feature_{new_feature_name}/services/`.
+- **Services:** Create your service in `lib/feature_{new_feature_name}/services/`. Always add code docs to explain each method.
 - **Dependency Injection:** Services act as orchestrators and rely on dependency injection for access to repositories and other services.
 
   ```dart
@@ -149,7 +149,7 @@ The Domain Layer orchestrates logic between business requirements and the Data L
 Create a new directory `lib/feature_{new_feature_name}` and generate its architecture:
 
 **A. BLoC (Business Logic Component)**
-Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events and expose streams as state. Ensure you declare the `.rxb.g.dart` generated files in this file as required by `build_runner`.
+Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events and expose streams as state. Ensure you declare the `.rxb.g.dart` generated files in this file as required by `build_runner`. Always add code docs to explain each event and state.
 
 *Note: The following is an example of a simple BLoC that manages state with loading and error handling:*
 
@@ -470,7 +470,7 @@ class MyFeaturePageWithDependencies extends StatelessWidget {
 ```
 
 **D. View & UI Components**
-Build the UI in `views/{name}_page.dart` focusing on the Figma design.
+Build the UI in `views/{name}_page.dart` focusing on the Figma design. If any Widget has configurable parameters, always add code docs to explain each field.
 
 **Design System — mandatory:**
 All visual values MUST come from `context.designSystem`. Never use raw Material constants or hardcoded values.
@@ -492,11 +492,14 @@ SizedBox(height: 16)
 
 If the required color, typography style, spacing value, or icon is missing from the design system, **add it to the appropriate file in `lib/base/theme/design_system/`** rather than hardcoding it at the call site.
 
+If the Figma design contains any icons in SVG format, import them into '/assets/icons/' as well as pubspec.yaml, and add them to DesignSystemIcons before using them inside the UI widgets.
+
 **Reusable components — check before creating:**
 Always check `lib/base/common_ui_components/` for an existing widget before building a new one. Common examples include:
 - Error states → use `AppErrorWidget` (or equivalent) rather than writing a custom error view
 - Loading indicators → use the project's shared loading widget
 - Buttons, list tiles, avatars, empty-state views — check if they already exist
+- Shared AppBar, NavBar
 
 Only create a new widget in `feature_{name}/ui_components/` if no suitable reusable component exists. If you create something that is clearly reusable across features, place it in `lib/base/common_ui_components/` instead.
 
@@ -505,20 +508,24 @@ Every user-visible string MUST go through the l10n system. Never use raw string 
 
 Workflow:
 1. **Extract strings from Figma** (labels, titles, button text, placeholders, error messages, etc.)
-2. **Add each string to every `.arb` file** in `lib/l10n/arb/` (e.g., `en.arb`, `de.arb`, …). Use a `feature_<name>_` prefix to keep keys namespaced:
+2. **Add each string to every `.arb` file** scoped to its feature as `lib/l10n/sources/feature_<name>_<languageCode>.arb` (e.g., `_en.arb`, `_de.arb`, …):
    ```json
-   // en.arb
-   "featureMyNameTitle": "My Feature",
-   "featureMyNameEmptyState": "Nothing here yet.",
-   "featureMyNameRetryButton": "Retry"
+   // feature_my_name_en.arb
+   "title": "My Feature",
+   "emptyState": "Nothing here yet.",
+   "retryButton": "Retry"
    ```
-3. **Run code generation** so the typed accessors are created:
+3. **Run script** to merge them into the unified intl file and generate:
+   ```sh
+   bin/gen_l10n.sh
+   ```
+4. **Run code generation** so the typed accessors are created:
    ```sh
    flutter pub run build_runner build --delete-conflicting-outputs
    # or
    bin/build_runner_build.sh
    ```
-4. **Use the generated accessors in the UI** via `context.l10n.<key>`:
+5. **Use the generated accessors in the UI** via `context.l10n.<key>`:
    ```dart
    Text(context.l10n.featureMyNameTitle)
    ElevatedButton(onPressed: onRetry, child: Text(context.l10n.featureMyNameRetryButton))
@@ -662,9 +669,6 @@ context.read<AppRouter>().push(const MyFeatureRoute().location);
 
 ### 5. Finalize
 
-- **Localization:** Add localizations in `lib/l10n/arb/en.arb` for new strings. Use the `r_flutter` package format for translations. Access translations via `context.l10n.someTranslationKey`.
-- **Translation Sync:** Run `./bin/update_translations.py` from the project root to propagate new strings to other language files.
-  - *Note:* If your Python distribution does not ship with the yaml module, install it by running `pip3 install pyyaml`.
 - **Code Generation:** Run code generation commands to generate Retrofit, JsonSerializable, and RxBloc files:
   ```bash
   flutter pub run build_runner build --delete-conflicting-outputs
@@ -673,12 +677,10 @@ context.read<AppRouter>().push(const MyFeatureRoute().location);
 
 ### 6. Testing
 
-After creating the feature, tests should be created following the project's testing patterns:
+After creating the feature, tests MUST always be created following the project's testing patterns:
 
-- **Unit Tests:** Create unit tests for services and BLoCs in `test/feature_<name>/`
-- **Golden Tests:** Create golden tests for pages in `test/feature_<name>/view/`
-
-Refer to the `unit_test` and `golden_test` skills for detailed testing guidelines.
+- **Unit Tests:** Create unit tests for services and BLoCs in `test/feature_<name>/`, by invoking the `unit_test` skill with `feature_<name>`
+- **Golden Tests:** Create golden tests for pages in `test/feature_<name>/view/`, by invoking the `golden_test` skill with `feature_<name>`
 
 ## Directory Structure (MANDATORY)
 
