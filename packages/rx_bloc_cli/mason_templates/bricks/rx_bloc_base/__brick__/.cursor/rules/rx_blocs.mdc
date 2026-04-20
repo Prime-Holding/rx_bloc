@@ -12,12 +12,18 @@ All business logic is implemented as `@RxBloc()` classes generated via **`rx_blo
 ## 1. File Layout
 
 - One bloc per file: `<name>_bloc.dart` next to any sibling in `blocs/` folder.
-- Generated code goes into `<name>_bloc.rxb.g.dart` via `part`. Complex private helpers (multi-field validation, DTO mapping) go into `<name>_bloc_extensions.dart`, also via `part`.
+- Generated code goes into `<name>_bloc.rxb.g.dart` and is pulled in via `part`.
+- Optional companion part files (all siblings in `blocs/`, all declared `part of '<name>_bloc.dart';`):
+  - `<name>_bloc_extensions.dart` — complex private helpers: multi-field validation, DTO mapping, reusable stream-composition extensions. See §10.
+  - `<name>_bloc_models.dart` — bloc-private models, enums, and sealed signal types (e.g. `_GithubSearchFailureScope`, `_GithubSearchFetchRequest`).
+    - **Create this file when the bloc declares two or more such types, OR a single type that carries real state (one or more fields / enum values with payloads).**
+    - **Do NOT create this file** for a single empty marker class or a single enum with no data — inline those at the bottom of `<name>_bloc.dart` to avoid churn.
 - Always declare the `part` directives **before** the contract classes.
 
 ```dart
 part 'login_bloc.rxb.g.dart';
 part 'login_bloc_extensions.dart'; // optional, only if it exists
+part 'login_bloc_models.dart';     // optional, only if it exists
 ```
 
 ## 2. Three-Class Skeleton
@@ -160,10 +166,82 @@ class LoginBloc extends $LoginBloc {
 
 Always finish an async pipeline with `.asResultStream()` → `.setResultStateHandler(this)`; use `.whereSuccess()` / `.whereError()` afterwards. This is what plugs the pipeline into `loadingState` and `errorState` automatically.
 
-## 7. Subscriptions & Disposal
+### 6.1 Inline compositions over throwaway locals
+
+Prefer composing streams **inline** inside `Rx.merge([...])`, `switchMap(...)`, `withLatestFrom(...)`, etc. Do **not** pull a one-shot composition into a `final queryRequests = ...` style local just to reference it once on the next line — it adds a naming step without improving clarity and hides the pipeline shape.
+
+```dart
+// PREFERRED: the shape of the pipeline is visible at a glance.
+return Rx.merge<_FetchRequest>([
+  _$setSearchQueryEvent
+      .map((q) => q.trim())
+      .debounceTime(const Duration(milliseconds: 350))
+      .distinct()
+      .map(_QueryRequest.new),
+  Rx.merge<bool>([
+    _$loadPageEvent,
+    _$retryLastFetchEvent.map((_) => _lastFailureScope != _FailureScope.append),
+  ]).throttleTime(kBackpressureDuration).map(_PageRequest.new),
+]).switchMap(_handleRequest).setResultStateHandler(this); // ...
+```
+
+```dart
+// AVOID: temporary locals used only once downstream.
+final queryRequests = _$setSearchQueryEvent
+    .map((q) => q.trim())
+    .debounceTime(const Duration(milliseconds: 350))
+    .distinct()
+    .map(_QueryRequest.new);
+
+final pageRequests = Rx.merge<bool>([
+  _$loadPageEvent,
+  _$retryLastFetchEvent.map((_) => _lastFailureScope != _FailureScope.append),
+]).throttleTime(kBackpressureDuration).map(_PageRequest.new);
+
+return Rx.merge([queryRequests, pageRequests]).switchMap(_handleRequest)...;
+```
+
+Only extract a local when the **same** composition is consumed by two or more downstream operators (e.g. a `publish()`ed stream used both to drive a request and to refresh a UI signal) — and in that case, consider lifting it to a named method or extension (§10) instead.
+
+## 7. Internal State via Subjects
+
+Whenever a bloc needs to remember a value between events (last query, current failure scope, flag, counter, model, …), back it with a **stream-shaped container** rather than a plain field.
+
+- Use `BehaviorSubject<T>.seeded(initial)` for single latest values, `ReplaySubject<T>` for short histories, `PublishSubject<T>` for one-shot notifications. Default to `BehaviorSubject` for state.
+- Mutate via `.add(...)`, read the current value via `.value` (for `BehaviorSubject`) only when strictly necessary — prefer composing the subject with `rxdart` operators (`withLatestFrom`, `switchMap`, `distinctUnique`, `scan`, …) from inside `_mapTo...State` pipelines.
+- Expose the subject externally only through a `Stream<T>` getter, typically wired with `@RxBlocIgnoreState()`; never leak the `BehaviorSubject` itself through the state contract.
+- **Every subject the bloc owns MUST be `.close()`d in `dispose()` before `super.dispose()`**.
+
+```dart
+final _lastEvaluatedQuerySubject = BehaviorSubject<String>.seeded('');
+final _lastFailureScopeSubject =
+    BehaviorSubject<_FailureScope>.seeded(_FailureScope.refresh);
+
+@override
+@RxBlocIgnoreState()
+Stream<String> get lastEvaluatedQuery =>
+    _lastEvaluatedQuerySubject.distinct();
+
+@override
+Stream<bool> _mapToCanRetryState() => _lastFailureScopeSubject
+    .map((scope) => scope != _FailureScope.none)
+    .distinct()
+    .shareReplay(maxSize: 1);
+
+@override
+void dispose() {
+  _lastEvaluatedQuerySubject.close();
+  _lastFailureScopeSubject.close();
+  super.dispose();
+}
+```
+
+Plain fields (`String _foo = ''`, `bool _isDirty = false`, `_FailureScope _lastFailureScope = ...`) are an anti-pattern for bloc state: downstream pipelines cannot react to them, tests cannot observe their transitions, and disposal semantics get fuzzy. Convert them to `BehaviorSubject`s.
+
+## 8. Subscriptions & Disposal
 
 - Every subscription / `connect()` MUST be piped through `.addTo(_compositeSubscription)` — the base class disposes it.
-- If the bloc owns `BehaviorSubject`s, override `dispose()` to close them, then call `super.dispose()` at the end.
+- Every `BehaviorSubject` / `ReplaySubject` / `PublishSubject` the bloc owns MUST be `.close()`d in an overridden `dispose()`; call `super.dispose()` last.
 
 ```dart
 final _paginatedListSubject =
@@ -178,7 +256,7 @@ void dispose() {
 }
 ```
 
-## 8. Pagination (`rx_bloc_list`)
+## 9. Pagination (`rx_bloc_list`)
 
 When a state is a `Stream<PaginatedList<T>>`:
 
@@ -204,43 +282,49 @@ Stream<PaginatedList<Item>> _mapToItemsState() => _$loadPageEvent
     .bind(_paginated);
 ```
 
-For **debounced-search + pagination in one pipeline**, `Rx.merge` the two triggers into a private sealed signal type, `switchMap` once, and reset the paginated list when a query arrives:
+For **debounced-search + pagination in one pipeline**, `Rx.merge` the two triggers into a private sealed signal type (living in `<name>_bloc_models.dart`, §1), `switchMap` once, and reset the paginated list when a query arrives. Compose the two trigger streams **inline** (§6.1) — do not extract them into throwaway locals:
 
 ```dart
-/// Discriminated union describing what triggered the next fetch.
-class _FetchTrigger {
-  const _FetchTrigger._(this.filter, this.resetRequested);
-  factory _FetchTrigger.filter(String value) => _FetchTrigger._(value, false);
-  factory _FetchTrigger.page(bool reset) => _FetchTrigger._(null, reset);
+// In products_bloc_models.dart
+part of 'products_bloc.dart';
 
-  final String? filter;
-  final bool resetRequested;
-  bool get isFilter => filter != null;
+/// Discriminated union describing what triggered the next fetch.
+sealed class _FetchTrigger {}
+
+final class _FilterTrigger extends _FetchTrigger {
+  _FilterTrigger(this.filter);
+  final String filter;
 }
 
-// ...
+final class _PageTrigger extends _FetchTrigger {
+  _PageTrigger({required this.reset});
+  final bool reset;
+}
+```
 
+```dart
+// In products_bloc.dart
 ProductsBloc(this._service) {
-  final debouncedFilter = _$onFilterChangedEvent
-      .map((v) => v.trim())
-      .debounceTime(const Duration(milliseconds: 300))
-      .distinct()
-      .map(_FetchTrigger.filter);
-
-  final paging = _$loadPageEvent.map(_FetchTrigger.page);
-
-  Rx.merge<_FetchTrigger>([debouncedFilter, paging])
+  Rx.merge<_FetchTrigger>([
+    _$onFilterChangedEvent
+        .map((v) => v.trim())
+        .debounceTime(const Duration(milliseconds: 300))
+        .distinct()
+        .map(_FilterTrigger.new),
+    _$loadPageEvent.map((reset) => _PageTrigger(reset: reset)),
+  ])
       .switchMap((trigger) {
         // A new filter (or explicit refresh) always restarts pagination.
-        if (trigger.isFilter || trigger.resetRequested) {
+        if (trigger is _FilterTrigger || (trigger as _PageTrigger).reset) {
           _paginated.value.reset();
         }
-        final filter = trigger.isFilter ? trigger.filter! : _currentFilter;
-        _currentFilter = filter;
+        if (trigger is _FilterTrigger) {
+          _currentFilterSubject.add(trigger.filter);
+        }
 
         return _service
             .fetchProducts(
-              filter: filter,
+              filter: _currentFilterSubject.value,
               page: _paginated.value.pageNumber + 1,
               pageSize: _pageSize,
             )
@@ -253,13 +337,67 @@ ProductsBloc(this._service) {
 }
 ```
 
-## 9. Things to Avoid
+## 10. Extensions & Complex Logic Decomposition
+
+When a `_mapTo...State` body grows past a handful of operators, or when the same composition (request dispatch, scope bookkeeping, result normalization) appears in more than one place, lift it into a **self-contained extension** declared in `<name>_bloc_extensions.dart` (`part of '<name>_bloc.dart';`). This keeps `_mapTo...State` readable as a pipeline and makes each helper independently testable.
+
+Guidelines:
+
+- Prefer **extensions on `Stream<T>`** (or on the generated event stream types) so the helper slots into the pipeline with a single `.methodName(...)` call — preserves the linear, top-to-bottom reading order of rx pipelines.
+- Extensions on a bloc type (`extension _FooBlocX on FooBloc { ... }`) are fine for non-stream helpers (scope updates, subject mutations, validation).
+- Keep each extension **self-contained**: it should reference only its receiver, its parameters, and other members of the same part file — avoid reaching into unrelated bloc state.
+- **Every extension and every public method on it MUST carry a doc comment** describing:
+  1. **Purpose** — what the helper does and why it exists.
+  2. **Parameters** — each parameter, its role, and any constraints.
+  3. **Usage** — a one-line example of how it plugs into a pipeline.
+
+```dart
+// In github_search_bloc_extensions.dart
+part of 'github_search_bloc.dart';
+
+/// Stream helpers for the GitHub-search fetch pipeline.
+///
+/// Usage:
+/// ```dart
+/// Rx.merge([...]).switchMap(handler).trackFailureScope(this).setResultStateHandler(this);
+/// ```
+extension _GithubSearchFetchPipelineX
+    on Stream<Result<PaginatedList<GithubRepositoryModel>>> {
+  /// Updates the bloc's `_lastFailureScopeSubject` based on whether each
+  /// emitted result represents a refresh or an append.
+  ///
+  /// - [bloc] — the owning bloc; its `_lastFailureScopeSubject` is mutated
+  ///   as a side-effect of each emission.
+  /// - [isRefresh] — callback run per emission to classify it; return `true`
+  ///   for full-list refreshes, `false` for paginated appends.
+  Stream<Result<PaginatedList<GithubRepositoryModel>>> trackFailureScope(
+    GithubSearchBloc bloc, {
+    required bool Function(Result<PaginatedList<GithubRepositoryModel>> result)
+        isRefresh,
+  }) =>
+      doOnData((result) {
+        bloc._lastFailureScopeSubject.add(
+          isRefresh(result)
+              ? _GithubSearchFailureScope.refresh
+              : _GithubSearchFailureScope.append,
+        );
+      });
+}
+```
+
+A good rule of thumb: if a `_mapTo...State` exceeds ~30 operator lines, or any lambda inside it spans more than ~15 lines, split the inner logic into an extension.
+
+## 11. Things to Avoid
 
 - Don't hand-roll `StreamController` when a generated event or `BehaviorSubject` fits.
 - Don't call repositories / data sources / Dio from a bloc — always go through a service.
 - Don't put UI concerns (`BuildContext`, widgets, `SnackBar`s) inside a bloc. Emit a state; let the page react via `RxBlocListener` / `RxBlocBuilder`.
 - Don't mix `async`/`await` with reactive pipelines inside `_mapTo...State`; stick to `rxdart` operators so error/loading handlers wire up correctly.
 - Don't emit from another bloc directly — route it through a shared coordinator bloc.
+- Don't store bloc state in plain mutable fields (`String`, `bool`, `int`, model instances, enums). Back state with `BehaviorSubject<T>` and access/mutate it via rxdart operators; close the subject in `dispose()` (§7).
+- Don't extract throwaway stream-composition locals (`final queryRequests = ...`) that are used exactly once downstream — inline them into the consumer (§6.1).
+- Don't scatter bloc-private models / enums / sealed signals across the top of `<name>_bloc.dart` when there are two or more of them; move them to `<name>_bloc_models.dart` (§1).
+- Don't let a `_mapTo...State` balloon with deeply nested lambdas — extract the inner logic into documented extensions in `<name>_bloc_extensions.dart` (§10).
 
 ## Archetype Cheatsheet
 
