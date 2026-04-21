@@ -40,7 +40,7 @@ Before generating any code, the agent MUST:
 - [ ] Build an execution plan, save it inside `lib/feature_{name}/` as `PLAN.md` and ask the user to review it before proceeding with execution.
 
 ### 2. Generate Data Layer
-- **Models:** Create necessary request/response models in `lib/base/models/` using `json_serializable` and `json_annotation`. Feature-specific models can optionally go in `lib/feature_{name}/models/`. They must follow the `*_model.dart` naming convention. Always add code docs to explain each field.
+- **Models:** Create necessary request/response models in `lib/base/models/` using `json_serializable` and `json_annotation`. Feature-specific models can optionally go in `lib/feature_{name}/models/`. Always add code docs to explain each field.
 - **Data Sources:** Add new endpoints in `lib/base/data_sources/remote/`. You **MUST use Retrofit** to define these HTTP clients. Always add code docs to explain each endpoint.
     - Create the abstract class using `@RestApi()` and include the `.g.dart` file so `build_runner` can generate the implementation.
   ```dart

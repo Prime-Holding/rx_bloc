@@ -30,7 +30,7 @@ These files govern the root behavior, themes, routing, and shared dependencies o
 - `lib/base/common_blocs`: Global BLoCs shared across the entire app (e.g., `CoordinatorBloc`{{#push_notifications}}, `PushNotificationsBloc`{{/push_notifications}}{{#enable_in_app_notifications}}, `EventBloc`{{/enable_in_app_notifications}}).
 - `lib/base/common_services`: Global Services accessible within the entire app. Register at `app_dependencies.dart` and access via `context.read<ServiceClassName>()`.
 - `lib/base/repositories`: Repository classes used to fetch and persist models.
-- `lib/base/models`: Business models organized by domain, including request/response DTOs using `json_serializable`.
+- `lib/base/models`: Business models organized by domain, including request/response DTOs using `json_serializable`. They MUST follow the `*_model.dart` naming convention.
   - `lib/base/models/errors`: Error model definitions.
   - `lib/base/models/request_models`: Request DTO models.
 - `lib/base/di`: Centralized DI providers for global instances.
@@ -131,7 +131,7 @@ Every new visual or functional vertical in the application MUST be isolated with
 
 - `feature_{name}/views`: Contains the UI screen implementation (`{name}_page.dart`). **Every page (screen) should be implemented as a Stateless Widget unless it requires a StatefulWidget for specific lifecycle needs.**
 - `feature_{name}/ui_components`: Local, non-reusable UI widgets tailored uniquely to this feature.
-- `feature_{name}/models` *(optional)*: States or DTOs bound singularly to this feature's logic.
+- `feature_{name}/models` *(optional)*: States or DTOs bound singularly to this feature's logic. They MUST follow the `*_model.dart` naming convention.
 - `feature_{name}/blocs`: The `rx_bloc` files reacting to UI inputs to compute states (`{name}_bloc.dart` + generated files). **Complex BLoC implementation details can be offloaded to a separate `{name}_bloc_extensions.dart` file for improved readability.**
 - `feature_{name}/services`: Middle-layer orchestrators parsing repository data for the BLoC (`{name}_service.dart`). Feature-specific services should be registered at `lib/feature_{name}/di` and will be accessible only within the feature.
 - `feature_{name}/di`: Dependency injection initializing the BLoC and required dependencies (`{name}_page_with_dependencies.dart`).
