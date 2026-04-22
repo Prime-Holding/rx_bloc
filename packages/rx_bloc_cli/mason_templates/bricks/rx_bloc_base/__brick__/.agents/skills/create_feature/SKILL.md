@@ -14,12 +14,31 @@ For every new or changed hand-written model (under `lib/base/models/**` or `lib/
 
 - **MUST** add `///` for every public class, enum, mixin, extension, typedef, top-level declaration, field, constructor, and enum value when the name is not self-explanatory.
 
+## Non-negotiable: BLoC error / errors state
+
+In **every** `RxBloc`, the aggregated error state exposed in the state contract **MUST** be typed as:
+
+- `Stream<ErrorModel> get errors` (or `get error` if the feature uses a singular name — the type is always `ErrorModel`, never `String` or `Object`).
+
+Wire it with `errorState.mapToErrorModel()` (typically in `_mapToErrorsState()` or an `@override` of the generated errors getter), and import `../../base/models/errors/error_model.dart` plus `../../base/extensions/error_model_extensions.dart` as in the BLoC examples in this document.
+
+**Do not** expose `Stream<String>`, `ConnectableStream<String>`, or `errorState.map((e) => e.toString())` for the primary BLoC error stream — the UI translates via `ErrorModel` (e.g. `error.translate(context)`).
+
+## Non-negotiable: one BLoC per feature (default)
+
+Unless the user **explicitly** asks to split the feature across multiple BLoCs (e.g. separate search coordinator + list BLoC, or list + details with separate blocs by name), you **MUST** create **exactly one** feature BLoC (typically `blocs/{feature}_bloc.dart`) and keep **all** feature business logic, stream composition, and UI-driven events in that single class.
+
+- **Do not** add extra feature-scoped BLoCs to separate “search vs list”, “form vs fetch”, or similar concerns by default — model those as separate **events and state streams** inside the one BLoC.
+- **Exception:** The app-wide `CoordinatorBloc` (and other global blocs) are not “feature BLoCs”; injecting them is fine and does not count as splitting a feature into multiple BLoCs.
+- If the user later asks to refactor into multiple BLoCs, treat that as a new requirement — do not preemptively multi-BLoC a feature during initial scaffolding.
+
 ## Inputs Required
 
 To successfully execute this skill, the following inputs MUST be provided:
 1. **Feature name:** The name for the new feature (e.g., `transfer_history`, `card_details`)
 2. **Figma Link (optional, using MCP):** The design file containing the UI layout, colors, typography, and intended interactions for the new feature. If any Figma links are provided, they MUST be read using Figma MCP.
 3. **Swagger (Open API) Specification (optional):** The API documentation defining the needed API endpoints, request models, and response models.
+4. **Multiple BLoCs (optional, explicit only):** If the user wants more than one feature-scoped BLoC, they must say so — otherwise the agent follows **Non-negotiable: one BLoC per feature (default)**.
 
 ## Core Principle
 
@@ -42,8 +61,9 @@ Before generating any code, the agent MUST:
 - [ ] **Scan `lib/base/common_ui_components/`** for existing reusable widgets (error states, loaders, buttons, list items, etc.) that can be used as-is before creating new ones
 - [ ] **Review `lib/base/theme/design_system/`** to understand available colors, typography styles, spacing tokens, and icons — all UI values MUST come from here
 - [ ] Enumerate all pages/screens needed for the feature
+- [ ] Unless the user explicitly requested multiple feature BLoCs, plan **one** BLoC for the feature — see **Non-negotiable: one BLoC per feature (default)**
 - [ ] Identify which BLoC pattern to use (list, details, or manage)
-- [ ] If the feature includes a **paginated or infinite-scroll list** (`rx_bloc_list`), the list BLoC **MUST** be implemented with the **exact** wiring in **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** later in this document — no alternate event shapes, merge-based page triggers, or shortened pipelines
+- [ ] If the feature includes a **paginated or infinite-scroll list** (`rx_bloc_list`), that **single** feature BLoC **MUST** implement the list with the **exact** wiring in **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** later in this document — no alternate event shapes, merge-based page triggers, or shortened pipelines
 - [ ] Build an execution plan, save it inside `lib/feature_{name}/` as `PLAN.md` and ask the user to review it before proceeding with execution.
 
 ### 2. Generate Data Layer
@@ -189,6 +209,10 @@ Create a new directory `lib/feature_{new_feature_name}` and generate its archite
 **A. BLoC (Business Logic Component)**
 Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events and expose streams as state. Ensure you declare the `.rxb.g.dart` generated files in this file as required by `build_runner`. Always add code docs to explain each event and state.
 
+By default there is **one** such BLoC per feature (see **Non-negotiable: one BLoC per feature (default)**); do not add companion BLoCs to split logic unless the user asked for a multi-BLoC design.
+
+The **errors** state in the state contract is **always** `Stream<ErrorModel>` (see **Non-negotiable: BLoC error / errors state** above).
+
 *Note: The following is an example of a simple BLoC that manages state with loading and error handling:*
 
   ```dart
@@ -277,7 +301,7 @@ Plain fields (`String _foo = ''`, `bool _isDirty = false`, `MyModel? _lastModel`
 
 Prefer composing streams **inline** inside `Rx.merge([...])`, `switchMap(...)`, `withLatestFrom(...)`, etc. Do **not** pull a one-shot composition into a `final queryRequests = ...` style local just to reference it once on the next line — it adds a naming step without improving clarity and hides the pipeline shape.
 
-> **Pagination / `rx_bloc_list` carve-out (non-negotiable):** The examples below illustrate **generic** multi-trigger pipelines (e.g. search + auxiliary reload). They **do not** apply to infinite-scroll list BLoCs. For paginated lists, **only** the subsection **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** is authoritative — you **must not** merge extra streams into `_$loadPageEvent`, add a separate `retry` / `loadNext` / `refresh` event for paging, or wrap the mandatory chain with `throttleTime`, `debounceTime`, `exhaustMap`, or `Rx.merge` before `switchMap`. Search-query debouncing belongs in a **different** BLoC or pipeline that ends by calling `loadPage(reset: true)` on the list BLoC, not inside the list BLoC’s `_$loadPageEvent` chain.
+> **Pagination / `rx_bloc_list` carve-out (non-negotiable):** The examples below illustrate **generic** multi-trigger pipelines (e.g. search + auxiliary reload). They **do not** apply to infinite-scroll list BLoCs. For paginated lists, **only** the subsection **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** is authoritative — you **must not** merge extra streams into `_$loadPageEvent`, add a separate `retry` / `loadNext` / `refresh` event for paging, or wrap the mandatory chain with `throttleTime`, `debounceTime`, `exhaustMap`, or `Rx.merge` before `switchMap`. Search-query debouncing belongs in a **separate event pipeline in the same (single) feature BLoC** (default) that calls `loadPage(reset: true)` — not on `_$loadPageEvent` itself. **Only** if the user explicitly requested multiple feature BLoCs may you use a second BLoC for search that forwards to the list BLoC.
 
 ```dart
 // PREFERRED: the shape of the pipeline is visible at a glance.
@@ -321,7 +345,7 @@ When the feature requires a paginated list or infinite scroll, the BLoC **MUST**
 
 - Any event other than `void loadPage({bool reset = false})` that triggers a page fetch (`refresh`, `loadNext`, `retryLastFetch`, etc.)
 - Merging `_$loadPageEvent` with other streams, or replacing `startWith(true)` with a different seeding strategy, before the mandated `switchMap`
-- Inserting `throttleTime`, `debounceTime`, `exhaustMap`, or `Rx.merge` on the `_$loadPageEvent` pipeline (move backpressure/debounce to a coordinator BLoC or a non-list BLoC that calls `loadPage`)
+- Inserting `throttleTime`, `debounceTime`, `exhaustMap`, or `Rx.merge` on the `_$loadPageEvent` pipeline (move backpressure/debounce to another event pipeline in the **same** feature BLoC that calls `loadPage`, or — only if the user asked for multiple BLoCs — a separate coordinator BLoC)
 - Skipping `CoordinatorBlocType` injection, `setResultStateHandler`, `mergeWithPaginatedList`, `bind`, or `addTo(_compositeSubscription)` in the constructor chain
 - Using `Stream<List<T>>` or `Result<PaginatedList<T>>` as the canonical list state instead of `Stream<PaginatedList<T>> get paginatedList`
 
@@ -331,7 +355,7 @@ Required elements (all are mandatory — do not drop or rename any):
 - [ ] Import `CoordinatorBloc` from `../../base/common_blocs/coordinator_bloc.dart` and inject `CoordinatorBlocType` (even if unused at first — paginated lists almost always need to react to cross-BLoC updates)
 - [ ] Declare a single event: `void loadPage({bool reset = false})` — do NOT add separate `refresh`/`loadNext` events; the `reset` flag covers both
 - [ ] Expose `Stream<PaginatedList<T>> get paginatedList` as the canonical list state
-- [ ] Expose `Stream<bool> get isLoading` and `Stream<String> get errors` — both MUST be annotated with `@RxBlocIgnoreState()` and wired to `loadingState` / `errorState` (the aggregated streams provided by rx_bloc)
+- [ ] Expose `Stream<bool> get isLoading` and `Stream<ErrorModel> get errors` — both MUST be annotated with `@RxBlocIgnoreState()` and wired to `loadingState` and `errorState.mapToErrorModel()` (the aggregated loading stream from rx_bloc; errors as structured `ErrorModel`, never `String`)
 - [ ] Hold the list in a `BehaviorSubject<PaginatedList<T>>.seeded(...)` with an initial empty `PaginatedList` that specifies `pageSize` and `totalCount: 0`
 - [ ] Wire the event chain in the constructor exactly as: `_$loadPageEvent.startWith(true).switchMap(...).setResultStateHandler(this).mergeWithPaginatedList(_paginatedList).bind(_paginatedList).addTo(_compositeSubscription)`
 - [ ] On `reset == true`, call `_paginatedList.value.reset()` BEFORE issuing the fetch
@@ -347,6 +371,8 @@ Use this as the starting scaffold (replace `MyDomainModel` and class names; keep
   import 'package:rxdart/rxdart.dart';
 
   import '../../base/common_blocs/coordinator_bloc.dart';
+  import '../../base/extensions/error_model_extensions.dart';
+  import '../../base/models/errors/error_model.dart';
   import '../services/my_feature_service.dart';
 
   part 'my_feature_bloc.rxb.g.dart';
@@ -371,7 +397,7 @@ Use this as the starting scaffold (replace `MyDomainModel` and class names; keep
 
     /// The aggregated error state for the list.
     @RxBlocIgnoreState()
-    Stream<String> get errors;
+    Stream<ErrorModel> get errors;
   }
 
   @RxBloc()
@@ -421,7 +447,7 @@ Use this as the starting scaffold (replace `MyDomainModel` and class names; keep
     Stream<bool> get isLoading => loadingState;
 
     @override
-    Stream<String> get errors => errorState.map((error) => error.toString());
+    Stream<ErrorModel> get errors => errorState.mapToErrorModel();
 
     @override
     void dispose() {
@@ -694,14 +720,14 @@ All data source related errors (such as `DioException`, `GeneralSecurityExceptio
 The `Service` layer is responsible for throwing client-side validation exceptions (e.g., `ErrorRequiredFieldModel`) instead of the data layer.
 
 #### BLoC Error Handling
-Each BLoC should expose its errors via a dedicated state stream for UI visualization:
+Each BLoC should expose its errors via a dedicated state stream for UI visualization. The type **must** be `Stream<ErrorModel>` (not `String`):
 
 ```dart
 /// The error state
-ConnectableStream<ErrorModel> get errors;
+Stream<ErrorModel> get errors;
 ```
 
-The `ErrorModel` can be mapped to appropriate UI representation using `error_model_extensions.dart`.
+The `ErrorModel` can be mapped to appropriate UI representation using `error_model_extensions.dart` and `mapToErrorModel()` on `errorState`.
 
 #### User Friendly Messages
 To provide user-friendly (translated) messages, the `ErrorModel` should be translated in the UI Layer by calling:
@@ -866,6 +892,7 @@ lib/feature_<name>/
 ## Forbidden Actions
 
 - **NEVER** create a BLoC without the corresponding `.rxb.g.dart` part directive
+- **NEVER** split a feature into two or more feature-scoped BLoCs for “clean separation” when the user did not ask for multiple BLoCs — use one BLoC and multiple events/streams (see **Non-negotiable: one BLoC per feature (default)**)
 - **NEVER** instantiate services or repositories directly in BLoCs — use dependency injection
 - **NEVER** put business logic in the UI layer (pages/widgets)
 - **NEVER** call APIs directly from BLoCs — use services and repositories
@@ -875,6 +902,7 @@ lib/feature_<name>/
 - **NEVER** use `setState` in pages — use BLoC states instead
 - **NEVER** create feature-specific models in `lib/base/models/` — put them in `lib/feature_<name>/models/`
 - **NEVER** use hardcoded colors, font sizes, font weights, spacing/padding values, or icons — always use `context.designSystem.*`; if the value doesn't exist yet, add it to `lib/base/theme/design_system/`
+- **NEVER** declare BLoC aggregated errors as `Stream<String>`, `ConnectableStream<String>`, or map `errorState` with `toString()` for the main errors state — use `Stream<ErrorModel>` and `errorState.mapToErrorModel()` (see **Non-negotiable: BLoC error / errors state**)
 - **NEVER** write a custom error, loading, or empty-state widget without first checking `lib/base/common_ui_components/` for an existing one
 - **NEVER** use raw string literals in the UI — every user-visible string must be an l10n key in the `.arb` files and accessed via `context.l10n.<key>`
 - **NEVER** back internal BLoC state with plain fields (`String _foo = ''`, `bool _isDirty = false`, …) — use `BehaviorSubject<T>.seeded(...)` (or `ReplaySubject`/`PublishSubject` where appropriate) and `.close()` every owned subject in `dispose()` before `super.dispose()`
@@ -889,10 +917,14 @@ lib/feature_<name>/
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/errors/error_model.dart';
 import '../services/<name>_service.dart';
 
 part '<name>_bloc.rxb.g.dart';
 ```
+
+(Include `ErrorModel` / `error_model_extensions` whenever the BLoC exposes `Stream<ErrorModel> get errors` — i.e. always for aggregated `errorState` wiring per **Non-negotiable: BLoC error / errors state**.)
 
 ### In Service files:
 
@@ -929,5 +961,7 @@ If the agent cannot clearly determine:
 - What navigation flow is required
 
 Then the agent MUST ask for clarification before proceeding. **Never guess.**
+
+The same applies when it is unclear whether the user wants **one** feature BLoC (default) or an explicit **multi-BLoC** setup — ask before creating more than one feature-scoped `RxBloc`.
 
 By following these architecture guidelines strictly, you will produce seamless, clean, scalable features fully integrated into the project.
