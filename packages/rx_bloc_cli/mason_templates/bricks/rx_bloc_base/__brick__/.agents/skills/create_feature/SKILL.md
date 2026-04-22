@@ -37,6 +37,7 @@ Before generating any code, the agent MUST:
 - [ ] **Review `lib/base/theme/design_system/`** to understand available colors, typography styles, spacing tokens, and icons — all UI values MUST come from here
 - [ ] Enumerate all pages/screens needed for the feature
 - [ ] Identify which BLoC pattern to use (list, details, or manage)
+- [ ] If the feature includes a **paginated or infinite-scroll list** (`rx_bloc_list`), the list BLoC **MUST** be implemented with the **exact** wiring in **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** later in this document — no alternate event shapes, merge-based page triggers, or shortened pipelines
 - [ ] Build an execution plan, save it inside `lib/feature_{name}/` as `PLAN.md` and ask the user to review it before proceeding with execution.
 
 ### 2. Generate Data Layer
@@ -239,8 +240,11 @@ Plain fields (`String _foo = ''`, `bool _isDirty = false`, `MyModel? _lastModel`
 
 Prefer composing streams **inline** inside `Rx.merge([...])`, `switchMap(...)`, `withLatestFrom(...)`, etc. Do **not** pull a one-shot composition into a `final queryRequests = ...` style local just to reference it once on the next line — it adds a naming step without improving clarity and hides the pipeline shape.
 
+> **Pagination / `rx_bloc_list` carve-out (non-negotiable):** The examples below illustrate **generic** multi-trigger pipelines (e.g. search + auxiliary reload). They **do not** apply to infinite-scroll list BLoCs. For paginated lists, **only** the subsection **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** is authoritative — you **must not** merge extra streams into `_$loadPageEvent`, add a separate `retry` / `loadNext` / `refresh` event for paging, or wrap the mandatory chain with `throttleTime`, `debounceTime`, `exhaustMap`, or `Rx.merge` before `switchMap`. Search-query debouncing belongs in a **different** BLoC or pipeline that ends by calling `loadPage(reset: true)` on the list BLoC, not inside the list BLoC’s `_$loadPageEvent` chain.
+
 ```dart
 // PREFERRED: the shape of the pipeline is visible at a glance.
+// (Illustrative only — not for rx_bloc_list pagination; see mandatory wiring below.)
 return Rx.merge<_FetchRequest>([
   _$setSearchQueryEvent
       .map((q) => q.trim())
@@ -248,9 +252,9 @@ return Rx.merge<_FetchRequest>([
       .distinct()
       .map(_QueryRequest.new),
   Rx.merge<bool>([
-    _$loadPageEvent,
+    _$reloadEvent,
     _$retryLastFetchEvent.map((_) => _lastFailureScope != _FailureScope.append),
-  ]).throttleTime(kBackpressureDuration).map(_PageRequest.new),
+  ]).throttleTime(kBackpressureDuration).map(_AuxiliaryFetchRequest.new),
 ]).switchMap(_handleRequest).setResultStateHandler(this); // ...
 ```
 
@@ -262,19 +266,27 @@ final queryRequests = _$setSearchQueryEvent
     .distinct()
     .map(_QueryRequest.new);
 
-final pageRequests = Rx.merge<bool>([
-  _$loadPageEvent,
+final auxiliaryRequests = Rx.merge<bool>([
+  _$reloadEvent,
   _$retryLastFetchEvent.map((_) => _lastFailureScope != _FailureScope.append),
-]).throttleTime(kBackpressureDuration).map(_PageRequest.new);
+]).throttleTime(kBackpressureDuration).map(_AuxiliaryFetchRequest.new);
 
-return Rx.merge([queryRequests, pageRequests]).switchMap(_handleRequest)...;
+return Rx.merge([queryRequests, auxiliaryRequests]).switchMap(_handleRequest)...;
 ```
 
 Only extract a local when the **same** composition is consumed by two or more downstream operators (e.g. a `publish()`ed stream used both to drive a request and to refresh a UI signal) — and in that case, consider lifting it to a named method or extension instead.
 
 **Pagination / Infinite Scroll BLoC — MANDATORY wiring:**
 
-When the feature requires a paginated list or infinite scroll, the BLoC **MUST** follow the exact pattern below. This is not an illustrative example — it is the required wiring. The agent MUST NOT invent alternative event names, alternative operators, alternative state shapes, or omit any of the listed elements. Deviations will break `rx_bloc_list` integration and `CoordinatorBloc` merging in downstream features.
+When the feature requires a paginated list or infinite scroll, the BLoC **MUST** follow the exact pattern below. This is not an illustrative example — it is the required wiring. This subsection **overrides** the generic "Inline compositions" guidance above and any other BLoC examples in this document for **page loading** behavior. The agent MUST NOT invent alternative event names, alternative operators, alternative state shapes, or omit any of the listed elements. Deviations will break `rx_bloc_list` integration and `CoordinatorBloc` merging in downstream features.
+
+**Explicitly forbidden (pagination BLoCs):**
+
+- Any event other than `void loadPage({bool reset = false})` that triggers a page fetch (`refresh`, `loadNext`, `retryLastFetch`, etc.)
+- Merging `_$loadPageEvent` with other streams, or replacing `startWith(true)` with a different seeding strategy, before the mandated `switchMap`
+- Inserting `throttleTime`, `debounceTime`, `exhaustMap`, or `Rx.merge` on the `_$loadPageEvent` pipeline (move backpressure/debounce to a coordinator BLoC or a non-list BLoC that calls `loadPage`)
+- Skipping `CoordinatorBlocType` injection, `setResultStateHandler`, `mergeWithPaginatedList`, `bind`, or `addTo(_compositeSubscription)` in the constructor chain
+- Using `Stream<List<T>>` or `Result<PaginatedList<T>>` as the canonical list state instead of `Stream<PaginatedList<T>> get paginatedList`
 
 Required elements (all are mandatory — do not drop or rename any):
 
@@ -382,6 +394,10 @@ Use this as the starting scaffold (replace `MyDomainModel` and class names; keep
   }
   ```
 
+**Agent completion gate (paginated list features):**
+
+Before finishing implementation or telling the user the feature is done, the agent **MUST** walk the **Required elements** checklist above line-by-line against the generated `*_bloc.dart` and fix any mismatch. A single deviation (wrong event name, missing import, extra operator on `_$loadPageEvent`, wrong `dispose`, etc.) is a **blocking** defect.
+
 **Pairing requirements for paginated BLoCs:**
 
 - The service layer MUST expose a `Future<PaginatedList<T>> fetchPaginatedData({int page, int pageSize})` method — see the "infinite scroll capabilities service example" in section 3.
@@ -392,127 +408,127 @@ Use this as the starting scaffold (replace `MyDomainModel` and class names; keep
 
   ```dart
   import 'package:go_router/go_router.dart';
-  import 'package:rx_bloc/rx_bloc.dart';
-  import 'package:rxdart/rxdart.dart';
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
-  import '../../base/common_blocs/coordinator_bloc.dart';
-  import '../../base/common_services/validators/credentials_validator_service.dart';
-  import '../../base/extensions/error_model_extensions.dart';
-  import '../../base/models/errors/error_model.dart';
-  import '../../lib_router/router.dart';
-  import '../services/my_feature_service.dart';
+import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../base/common_services/validators/credentials_validator_service.dart';
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/errors/error_model.dart';
+import '../../lib_router/router.dart';
+import '../services/my_feature_service.dart';
 
-  part 'my_feature_bloc.rxb.g.dart';
+part 'my_feature_bloc.rxb.g.dart';
 
-  /// A contract class containing all events of the MyFeatureBloC.
-  abstract class MyFeatureBlocEvents {
-    @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
-    void setEmail(String email);
+/// A contract class containing all events of the MyFeatureBloC.
+abstract class MyFeatureBlocEvents {
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
+  void setEmail(String email);
 
-    @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
-    void setPassword(String password);
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
+  void setPassword(String password);
 
-    void submit();
-  }
+  void submit();
+}
 
-  /// A contract class containing all states of the MyFeatureBloC.
-  abstract class MyFeatureBlocStates {
-    /// The currently entered email state
-    Stream<String> get email;
+/// A contract class containing all states of the MyFeatureBloC.
+abstract class MyFeatureBlocStates {
+  /// The currently entered email state
+  Stream<String> get email;
 
-    /// The currently entered password state
-    Stream<String> get password;
+  /// The currently entered password state
+  Stream<String> get password;
 
-    /// State indicating whether the submission was successful
-    ConnectableStream<bool> get submitted;
+  /// State indicating whether the submission was successful
+  ConnectableStream<bool> get submitted;
 
-    /// The state indicating whether we show errors to the user
-    Stream<bool> get showErrors;
+  /// The state indicating whether we show errors to the user
+  Stream<bool> get showErrors;
 
-    /// The loading state
-    Stream<bool> get isLoading;
+  /// The loading state
+  Stream<bool> get isLoading;
 
-    /// The error state
-    Stream<ErrorModel> get errors;
-  }
+  /// The error state
+  Stream<ErrorModel> get errors;
+}
 
-  @RxBloc()
-  class MyFeatureBloc extends $MyFeatureBloc {
-    MyFeatureBloc(
+@RxBloc()
+class MyFeatureBloc extends $MyFeatureBloc {
+  MyFeatureBloc(
       this._coordinatorBloc,
       this._myFeatureService,
       this._validatorService,
       this._router,
-    ) {
-      submitted.connect().addTo(_compositeSubscription);
-    }
+      ) {
+    submitted.connect().addTo(_compositeSubscription);
+  }
 
-    final CoordinatorBlocType _coordinatorBloc;
-    final MyFeatureService _myFeatureService;
-    final CredentialsValidatorService _validatorService;
-    final AppRouter _router;
+  final CoordinatorBlocType _coordinatorBloc;
+  final MyFeatureService _myFeatureService;
+  final CredentialsValidatorService _validatorService;
+  final AppRouter _router;
 
-    @override
-    Stream<String> _mapToEmailState() => _$setEmailEvent
-        .map(_validatorService.validateEmail)
-        .startWith('')
-        .shareReplay(maxSize: 1);
+  @override
+  Stream<String> _mapToEmailState() => _$setEmailEvent
+      .map(_validatorService.validateEmail)
+      .startWith('')
+      .shareReplay(maxSize: 1);
 
-    @override
-    Stream<String> _mapToPasswordState() => _$setPasswordEvent
-        .map(_validatorService.validatePassword)
-        .startWith('')
-        .shareReplay(maxSize: 1);
+  @override
+  Stream<String> _mapToPasswordState() => _$setPasswordEvent
+      .map(_validatorService.validatePassword)
+      .startWith('')
+      .shareReplay(maxSize: 1);
 
-    @override
-    ConnectableStream<bool> _mapToSubmittedState() => _$submitEvent
-        .throttleTime(const Duration(seconds: 1))
-        .withLatestFrom2<Result<String>, Result<String>, MyCredentials?>(
-          email.asResultStream(),
-          password.asResultStream(),
-          (_, emailResult, passwordResult) =>
-              _validateAndReturnCredentials(emailResult, passwordResult),
-        )
-        .where((args) => args != null)
-        .exhaustMap(
-          (args) => _myFeatureService
-              .processData(email: args!.email, password: args.password)
-              .then((value) => true)
-              .asResultStream(),
-        )
-        .setResultStateHandler(this)
-        .whereSuccess()
-        .doOnData((_) => _router.go(const DashboardRoute().location))
-        .startWith(false)
-        .publish();
+  @override
+  ConnectableStream<bool> _mapToSubmittedState() => _$submitEvent
+      .throttleTime(const Duration(seconds: 1))
+      .withLatestFrom2<Result<String>, Result<String>, MyCredentials?>(
+    email.asResultStream(),
+    password.asResultStream(),
+        (_, emailResult, passwordResult) =>
+        _validateAndReturnCredentials(emailResult, passwordResult),
+  )
+      .where((args) => args != null)
+      .exhaustMap(
+        (args) => _myFeatureService
+        .processData(email: args!.email, password: args.password)
+        .then((value) => true)
+        .asResultStream(),
+  )
+      .setResultStateHandler(this)
+      .whereSuccess()
+      .doOnData((_) => _router.go(const DashboardRoute().location))
+      .startWith(false)
+      .publish();
 
-    @override
-    Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
+  @override
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
-    @override
-    Stream<bool> _mapToIsLoadingState() => loadingState;
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 
-    @override
-    Stream<bool> _mapToShowErrorsState() =>
-        _$submitEvent.mapTo(true).startWith(false);
+  @override
+  Stream<bool> _mapToShowErrorsState() =>
+      _$submitEvent.mapTo(true).startWith(false);
 
-    MyCredentials? _validateAndReturnCredentials(
+  MyCredentials? _validateAndReturnCredentials(
       Result<String> emailResult,
       Result<String> passwordResult,
-    ) {
-      if (emailResult is ResultError || passwordResult is ResultError) {
-        return null;
-      }
-      if (emailResult is ResultLoading || passwordResult is ResultLoading) {
-        return null;
-      }
-
-      return MyCredentials(
-        email: (emailResult as ResultSuccess<String>).data,
-        password: (passwordResult as ResultSuccess<String>).data,
-      );
+      ) {
+    if (emailResult is ResultError || passwordResult is ResultError) {
+      return null;
     }
+    if (emailResult is ResultLoading || passwordResult is ResultLoading) {
+      return null;
+    }
+
+    return MyCredentials(
+      email: (emailResult as ResultSuccess<String>).data,
+      password: (passwordResult as ResultSuccess<String>).data,
+    );
   }
+}
   ```
 
 **B. Cross-BLoC Orchestration (CoordinatorBloc)**
@@ -575,8 +591,8 @@ All visual values MUST come from `context.designSystem`. Never use raw Material 
 ```dart
 // ✅ Correct
 Text(
-  context.l10n.hello,
-  style: context.designSystem.typography.textTheme.bodyLarge,
+context.l10n.hello,
+style: context.designSystem.typography.textTheme.bodyLarge,
 )
 ColoredBox(color: context.designSystem.colors.colorScheme.primary)
 SizedBox(height: context.designSystem.spacing.m)
@@ -664,8 +680,8 @@ Each form validator should throw a business error that is translated in the UI L
 
 ```dart
 RxTextFormFieldBuilder<MyBlocType>(
-  state: (bloc) => bloc.states.fieldName.translateErrors(context),
-  // ...
+state: (bloc) => bloc.states.fieldName.translateErrors(context),
+// ...
 )
 ```
 
