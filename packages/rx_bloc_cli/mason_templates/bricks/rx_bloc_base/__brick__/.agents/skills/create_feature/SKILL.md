@@ -155,55 +155,142 @@ Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events
 
   ```dart
   import 'package:rx_bloc/rx_bloc.dart';
-  import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/rxdart.dart';
 
-  import '../../base/extensions/error_model_extensions.dart';
-  import '../../base/models/errors/error_model.dart';
-  import '../services/my_feature_service.dart';
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/errors/error_model.dart';
+import '../services/my_feature_service.dart';
 
-  part 'my_feature_bloc.rxb.g.dart';
+part 'my_feature_bloc.rxb.g.dart';
 
-  /// A contract class containing all events of the MyFeatureBloC.
-  abstract class MyFeatureBlocEvents {
-    /// TODO: Document the event
-    void fetchData();
-  }
+/// A contract class containing all events of the MyFeatureBloC.
+abstract class MyFeatureBlocEvents {
+  /// TODO: Document the event
+  void fetchData();
+}
 
-  /// A contract class containing all states of the MyFeatureBloC.
-  abstract class MyFeatureBlocStates {
-    /// The loading state
-    Stream<bool> get isLoading;
+/// A contract class containing all states of the MyFeatureBloC.
+abstract class MyFeatureBlocStates {
+  /// The loading state
+  Stream<bool> get isLoading;
 
-    /// The error state
-    Stream<ErrorModel> get errors;
+  /// The error state
+  Stream<ErrorModel> get errors;
 
-    /// TODO: Document the state
-    Stream<Result<String>> get data;
-  }
+  /// TODO: Document the state
+  Stream<Result<String>> get data;
+}
 
-  @RxBloc()
-  class MyFeatureBloc extends $MyFeatureBloc {
-    MyFeatureBloc(this.myFeatureService);
+@RxBloc()
+class MyFeatureBloc extends $MyFeatureBloc {
+  MyFeatureBloc(this.myFeatureService);
 
-    final MyFeatureService myFeatureService;
+  final MyFeatureService myFeatureService;
 
-    @override
-    Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
-        .startWith(null)
-        .switchMap((value) => myFeatureService.fetchData().asResultStream())
-        .setResultStateHandler(this)
-        .shareReplay(maxSize: 1);
+  @override
+  Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
+      .startWith(null)
+      .switchMap((value) => myFeatureService.fetchData().asResultStream())
+      .setResultStateHandler(this)
+      .shareReplay(maxSize: 1);
 
-    @override
-    Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
+  @override
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
-    @override
-    Stream<bool> _mapToIsLoadingState() => loadingState;
-  }
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
+}
   ```
 
+**Internal State via Subjects — MANDATORY:**
 
-*Note: The following is an example specifically demonstrating a BLoC that manages **listing with infinite scroll capabilities** utilizing the `rx_bloc_list` package.*
+Whenever a BLoC needs to remember a value between events (last query, current failure scope, flag, counter, model, …), back it with a **stream-shaped container** rather than a plain field.
+
+- Use `BehaviorSubject<T>.seeded(initial)` for single latest values, `ReplaySubject<T>` for short histories, `PublishSubject<T>` for one-shot notifications. Default to `BehaviorSubject` for state.
+- Mutate via `.add(...)`; read the current value via `.value` (for `BehaviorSubject`) only when strictly necessary — prefer composing the subject with `rxdart` operators (`withLatestFrom`, `switchMap`, `distinctUnique`, `scan`, …) from inside `_mapTo...State` pipelines.
+- Expose the subject externally only through a `Stream<T>` getter, typically wired with `@RxBlocIgnoreState()`; never leak the `BehaviorSubject` itself through the state contract.
+- **Every subject the BLoC owns MUST be `.close()`d in `dispose()` before `super.dispose()`**.
+
+```dart
+final _lastEvaluatedQuerySubject = BehaviorSubject<String>.seeded('');
+final _hasPendingChangesSubject = BehaviorSubject<bool>.seeded(false);
+
+// State overridden with @RxBlocIgnoreState()
+@override
+Stream<String> get lastEvaluatedQuery =>
+    _lastEvaluatedQuerySubject.distinct();
+
+@override
+Stream<bool> _mapToCanSubmitState() => _hasPendingChangesSubject
+    .distinct()
+    .shareReplay(maxSize: 1);
+
+@override
+void dispose() {
+  _lastEvaluatedQuerySubject.close();
+  _hasPendingChangesSubject.close();
+  super.dispose();
+}
+```
+
+Plain fields (`String _foo = ''`, `bool _isDirty = false`, `MyModel? _lastModel`) are an anti-pattern for BLoC state: downstream pipelines cannot react to them, tests cannot observe their transitions, and disposal semantics get fuzzy. Convert them to `BehaviorSubject`s.
+
+**Inline compositions over throwaway locals — MANDATORY:**
+
+Prefer composing streams **inline** inside `Rx.merge([...])`, `switchMap(...)`, `withLatestFrom(...)`, etc. Do **not** pull a one-shot composition into a `final queryRequests = ...` style local just to reference it once on the next line — it adds a naming step without improving clarity and hides the pipeline shape.
+
+```dart
+// PREFERRED: the shape of the pipeline is visible at a glance.
+return Rx.merge<_FetchRequest>([
+  _$setSearchQueryEvent
+      .map((q) => q.trim())
+      .debounceTime(const Duration(milliseconds: 350))
+      .distinct()
+      .map(_QueryRequest.new),
+  Rx.merge<bool>([
+    _$loadPageEvent,
+    _$retryLastFetchEvent.map((_) => _lastFailureScope != _FailureScope.append),
+  ]).throttleTime(kBackpressureDuration).map(_PageRequest.new),
+]).switchMap(_handleRequest).setResultStateHandler(this); // ...
+```
+
+```dart
+// AVOID: temporary locals used only once downstream.
+final queryRequests = _$setSearchQueryEvent
+    .map((q) => q.trim())
+    .debounceTime(const Duration(milliseconds: 350))
+    .distinct()
+    .map(_QueryRequest.new);
+
+final pageRequests = Rx.merge<bool>([
+  _$loadPageEvent,
+  _$retryLastFetchEvent.map((_) => _lastFailureScope != _FailureScope.append),
+]).throttleTime(kBackpressureDuration).map(_PageRequest.new);
+
+return Rx.merge([queryRequests, pageRequests]).switchMap(_handleRequest)...;
+```
+
+Only extract a local when the **same** composition is consumed by two or more downstream operators (e.g. a `publish()`ed stream used both to drive a request and to refresh a UI signal) — and in that case, consider lifting it to a named method or extension instead.
+
+**Pagination / Infinite Scroll BLoC — MANDATORY wiring:**
+
+When the feature requires a paginated list or infinite scroll, the BLoC **MUST** follow the exact pattern below. This is not an illustrative example — it is the required wiring. The agent MUST NOT invent alternative event names, alternative operators, alternative state shapes, or omit any of the listed elements. Deviations will break `rx_bloc_list` integration and `CoordinatorBloc` merging in downstream features.
+
+Required elements (all are mandatory — do not drop or rename any):
+
+- [ ] Import `package:rx_bloc_list/rx_bloc_list.dart` and `package:rxdart/rxdart.dart`
+- [ ] Import `CoordinatorBloc` from `../../base/common_blocs/coordinator_bloc.dart` and inject `CoordinatorBlocType` (even if unused at first — paginated lists almost always need to react to cross-BLoC updates)
+- [ ] Declare a single event: `void loadPage({bool reset = false})` — do NOT add separate `refresh`/`loadNext` events; the `reset` flag covers both
+- [ ] Expose `Stream<PaginatedList<T>> get paginatedList` as the canonical list state
+- [ ] Expose `Stream<bool> get isLoading` and `Stream<String> get errors` — both MUST be annotated with `@RxBlocIgnoreState()` and wired to `loadingState` / `errorState` (the aggregated streams provided by rx_bloc)
+- [ ] Hold the list in a `BehaviorSubject<PaginatedList<T>>.seeded(...)` with an initial empty `PaginatedList` that specifies `pageSize` and `totalCount: 0`
+- [ ] Wire the event chain in the constructor exactly as: `_$loadPageEvent.startWith(true).switchMap(...).setResultStateHandler(this).mergeWithPaginatedList(_paginatedList).bind(_paginatedList).addTo(_compositeSubscription)`
+- [ ] On `reset == true`, call `_paginatedList.value.reset()` BEFORE issuing the fetch
+- [ ] Fetch the next page via `page: _paginatedList.value.pageNumber + 1` and `pageSize: _paginatedList.value.pageSize` — never hardcode page numbers
+- [ ] Convert the future to a result stream using `.asResultStream()` inside the `switchMap`
+- [ ] Override `dispose()` to call `_paginatedList.closeSafely()` before `super.dispose()`
+
+Use this as the starting scaffold (replace `MyDomainModel` and class names; keep everything else intact):
 
   ```dart
   import 'package:rx_bloc/rx_bloc.dart';
@@ -218,6 +305,9 @@ Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events
   /// A contract class containing all events of the MyFeatureBloC.
   abstract class MyFeatureBlocEvents {
     /// Triggers a fetch operation for the next page of items.
+    ///
+    /// When [reset] is `true`, the internal paginated list is reset to page 0
+    /// before the fetch, effectively reloading the list from the beginning.
     void loadPage({bool reset = false});
   }
 
@@ -226,10 +316,11 @@ Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events
     /// The resulting state stream of the fetched paginated data.
     Stream<PaginatedList<MyDomainModel>> get paginatedList;
 
-    /// The aggregated loading/error state for the list.
+    /// The aggregated loading state for the list.
     @RxBlocIgnoreState()
     Stream<bool> get isLoading;
 
+    /// The aggregated error state for the list.
     @RxBlocIgnoreState()
     Stream<String> get errors;
   }
@@ -290,6 +381,12 @@ Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events
     }
   }
   ```
+
+**Pairing requirements for paginated BLoCs:**
+
+- The service layer MUST expose a `Future<PaginatedList<T>> fetchPaginatedData({int page, int pageSize})` method — see the "infinite scroll capabilities service example" in section 3.
+- The view layer MUST consume `paginatedList` using `RxPaginatedBuilder` (or an equivalent from `rx_bloc_list`) and trigger `loadPage(reset: true)` on pull-to-refresh and `loadPage()` on scroll-to-end.
+- If the feature participates in cross-BLoC updates (item added / updated / deleted elsewhere), merge `_coordinatorBloc.states.on*` streams into `_paginatedList` using the appropriate `rx_bloc_list` merge operators — do NOT call `loadPage(reset: true)` as a shortcut for refreshing a single item.
 
 *Note: The following is an example demonstrating a BLoC that handles **form management and validation** where UI interactions flow through the BLoC.*
 
@@ -727,6 +824,8 @@ lib/feature_<name>/
 - **NEVER** use hardcoded colors, font sizes, font weights, spacing/padding values, or icons — always use `context.designSystem.*`; if the value doesn't exist yet, add it to `lib/base/theme/design_system/`
 - **NEVER** write a custom error, loading, or empty-state widget without first checking `lib/base/common_ui_components/` for an existing one
 - **NEVER** use raw string literals in the UI — every user-visible string must be an l10n key in the `.arb` files and accessed via `context.l10n.<key>`
+- **NEVER** back internal BLoC state with plain fields (`String _foo = ''`, `bool _isDirty = false`, …) — use `BehaviorSubject<T>.seeded(...)` (or `ReplaySubject`/`PublishSubject` where appropriate) and `.close()` every owned subject in `dispose()` before `super.dispose()`
+- **NEVER** extract a one-shot stream composition into a local variable just to reference it once downstream (`final queryRequests = ...; Rx.merge([queryRequests, ...])`) — compose inline inside `Rx.merge([...])`, `switchMap(...)`, `withLatestFrom(...)`, etc., so the pipeline shape is visible at a glance; only extract when the same composition is consumed by two or more downstream operators, and in that case prefer a named method or extension
 
 ## Reference: Key Import Paths
 
