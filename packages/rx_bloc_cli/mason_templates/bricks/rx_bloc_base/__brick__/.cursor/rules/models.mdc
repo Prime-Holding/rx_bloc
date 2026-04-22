@@ -1,0 +1,17 @@
+---
+description: Documentation requirements for hand-written model code under **/models/** (no analyzer enforcement; see project root analysis_options)
+globs:
+  - "lib/**/models/**/*.dart"
+alwaysApply: false
+---
+
+# Model files — public API documentation
+
+When creating or editing hand-written model code (JSON DTOs, enums, value objects) under any `**/models/**` path:
+
+- **MUST** add a `///` doc comment on every **public** class, enum, mixin, extension, typedef, and top-level declaration.
+- **MUST** add a `///` on every **public** field, getter, setter, and constructor (and on each enum value if it is not self-explanatory).
+- Use `[fieldName]` in doc comments to reference other members when it helps. Prefer one short line per item; add a second paragraph for JSON/API edge cases, nullability, or units.
+- `**/*.g.dart` is already excluded at the package root; do not add docs inside generated part files.
+
+These expectations are for agents and review; the analyzer is not configured to require `public_member_api_docs` on models.

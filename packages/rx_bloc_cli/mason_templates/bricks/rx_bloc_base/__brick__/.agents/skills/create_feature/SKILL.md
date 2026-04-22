@@ -8,6 +8,12 @@ This skill guides the AI agent in creating a new feature in the Flutter project,
 
 > **Reference implementation:** `lib/feature_profile/` and `lib/feature_accounts/` — these are canonical examples
 
+## Non-negotiable: model documentation
+
+For every new or changed hand-written model (under `lib/base/models/**` or `lib/feature_{name}/models/**`):
+
+- **MUST** add `///` for every public class, enum, mixin, extension, typedef, top-level declaration, field, constructor, and enum value when the name is not self-explanatory.
+
 ## Inputs Required
 
 To successfully execute this skill, the following inputs MUST be provided:
@@ -41,7 +47,38 @@ Before generating any code, the agent MUST:
 - [ ] Build an execution plan, save it inside `lib/feature_{name}/` as `PLAN.md` and ask the user to review it before proceeding with execution.
 
 ### 2. Generate Data Layer
-- **Models:** Create necessary request/response models in `lib/base/models/` using `json_serializable` and `json_annotation`. Feature-specific models can optionally go in `lib/feature_{name}/models/`. Always add code docs to explain each field.
+
+**Models — definition of done (MUST be satisfied before moving on):**
+- [ ] Every public class/enum has a `///` summary.
+- [ ] Every public field, getter, and constructor is documented.
+
+- **Models:** Create necessary request/response models in `lib/base/models/` using `json_serializable` and `json_annotation`. Feature-specific models can optionally go in `lib/feature_{name}/models/`. Do not add docs in generated `*.g.dart` files (excluded at package root). Example shape:
+
+  ```dart
+  import 'package:json_annotation/json_annotation.dart';
+
+  part 'my_item_model.g.dart';
+
+  /// A single row from the list endpoint response body.
+  @JsonSerializable()
+  class MyItemModel {
+    /// Creates a [MyItemModel].
+    const MyItemModel({required this.id, required this.title});
+
+    /// Server-side identifier.
+    @JsonKey(name: 'id')
+    final String id;
+
+    /// User-visible title.
+    @JsonKey(name: 'title')
+    final String title;
+
+    /// Parses JSON from the API into a [MyItemModel].
+    factory MyItemModel.fromJson(Map<String, dynamic> json) =>
+        _$MyItemModelFromJson(json);
+  }
+  ```
+
 - **Data Sources:** Add new endpoints in `lib/base/data_sources/remote/`. You **MUST use Retrofit** to define these HTTP clients. Always add code docs to explain each endpoint.
     - Create the abstract class using `@RestApi()` and include the `.g.dart` file so `build_runner` can generate the implementation.
   ```dart
@@ -842,6 +879,7 @@ lib/feature_<name>/
 - **NEVER** use raw string literals in the UI — every user-visible string must be an l10n key in the `.arb` files and accessed via `context.l10n.<key>`
 - **NEVER** back internal BLoC state with plain fields (`String _foo = ''`, `bool _isDirty = false`, …) — use `BehaviorSubject<T>.seeded(...)` (or `ReplaySubject`/`PublishSubject` where appropriate) and `.close()` every owned subject in `dispose()` before `super.dispose()`
 - **NEVER** extract a one-shot stream composition into a local variable just to reference it once downstream (`final queryRequests = ...; Rx.merge([queryRequests, ...])`) — compose inline inside `Rx.merge([...])`, `switchMap(...)`, `withLatestFrom(...)`, etc., so the pipeline shape is visible at a glance; only extract when the same composition is consumed by two or more downstream operators, and in that case prefer a named method or extension
+- **NEVER** make a local StatefulWidget variable which refreshes itself by listening to a Bloc value. The only way to consume them should be the `Rx*` Widgets; ONLY use StatefulWidget in case complicated UI calculations are really necessary (animations etc.)
 
 ## Reference: Key Import Paths
 
