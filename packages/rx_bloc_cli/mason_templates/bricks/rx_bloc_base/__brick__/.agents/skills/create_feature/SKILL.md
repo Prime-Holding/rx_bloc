@@ -32,6 +32,25 @@ Unless the user **explicitly** asks to split the feature across multiple BLoCs (
 - **Exception:** The app-wide `CoordinatorBloc` (and other global blocs) are not “feature BLoCs”; injecting them is fine and does not count as splitting a feature into multiple BLoCs.
 - If the user later asks to refactor into multiple BLoCs, treat that as a new requirement — do not preemptively multi-BLoC a feature during initial scaffolding.
 
+## Non-negotiable: service owns pre-API gating and short-circuits
+
+Any rule that decides **whether** to call the remote API or repository for a given request **MUST** live in the feature **Service** (`lib/feature_{name}/services/`), not in the BLoC. Examples:
+
+- Minimum length (or other threshold) on a search string before calling the API — shorter input returns an empty `PaginatedList` / result **without** a network call
+- Whitespace-only or "empty" input that should clear results without calling the data layer
+- Any similar **short-circuit** that synthesizes an empty or default outcome instead of delegating to the repository
+
+**MUST:**
+
+- Implement the check and the empty/default return value **inside** the service method that would otherwise call the repository (e.g. trim the query, compare to a threshold, return early)
+- Expose top-level `const` values for those thresholds in the **same** service file (or a small feature-local constants file) so the **view** can import them for copy such as "Type at least N characters" — the BLoC should not own these constants
+
+**BLoC:**
+
+- **MUST NOT** branch in `switchMap`, `_$loadPageEvent`, or elsewhere on `query.length`, `trim().isEmpty`, or equivalent to build empty `PaginatedList` / `Result` and skip the service. Always call the service; the service decides whether to hit the network.
+
+**Pairing (pagination):** A paginated list BLoC still calls `service.search…` / `service.fetch…` on every `loadPage`; the service method returns an empty `PaginatedList` when gating rules apply, matching the same `pageSize` the BLoC uses.
+
 ## Inputs Required
 
 To successfully execute this skill, the following inputs MUST be provided:
@@ -63,7 +82,7 @@ Before generating any code, the agent MUST:
 - [ ] Enumerate all pages/screens needed for the feature
 - [ ] Unless the user explicitly requested multiple feature BLoCs, plan **one** BLoC for the feature — see **Non-negotiable: one BLoC per feature (default)**
 - [ ] Identify which BLoC pattern to use (list, details, or manage)
-- [ ] If the feature includes a **paginated or infinite-scroll list** (`rx_bloc_list`), that **single** feature BLoC **MUST** implement the list with the **exact** wiring in **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** later in this document — no alternate event shapes, merge-based page triggers, or shortened pipelines
+- [ ] If the feature includes a **paginated or infinite-scroll list** (`rx_bloc_list`), that **single** feature BLoC **MUST** implement the list with the **exact** wiring in **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** later in this document — no alternate event shapes, merge-based page triggers, or shortened pipelines; **pre-API gating** (min query length, empty input, etc.) **MUST** be implemented in the service, not the BLoC (**Non-negotiable: service owns pre-API gating and short-circuits**)
 - [ ] Build an execution plan, save it inside `lib/feature_{name}/` as `PLAN.md` and ask the user to review it before proceeding with execution.
 
 ### 2. Generate Data Layer
@@ -202,6 +221,39 @@ The Domain Layer orchestrates logic between business requirements and the Data L
     }
   }
   ```
+
+  **Pre-API gating (e.g. minimum search length) — in the service, not the BLoC:**
+
+  ```dart
+  const int kMyFeatureMinQueryLength = 2;
+
+  Future<PaginatedList<MyDomainModel>> searchItems({
+    required String query,
+    required int page,
+    required int pageSize,
+  }) async {
+    final trimmed = query.trim();
+    if (trimmed.length < kMyFeatureMinQueryLength) {
+      return PaginatedList<MyDomainModel>(
+        list: [],
+        pageSize: pageSize,
+        totalCount: 0,
+      );
+    }
+    final response = await _repository.searchItems(
+      q: trimmed,
+      page: page,
+      perPage: pageSize,
+    );
+    return PaginatedList<MyDomainModel>(
+      list: response.items,
+      pageSize: pageSize,
+      totalCount: response.totalCount,
+    );
+  }
+  ```
+
+  See **Non-negotiable: service owns pre-API gating and short-circuits**.
 
 ### 4. Generate Presentation Layer (Feature Folder)
 Create a new directory `lib/feature_{new_feature_name}` and generate its architecture:
@@ -463,7 +515,7 @@ Before finishing implementation or telling the user the feature is done, the age
 
 **Pairing requirements for paginated BLoCs:**
 
-- The service layer MUST expose a `Future<PaginatedList<T>> fetchPaginatedData({int page, int pageSize})` method — see the "infinite scroll capabilities service example" in section 3.
+- The service layer MUST expose a `Future<PaginatedList<T>> fetchPaginatedData({int page, int pageSize})` (or `search…` with `query` + `page` + `pageSize`, etc.) method — see the "infinite scroll capabilities service example" in section 3. The service MUST own any pre-API gating (**Non-negotiable: service owns pre-API gating and short-circuits**).
 - The view layer MUST consume `paginatedList` using `RxPaginatedBuilder` (or an equivalent from `rx_bloc_list`) and trigger `loadPage(reset: true)` on pull-to-refresh and `loadPage()` on scroll-to-end.
 - If the feature participates in cross-BLoC updates (item added / updated / deleted elsewhere), merge `_coordinatorBloc.states.on*` streams into `_paginatedList` using the appropriate `rx_bloc_list` merge operators — do NOT call `loadPage(reset: true)` as a shortcut for refreshing a single item.
 
@@ -896,6 +948,7 @@ lib/feature_<name>/
 - **NEVER** instantiate services or repositories directly in BLoCs — use dependency injection
 - **NEVER** put business logic in the UI layer (pages/widgets)
 - **NEVER** call APIs directly from BLoCs — use services and repositories
+- **NEVER** implement pre-API gating or short-circuits in the BLoC (minimum query length, empty-query empty list, etc.) — put that logic in the service; see **Non-negotiable: service owns pre-API gating and short-circuits**
 - **NEVER** skip error handling with `ErrorMapper` in repositories
 - **NEVER** hardcode strings — use localization keys
 - **NEVER** create routes without registering them in the router
