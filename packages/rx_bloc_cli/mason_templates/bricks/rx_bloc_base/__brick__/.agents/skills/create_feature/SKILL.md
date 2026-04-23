@@ -16,13 +16,32 @@ For every new or changed hand-written model (under `lib/base/models/**` or `lib/
 
 ## Non-negotiable: BLoC error / errors state
 
-In **every** `RxBloc`, the aggregated error state exposed in the state contract **MUST** be typed as:
+**When** the BLoC state contract exposes an aggregated error stream, it **MUST** be typed as:
 
 - `Stream<ErrorModel> get errors` (or `get error` if the feature uses a singular name — the type is always `ErrorModel`, never `String` or `Object`).
 
-Wire it with `errorState.mapToErrorModel()` (typically in `_mapToErrorsState()` or an `@override` of the generated errors getter), and import `../../base/models/errors/error_model.dart` plus `../../base/extensions/error_model_extensions.dart` as in the BLoC examples in this document.
+Wire it with `errorState.mapToErrorModel()` (typically in `_mapToErrorsState()` or an `@override` of the generated errors getter), and import `../../base/models/errors/error_model.dart` plus `../../base/extensions/error_model_extensions.dart` as in the BLoC examples in this document. If the feature UI does not need aggregated errors, **do not** add an `errors` stream just to follow a template (see **Non-negotiable: BLoC state contract is minimal and wired**).
 
 **Do not** expose `Stream<String>`, `ConnectableStream<String>`, or `errorState.map((e) => e.toString())` for the primary BLoC error stream — the UI translates via `ErrorModel` (e.g. `error.translate(context)`).
+
+## Non-negotiable: BLoC state contract is minimal and wired
+
+In `abstract class …BlocStates` (and the corresponding `_*mapTo…State` / `get` implementations), you **MUST** only declare state streams that have a real consumer.
+
+**What counts as “used” (at least one must apply):**
+
+- The feature’s **UI** subscribes (e.g. `RxBlocBuilder`, `RxPaginatedBuilder`, `RxTextFormFieldBuilder`, `RxResultBuilder`, or passing `bloc.states.<name>` to a `Stream` sub-widget).
+- The feature’s **unit tests** assert on the stream, **or**
+- A **documented** integration (another BLoC, `CoordinatorBloc`, or router) is intended and implemented in the same change.
+
+**MUST NOT:**
+
+- Add `Stream<T> get …` (including `@RxBlocIgnoreState()` “aggregate” states like `isLoading` or `errors`) that nothing reads — copy-pasting example blocks and leaving extra getters is a defect.
+- Add placeholder states “for later” or to mirror a reference BLoC line-by-line when the feature’s screens do not need them.
+
+If the UI does not need loading or aggregated errors, **omit** those getters; do not generate them “just in case.”
+
+**Exception — paginated `rx_bloc_list` BLoC:** A BLoC that follows **Pagination / Infinite Scroll BLoC — MANDATORY wiring** must still declare `isLoading` and `errors` exactly as that subsection requires. Those streams are not optional there: they are part of the required contract for that pattern (aggregated `loadingState` / `errorState` with `setResultStateHandler`). The feature view should still use them where appropriate (e.g. `RxBlocListener` for errors) or they remain available for tests — do not delete them in the name of minimal state.
 
 ## Non-negotiable: one BLoC per feature (default)
 
@@ -82,6 +101,7 @@ Before generating any code, the agent MUST:
 - [ ] Enumerate all pages/screens needed for the feature
 - [ ] Unless the user explicitly requested multiple feature BLoCs, plan **one** BLoC for the feature — see **Non-negotiable: one BLoC per feature (default)**
 - [ ] Identify which BLoC pattern to use (list, details, or manage)
+- [ ] For that BLoC, list **only** the state streams the page(s) will **actually** subscribe to (see **Non-negotiable: BLoC state contract is minimal and wired**); do not add unused states to mirror examples
 - [ ] If the feature includes a **paginated or infinite-scroll list** (`rx_bloc_list`), that **single** feature BLoC **MUST** implement the list with the **exact** wiring in **"Pagination / Infinite Scroll BLoC — MANDATORY wiring"** later in this document — no alternate event shapes, merge-based page triggers, or shortened pipelines; **pre-API gating** (min query length, empty input, etc.) **MUST** be implemented in the service, not the BLoC (**Non-negotiable: service owns pre-API gating and short-circuits**)
 - [ ] Build an execution plan, save it inside `lib/feature_{name}/` as `PLAN.md` and ask the user to review it before proceeding with execution.
 
@@ -119,7 +139,7 @@ Before generating any code, the agent MUST:
   ```
 
 - **Data Sources:** Add new endpoints in `lib/base/data_sources/remote/`. You **MUST use Retrofit** to define these HTTP clients. Always add code docs to explain each endpoint.
-    - Create the abstract class using `@RestApi()` and include the `.g.dart` file so `build_runner` can generate the implementation.
+  - Create the abstract class using `@RestApi()` and include the `.g.dart` file so `build_runner` can generate the implementation.
   ```dart
   import 'package:dio/dio.dart';
   import 'package:retrofit/retrofit.dart';
@@ -139,7 +159,7 @@ Before generating any code, the agent MUST:
   }
   ```
 - **Repositories:** Implement repositories in `lib/base/repositories/` to interact with data sources and provide data to services. Always add code docs to explain each method.
-    - **Error Handling:** When implementing repository methods, you MUST wrap your data source calls using the `ErrorMapper` (located in `lib/base/common_mappers/error_mappers/error_mapper.dart`). This ensures that specific exceptions (like `DioException`) are properly caught and mapped to unified `ErrorModel` exceptions.
+  - **Error Handling:** When implementing repository methods, you MUST wrap your data source calls using the `ErrorMapper` (located in `lib/base/common_mappers/error_mappers/error_mapper.dart`). This ensures that specific exceptions (like `DioException`) are properly caught and mapped to unified `ErrorModel` exceptions.
   ```dart
   import '../common_mappers/error_mappers/error_mapper.dart';
 
@@ -261,9 +281,11 @@ Create a new directory `lib/feature_{new_feature_name}` and generate its archite
 **A. BLoC (Business Logic Component)**
 Create `blocs/{name}_bloc.dart`. It should rely on `rx_bloc` to handle UI events and expose streams as state. Ensure you declare the `.rxb.g.dart` generated files in this file as required by `build_runner`. Always add code docs to explain each event and state.
 
+**Only** add a state to `…BlocStates` (and its implementations) if it is used by the feature (see **Non-negotiable: BLoC state contract is minimal and wired**). Do not scaffold `isLoading`, `errors`, or `data` from an example BLoC unless the new feature’s page(s) actually subscribe to them.
+
 By default there is **one** such BLoC per feature (see **Non-negotiable: one BLoC per feature (default)**); do not add companion BLoCs to split logic unless the user asked for a multi-BLoC design.
 
-The **errors** state in the state contract is **always** `Stream<ErrorModel>` (see **Non-negotiable: BLoC error / errors state** above).
+The **errors** state in the state contract is **always** `Stream<ErrorModel>` **when the BLoC exposes that contract** (see **Non-negotiable: BLoC error / errors state** and **Non-negotiable: BLoC state contract is minimal and wired** above). If the UI does not consume aggregated errors, omit the getter; do not add a dead `errors` stream to satisfy a template.
 
 *Note: The following is an example of a simple BLoC that manages state with loading and error handling:*
 
@@ -651,10 +673,10 @@ The application utilizes a singleton/global `CoordinatorBloc` (located in `lib/b
 
 - **Role:** If a feature updates, deletes, or adds a global entity, it should push that event to the `CoordinatorBloc`. Other BLoCs interested in this entity listen to the `CoordinatorBloc`'s states and merge those updates into their own localized streams.
 - **Example Flow - Creation/Updating (Manage -> List):**
-    1. The `MyManageBloc` successfully performs an API update via its service.
-    2. It immediately pushes the result into the coordinator: `.doOnData(_coordinatorBloc.events.itemAddedOrUpdated)`
-    3. The `MyListBloc` (or `MyDetailsBloc`) listens for this global state: `_coordinatorBloc.states.onItemUpdated.whereSuccess()`
-    4. The List/Details BLoC merges this updated item into its own state stream (acting as a localized reactivity point) without ever needing to know about `MyManageBloc`.
+  1. The `MyManageBloc` successfully performs an API update via its service.
+  2. It immediately pushes the result into the coordinator: `.doOnData(_coordinatorBloc.events.itemAddedOrUpdated)`
+  3. The `MyListBloc` (or `MyDetailsBloc`) listens for this global state: `_coordinatorBloc.states.onItemUpdated.whereSuccess()`
+  4. The List/Details BLoC merges this updated item into its own state stream (acting as a localized reactivity point) without ever needing to know about `MyManageBloc`.
 
 **C. Dependency Injection (DI)**
 Create `di/{name}_page_with_dependencies.dart` that initializes your BLoC and any specific dependencies required. The page wraps the actual view with services and BLoCs using `MultiProvider`.
@@ -772,7 +794,9 @@ All data source related errors (such as `DioException`, `GeneralSecurityExceptio
 The `Service` layer is responsible for throwing client-side validation exceptions (e.g., `ErrorRequiredFieldModel`) instead of the data layer.
 
 #### BLoC Error Handling
-Each BLoC should expose its errors via a dedicated state stream for UI visualization. The type **must** be `Stream<ErrorModel>` (not `String`):
+**When** the BLoC exposes aggregated errors to the UI, use a dedicated state stream. The type **must** be `Stream<ErrorModel>` (not `String`). If the feature does not include `errors` in the state contract, do not add the getter or this wiring (see **Non-negotiable: BLoC state contract is minimal and wired** — paginated list BLoCs that follow the mandatory `rx_bloc_list` pattern are an exception and still require `errors` as documented there).
+
+Example (when exposing errors):
 
 ```dart
 /// The error state
@@ -943,6 +967,7 @@ lib/feature_<name>/
 
 ## Forbidden Actions
 
+- **NEVER** add a BLoC state stream (`get` in the states class or the corresponding `_*mapTo…` implementation) that is **not** read from the feature UI, a feature test, or an implemented non-UI consumer — no unused “template” states (see **Non-negotiable: BLoC state contract is minimal and wired**)
 - **NEVER** create a BLoC without the corresponding `.rxb.g.dart` part directive
 - **NEVER** split a feature into two or more feature-scoped BLoCs for “clean separation” when the user did not ask for multiple BLoCs — use one BLoC and multiple events/streams (see **Non-negotiable: one BLoC per feature (default)**)
 - **NEVER** instantiate services or repositories directly in BLoCs — use dependency injection
@@ -977,7 +1002,7 @@ import '../services/<name>_service.dart';
 part '<name>_bloc.rxb.g.dart';
 ```
 
-(Include `ErrorModel` / `error_model_extensions` whenever the BLoC exposes `Stream<ErrorModel> get errors` — i.e. always for aggregated `errorState` wiring per **Non-negotiable: BLoC error / errors state**.)
+(Include `ErrorModel` / `error_model_extensions` whenever the BLoC exposes `Stream<ErrorModel> get errors` for aggregated `errorState` wiring per **Non-negotiable: BLoC error / errors state**; if the feature does not expose `errors`, omit these imports.)
 
 ### In Service files:
 
