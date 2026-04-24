@@ -38,6 +38,7 @@ In `abstract class …BlocStates` (and the corresponding `_*mapTo…State` / `ge
 
 - Add `Stream<T> get …` (including `@RxBlocIgnoreState()` “aggregate” states like `isLoading` or `errors`) that nothing reads — copy-pasting example blocks and leaving extra getters is a defect.
 - Add placeholder states “for later” or to mirror a reference BLoC line-by-line when the feature’s screens do not need them.
+- Duplicate information that is already expressible through another state. If a state’s data (or a combination of existing states) is enough to infer what the screen or tests need, **use that state** instead of introducing a new stream. For example, on a paginated page, a failed load is already covered by the aggregated `errors` stream and the current paginated result; **do not** add separate states for “last execution time”, “query at failure”, or similar unless something truly subscribes to those values in isolation and they cannot be derived from the existing contract.
 
 **Prefer deriving over duplicating:** when the same fact can be read from streams you already expose, do that in the feature UI (e.g. one builder or listener that has what it needs) instead of persisting a parallel copy in BLoC state.
 
