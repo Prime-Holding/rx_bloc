@@ -39,6 +39,8 @@ In `abstract class …BlocStates` (and the corresponding `_*mapTo…State` / `ge
 - Add `Stream<T> get …` (including `@RxBlocIgnoreState()` “aggregate” states like `isLoading` or `errors`) that nothing reads — copy-pasting example blocks and leaving extra getters is a defect.
 - Add placeholder states “for later” or to mirror a reference BLoC line-by-line when the feature’s screens do not need them.
 
+**Prefer deriving over duplicating:** when the same fact can be read from streams you already expose, do that in the feature UI (e.g. one builder or listener that has what it needs) instead of persisting a parallel copy in BLoC state.
+
 If the UI does not need loading or aggregated errors, **omit** those getters; do not generate them “just in case.”
 
 **Exception — paginated `rx_bloc_list` BLoC:** A BLoC that follows **Pagination / Infinite Scroll BLoC — MANDATORY wiring** must still declare `isLoading` and `errors` exactly as that subsection requires. Those streams are not optional there: they are part of the required contract for that pattern (aggregated `loadingState` / `errorState` with `setResultStateHandler`). The feature view should still use them where appropriate (e.g. `RxBlocListener` for errors) or they remain available for tests — do not delete them in the name of minimal state.
@@ -53,22 +55,20 @@ Unless the user **explicitly** asks to split the feature across multiple BLoCs (
 
 ## Non-negotiable: service owns pre-API gating and short-circuits
 
-Any rule that decides **whether** to call the remote API or repository for a given request **MUST** live in the feature **Service** (`lib/feature_{name}/services/`), not in the BLoC. Examples:
+Any business rule that decides **whether** to call the data layer (remote API, local store, or other I/O) for a given request **MUST** live in the feature **Service** (`lib/feature_{name}/services/`), not in the BLoC. The service is where **domain- and product-specific** logic lives: eligibility, preconditions, validity, ranges, and other rules that can be satisfied *without* touching the repository.
 
-- Minimum length (or other threshold) on a search string before calling the API — shorter input returns an empty `PaginatedList` / result **without** a network call
-- Whitespace-only or "empty" input that should clear results without calling the data layer
-- Any similar **short-circuit** that synthesizes an empty or default outcome instead of delegating to the repository
+Typical **short-circuits** the service may apply (as required by the feature) include: returning an empty or default `PaginatedList` / `Result` when the current inputs or state are not yet suitable for a real fetch, or when the product rules say the outcome is known up front. The BLoC must not duplicate that reasoning.
 
 **MUST:**
 
-- Implement the check and the empty/default return value **inside** the service method that would otherwise call the repository (e.g. trim the query, compare to a threshold, return early)
-- Expose top-level `const` values for those thresholds in the **same** service file (or a small feature-local constants file) so the **view** can import them for copy such as "Type at least N characters" — the BLoC should not own these constants
+- Implement the predicate and the short-circuit return value **in the same service method** that would otherwise call the repository, so the decision to skip I/O and the value returned to the caller are defined in one place
+- Expose any `const` **limits, thresholds, or other values** the **view** needs for copy, labels, or inline hints (validation messaging, "minimum N…", and similar) in the **same** service file or a small feature-local constants module, and have the view import from there — the BLoC **must not** own those constants
 
 **BLoC:**
 
-- **MUST NOT** branch in `switchMap`, `_$loadPageEvent`, or elsewhere on `query.length`, `trim().isEmpty`, or equivalent to build empty `PaginatedList` / `Result` and skip the service. Always call the service; the service decides whether to hit the network.
+- **MUST NOT** reimplement eligibility, validation, or "should we load?" rules in the presentation layer (e.g. inside `switchMap`, on page-load event pipelines, or by constructing empty `PaginatedList` / `Result` in place of calling the service). **Always** call the service; only the service decides whether I/O runs.
 
-**Pairing (pagination):** A paginated list BLoC still calls `service.search…` / `service.fetch…` on every `loadPage`; the service method returns an empty `PaginatedList` when gating rules apply, matching the same `pageSize` the BLoC uses.
+**Pairing (pagination):** A paginated list BLoC still calls the same `service.…` entry point on every `loadPage`; the service method returns an empty or appropriately shaped `PaginatedList` when gating rules apply, using the same `pageSize` the BLoC uses.
 
 ## Inputs Required
 
@@ -325,10 +325,10 @@ class MyFeatureBloc extends $MyFeatureBloc {
 
   @override
   Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
-      .startWith(null)
-      .switchMap((value) => myFeatureService.fetchData().asResultStream())
-      .setResultStateHandler(this)
-      .shareReplay(maxSize: 1);
+          .startWith(null)
+          .switchMap((value) => myFeatureService.fetchData().asResultStream())
+          .setResultStateHandler(this)
+          .shareReplay(maxSize: 1);
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
@@ -354,12 +354,12 @@ final _hasPendingChangesSubject = BehaviorSubject<bool>.seeded(false);
 // State overridden with @RxBlocIgnoreState()
 @override
 Stream<String> get lastEvaluatedQuery =>
-    _lastEvaluatedQuerySubject.distinct();
+        _lastEvaluatedQuerySubject.distinct();
 
 @override
 Stream<bool> _mapToCanSubmitState() => _hasPendingChangesSubject
-    .distinct()
-    .shareReplay(maxSize: 1);
+        .distinct()
+        .shareReplay(maxSize: 1);
 
 @override
 void dispose() {
@@ -381,25 +381,25 @@ Prefer composing streams **inline** inside `Rx.merge([...])`, `switchMap(...)`, 
 // PREFERRED: the shape of the pipeline is visible at a glance.
 // (Illustrative only — not for rx_bloc_list pagination; see mandatory wiring below.)
 return Rx.merge<_FetchRequest>([
-  _$setSearchQueryEvent
-      .map((q) => q.trim())
-      .debounceTime(const Duration(milliseconds: 350))
-      .distinct()
-      .map(_QueryRequest.new),
-  Rx.merge<bool>([
-    _$reloadEvent,
-    _$retryLastFetchEvent.map((_) => _lastFailureScope != _FailureScope.append),
-  ]).throttleTime(kBackpressureDuration).map(_AuxiliaryFetchRequest.new),
+_$setSearchQueryEvent
+        .map((q) => q.trim())
+        .debounceTime(const Duration(milliseconds: 350))
+        .distinct()
+        .map(_QueryRequest.new),
+Rx.merge<bool>([
+_$reloadEvent,
+_$retryLastFetchEvent.map((_) => _lastFailureScope != _FailureScope.append),
+]).throttleTime(kBackpressureDuration).map(_AuxiliaryFetchRequest.new),
 ]).switchMap(_handleRequest).setResultStateHandler(this); // ...
 ```
 
 ```dart
 // AVOID: temporary locals used only once downstream.
 final queryRequests = _$setSearchQueryEvent
-    .map((q) => q.trim())
-    .debounceTime(const Duration(milliseconds: 350))
-    .distinct()
-    .map(_QueryRequest.new);
+        .map((q) => q.trim())
+        .debounceTime(const Duration(milliseconds: 350))
+        .distinct()
+        .map(_QueryRequest.new);
 
 final auxiliaryRequests = Rx.merge<bool>([
   _$reloadEvent,
@@ -441,94 +441,94 @@ Use this as the starting scaffold (replace `MyDomainModel` and class names; keep
 
   ```dart
   import 'package:rx_bloc/rx_bloc.dart';
-  import 'package:rx_bloc_list/rx_bloc_list.dart';
-  import 'package:rxdart/rxdart.dart';
+import 'package:rx_bloc_list/rx_bloc_list.dart';
+import 'package:rxdart/rxdart.dart';
 
-  import '../../base/common_blocs/coordinator_bloc.dart';
-  import '../../base/extensions/error_model_extensions.dart';
-  import '../../base/models/errors/error_model.dart';
-  import '../services/my_feature_service.dart';
+import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/errors/error_model.dart';
+import '../services/my_feature_service.dart';
 
-  part 'my_feature_bloc.rxb.g.dart';
+part 'my_feature_bloc.rxb.g.dart';
 
-  /// A contract class containing all events of the MyFeatureBloC.
-  abstract class MyFeatureBlocEvents {
-    /// Triggers a fetch operation for the next page of items.
-    ///
-    /// When [reset] is `true`, the internal paginated list is reset to page 0
-    /// before the fetch, effectively reloading the list from the beginning.
-    void loadPage({bool reset = false});
+/// A contract class containing all events of the MyFeatureBloC.
+abstract class MyFeatureBlocEvents {
+  /// Triggers a fetch operation for the next page of items.
+  ///
+  /// When [reset] is `true`, the internal paginated list is reset to page 0
+  /// before the fetch, effectively reloading the list from the beginning.
+  void loadPage({bool reset = false});
+}
+
+/// A contract class containing all states of the MyFeatureBloC.
+abstract class MyFeatureBlocStates {
+  /// The resulting state stream of the fetched paginated data.
+  Stream<PaginatedList<MyDomainModel>> get paginatedList;
+
+  /// The aggregated loading state for the list.
+  @RxBlocIgnoreState()
+  Stream<bool> get isLoading;
+
+  /// The aggregated error state for the list.
+  @RxBlocIgnoreState()
+  Stream<ErrorModel> get errors;
+}
+
+@RxBloc()
+class MyFeatureBloc extends $MyFeatureBloc {
+  MyFeatureBloc(
+          this._service,
+          this._coordinatorBloc,
+          ) {
+    _$loadPageEvent
+            .startWith(true)
+            .switchMap(
+              (reset) {
+        if (reset) _paginatedList.value.reset();
+
+        return _service
+                .fetchPaginatedData(
+          page: _paginatedList.value.pageNumber + 1,
+          pageSize: _paginatedList.value.pageSize,
+        )
+                .asResultStream();
+      },
+    )
+    // Enable state handling by the current bloc
+            .setResultStateHandler(this)
+    // Merge the data in the _paginatedList
+            .mergeWithPaginatedList(_paginatedList)
+            .bind(_paginatedList)
+            .addTo(_compositeSubscription);
   }
 
-  /// A contract class containing all states of the MyFeatureBloC.
-  abstract class MyFeatureBlocStates {
-    /// The resulting state stream of the fetched paginated data.
-    Stream<PaginatedList<MyDomainModel>> get paginatedList;
+  final MyFeatureService _service;
+  final CoordinatorBlocType _coordinatorBloc;
 
-    /// The aggregated loading state for the list.
-    @RxBlocIgnoreState()
-    Stream<bool> get isLoading;
+  final _paginatedList = BehaviorSubject<PaginatedList<MyDomainModel>>.seeded(
+    PaginatedList<MyDomainModel>(
+      list: [],
+      pageSize: 10,
+      totalCount: 0,
+    ),
+  );
 
-    /// The aggregated error state for the list.
-    @RxBlocIgnoreState()
-    Stream<ErrorModel> get errors;
+  @override
+  Stream<PaginatedList<MyDomainModel>> _mapToPaginatedListState() =>
+          _paginatedList;
+
+  @override
+  Stream<bool> get isLoading => loadingState;
+
+  @override
+  Stream<ErrorModel> get errors => errorState.mapToErrorModel();
+
+  @override
+  void dispose() {
+    _paginatedList.closeSafely();
+    super.dispose();
   }
-
-  @RxBloc()
-  class MyFeatureBloc extends $MyFeatureBloc {
-    MyFeatureBloc(
-      this._service,
-      this._coordinatorBloc,
-    ) {
-      _$loadPageEvent
-          .startWith(true)
-          .switchMap(
-            (reset) {
-              if (reset) _paginatedList.value.reset();
-
-              return _service
-                  .fetchPaginatedData(
-                    page: _paginatedList.value.pageNumber + 1,
-                    pageSize: _paginatedList.value.pageSize,
-                  )
-                  .asResultStream();
-            },
-          )
-          // Enable state handling by the current bloc
-          .setResultStateHandler(this)
-          // Merge the data in the _paginatedList
-          .mergeWithPaginatedList(_paginatedList)
-          .bind(_paginatedList)
-          .addTo(_compositeSubscription);
-    }
-
-    final MyFeatureService _service;
-    final CoordinatorBlocType _coordinatorBloc;
-
-    final _paginatedList = BehaviorSubject<PaginatedList<MyDomainModel>>.seeded(
-      PaginatedList<MyDomainModel>(
-        list: [],
-        pageSize: 10,
-        totalCount: 0,
-      ),
-    );
-
-    @override
-    Stream<PaginatedList<MyDomainModel>> _mapToPaginatedListState() =>
-        _paginatedList;
-
-    @override
-    Stream<bool> get isLoading => loadingState;
-
-    @override
-    Stream<ErrorModel> get errors => errorState.mapToErrorModel();
-
-    @override
-    void dispose() {
-      _paginatedList.closeSafely();
-      super.dispose();
-    }
-  }
+}
   ```
 
 **Agent completion gate (paginated list features):**
@@ -592,11 +592,11 @@ abstract class MyFeatureBlocStates {
 @RxBloc()
 class MyFeatureBloc extends $MyFeatureBloc {
   MyFeatureBloc(
-      this._coordinatorBloc,
-      this._myFeatureService,
-      this._validatorService,
-      this._router,
-      ) {
+          this._coordinatorBloc,
+          this._myFeatureService,
+          this._validatorService,
+          this._router,
+          ) {
     submitted.connect().addTo(_compositeSubscription);
   }
 
@@ -607,37 +607,37 @@ class MyFeatureBloc extends $MyFeatureBloc {
 
   @override
   Stream<String> _mapToEmailState() => _$setEmailEvent
-      .map(_validatorService.validateEmail)
-      .startWith('')
-      .shareReplay(maxSize: 1);
+          .map(_validatorService.validateEmail)
+          .startWith('')
+          .shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToPasswordState() => _$setPasswordEvent
-      .map(_validatorService.validatePassword)
-      .startWith('')
-      .shareReplay(maxSize: 1);
+          .map(_validatorService.validatePassword)
+          .startWith('')
+          .shareReplay(maxSize: 1);
 
   @override
   ConnectableStream<bool> _mapToSubmittedState() => _$submitEvent
-      .throttleTime(const Duration(seconds: 1))
-      .withLatestFrom2<Result<String>, Result<String>, MyCredentials?>(
+          .throttleTime(const Duration(seconds: 1))
+          .withLatestFrom2<Result<String>, Result<String>, MyCredentials?>(
     email.asResultStream(),
     password.asResultStream(),
-        (_, emailResult, passwordResult) =>
-        _validateAndReturnCredentials(emailResult, passwordResult),
+            (_, emailResult, passwordResult) =>
+            _validateAndReturnCredentials(emailResult, passwordResult),
   )
-      .where((args) => args != null)
-      .exhaustMap(
-        (args) => _myFeatureService
-        .processData(email: args!.email, password: args.password)
-        .then((value) => true)
-        .asResultStream(),
+          .where((args) => args != null)
+          .exhaustMap(
+            (args) => _myFeatureService
+            .processData(email: args!.email, password: args.password)
+            .then((value) => true)
+            .asResultStream(),
   )
-      .setResultStateHandler(this)
-      .whereSuccess()
-      .doOnData((_) => _router.go(const DashboardRoute().location))
-      .startWith(false)
-      .publish();
+          .setResultStateHandler(this)
+          .whereSuccess()
+          .doOnData((_) => _router.go(const DashboardRoute().location))
+          .startWith(false)
+          .publish();
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
@@ -647,12 +647,12 @@ class MyFeatureBloc extends $MyFeatureBloc {
 
   @override
   Stream<bool> _mapToShowErrorsState() =>
-      _$submitEvent.mapTo(true).startWith(false);
+          _$submitEvent.mapTo(true).startWith(false);
 
   MyCredentials? _validateAndReturnCredentials(
-      Result<String> emailResult,
-      Result<String> passwordResult,
-      ) {
+          Result<String> emailResult,
+          Result<String> passwordResult,
+          ) {
     if (emailResult is ResultError || passwordResult is ResultError) {
       return null;
     }
@@ -874,16 +874,16 @@ part of '../router.dart';
 @TypedGoRoute<MyFeatureRoute>(path: RoutesPath.myNewFeature)
 @immutable
 class MyFeatureRoute extends GoRouteData
-    with $MyFeatureRoute
-    implements RouteDataModel {
+        with $MyFeatureRoute
+        implements RouteDataModel {
   const MyFeatureRoute();
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-      MaterialPage(
-        key: state.pageKey,
-        child: const MyFeaturePageWithDependencies(),
-      );
+          MaterialPage(
+            key: state.pageKey,
+            child: const MyFeaturePageWithDependencies(),
+          );
 
   @override
   String get permissionName => RouteModel.myNewFeature.permissionName;
