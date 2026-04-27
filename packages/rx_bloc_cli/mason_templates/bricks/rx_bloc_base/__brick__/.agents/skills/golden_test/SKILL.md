@@ -1,4 +1,5 @@
 ---
+name: golden_test
 description: Create Golden tests for an existing feature - Deterministic, convention-compliant golden test generation for feature pages
 ---
 
