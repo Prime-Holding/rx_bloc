@@ -1,3 +1,6 @@
+## [6.1.2]
+* Updated AI agent rules and skills
+
 ## [6.1.1]
 * Updated design system colors and typography to use unified ColorScheme and TextTheme approach
 * Updated dev menu internals: replace Alice with [Talker][talker_pkg]
