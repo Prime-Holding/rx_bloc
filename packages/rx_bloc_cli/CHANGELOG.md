@@ -1,3 +1,8 @@
+## [6.1.3]
+* Updated AI agent rules and skills
+* Updated generated project dependencies
+* Updated default theme of generated project
+
 ## [6.1.2]
 * Updated AI agent rules and skills
 

@@ -10,25 +10,18 @@ import 'factories/notifications_page_factory.dart';
 void main() {
   group(
     'NotificationsPage golden tests',
-    () => runGoldenTests(
-      [
-        buildScenario(
-          scenario: 'success',
-          widget: notificationsPageFactory(
-            pushToken: Stubs.pushToken,
-          ),
+    () => runGoldenTests([
+      buildScenario(
+        scenario: 'success',
+        widget: notificationsPageFactory(pushToken: Stubs.pushToken),
+      ),
+      buildScenario(
+        scenario: 'error',
+        widget: notificationsPageFactory(
+          error: NotFoundErrorModel(message: 'Error message'),
         ),
-        buildScenario(
-          scenario: 'error',
-          widget: notificationsPageFactory(
-            error: NotFoundErrorModel(message: 'Error message'),
-          ),
-        ),
-        buildScenario(
-          scenario: 'loading',
-          widget: notificationsPageFactory(),
-        ),
-      ],
-    ),
+      ),
+      buildScenario(scenario: 'loading', widget: notificationsPageFactory()),
+    ]),
   );
 }

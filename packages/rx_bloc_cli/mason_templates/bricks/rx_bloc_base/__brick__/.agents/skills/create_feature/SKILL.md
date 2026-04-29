@@ -34,6 +34,7 @@ Before generating any code, the agent MUST:
 - [ ] Review the Swagger spec (if provided) to identify API endpoints and models
 - [ ] Check `lib/base/models/` for existing models that can be reused
 - [ ] Check `lib/base/repositories/` for existing repositories
+- [ ] For any new or changed Retrofit remote data source, plan **only** the abstract API + `part` — the implementation is **generated** by `build_runner`; do not sketch manual `Dio`/`*.g.dart` code
 - [ ] Check `lib/base/common_services/` for existing services
 - [ ] **Scan `lib/base/common_ui_components/`** for existing reusable widgets (error states, loaders, buttons, list items, etc.) that can be used as-is before creating new ones
 - [ ] **Review `lib/base/theme/design_system/`** to understand available colors, typography styles, spacing tokens, and icons — all UI values MUST come from here
@@ -75,8 +76,9 @@ Before generating any code, the agent MUST:
   }
   ```
 
-- **Data Sources:** Add new endpoints in `lib/base/data_sources/remote/`. You **MUST use Retrofit** to define these HTTP clients. Always add code docs to explain each endpoint.
-  - Create the abstract class using `@RestApi()` and include the `.g.dart` file so `build_runner` can generate the implementation.
+- **Data Sources (Retrofit + generated only):** Add new endpoints in `lib/base/data_sources/remote/`. You **MUST use Retrofit** to define these HTTP clients. Always add code docs to explain each endpoint.
+  - **Author only the abstract API:** declare the `@RestApi()` abstract class, the `factory …(Dio dio, {String baseUrl}) = _<Name>RemoteDataSource;` redirecting constructor, method signatures, and `part '<name>_remote_data_source.g.dart';`. **Do not** hand-write a concrete data source class, `implements`/`extends` body, or per-endpoint `dio.get/post/…` code — that code is **always** produced by `build_runner` (Retrofit generator) into `*_remote_data_source.g.dart`.
+  - **Never** create, edit, or paste content into `*_remote_data_source.g.dart` (or any `*.g.dart` for data sources). If the part file is missing, run `flutter pub run build_runner build --delete-conflicting-outputs` (or `bin/build_runner_build.sh`) and fix the abstract API until generation succeeds.
   - **ALWAYS** import exactly `package:dio/dio.dart` and `package:retrofit/retrofit.dart` for Retrofit data sources. Do not import any other HTTP client packages or write custom HTTP code.
   ```dart
   import 'package:dio/dio.dart';
@@ -315,9 +317,20 @@ ColoredBox(color: Colors.blue)
 SizedBox(height: 16)
 ```
 
-If the required color, typography style, spacing value, or icon is missing from the design system, **add it to the appropriate file in `lib/base/theme/design_system/`** rather than hardcoding it at the call site.
+If the required color, typography style, spacing value, or icon is missing from the design system, **add it to the appropriate file in `lib/base/theme/design_system/` first** rather than hardcoding it at the call site.
 
-If the Figma design contains any icons in SVG format, import them into 'assets/icons/' as well as pubspec.yaml, and add them to DesignSystemIcons before using them inside the UI widgets.
+**Icons from design system only — mandatory:**
+- Every icon used by feature UI MUST be referenced from `context.designSystem.icons` (or the equivalent `DesignSystemIcons` accessor in this project).
+- Do not use direct `IconData`, ad-hoc asset paths, or inline SVG/widget icon definitions in feature code.
+- If a needed icon does not exist yet, add the icon asset and register it in `DesignSystemIcons`, then consume it from the design system accessor.
+
+If the Figma design contains any icons in SVG format, import them into `assets/icons/`, update `pubspec.yaml`, and register them in `DesignSystemIcons` before using them in UI widgets.
+
+**Adaptive scroll physics for `ListView.builder` — mandatory:**
+- Every `ListView.builder` must use adaptive, framework-native scroll behavior. Prefer leaving `physics` unset so Flutter applies the correct platform defaults automatically.
+- If `physics` must be set (for feature-specific behavior), derive it from centralized or framework-provided configuration (for example via `ScrollConfiguration.of(context).getScrollPhysics(context)` or a project-level scroll physics provider). Do not hardcode platform checks or platform-specific constants in feature pages/components.
+- For nested scrollable layouts, explicitly configure parent/child scrolling responsibilities (for example `primary`, `shrinkWrap`, `NeverScrollableScrollPhysics` where appropriate) to avoid gesture conflicts and preserve smooth scrolling.
+- Avoid performance regressions: do not enable `shrinkWrap` unless required by nesting constraints, and preserve lazy list construction semantics of `ListView.builder`.
 
 **Reusable components — check before creating:**
 Always check `lib/base/common_ui_components/` for an existing widget before building a new one. Common examples include:
@@ -496,11 +509,12 @@ context.read<AppRouter>().push(const MyFeatureRoute().location);
 
 ### 5. Finalize
 
-- **Code Generation:** Run code generation commands to generate Retrofit, JsonSerializable, and RxBloc files:
+- **Code Generation:** Run code generation so **Retrofit data source implementations** (`*_remote_data_source.g.dart`) and other generated code (JsonSerializable, RxBloc) exist — they are not written by hand:
   ```bash
   flutter pub run build_runner build --delete-conflicting-outputs
   ```
   Or simply run `bin/build_runner_build.sh`.
+- **Dart import/symbol hygiene (mandatory):** For every modified Dart file, verify unresolved identifiers/imports are clean.
 - Update project-specific documentation if necessary (e.g., README, architecture docs, AGENTS.md etc.)
 
 ## Directory Structure (MANDATORY)
@@ -542,6 +556,7 @@ lib/feature_<name>/
 - **NEVER** instantiate services or repositories directly in BLoCs — use dependency injection
 - **NEVER** put business logic in the UI layer (pages/widgets)
 - **NEVER** call APIs directly from BLoCs — use services and repositories
+- **NEVER** hand-implement remote data source classes (no manual `Dio` calls, no concrete `*RemoteDataSource` with `@override` methods, no stub `*.g.dart` bodies) — add or extend the **abstract** Retrofit API only, then run `build_runner` so `*_remote_data_source.g.dart` is **generated** (Dio/Retrofit imports only on the authored API file, per project conventions)
 - **NEVER** implement pre-API gating or short-circuits in the BLoC (minimum query length, empty-query empty list, etc.) — put that logic in the service
 - **NEVER** skip error handling with `ErrorMapper` in repositories
 - **NEVER** hardcode strings — use localization keys
@@ -549,6 +564,9 @@ lib/feature_<name>/
 - **NEVER** use `setState` in pages — use BLoC states instead
 - **NEVER** create feature-specific models in `lib/base/models/` — put them in `lib/feature_<name>/models/`
 - **NEVER** use hardcoded colors, font sizes, font weights, spacing/padding values, or icons — always use `context.designSystem.*`; if the value doesn't exist yet, add it to `lib/base/theme/design_system/`
+- **NEVER** use icons directly from `Icons.*`, raw `SvgPicture.asset(...)`, or feature-local icon constants in page/UI component code; icons must come from `context.designSystem.icons` and missing icons must be added to `DesignSystemIcons` first
+- **NEVER** hardcode `ListView.builder` physics with platform branches in feature code (e.g., `Platform.isIOS ? BouncingScrollPhysics() : ClampingScrollPhysics()`) — use framework defaults or centralized scroll configuration
+- **NEVER** set `shrinkWrap: true` on `ListView.builder` unless the list is nested and requires it; unnecessary shrink-wrapping hurts scroll performance
 - **NEVER** declare BLoC aggregated errors as `Stream<String>`, `ConnectableStream<String>`, or map `errorState` with `toString()` for the main errors state — use `Stream<ErrorModel>` and `errorState.mapToErrorModel()`
 - **NEVER** write a custom error, loading, or empty-state widget without first checking `lib/base/common_ui_components/` for an existing one
 - **NEVER** use raw string literals in the UI — every user-visible string must be an l10n key in the `.arb` files and accessed via `context.l10n.<key>`

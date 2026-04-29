@@ -11,10 +11,7 @@ import '../../mocks/notifications_bloc_mock.dart';
 
 /// wraps a [NotificationsPage] in a [Provider] of type [NotificationsBlocType], creating
 /// a mocked bloc depending on the values being tested
-Widget notificationsPageFactory({
-  ErrorModel? error,
-  String? pushToken,
-}) =>
+Widget notificationsPageFactory({ErrorModel? error, String? pushToken}) =>
     MultiProvider(
       providers: [
         RxBlocProvider<NotificationsBlocType>.value(
