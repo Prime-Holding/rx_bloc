@@ -1,5 +1,5 @@
 {
-    "@@locale": "bg",
-    "navLinks" : "Връзки",
-    "deepLinkFlowPageTitle" : "Поток на дълбоки връзки"
+  "@@locale": "bg",
+  "navLinks": "Връзки",
+  "deepLinkFlowPageTitle": "Поток на дълбоки връзки"
 }

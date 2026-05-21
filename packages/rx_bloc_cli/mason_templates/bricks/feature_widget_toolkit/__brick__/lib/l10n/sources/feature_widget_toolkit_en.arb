@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
   "navWidgetToolkit": "Widgets",
-  "commonComponents" : "Common Components",
+  "commonComponents": "Common Components",
   "pickers": "Pickers",
   "editFields": "Edit Fields",
   "openUrlWidgetLaunchURLLink": "OpenUrlWidget - launch URL link",

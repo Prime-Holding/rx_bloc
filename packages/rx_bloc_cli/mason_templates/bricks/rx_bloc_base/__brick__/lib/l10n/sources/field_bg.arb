@@ -2,6 +2,6 @@
   "@@locale": "bg",
   "email": "Имейл",
   "password": "Парола",
-  "phoneNumber" : "Телефонен номер",
-  "countryCode" : "Код на държавата"
+  "phoneNumber": "Телефонен номер",
+  "countryCode": "Код на държавата"
 }

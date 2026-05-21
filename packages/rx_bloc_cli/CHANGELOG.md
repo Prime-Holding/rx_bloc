@@ -1,3 +1,6 @@
+## [Next]
+* Convert sync translation tool from python to dart
+
 ## [6.1.3]
 * Updated AI agent rules and skills
 * Updated generated project dependencies

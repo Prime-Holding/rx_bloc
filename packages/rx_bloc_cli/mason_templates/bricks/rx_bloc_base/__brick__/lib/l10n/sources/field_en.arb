@@ -2,6 +2,6 @@
   "@@locale": "en",
   "email": "Email",
   "password": "Password",
-  "phoneNumber" : "Phone number",
-  "countryCode" : "Country code"
+  "phoneNumber": "Phone number",
+  "countryCode": "Country code"
 }
