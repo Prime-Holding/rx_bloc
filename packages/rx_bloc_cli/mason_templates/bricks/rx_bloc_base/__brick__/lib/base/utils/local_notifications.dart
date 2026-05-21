@@ -43,15 +43,16 @@ Future<void> showLocalNotification({
 }) async {
   final plugin = await _getNotificationPlugin();
   await plugin?.show(
-    id,
-    title ?? '',
-    content ?? '',
-    NotificationDetails(
+    id: id,
+    title: title ?? '',
+    body: content ?? '',
+    notificationDetails: NotificationDetails(
       android: AndroidNotificationDetails(
         _maxImportanceChannel.id,
         _maxImportanceChannel.name,
         channelDescription: _maxImportanceChannel.description,
-        icon: icon ?? 'mipmap/ic_launcher', // To use your own custom icon for foreground
+        icon: icon ??
+            'mipmap/ic_launcher', // To use your own custom icon for foreground
         // notifications, replace the png file in `android/src/main/res/drawable`
       ),
       iOS: const DarwinNotificationDetails(

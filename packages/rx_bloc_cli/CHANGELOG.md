@@ -1,8 +1,17 @@
+## [Next]
+* Convert sync translation tool from python to dart
+
+## [6.1.3]
+* Updated AI agent rules and skills
+* Updated generated project dependencies
+* Updated default theme of generated project
+
+## [6.1.2]
+* Updated AI agent rules and skills
 
 ## [6.1.1]
 * Updated design system colors and typography to use unified ColorScheme and TextTheme approach
 * Updated dev menu internals: replace Alice with [Talker][talker_pkg]
-* Convert sync translation tool from python to dart
 * Fixed patrol integration tests
 
 ## [6.1.0]

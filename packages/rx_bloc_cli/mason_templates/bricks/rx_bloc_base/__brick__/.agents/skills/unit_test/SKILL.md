@@ -1,4 +1,5 @@
 ---
+name: unit_test
 description: Create BLoC and Service unit tests for an existing feature - Deterministic, high-signal unit test generation
 ---
 
