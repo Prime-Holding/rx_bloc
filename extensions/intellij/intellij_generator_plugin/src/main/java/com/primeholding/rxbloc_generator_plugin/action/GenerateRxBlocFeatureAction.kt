@@ -249,7 +249,7 @@ $newRoute""".trimIndent()
     
 //TODO move it the desired place in the routing tree Or make it as root route: @TypedGoRoute<${featureCamelCase}Route>(path: path) and run Build Runner - Build
 @immutable
-class ${featureCamelCase}Route extends GoRouteData implements RouteDataModel {
+class ${featureCamelCase}Route extends GoRouteData with $${featureCamelCase}Route implements RouteDataModel {
   const ${featureCamelCase}Route();
 
   @override
