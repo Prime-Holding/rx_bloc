@@ -1,0 +1,14 @@
+---
+description: Mandates Task-tool delegation to project subagents for l10n and Dart codegen
+alwaysApply: true
+---
+
+# Custom Task subagents
+
+This repo ships `.cursor/agents/*.md` subagents. When the trigger matches, **invoke the Task tool** with the given `subagent_type` in the same turn or immediately after your edits. Prefer this over running the same commands inline in the main agent unless the user forbids subagents or the Task tool fails.
+
+- **`intl-l10n-regenerate`** — Use after any create, edit, or delete under `lib/l10n/` (especially `*.arb` or `sources/`) or when `pubspec.yaml` changes `flutter_intl`, `intl_utils`, or related l10n config, or when the user asks to refresh localization.
+
+- **`build-runner-on-codegen-edit`** — Use after any create or edit of a `.dart` file in this package that contains a `part` directive targeting `.g.dart`, imports a generated `*.g.dart`, or uses annotation-driven codegen (for example `json_serializable`, Retrofit, freezed), or when the user asks to run codegen.
+
+Explicit user commands like "run build_runner" or "regenerate l10n" also use these `subagent_type` values.

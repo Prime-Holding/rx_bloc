@@ -1,3 +1,6 @@
+## [6.1.4]
+* Updated AI agent rules and skills
+
 ## [6.1.3]
 * Updated AI agent rules and skills
 * Updated generated project dependencies
